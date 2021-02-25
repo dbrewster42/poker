@@ -1,23 +1,18 @@
-package com.brewster.poker.player;
+package com.brewster.poker.model;
 
-import com.brewster.poker.card.Card;
-import com.brewster.poker.model.PlayerRequest;
+import com.brewster.poker.model.request.PlayerRequest;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 public class Player {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(nullable = false, unique = true)
     private String name;
     private int money;
-    private List<Card> hand;
     @Column(updatable = false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createdAt;
@@ -28,13 +23,28 @@ public class Player {
         name = request.getEmail();
         money = request.getMoney();
     }
+    public Player(){
 
-    public List<Card> getHand() {
-        return hand;
     }
 
-    public void setHand(List<Card> hand) {
-        this.hand = hand;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     public String getName() {

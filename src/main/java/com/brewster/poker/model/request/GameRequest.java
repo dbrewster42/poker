@@ -1,4 +1,4 @@
-package com.brewster.poker.model;
+package com.brewster.poker.model.request;
 
 public class GameRequest {
     private int players;

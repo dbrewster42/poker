@@ -1,9 +1,9 @@
 package com.brewster.poker.service;
 
-import com.brewster.poker.model.PlayerRequest;
-import com.brewster.poker.player.Player;
+import com.brewster.poker.dto.PlayerDto;
 
 public interface PlayerService {
 //    Player findPlayer(String email);
-    Player findAndUpdatePlayer(PlayerRequest request);
+    PlayerDto findAndUpdatePlayer(PlayerDto dto);
+    PlayerDto createPlayer(PlayerDto dto);
 }

@@ -11,30 +11,37 @@ public class DeckBuilder {
 
     public DeckBuilder(){
         deck = new Deck();
-        cards = new Card[52];
-        deck.setCards(buildStandardDeck());
-        deck.shuffle();
     }
     public DeckBuilder(int wildcards){
         deck = new Deck();
-        cards = new Card[52 + wildcards];
-        deck.setCards(buildDeckWithJokers(wildcards));
-        deck.shuffle();
     }
     public DeckBuilder(List<String> customRules){
         deck = new Deck();
-        //deck.setCards(buildDeckWithJokers(wildcards));
     }
 
+    public Deck build(){
+        return deck;
+    }
 
-    public Card[] buildDeckWithJokers(int wildcards){
+    public Deck withJokersDeck(int wildcards){
+        cards = new Card[52 + wildcards];
         cards = buildStandardDeck();
         Card joker = new Card("any", 20, "Joker");
         int count = 52;
         for (int i = 0; i < wildcards; i++){
             cards[count] = joker;
         }
-        return cards;
+        deck.setCards(cards);
+        deck.shuffle();
+        return deck;
+    }
+
+    public Deck withStandardDeck(){
+        cards = new Card[52];
+        cards = buildStandardDeck();
+        deck.setCards(cards);
+        deck.shuffle();
+        return deck;
     }
 
     public Card[] buildStandardDeck(){

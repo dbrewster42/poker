@@ -1,6 +1,6 @@
 package com.brewster.poker.dao;
 
-import com.brewster.poker.player.Player;
+import com.brewster.poker.model.Player;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
