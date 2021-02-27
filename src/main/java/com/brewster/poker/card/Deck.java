@@ -1,29 +1,42 @@
 package com.brewster.poker.card;
 
 
+import java.util.List;
 import java.util.Random;
 
 public class Deck {
-    private Card[] cards;
+    //private Card[] cards;
+    private List<Card> cards;
 
-    public Card[] getCards() {
+    public List<Card> getCards() {
         return cards;
     }
 
-    public void setCards(Card[] cards) {
+    public void setCards(List<Card> cards) {
         this.cards = cards;
     }
 
     public Deck shuffle(){
-        for (int count = cards.length - 1; count >= 0; count--){
+        for (int count = cards.size() - 1; count >= 0; count--){
             Random randomNumber = new Random();
             int otherCard = randomNumber.nextInt(count);
-            Card card = cards[otherCard];
-            cards[otherCard] = cards[count];
-            cards[count] = card;
+            Card card = cards.get(otherCard);
+            cards.set(otherCard, cards.get(count));
+            cards.set(count, card);
         }
         return this;
     }
+
+//    public Deck shuffle(){
+//        for (int count = cards.length - 1; count >= 0; count--){
+//            Random randomNumber = new Random();
+//            int otherCard = randomNumber.nextInt(count);
+//            Card card = cards[otherCard];
+//            cards[otherCard] = cards[count];
+//            cards[count] = card;
+//        }
+//        return this;
+//    }
 
 
 //    public Deck(int wildcards){

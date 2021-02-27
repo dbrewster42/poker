@@ -1,9 +1,8 @@
 package com.brewster.poker.controller;
 
-import com.brewster.poker.card.Deck;
-import com.brewster.poker.card.DeckBuilder;
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.game.Game;
+import com.brewster.poker.game.GameManager;
 import com.brewster.poker.model.request.GameRequest;
 import com.brewster.poker.model.request.PlayerRequest;
 import com.brewster.poker.model.response.Response;
@@ -15,7 +14,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,15 +21,13 @@ import java.util.Map;
 @RestController
 @CrossOrigin("http://localhost:3000")
 public class PlayerController {
-    private int id = 0;
+//    private int id = 0;
     private final PlayerService playerService;
     private final ObjectMapper mapper = new ObjectMapper();
-    Game game;
+//    private Game game;
     private PlayerDto playerDto;
     private String body;
     private int statusCode = 200;
-    private final Map<String, String> headers = createHeaders();
-
 
     public PlayerController(PlayerService playerService) {
         this.playerService = playerService;
@@ -62,7 +58,7 @@ public class PlayerController {
         }
         System.out.println(body + "____________________________________" + statusCode);
 
-        return new Response(body, headers, statusCode);
+        return new Response(body, statusCode);
     }
 
     @PutMapping("/login")
@@ -86,7 +82,8 @@ public class PlayerController {
     @PostMapping("/start")
     public Response startGame(@RequestBody GameRequest request) {
         List<PlayerDto> players = playerService.startGame(playerDto, 4);
-        game = new Game(id++, players);
+        Game game = GameManager.createGame(players);
+        //game = new Game(id++, players);
         try {
             body = mapper.writeValueAsString(players);
         } catch (JsonProcessingException e) {
@@ -94,17 +91,10 @@ public class PlayerController {
             statusCode = 400;
             e.printStackTrace();
         }
-        System.out.println(id + " !!!!!!!!!!!!!!!!! " + body);
-        return new Response(body, headers, statusCode);
-    }
-
-    private Map<String, String> createHeaders() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
-        headers.put("Access-Control-Allow-Origin", "*");
-        headers.put("Access-Control-Allow-Methods", "*");
-        headers.put("Access-Control-Allow-Headers", "*");
-        return headers;
+        System.out.println(game.getId() + " !!!!!!!!!!!!!!!!! " + body);
+        Response response = new Response(body, statusCode);
+        response.setGameId(game.getId());
+        return response;
     }
 
 }

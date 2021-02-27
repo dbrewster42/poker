@@ -42,6 +42,8 @@ public class PlayerDto {
         this.hand = hand;
     }
 
+    public void dealCard(Card card){ this.hand.add(card); }
+
     @Override
     public String toString() {
         return "{" +

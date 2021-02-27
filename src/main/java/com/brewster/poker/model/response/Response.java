@@ -7,11 +7,20 @@ public class Response {
     private final String body;
     private final Map<String, String> headers;
     private final int statusCode;
+    private int gameId;
 
     public Response(final String body, final int statusCode){
         this.statusCode = statusCode;
         this.body = body;
         this.headers = createHeaders();
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 
     public String getBody() {
