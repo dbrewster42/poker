@@ -1,15 +1,15 @@
 package com.brewster.poker.model.request;
 
 public class PlayerRequest {
-    private String email;
+    private String username;
     private int money;
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public int getMoney() {

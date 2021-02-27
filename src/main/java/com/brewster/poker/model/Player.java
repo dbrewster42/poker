@@ -11,7 +11,7 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(nullable = false, unique = true)
-    private String name;
+    private String username;
     private int money;
     @Column(updatable = false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -20,12 +20,10 @@ public class Player {
     private Date updatedAt;
 
     public Player(PlayerRequest request){
-        name = request.getEmail();
+        username = request.getUsername();
         money = request.getMoney();
     }
-    public Player(){
-
-    }
+    public Player(){ }
 
     public Integer getId() {
         return id;
@@ -35,23 +33,35 @@ public class Player {
         this.id = id;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 
     public Date getCreatedAt() {
         return createdAt;
     }
 
-    public String getName() {
-        return name;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public int getMoney() {
-        return money;
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

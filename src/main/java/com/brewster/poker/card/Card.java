@@ -4,11 +4,13 @@ public class Card {
     final private String suit;
     final private int value;
     final private String name;
+    final private String image;
 
-    public Card(String suit, int value, String name) {
+    public Card(String suit, int value, String name, String imagePreFix) {
         this.suit = suit;
         this.value = value;
         this.name = name;
+        this.image = imagePreFix + ".png";
     }
 
     public void show(){

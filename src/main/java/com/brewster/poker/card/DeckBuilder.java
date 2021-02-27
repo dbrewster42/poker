@@ -6,6 +6,7 @@ public class DeckBuilder {
     private final static String[] SUITS = { "Clubs", "Hearts", "Spades", "Diamonds" };
     private final static String[] NAMES = { "Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King" };
     private final static int[] VALUES = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+    private final String[] IMAGE_PREFIXES = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
     private final Deck deck;
     private Card[] cards;
 
@@ -20,35 +21,34 @@ public class DeckBuilder {
     }
 
     public Deck build(){
+        deck.shuffle();
         return deck;
     }
 
-    public Deck withJokersDeck(int wildcards){
+    public DeckBuilder withJokersDeck(int wildcards){
         cards = new Card[52 + wildcards];
         cards = buildStandardDeck();
-        Card joker = new Card("any", 20, "Joker");
+        Card joker = new Card("any", 20, "Joker", "purple_back");
         int count = 52;
         for (int i = 0; i < wildcards; i++){
             cards[count] = joker;
         }
         deck.setCards(cards);
-        deck.shuffle();
-        return deck;
+        return this;
     }
 
-    public Deck withStandardDeck(){
+    public DeckBuilder withStandardDeck(){
         cards = new Card[52];
         cards = buildStandardDeck();
         deck.setCards(cards);
-        deck.shuffle();
-        return deck;
+        return this;
     }
 
     public Card[] buildStandardDeck(){
         int count = 0;
         for (int i = 0; i < 13; i++){
             for (int j = 0; j < 4; j++){
-                Card card = new Card(SUITS[j], VALUES[i], NAMES[i]);
+                Card card = new Card(SUITS[j], VALUES[i], NAMES[i], IMAGE_PREFIXES[i]);
                 cards[count] = card;
                 count++;
             }
