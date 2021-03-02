@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class PlayerServiceImplementation implements PlayerService {
@@ -16,15 +17,23 @@ public class PlayerServiceImplementation implements PlayerService {
         this.playerRepository = playerRepository;
     }
 
-//    public Player findPlayer(String email){
-//        return new Player(email, 10);
-//    }
+    public PlayerDto findPlayer(String username){
+        Player player = playerRepository.findByUsername(username);
+
+        PlayerDto returnValue = new PlayerDto();
+        BeanUtils.copyProperties(player, returnValue);
+
+        return returnValue;
+    }
+
     public List<PlayerDto> startGame(PlayerDto dto, int numberOfPlayers){
         List<PlayerDto> players = new ArrayList<>();
         players.add(dto);
+        Random random = new Random();
         for (int i = 0; i < numberOfPlayers - 1; i++){
             PlayerDto computerPlayer = new PlayerDto();
-            computerPlayer.setUsername("HAL");
+            //computerPlayer.setId(0);
+            computerPlayer.setUsername("HAL" + random.nextInt(500));
             computerPlayer.setMoney(999);
             players.add(computerPlayer);
         }
@@ -33,7 +42,8 @@ public class PlayerServiceImplementation implements PlayerService {
     }
 
     public PlayerDto findAndUpdatePlayer(PlayerDto dto){
-        Player oldPlayer = new Player();
+        Player oldPlayer =  playerRepository.findByUsername(dto.getUsername());
+        //TODO add buyin amount to db
         BeanUtils.copyProperties(dto, oldPlayer);
         return dto;
     }

@@ -2,21 +2,20 @@ package com.brewster.poker.controller;
 
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.game.Game;
-import com.brewster.poker.game.GameManager;
-import com.brewster.poker.model.request.GameRequest;
+import com.brewster.poker.game.GamesContainer;
 import com.brewster.poker.model.request.PlayerRequest;
+import com.brewster.poker.model.request.SettingsRequest;
 import com.brewster.poker.model.response.Response;
 import com.brewster.poker.service.PlayerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.PropertyValueException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -43,7 +42,10 @@ public class PlayerController {
             playerDto = playerService.createPlayer(dto);
             body = mapper.writeValueAsString(playerDto);
             statusCode = 200;
-        } catch (DataIntegrityViolationException e) {
+        } catch (ConstraintViolationException e) {
+            body = "That username is already taken. You must choose a unique username";
+            statusCode = 400;
+        }catch (DataIntegrityViolationException e) {
             body = e.getMessage();
             statusCode = 500;
             e.printStackTrace();
@@ -80,9 +82,12 @@ public class PlayerController {
 //        return responses;
 //    }
     @PostMapping("/start")
-    public Response startGame(@RequestBody GameRequest request) {
+    public Response startGame(@RequestBody SettingsRequest request) {
+        if (!playerDto.getUsername().equals(request.getUsername())){
+            playerDto = playerService.findPlayer(request.getUsername());
+        }
         List<PlayerDto> players = playerService.startGame(playerDto, 4);
-        Game game = GameManager.createGame(players);
+        Game game = GamesContainer.createGame(players);
         //game = new Game(id++, players);
         try {
             body = mapper.writeValueAsString(players);

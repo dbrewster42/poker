@@ -11,7 +11,7 @@ import java.util.List;
 public class Game {
     private Deck deck;
     private List<Card> cards;
-    private List<Card> riverCards;
+    private List<Card> riverCards = new ArrayList<>();
     private List<PlayerDto> players;
     private int numberOfPlayers;
     private int id;
@@ -23,13 +23,7 @@ public class Game {
     }
 
     public List<Card> deal(){
-        //deck = new DeckBuilder().withStandardDeck().build();
         cards = new DeckBuilder().withStandardDeck().build().getCards();
-//        int i = 0;
-//        for (PlayerDto player : players){
-//            List<Card> holeCards = List.of(cards[i], cards[i + numberOfPlayers]);
-//            i++;
-//        }
         for (int i = 0; i < 2; i++){
             for (PlayerDto player : players){
                 player.dealCard(cards.get(0));
@@ -77,8 +71,4 @@ public class Game {
     public void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
     }
-
-    //    public List<Response> dealNewGame(List<Player> players){
-//
-//    }
 }

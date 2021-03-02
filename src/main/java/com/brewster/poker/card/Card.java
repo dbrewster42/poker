@@ -28,4 +28,8 @@ public class Card {
     public String getName() {
         return name;
     }
+
+    public String getImage() {
+        return image;
+    }
 }

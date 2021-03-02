@@ -2,18 +2,14 @@ package com.brewster.poker.controller;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.card.Deck;
-import com.brewster.poker.card.DeckBuilder;
 import com.brewster.poker.game.Game;
-import com.brewster.poker.game.GameManager;
+import com.brewster.poker.game.GamesContainer;
 import com.brewster.poker.model.response.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -28,7 +24,7 @@ public class GameController {
 
     @PostMapping("/{id}")
     public Response deal(@PathVariable int id) {
-        Game game = GameManager.findGameById(id);
+        Game game = GamesContainer.findGameById(id);
         List<Card> riverCards = game.getRiverCards();
         try {
             body = mapper.writeValueAsString(riverCards);

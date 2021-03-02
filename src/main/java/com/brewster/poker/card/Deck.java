@@ -1,11 +1,9 @@
 package com.brewster.poker.card;
 
-
 import java.util.List;
 import java.util.Random;
 
 public class Deck {
-    //private Card[] cards;
     private List<Card> cards;
 
     public List<Card> getCards() {

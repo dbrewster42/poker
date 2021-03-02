@@ -5,7 +5,7 @@ import com.brewster.poker.dto.PlayerDto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameManager {
+public class GamesContainer {
     private static int gameID = 0;
     private static List<Game> allGames = new ArrayList<>();
 
@@ -17,18 +17,14 @@ public class GameManager {
     }
 
 
-    public static Game findGameById(int id){
-        Game game = allGames.get(id);
-        if (game.getId() != id){
-            System.out.println("Error with game id. Attempting to fix");
-            for (Game each : allGames){
-                if (each.getId() == id){
-                    game = each;
-                    System.out.println("The error has been patched");
-                }
+    public static Game findGameById(Integer id){
+        //Game game = allGames.stream().filter(v -> v.getId() == id).findAny().orElseThrow(() -> new IllegalArgumentException("That game is not currently running"));
+        for (Game i : allGames){
+            if (i.getId() == id){
+                return i;
             }
         }
-        return game;
+        return null;
     }
 
     public static int getGameID() {
