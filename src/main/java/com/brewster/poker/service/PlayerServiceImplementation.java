@@ -17,15 +17,6 @@ public class PlayerServiceImplementation implements PlayerService {
         this.playerRepository = playerRepository;
     }
 
-    public PlayerDto findPlayer(String username){
-        Player player = playerRepository.findByUsername(username);
-
-        PlayerDto returnValue = new PlayerDto();
-        BeanUtils.copyProperties(player, returnValue);
-
-        return returnValue;
-    }
-
     public List<PlayerDto> startGame(PlayerDto dto, int numberOfPlayers){
         List<PlayerDto> players = new ArrayList<>();
         players.add(dto);
@@ -41,11 +32,24 @@ public class PlayerServiceImplementation implements PlayerService {
         return players;
     }
 
-    public PlayerDto findAndUpdatePlayer(PlayerDto dto){
+    public PlayerDto findPlayer(String username){
+        Player player = playerRepository.findByUsername(username);
+
+        PlayerDto returnValue = new PlayerDto();
+        BeanUtils.copyProperties(player, returnValue);
+
+        return returnValue;
+    }
+
+    public PlayerDto addMoneyToPlayer(PlayerDto dto){
         Player oldPlayer =  playerRepository.findByUsername(dto.getUsername());
-        //TODO add buyin amount to db
-        BeanUtils.copyProperties(dto, oldPlayer);
-        return dto;
+        oldPlayer.setMoney(oldPlayer.getMoney() + dto.getMoney());
+
+        Player updatedPlayer = playerRepository.save(oldPlayer);
+
+        PlayerDto returnValue = new PlayerDto();
+        BeanUtils.copyProperties(updatedPlayer, returnValue);
+        return returnValue;
     }
 
     public PlayerDto createPlayer(PlayerDto dto){
