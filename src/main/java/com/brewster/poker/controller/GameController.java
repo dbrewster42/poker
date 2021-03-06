@@ -1,7 +1,6 @@
 package com.brewster.poker.controller;
 
 import com.brewster.poker.card.Card;
-import com.brewster.poker.card.Deck;
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.game.Game;
 import com.brewster.poker.game.GamesContainer;
@@ -20,7 +19,6 @@ import java.util.List;
 @RequestMapping("/game")
 public class GameController {
     private final PlayerService playerService;
-    private Deck deck;
     private PlayerDto playerDto;
     private String body;
     private int statusCode = 200;
@@ -32,11 +30,9 @@ public class GameController {
 
     @PostMapping("/start")
     public Response startGame(@RequestBody SettingsRequest request) {
-//        if (!playerDto.getUsername().equals(request.getUsername())){
         playerDto = playerService.findPlayer(request.getUsername());
-        List<PlayerDto> players = playerService.startGame(playerDto, 4);
+        List<PlayerDto> players = playerService.gatherPlayersForGame(playerDto, 4);
         Game game = GamesContainer.createGame(players);
-        //game = new Game(id++, players);
         try {
             body = mapper.writeValueAsString(players);
         } catch (JsonProcessingException e) {
@@ -51,9 +47,13 @@ public class GameController {
     }
 
     @PostMapping("/{id}")
-    public Response deal(@PathVariable int id, @RequestBody PlayerRequest request) {
+    public Response deal(@PathVariable int id, @RequestBody PlayerRequest request) throws ClassNotFoundException {
         playerDto = playerService.findPlayer(request.getUsername());
         Game game = GamesContainer.findGameById(id);
+        if (game == null){
+            throw new ClassNotFoundException("We could not find your game, sorry.");
+            //return new Response(body, statusCode);
+        }
         List<Card> riverCards = game.getRiverCards();
         try {
             body = mapper.writeValueAsString(riverCards);
@@ -63,6 +63,11 @@ public class GameController {
             body = e.getMessage();
             e.printStackTrace();
         }
+        return new Response(body, statusCode);
+    }
+
+    @PostMapping("/{id}/bet")
+    public Response bet(@PathVariable int id, @RequestBody PlayerRequest request){
         return new Response(body, statusCode);
     }
 }

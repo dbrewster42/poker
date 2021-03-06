@@ -1,7 +1,6 @@
 package com.brewster.poker.game;
 
 import com.brewster.poker.card.Card;
-import com.brewster.poker.card.Deck;
 import com.brewster.poker.card.DeckBuilder;
 import com.brewster.poker.dto.PlayerDto;
 
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private Deck deck;
     private List<Card> cards;
     private List<Card> riverCards = new ArrayList<>();
     private List<PlayerDto> players;
@@ -22,22 +20,33 @@ public class Game {
         this.numberOfPlayers = players.size();
     }
 
-    public List<Card> deal(){
-        cards = new DeckBuilder().withStandardDeck().build().getCards();
+    public List<Card> initialDeal(){
+        cards = getNewDeck();
+        dealHoleCards();
+        riverCards = dealRiverCardNTimes(3);
+
+        return riverCards;
+    }
+
+    public List<Card> dealRiverCardNTimes(int count){
+        cards.remove(0);
+        for (int i = 0; i < count; i++){
+            riverCards.add(cards.get(0));
+            cards.remove(0);
+        }
+        return riverCards;
+    }
+    private List<Card> getNewDeck(){
+        return new DeckBuilder().withStandardDeck().build().getCards();
+    }
+
+    private void dealHoleCards(){
         for (int i = 0; i < 2; i++){
             for (PlayerDto player : players){
                 player.dealCard(cards.get(0));
                 cards.remove(0);
             }
         }
-
-        cards.remove(0);
-        for (int i = 0; i < 3; i++){
-            riverCards.add(cards.get(0));
-            cards.remove(0);
-        }
-
-        return riverCards;
     }
 
     public int getId() {

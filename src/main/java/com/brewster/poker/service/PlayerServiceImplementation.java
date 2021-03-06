@@ -13,11 +13,12 @@ import java.util.Random;
 @Service
 public class PlayerServiceImplementation implements PlayerService {
     private final PlayerRepository playerRepository;
+
     public PlayerServiceImplementation(PlayerRepository playerRepository){
         this.playerRepository = playerRepository;
     }
 
-    public List<PlayerDto> startGame(PlayerDto dto, int numberOfPlayers){
+    public List<PlayerDto> gatherPlayersForGame(PlayerDto dto, int numberOfPlayers){
         List<PlayerDto> players = new ArrayList<>();
         players.add(dto);
         Random random = new Random();

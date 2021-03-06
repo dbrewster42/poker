@@ -8,5 +8,5 @@ public interface PlayerService {
     PlayerDto findPlayer(String username);
     PlayerDto addMoneyToPlayer(PlayerDto dto);
     PlayerDto createPlayer(PlayerDto dto);
-    List<PlayerDto> startGame(PlayerDto dto, int players);
+    List<PlayerDto> gatherPlayersForGame(PlayerDto dto, int players);
 }

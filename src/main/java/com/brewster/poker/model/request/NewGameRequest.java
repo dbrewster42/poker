@@ -1,6 +1,6 @@
 package com.brewster.poker.model.request;
 
-public class GameRequest {
+public class NewGameRequest {
     private int players;
     private int blinds;
     private int maxBet;

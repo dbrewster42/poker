@@ -18,7 +18,7 @@ public class GamesContainer {
 
 
     public static Game findGameById(Integer id){
-        //Game game = allGames.stream().filter(v -> v.getId() == id).findAny().orElseThrow(() -> new IllegalArgumentException("That game is not currently running"));
+        //Game game = allGames.stream().filter(v -> v.getId() == id).findAny().orElse(null);
         for (Game i : allGames){
             if (i.getId() == id){
                 return i;
