@@ -1,6 +1,6 @@
 package com.brewster.poker.service;
 
-import com.brewster.poker.dao.PlayerRepository;
+import com.brewster.poker.repository.PlayerRepository;
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.model.Player;
 import org.springframework.beans.BeanUtils;

@@ -2,7 +2,7 @@ package com.brewster.poker.model.request;
 
 public class NewGameRequest {
     private int players;
-    private int blinds;
+    private int bigBlind;
     private int maxBet;
 
     public int getPlayers() {
@@ -13,12 +13,12 @@ public class NewGameRequest {
         this.players = players;
     }
 
-    public int getBlinds() {
-        return blinds;
+    public int getBigBlind() {
+        return bigBlind;
     }
 
-    public void setBlinds(int blinds) {
-        this.blinds = blinds;
+    public void setBigBlind(int blind) {
+        this.bigBlind = blind;
     }
 
     public int getMaxBet() {

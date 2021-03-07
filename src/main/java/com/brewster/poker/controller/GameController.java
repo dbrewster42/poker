@@ -28,12 +28,13 @@ public class GameController {
         this.playerService = playerService;
     }
 
-    @PostMapping("/start")
-    public Response startGame(@RequestBody SettingsRequest request) {
+    @PostMapping("/")
+    public Response createGame(@RequestBody SettingsRequest request) {
         playerDto = playerService.findPlayer(request.getUsername());
         List<PlayerDto> players = playerService.gatherPlayersForGame(playerDto, 4);
         Game game = GamesContainer.createGame(players);
         try {
+            //body =List<MyClass> myObjects = Arrays.asList(mapper.readValue(json, MyClass[].class))
             body = mapper.writeValueAsString(players);
         } catch (JsonProcessingException e) {
             body = e.getMessage();

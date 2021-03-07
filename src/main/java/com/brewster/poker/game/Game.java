@@ -20,12 +20,10 @@ public class Game {
         this.numberOfPlayers = players.size();
     }
 
-    public List<Card> initialDeal(){
-        cards = getNewDeck();
-        dealHoleCards();
-        riverCards = dealRiverCardNTimes(3);
-
-        return riverCards;
+    public List<PlayerDto> beginNewRound(){
+        cards = getNewStandardDeck();
+        dealPlayerCards();
+        return players;
     }
 
     public List<Card> dealRiverCardNTimes(int count){
@@ -36,17 +34,19 @@ public class Game {
         }
         return riverCards;
     }
-    private List<Card> getNewDeck(){
+    private List<Card> getNewStandardDeck(){
         return new DeckBuilder().withStandardDeck().build().getCards();
     }
 
-    private void dealHoleCards(){
+    //private List<PlayerDto> dealPlayerCards(){
+    private void dealPlayerCards(){
         for (int i = 0; i < 2; i++){
             for (PlayerDto player : players){
                 player.dealCard(cards.get(0));
                 cards.remove(0);
             }
         }
+        //return players;
     }
 
     public int getId() {
