@@ -35,7 +35,7 @@ public class Response {
         return statusCode;
     }
 
-    private Map<String, String> createHeaders() {
+    protected Map<String, String> createHeaders() {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Access-Control-Allow-Origin", "*");

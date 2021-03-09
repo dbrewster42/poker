@@ -6,6 +6,7 @@ import com.brewster.poker.dto.PlayerDto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Game {
     private List<Card> cards;
@@ -26,7 +27,11 @@ public class Game {
         return players;
     }
 
-    public List<Card> dealRiverCardNTimes(int count){
+    public List<Card> dealRiverCardNTimes(){
+        int count = 1;
+        if (riverCards.size() == 0){
+            count = 3;
+        }
         cards.remove(0);
         for (int i = 0; i < count; i++){
             riverCards.add(cards.get(0));
@@ -57,14 +62,6 @@ public class Game {
         return riverCards;
     }
 
-//    public List<Card> getCards() {
-//        return cards;
-//    }
-//
-//    public void setCards(List<Card> cards) {
-//        this.cards = cards;
-//    }
-
     public List<PlayerDto> getPlayers() {
         return players;
     }
@@ -80,4 +77,11 @@ public class Game {
     public void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
     }
+    //    public List<Card> getCards() {
+//        return cards;
+//    }
+//
+//    public void setCards(List<Card> cards) {
+//        this.cards = cards;
+//    }
 }

@@ -18,21 +18,6 @@ public class PlayerServiceImplementation implements PlayerService {
         this.playerRepository = playerRepository;
     }
 
-    public List<PlayerDto> gatherPlayersForGame(PlayerDto dto, int numberOfPlayers){
-        List<PlayerDto> players = new ArrayList<>();
-        players.add(dto);
-        Random random = new Random();
-        for (int i = 0; i < numberOfPlayers - 1; i++){
-            PlayerDto computerPlayer = new PlayerDto();
-            //computerPlayer.setId(0);
-            computerPlayer.setUsername("HAL" + random.nextInt(500));
-            computerPlayer.setMoney(999);
-            players.add(computerPlayer);
-        }
-
-        return players;
-    }
-
     public PlayerDto findPlayer(String username){
         Player player = playerRepository.findByUsername(username);
 
@@ -66,5 +51,31 @@ public class PlayerServiceImplementation implements PlayerService {
 
         return returnValue;
     }
+
+
+    public List<PlayerDto> generateNComputerPlayers(int numberOfPlayers){
+        List<PlayerDto> players = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < numberOfPlayers - 1; i++){
+            PlayerDto computerPlayer = new PlayerDto();
+            computerPlayer.setUsername("HAL" + random.nextInt(500));
+            computerPlayer.setMoney(999);
+            players.add(computerPlayer);
+        }
+        return players;
+    }
+//    public List<PlayerDto> gatherPlayersForGame(PlayerDto dto, int numberOfPlayers){
+//        List<PlayerDto> players = new ArrayList<>();
+//        players.add(dto);
+//        Random random = new Random();
+//        for (int i = 0; i < numberOfPlayers - 1; i++){
+//            PlayerDto computerPlayer = new PlayerDto();
+//            //computerPlayer.setId(0);
+//            computerPlayer.setUsername("HAL" + random.nextInt(500));
+//            computerPlayer.setMoney(999);
+//            players.add(computerPlayer);
+//        }
+//        return players;
+//    }
 
 }

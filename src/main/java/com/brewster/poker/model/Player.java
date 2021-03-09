@@ -12,7 +12,7 @@ public class Player {
     private Integer id;
     @Column(nullable = false, unique = true)
     private String username;
-    private int money;
+    private Integer money;
     @Column(updatable = false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createdAt;
@@ -41,11 +41,11 @@ public class Player {
         this.username = username;
     }
 
-    public int getMoney() {
+    public Integer getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(Integer money) {
         this.money = money;
     }
 

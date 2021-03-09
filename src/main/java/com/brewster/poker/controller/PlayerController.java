@@ -64,6 +64,7 @@ public class PlayerController {
             statusCode = 400;
             e.printStackTrace();
         }
+        System.out.println(body + "____________________________________" + statusCode);
         return new Response(body, statusCode);
     }
 

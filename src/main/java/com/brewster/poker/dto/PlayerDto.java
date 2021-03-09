@@ -1,14 +1,16 @@
 package com.brewster.poker.dto;
 
 import com.brewster.poker.card.Card;
+import com.brewster.poker.game.Bet;
 
 import java.util.List;
 
 public class PlayerDto {
     private Integer id;
     private String username;
-    private int money;
+    private Integer money;
     private List<Card> hand;
+    private Bet bet;
 
     public Integer getId() {
         return id;
@@ -26,11 +28,11 @@ public class PlayerDto {
         this.username = username;
     }
 
-    public int getMoney() {
+    public Integer getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(Integer money) {
         this.money = money;
     }
 
@@ -43,6 +45,14 @@ public class PlayerDto {
     }
 
     public void dealCard(Card card){ this.hand.add(card); }
+
+    public Bet getBet() {
+        return bet;
+    }
+
+    public void setBet(Bet bet) {
+        this.bet = bet;
+    }
 
     @Override
     public String toString() {
