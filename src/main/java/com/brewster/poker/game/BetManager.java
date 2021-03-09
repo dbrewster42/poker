@@ -1,13 +1,13 @@
 package com.brewster.poker.game;
 
-import com.brewster.poker.dto.PlayerDto;
+import com.brewster.poker.dto.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BetManager {
     private Game game;
-    private List<PlayerDto> players;
+    private List<UserDto> players;
     private int bigBlind;
     private int smallBlind;
     private int turn;

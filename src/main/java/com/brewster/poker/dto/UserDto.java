@@ -5,7 +5,7 @@ import com.brewster.poker.game.Bet;
 
 import java.util.List;
 
-public class PlayerDto {
+public class UserDto {
     private Integer id;
     private String username;
     private Integer money;

@@ -2,26 +2,25 @@ package com.brewster.poker.game;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.card.DeckBuilder;
-import com.brewster.poker.dto.PlayerDto;
+import com.brewster.poker.dto.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class Game {
     private List<Card> cards;
     private List<Card> riverCards = new ArrayList<>();
-    private List<PlayerDto> players;
+    private List<UserDto> players;
     private int numberOfPlayers;
     private int id;
 
-    public Game(int id, List<PlayerDto> players){
+    public Game(int id, List<UserDto> players){
         this.id = id;
         this.players = players;
         this.numberOfPlayers = players.size();
     }
 
-    public List<PlayerDto> beginNewRound(){
+    public List<UserDto> beginNewRound(){
         cards = getNewStandardDeck();
         dealPlayerCards();
         return players;
@@ -46,7 +45,7 @@ public class Game {
     //private List<PlayerDto> dealPlayerCards(){
     private void dealPlayerCards(){
         for (int i = 0; i < 2; i++){
-            for (PlayerDto player : players){
+            for (UserDto player : players){
                 player.dealCard(cards.get(0));
                 cards.remove(0);
             }
@@ -62,11 +61,11 @@ public class Game {
         return riverCards;
     }
 
-    public List<PlayerDto> getPlayers() {
+    public List<UserDto> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<PlayerDto> players) {
+    public void setPlayers(List<UserDto> players) {
         this.players = players;
     }
 

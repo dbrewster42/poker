@@ -1,10 +1,10 @@
 package com.brewster.poker.repository;
 
-import com.brewster.poker.model.Player;
+import com.brewster.poker.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PlayerRepository extends CrudRepository<Player, Integer> {
-    Player findByUsername(String username);
+public interface UserRepository extends CrudRepository<User, Integer> {
+    User findByUsername(String username);
 }

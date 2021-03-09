@@ -1,13 +1,13 @@
 package com.brewster.poker.controller;
 
 import com.brewster.poker.card.Card;
-import com.brewster.poker.dto.PlayerDto;
+import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.game.Game;
 import com.brewster.poker.game.GamesContainer;
-import com.brewster.poker.model.request.PlayerRequest;
+import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.model.request.SettingsRequest;
 import com.brewster.poker.model.response.Response;
-import com.brewster.poker.service.PlayerService;
+import com.brewster.poker.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
@@ -18,21 +18,21 @@ import java.util.List;
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("/game")
 public class GameController {
-    private final PlayerService playerService;
-    private PlayerDto playerDto;
+    private final UserService userService;
+    private UserDto userDto;
     private String body;
     private int statusCode = 200;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public GameController(PlayerService playerService) {
-        this.playerService = playerService;
+    public GameController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/")
     public Response createGame(@RequestBody SettingsRequest request) {
-        playerDto = playerService.findPlayer(request.getUsername());
-        List<PlayerDto> players = playerService.generateNComputerPlayers(4);
-        players.add((playerDto));
+        userDto = userService.findPlayer(request.getUsername());
+        List<UserDto> players = userService.generateNComputerPlayers(4);
+        players.add((userDto));
         Game game = GamesContainer.createGame(players);
         try {
             //body =List<MyClass> myObjects = Arrays.asList(mapper.readValue(json, MyClass[].class))
@@ -57,8 +57,8 @@ public class GameController {
 //    }
 
     @PostMapping("/{id}")
-    public Response deal(@PathVariable int id, @RequestBody PlayerRequest request) throws ClassNotFoundException {
-        playerDto = playerService.findPlayer(request.getUsername());
+    public Response deal(@PathVariable int id, @RequestBody UserRequest request) throws ClassNotFoundException {
+        userDto = userService.findPlayer(request.getUsername());
         Game game = GamesContainer.findGameById(id);
         if (game == null){
             throw new ClassNotFoundException("We could not find your game, sorry.");
@@ -67,7 +67,7 @@ public class GameController {
         List<Card> riverCards = game.dealRiverCardNTimes();
         try {
             body = mapper.writeValueAsString(riverCards);
-            body += mapper.writeValueAsString(playerDto);
+            body += mapper.writeValueAsString(userDto);
         } catch (JsonProcessingException e) {
             statusCode = 400;
             body = e.getMessage();
@@ -77,7 +77,7 @@ public class GameController {
     }
 
     @PostMapping("/{id}/bet")
-    public Response bet(@PathVariable int id, @RequestBody PlayerRequest request){
+    public Response bet(@PathVariable int id, @RequestBody UserRequest request){
         return new Response(body, statusCode);
     }
 }

@@ -1,6 +1,6 @@
 package com.brewster.poker.game;
 
-import com.brewster.poker.dto.PlayerDto;
+import com.brewster.poker.dto.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ public class GamesContainer {
     private static int gameID = 0;
     private static List<Game> allGames = new ArrayList<>();
 
-    public static Game createGame(List<PlayerDto> players){
+    public static Game createGame(List<UserDto> players){
         Game game = new Game(gameID, players);
         gameID++;
         allGames.add(game);
