@@ -32,7 +32,7 @@ public class UserController {
         BeanUtils.copyProperties(request, dto);
 
         try {
-            userDto = userService.createPlayer(dto);
+            userDto = userService.createUser(dto);
             body = mapper.writeValueAsString(userDto);
         } catch (ConstraintViolationException e) {
             body = "That username is already taken. You must choose a unique username";
@@ -56,7 +56,7 @@ public class UserController {
 
     @PostMapping("/login")
     public Response login(@RequestBody UserRequest request) {
-        userDto = userService.findPlayer(request.getUsername());
+        userDto = userService.findUser(request.getUsername());
         try {
             body = mapper.writeValueAsString(userDto);
         } catch (JsonProcessingException e) {
@@ -73,7 +73,7 @@ public class UserController {
         UserDto dto = new UserDto();
         BeanUtils.copyProperties(request, dto);
 
-        userDto = userService.addMoneyToPlayer(dto);
+        userDto = userService.addMoneyToUser(dto);
         try {
             body = mapper.writeValueAsString(userDto);
         } catch (JsonProcessingException e) {

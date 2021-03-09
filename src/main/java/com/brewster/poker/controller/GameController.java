@@ -30,8 +30,8 @@ public class GameController {
 
     @PostMapping("/")
     public Response createGame(@RequestBody SettingsRequest request) {
-        userDto = userService.findPlayer(request.getUsername());
-        List<UserDto> players = userService.generateNComputerPlayers(4);
+        userDto = userService.findUser(request.getUsername());
+        List<UserDto> players = userService.generateNComputerUsers(4);
         players.add((userDto));
         Game game = GamesContainer.createGame(players);
         try {
@@ -51,14 +51,14 @@ public class GameController {
         return response;
     }
 //    @GetMapping("/{id}")
-//    public Response newRound(@PathVariable int id, @RequestBody PlayerRequest request){
+//    public Response newRound(@PathVariable int id, @RequestBody UserRequest request){
 //        Game game = GamesContainer.findGameById(id);
 //        game.beginNewRound();
 //    }
 
     @PostMapping("/{id}")
     public Response deal(@PathVariable int id, @RequestBody UserRequest request) throws ClassNotFoundException {
-        userDto = userService.findPlayer(request.getUsername());
+        userDto = userService.findUser(request.getUsername());
         Game game = GamesContainer.findGameById(id);
         if (game == null){
             throw new ClassNotFoundException("We could not find your game, sorry.");

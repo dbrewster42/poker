@@ -18,7 +18,7 @@ public class UserServiceImplementation implements UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDto findPlayer(String username){
+    public UserDto findUser(String username){
         User user = userRepository.findByUsername(username);
 
         UserDto returnValue = new UserDto();
@@ -27,7 +27,7 @@ public class UserServiceImplementation implements UserService {
         return returnValue;
     }
 
-    public UserDto addMoneyToPlayer(UserDto dto){
+    public UserDto addMoneyToUser(UserDto dto){
         User oldUser =  userRepository.findByUsername(dto.getUsername());
         oldUser.setMoney(oldUser.getMoney() + dto.getMoney());
 
@@ -38,8 +38,8 @@ public class UserServiceImplementation implements UserService {
         return returnValue;
     }
 
-    public UserDto createPlayer(UserDto dto){
-        System.out.println("Service.createPlayer() " + dto.getUsername() + dto.getMoney());
+    public UserDto createUser(UserDto dto){
+        System.out.println("Service.createUser() " + dto.getUsername() + dto.getMoney());
         User newUser = new User();
         BeanUtils.copyProperties(dto, newUser);
         System.out.println("Service copied " + newUser.getUsername() + newUser.getMoney());
@@ -53,27 +53,27 @@ public class UserServiceImplementation implements UserService {
     }
 
 
-    public List<UserDto> generateNComputerPlayers(int numberOfPlayers){
+    public List<UserDto> generateNComputerUsers(int numberOfUsers){
         List<UserDto> players = new ArrayList<>();
         Random random = new Random();
-        for (int i = 0; i < numberOfPlayers - 1; i++){
-            UserDto computerPlayer = new UserDto();
-            computerPlayer.setUsername("HAL" + random.nextInt(500));
-            computerPlayer.setMoney(999);
-            players.add(computerPlayer);
+        for (int i = 0; i < numberOfUsers - 1; i++){
+            UserDto computerUser = new UserDto();
+            computerUser.setUsername("HAL" + random.nextInt(500));
+            computerUser.setMoney(999);
+            players.add(computerUser);
         }
         return players;
     }
-//    public List<PlayerDto> gatherPlayersForGame(PlayerDto dto, int numberOfPlayers){
-//        List<PlayerDto> players = new ArrayList<>();
+//    public List<UserDto> gatherUsersForGame(UserDto dto, int numberOfUsers){
+//        List<UserDto> players = new ArrayList<>();
 //        players.add(dto);
 //        Random random = new Random();
-//        for (int i = 0; i < numberOfPlayers - 1; i++){
-//            PlayerDto computerPlayer = new PlayerDto();
-//            //computerPlayer.setId(0);
-//            computerPlayer.setUsername("HAL" + random.nextInt(500));
-//            computerPlayer.setMoney(999);
-//            players.add(computerPlayer);
+//        for (int i = 0; i < numberOfUsers - 1; i++){
+//            UserDto computerUser = new UserDto();
+//            //computerUser.setId(0);
+//            computerUser.setUsername("HAL" + random.nextInt(500));
+//            computerUser.setMoney(999);
+//            players.add(computerUser);
 //        }
 //        return players;
 //    }
