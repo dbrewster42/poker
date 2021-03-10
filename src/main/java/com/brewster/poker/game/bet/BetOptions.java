@@ -1,18 +1,28 @@
 package com.brewster.poker.game.bet;
 
+import com.brewster.poker.game.Player;
+
 public class BetOptions {
-    private int turn;
     private Action[] possibleActions;
     private int betAmount;
+    private Player player;
 
-    public BetOptions(int turn, Action[] possibleActions, int betAmount) {
-        this.turn = turn;
+    public BetOptions(Player player, Action[] possibleActions, int betAmount) {
+        this.player = player;
         this.possibleActions = possibleActions;
         this.betAmount = betAmount;
     }
 
-    public int getTurn() {
-        return turn;
+//    public BetOptions(int turn, Action[] possibleActions, int betAmount) {
+//        this.turn = turn;
+//        this.possibleActions = possibleActions;
+//        this.betAmount = betAmount;
+//    }
+
+
+
+    public Player getPlayer() {
+        return player;
     }
 
     public Action[] getPossibleActions() {

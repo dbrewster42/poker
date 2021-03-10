@@ -10,9 +10,6 @@ public class Bet {
         this.betAmount = betAmount;
     }
 
-//    private void validateBet(){
-//        if
-//    }
 
     public int getBetAmount() {
         return betAmount;

@@ -4,6 +4,7 @@ import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.game.Game;
 import com.brewster.poker.game.GamesContainer;
+import com.brewster.poker.game.bet.BetOptions;
 import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.model.request.SettingsRequest;
 import com.brewster.poker.model.response.Response;
@@ -37,28 +38,15 @@ public class GameController {
         try {
             //body =List<MyClass> myObjects = Arrays.asList(mapper.readValue(json, MyClass[].class))
             body = mapper.writeValueAsString(users);
-            //body = mapper.writeValueAsString(playerDto);
         } catch (JsonProcessingException e) {
             body = e.getMessage();
             statusCode = 400;
             e.printStackTrace();
         }
-        //TODO add bet info- whose turn, available actions, blinds
         System.out.println(game.getId() + " !!!!!!!!!!!!!!!!! " + body);
         Response response = new Response(body, statusCode);
         response.setGameId(game.getId());
         return response;
-    }
-//    @GetMapping("/{id}")
-//    public Response newRound(@PathVariable int id, @RequestBody UserRequest request){
-//        Game game = GamesContainer.findGameById(id);
-//        game.beginNewRound();
-//    }
-    @PostMapping("/{id}/new-round")
-    public Response startNewRound(@PathVariable int id, @RequestBody UserRequest request){
-        Game game = GamesContainer.findGameById(id);
-        game.beginNewRound();
-        return new Response(body, statusCode);
     }
 
     @PostMapping("/{id}")
@@ -67,7 +55,6 @@ public class GameController {
         Game game = GamesContainer.findGameById(id);
         if (game == null){
             throw new ClassNotFoundException("We could not find your game, sorry.");
-            //return new Response(body, statusCode);
         }
         List<Card> riverCards = game.dealRiverCardNTimes();
         try {
@@ -81,12 +68,23 @@ public class GameController {
         return new Response(body, statusCode);
     }
 
+    @GetMapping("/{id}/bet")
+    public Response startNewRound(@PathVariable int id){
+        Game game = GamesContainer.findGameById(id);
+        BetOptions options = game.beginNewRound();
+        try {
+            body = mapper.writeValueAsString(options);
+        } catch (JsonProcessingException e) {
+            body = e.getMessage();
+            statusCode = 400;
+            e.printStackTrace();
+        }
+        return new Response(body, statusCode);
+    }
+
     @PostMapping("/{id}/bet")
     public Response bet(@PathVariable int id, @RequestBody UserRequest request){
         return new Response(body, statusCode);
     }
-
-
-
 
 }
