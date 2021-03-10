@@ -29,12 +29,17 @@ public class GamesContainer {
 
     public static Game findGameById(Integer id){
         //Game game = allGames.stream().filter(v -> v.getId() == id).findAny().orElse(null);
-        for (Game i : allGames){
-            if (i.getId() == id){
-                return i;
+        Game game = allGames.get(id);
+        if (game.getId() == id){
+            return game;
+        } else {
+            for (Game i : allGames){
+                if (i.getId() == id){
+                    return i;
+                }
             }
+            return null;
         }
-        return null;
     }
 
     public static int getGameID() {

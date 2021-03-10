@@ -1,7 +1,7 @@
 package com.brewster.poker.model.request;
 
 
-import com.brewster.poker.game.Action;
+import com.brewster.poker.game.bet.Action;
 
 public class BetRequest {
     private String username;

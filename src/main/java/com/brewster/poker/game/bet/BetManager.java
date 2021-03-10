@@ -1,4 +1,7 @@
-package com.brewster.poker.game;
+package com.brewster.poker.game.bet;
+
+import com.brewster.poker.game.Game;
+import com.brewster.poker.game.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +14,9 @@ public class BetManager {
     private int turn;
     private int minimumBet;
     private int betAmount;
-    private Object[] checkActions = { Action.BET, Action.CHECK, Action.FOLD, bigBlind };
-    private Object[] callActions = { Action.CALL, Action.RAISE, Action.FOLD, bigBlind };
+    private List<Action> possibleActions;
+    private Action[] checkActions = { Action.BET, Action.CHECK, Action.FOLD };
+    private Action[] callActions = { Action.CALL, Action.RAISE, Action.FOLD };
     //TODO bet container?
 
     public BetManager(Game game, int bigBlind) {
@@ -21,11 +25,16 @@ public class BetManager {
         this.bigBlind = bigBlind;
         this.smallBlind = bigBlind / 2;
         this.turn = 0;
+        this.possibleActions = new ArrayList<>();
     }
 
-    public Object[] getPossibleBetActions(int betAmount){
+    public BetOptions getBetOptions(int betAmount){
+        Action[] actionOptions = getPossibleBetActions(0);
+        return new BetOptions(turn, actionOptions, betAmount);
+    }
+
+    public Action[] getPossibleBetActions(int betAmount){
         if (betAmount > 0){
-            callActions[3] = betAmount;
             return callActions;
         } else {
             return checkActions;

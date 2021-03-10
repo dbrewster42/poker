@@ -2,6 +2,8 @@ package com.brewster.poker.game;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.card.DeckBuilder;
+import com.brewster.poker.game.bet.BetManager;
+import com.brewster.poker.game.bet.BetOptions;
 import com.brewster.poker.model.request.SettingsRequest;
 
 import java.util.ArrayList;
@@ -22,11 +24,13 @@ public class Game {
         betManager = new BetManager(this, settingsRequest.getBigBlind());
     }
 
-    public Object[] beginNewRound(){
+    public BetOptions beginNewRound(){
         cards = getNewStandardDeck();
         dealPlayerCards();
-        return betManager.getPossibleBetActions(0);
+        return betManager.getBetOptions(0);
+        //return betManager.getPossibleBetActions(0);
     }
+
 
 //    public List<Player> beginNewRound(){
 //        cards = getNewStandardDeck();

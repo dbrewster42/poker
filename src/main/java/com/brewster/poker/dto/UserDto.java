@@ -1,10 +1,6 @@
 package com.brewster.poker.dto;
 
-import com.brewster.poker.card.Card;
-import com.brewster.poker.game.Bet;
 import com.brewster.poker.game.Player;
-
-import java.util.List;
 
 public class UserDto {
     private Integer id;

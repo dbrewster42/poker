@@ -43,7 +43,6 @@ public class GameController {
             statusCode = 400;
             e.printStackTrace();
         }
-        game.beginNewRound();
         //TODO add bet info- whose turn, available actions, blinds
         System.out.println(game.getId() + " !!!!!!!!!!!!!!!!! " + body);
         Response response = new Response(body, statusCode);
@@ -55,6 +54,12 @@ public class GameController {
 //        Game game = GamesContainer.findGameById(id);
 //        game.beginNewRound();
 //    }
+    @PostMapping("/{id}/new-round")
+    public Response startNewRound(@PathVariable int id, @RequestBody UserRequest request){
+        Game game = GamesContainer.findGameById(id);
+        game.beginNewRound();
+        return new Response(body, statusCode);
+    }
 
     @PostMapping("/{id}")
     public Response deal(@PathVariable int id, @RequestBody UserRequest request) throws ClassNotFoundException {
@@ -80,4 +85,8 @@ public class GameController {
     public Response bet(@PathVariable int id, @RequestBody UserRequest request){
         return new Response(body, statusCode);
     }
+
+
+
+
 }

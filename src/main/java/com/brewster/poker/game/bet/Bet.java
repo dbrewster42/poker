@@ -1,4 +1,4 @@
-package com.brewster.poker.game;
+package com.brewster.poker.game.bet;
 
 
 public class Bet {

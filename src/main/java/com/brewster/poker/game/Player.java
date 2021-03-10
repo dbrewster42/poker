@@ -1,6 +1,7 @@
 package com.brewster.poker.game;
 
 import com.brewster.poker.card.Card;
+import com.brewster.poker.game.bet.Bet;
 
 import java.util.List;
 
