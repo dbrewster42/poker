@@ -16,7 +16,7 @@ public class BetResponse {
     public BetResponse(int betAmount) {
         this.headers = createHeaders();
         this.betAmount = betAmount;
-        this.possibleActions = getPossibleBetActions(betAmount);
+        //this.possibleActions = getPossibleBetActions(betAmount);
     }
 
 //    public BetResponse(int betAmount, int smallBlind) {
@@ -25,19 +25,6 @@ public class BetResponse {
 //        this.minimumBet = smallBlind;
 //        this.possibleActions = getPossibleBetActions(betAmount);
 //    }
-
-    public List<Action> getPossibleBetActions(int betAmount){
-        possibleActions = new ArrayList<>();
-        possibleActions.add(Action.FOLD);
-        if (betAmount > 0){
-            possibleActions.add(Action.CALL);
-            possibleActions.add(Action.RAISE);
-        } else {
-            possibleActions.add(Action.BET);
-            possibleActions.add(Action.CHECK);
-        }
-        return possibleActions;
-    }
 
     protected Map<String, String> createHeaders() {
         Map<String, String> headers = new HashMap<>();

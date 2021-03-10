@@ -1,5 +1,6 @@
 package com.brewster.poker.service;
 
+import com.brewster.poker.game.Player;
 import com.brewster.poker.repository.UserRepository;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.User;
@@ -54,15 +55,16 @@ public class UserServiceImplementation implements UserService {
 
 
     public List<UserDto> generateNComputerUsers(int numberOfUsers){
-        List<UserDto> players = new ArrayList<>();
+        List<UserDto> users = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < numberOfUsers - 1; i++){
             UserDto computerUser = new UserDto();
             computerUser.setUsername("HAL" + random.nextInt(500));
             computerUser.setMoney(999);
-            players.add(computerUser);
+            computerUser.setPlayer(new Player(computerUser.getUsername()));
+            users.add(computerUser);
         }
-        return players;
+        return users;
     }
 //    public List<UserDto> gatherUsersForGame(UserDto dto, int numberOfUsers){
 //        List<UserDto> players = new ArrayList<>();

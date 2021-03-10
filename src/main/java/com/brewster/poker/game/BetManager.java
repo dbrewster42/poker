@@ -1,19 +1,18 @@
 package com.brewster.poker.game;
 
-import com.brewster.poker.dto.UserDto;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class BetManager {
     private Game game;
-    private List<UserDto> players;
+    private List<Player> players;
     private int bigBlind;
     private int smallBlind;
     private int turn;
     private int minimumBet;
     private int betAmount;
-    private List<Action> possibleActions;
+    private Object[] checkActions = { Action.BET, Action.CHECK, Action.FOLD, bigBlind };
+    private Object[] callActions = { Action.CALL, Action.RAISE, Action.FOLD, bigBlind };
     //TODO bet container?
 
     public BetManager(Game game, int bigBlind) {
@@ -22,15 +21,28 @@ public class BetManager {
         this.bigBlind = bigBlind;
         this.smallBlind = bigBlind / 2;
         this.turn = 0;
-        this.possibleActions = new ArrayList<>();
     }
 
-    public void newRound(){
-        // players.
-        //TODO where to keep Bets, part of playerDto's? own separate list?
+    public Object[] getPossibleBetActions(int betAmount){
+        if (betAmount > 0){
+            callActions[3] = betAmount;
+            return callActions;
+        } else {
+            return checkActions;
+        }
     }
+//    public List<Action> getPossibleBetActions(int betAmount){
+//        possibleActions = new ArrayList<>();
+//        possibleActions.add(Action.FOLD);
+//        if (betAmount > 0){
+//            possibleActions.add(Action.CALL);
+//            possibleActions.add(Action.RAISE);
+//        } else {
+//            possibleActions.add(Action.BET);
+//            possibleActions.add(Action.CHECK);
+//        }
+//        return possibleActions;
+//    }
 
-    public List<Action> getPossibleBetActions(){
-        return possibleActions;
-    }
+
 }

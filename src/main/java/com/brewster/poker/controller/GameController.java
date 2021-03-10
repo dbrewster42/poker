@@ -31,12 +31,12 @@ public class GameController {
     @PostMapping("/")
     public Response createGame(@RequestBody SettingsRequest request) {
         userDto = userService.findUser(request.getUsername());
-        List<UserDto> players = userService.generateNComputerUsers(4);
-        players.add((userDto));
-        Game game = GamesContainer.createGame(players);
+        List<UserDto> users = userService.generateNComputerUsers(4);
+        users.add((userDto));
+        Game game = GamesContainer.createGame(users, request);
         try {
             //body =List<MyClass> myObjects = Arrays.asList(mapper.readValue(json, MyClass[].class))
-            body = mapper.writeValueAsString(players);
+            body = mapper.writeValueAsString(users);
             //body = mapper.writeValueAsString(playerDto);
         } catch (JsonProcessingException e) {
             body = e.getMessage();
