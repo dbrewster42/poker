@@ -17,6 +17,7 @@ public class FoldAction extends Bet {
 
     @Override
     public String process() {
-        return null;
+        betManager.setActivePlayers(betManager.getActivePlayers() - 1);
+        return player.getDisplayName() + " has folded";
     }
 }

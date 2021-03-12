@@ -12,11 +12,21 @@ public class RaiseAction extends Bet {
 
     @Override
     public String validate() {
-        return null;
+        String validationError = "";
+        if (betAmount < betManager.getBigBlind()){
+            validationError += "The minimum bet is " + betManager.getBigBlind() + ". You may not bet less than the blind";
+        }
+        if (betAmount <= betManager.getBetAmount()){
+            validationError = "You selected to Raise the bet. Your bet must be higher than the current bet";
+        }
+        return validationError;
     }
 
     @Override
     public String process() {
-        return null;
+//        if (validate().isEmpty())
+        betManager.setBetAmount(betAmount);
+        betManager.setPot(betManager.getPot() + betAmount);
+        return player.getDisplayName() + " has raised the bet to " + betAmount + ". The total pot is now at " + betManager.getPot();
     }
 }

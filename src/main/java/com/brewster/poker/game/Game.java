@@ -13,6 +13,7 @@ public class Game {
     private List<Card> cards;
     private List<Card> riverCards = new ArrayList<>();
     private List<Player> players;
+    private int bigBlindTurn = 0;
     private Player currentPlayer;
     private int numberOfPlayers;
     private int id;
@@ -25,26 +26,24 @@ public class Game {
         betManager = new BetManager(this, settingsRequest.getBigBlind());
     }
 
-    public BetOptions beginNewDeal(){
+    public BetOptions startNewDeal(){
         cards = getNewStandardDeck();
         dealPlayerCards();
-        return betManager.startNewRound();
+        currentPlayer = players.get(bigBlindTurn);
+        return betManager.startNewDeal();
         //return betManager.getBetOptions(0);
         //return betManager.getPossibleBetActions(0);
     }
 
-
-//    public List<Player> beginNewRound(){
-//        cards = getNewStandardDeck();
-//        dealPlayerCards();
-//        return players;
-//    }
-
-    public List<Card> dealRiverCardNTimes(){
+    public List<Card> startNextRound(){
         int count = 1;
         if (riverCards.size() == 0){
             count = 3;
         }
+        return dealRiverCardNTimes(count);
+    }
+
+    public List<Card> dealRiverCardNTimes(int count){
         cards.remove(0);
         for (int i = 0; i < count; i++){
             riverCards.add(cards.get(0));
@@ -99,7 +98,14 @@ public class Game {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    //    public List<Card> getCards() {
+    public int getBigBlindTurn() {
+        return bigBlindTurn;
+    }
+
+    public void setBigBlindTurn(int bigBlindTurn) {
+        this.bigBlindTurn = bigBlindTurn;
+    }
+//    public List<Card> getCards() {
 //        return cards;
 //    }
 //

@@ -12,11 +12,15 @@ public class CheckAction extends Bet {
 
     @Override
     public String validate() {
-        return null;
+        String validationError = "";
+        if (betManager.getBetAmount() != 0){
+            validationError = "You may only check when there were no previous bets made. You must call or fold";
+        }
+        return validationError;
     }
 
     @Override
     public String process() {
-        return null;
+        return player.getDisplayName() + " has checked";
     }
 }

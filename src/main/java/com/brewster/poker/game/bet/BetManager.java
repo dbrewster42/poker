@@ -93,26 +93,30 @@ public class BetManager {
         if (newBetAmount > player.getUser().getMoney()){
             validatorError += "You do not have that much money to bet. Until you reload money, your maximum bet is " + player.getUser().getMoney() + ". ";
         }
-        if (newBetAmount < bigBlind){
-            validatorError += "The minimum bet is " + bigBlind + ". You may not bet less than the blind";
-        }
         if (newBetAmount > limit){
             validatorError += "This game has a maximum bet of " + limit;
         }
         return validatorError;
     }
 
-    private boolean adjustTurn(){
+    protected boolean adjustTurn(){
         turn++;
         turnsLeftInRound--;
         if (turnsLeftInRound == 0){
             //TODO is 0? or < 0?   || should I adjust the numbers before or after?
             return false;
         }
-        if (turn == game.getNumberOfPlayers()){
+        if (turn == activePlayers){
             turn = 0;
         }
         return true;
+    }
+
+    public void startNextRound(){
+        betAmount = 0;
+        turn = game.getBigBlindTurn();
+        activePlayers = game.getNumberOfPlayers();
+        turnsLeftInRound = activePlayers;
     }
 
     public BetOptions startNewDeal(){
@@ -121,11 +125,6 @@ public class BetManager {
         activePlayers = game.getNumberOfPlayers();
         turnsLeftInRound = activePlayers;
         return getBetOptions();
-    }
-
-    public void startNextRound(){
-        betAmount = 0;
-        turnsLeftInRound = activePlayers;
     }
 
     public BetOptions getBetOptions(){
@@ -148,18 +147,46 @@ public class BetManager {
             return CHECK_ACTIONS;
         }
     }
-//    public List<Action> getPossibleBetActions(int betAmount){
-//        possibleActions = new ArrayList<>();
-//        possibleActions.add(Action.FOLD);
-//        if (betAmount > 0){
-//            possibleActions.add(Action.CALL);
-//            possibleActions.add(Action.RAISE);
-//        } else {
-//            possibleActions.add(Action.BET);
-//            possibleActions.add(Action.CHECK);
-//        }
-//        return possibleActions;
-//    }
+
+    public int getId() {
+        return id;
+    }
 
 
+
+    public Game getGame() {
+        return game;
+    }
+
+    public int getBigBlind() {
+        return bigBlind;
+    }
+
+    public int getPot() {
+        return pot;
+    }
+
+    public int getBetAmount() {
+        return betAmount;
+    }
+
+    public List<Bet> getBetsMade() {
+        return betsMade;
+    }
+
+    public int getActivePlayers() {
+        return activePlayers;
+    }
+
+    public void setActivePlayers(int activePlayers) {
+        this.activePlayers = activePlayers;
+    }
+
+    public void setPot(int pot) {
+        this.pot = pot;
+    }
+
+    public void setBetAmount(int betAmount) {
+        this.betAmount = betAmount;
+    }
 }

@@ -13,11 +13,17 @@ public class BetAction extends Bet {
 
     @Override
     public String validate() {
-        return null;
+        String validationError = "";
+        if (betAmount < betManager.getBigBlind()){
+            validationError += "The minimum bet is " + betManager.getBigBlind() + ". You may not bet less than the blind";
+        }
+        return validationError;
     }
 
     @Override
     public String process() {
-        return null;
+        betManager.setBetAmount(betAmount);
+        betManager.setPot(betManager.getPot() + betAmount);
+        return player.getDisplayName() + " has made a bet of " + betAmount + ". The total pot is now at " + betManager.getPot();
     }
 }
