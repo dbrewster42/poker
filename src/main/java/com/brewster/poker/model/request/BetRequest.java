@@ -5,6 +5,7 @@ import com.brewster.poker.game.bet.Action;
 
 public class BetRequest {
     private String username;
+    //FIXME can action be an Action and not String?
     private Action action;
     private int betAmount;
 //    private boolean fold;

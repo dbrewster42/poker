@@ -2,13 +2,16 @@ package com.brewster.poker.game;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.game.bet.Bet;
+import com.brewster.poker.model.User;
 
 import java.util.List;
 
 public class Player {
-    private String displayName;
     private List<Card> hand;
     private Bet bet;
+    private String displayName;
+    private User user;
+
     //TODO shared interface for human/computer or computer extends? interface I think. // does it need its own package? should the package be in game?
 
     public Player(String displayName){
@@ -31,6 +34,14 @@ public class Player {
 
     public void setBet(Bet bet) {
         this.bet = bet;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getDisplayName() {

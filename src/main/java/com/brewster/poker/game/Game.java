@@ -13,6 +13,7 @@ public class Game {
     private List<Card> cards;
     private List<Card> riverCards = new ArrayList<>();
     private List<Player> players;
+    private Player currentPlayer;
     private int numberOfPlayers;
     private int id;
     private BetManager betManager;
@@ -27,7 +28,8 @@ public class Game {
     public BetOptions beginNewRound(){
         cards = getNewStandardDeck();
         dealPlayerCards();
-        return betManager.getBetOptions(0);
+        return betManager.startNewRound();
+        //return betManager.getBetOptions(0);
         //return betManager.getPossibleBetActions(0);
     }
 
@@ -67,6 +69,14 @@ public class Game {
 
     public int getId() {
         return id;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public List<Card> getRiverCards() {
