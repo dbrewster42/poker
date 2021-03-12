@@ -52,7 +52,7 @@ public class BetManager {
         String returnStatement = betAmountIsValid(betRequest, player);
 
         if (returnStatement.isEmpty()){
-            Bet bet = betFactory.createBet(player, betRequest);
+            Bet bet = betFactory.createBet(player, betRequest, this);
             returnStatement = bet.validate();
 
             if (returnStatement.isEmpty()){
