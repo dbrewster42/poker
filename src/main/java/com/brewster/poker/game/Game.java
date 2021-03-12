@@ -25,7 +25,7 @@ public class Game {
         betManager = new BetManager(this, settingsRequest.getBigBlind());
     }
 
-    public BetOptions beginNewRound(){
+    public BetOptions beginNewDeal(){
         cards = getNewStandardDeck();
         dealPlayerCards();
         return betManager.startNewRound();

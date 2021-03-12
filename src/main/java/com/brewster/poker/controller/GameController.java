@@ -5,6 +5,7 @@ import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.game.Game;
 import com.brewster.poker.game.GamesContainer;
 import com.brewster.poker.game.bet.BetOptions;
+import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.model.request.SettingsRequest;
 import com.brewster.poker.model.response.Response;
@@ -19,6 +20,7 @@ import java.util.List;
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("/game")
 public class GameController {
+    private Game game;
     private final UserService userService;
     private UserDto userDto;
     private String body;
@@ -34,7 +36,7 @@ public class GameController {
         userDto = userService.findUser(request.getUsername());
         List<UserDto> users = userService.generateNComputerUsers(4);
         users.add((userDto));
-        Game game = GamesContainer.createGame(users, request);
+        game = GamesContainer.createGame(users, request);
         try {
             //body =List<MyClass> myObjects = Arrays.asList(mapper.readValue(json, MyClass[].class))
             body = mapper.writeValueAsString(users);
@@ -52,7 +54,7 @@ public class GameController {
     @PostMapping("/{id}")
     public Response deal(@PathVariable int id, @RequestBody UserRequest request) throws ClassNotFoundException {
         userDto = userService.findUser(request.getUsername());
-        Game game = GamesContainer.findGameById(id);
+        game = GamesContainer.findGameById(id);
         if (game == null){
             throw new ClassNotFoundException("We could not find your game, sorry.");
         }
@@ -70,8 +72,8 @@ public class GameController {
 
     @GetMapping("/{id}/bet")
     public Response startNewRound(@PathVariable int id){
-        Game game = GamesContainer.findGameById(id);
-        BetOptions options = game.beginNewRound();
+        game = GamesContainer.findGameById(id);
+        BetOptions options = game.beginNewDeal();
         try {
             body = mapper.writeValueAsString(options);
         } catch (JsonProcessingException e) {
@@ -83,7 +85,8 @@ public class GameController {
     }
 
     @PostMapping("/{id}/bet")
-    public Response bet(@PathVariable int id, @RequestBody UserRequest request){
+    public Response bet(@PathVariable int id, @RequestBody BetRequest request){
+        game = GamesContainer.findGameById(id);
         return new Response(body, statusCode);
     }
 

@@ -4,68 +4,87 @@ import com.brewster.poker.game.Game;
 import com.brewster.poker.game.Player;
 import com.brewster.poker.model.request.BetRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BetManager {
-    private Game game;
+    private int id;
+    private final Game game;
     private int activePlayers;
     private int bigBlind;
     private int smallBlind;
     private int turn;
-    private int betsLeft;
-    private int limit = 1000;
-    private Action[] checkActions = { Action.BET, Action.CHECK, Action.FOLD };
-    private Action[] callActions = { Action.CALL, Action.RAISE, Action.FOLD };
+    private int turnsLeftInRound;
+    private final int limit;
+    private static final Action[] CHECK_ACTIONS = { Action.BET, Action.CHECK, Action.FOLD };
+    private static final Action[] CALL_ACTIONS = { Action.CALL, Action.RAISE, Action.FOLD };
     private int pot = 0;
     private int betAmount;
     private BetOptions betOptions;
+    private final BetFactory betFactory;
+    private List<Bet> betsMade;
 
     public BetManager(Game game, int bigBlind) {
+        this.id = game.getId();
         this.game = game;
         this.bigBlind = bigBlind;
         this.smallBlind = bigBlind / 2;
         this.activePlayers = game.getNumberOfPlayers();
         this.turn = 0;
+        this.limit = bigBlind * 20;
+        betFactory = new BetFactoryImplementation();
+        betsMade = new ArrayList<>();
     }
     public BetManager(Game game, int bigBlind, int limit) {
+        this.id = game.getId();
         this.game = game;
         this.bigBlind = bigBlind;
         this.smallBlind = bigBlind / 2;
         this.activePlayers = game.getNumberOfPlayers();
         this.turn = 0;
         this.limit = limit;
+        betFactory = new BetFactoryImplementation();
+        betsMade = new ArrayList<>();
     }
 
-    public String makeBet(BetRequest betRequest){
-        int newBetAmount = betRequest.getBetAmount();
+    public String placeBet(BetRequest betRequest){
         Player player = game.getCurrentPlayer();
-        String returnStatement = betIsValid(betRequest, player);
-        if (returnStatement.isEmpty()){
-            Bet bet = new Bet(player, betRequest);
-            Action chosenAction = bet.getChosenAction();
-            if (chosenAction == Action.BET){
-                betAmount = newBetAmount;
-                pot += newBetAmount;
-                betsLeft = game.getNumberOfPlayers();
-            } else if (chosenAction == Action.CALL){
-                if (newBetAmount == betAmount){
-                    pot += newBetAmount;
-                } else {
-                    returnStatement = "Error. When calling, the bet amount must be the same.";
-                }
-            } else if (){
+        String returnStatement = betAmountIsValid(betRequest, player);
 
+        if (returnStatement.isEmpty()){
+            Bet bet = betFactory.createBet(player, betRequest);
+            returnStatement = bet.validate();
+
+            if (returnStatement.isEmpty()){
+                returnStatement = bet.process();
             }
-            //TODO abstract factor of bets??!
+        }
+
+        return returnStatement;
+    }
+//            Action chosenAction = bet.getChosenAction();
+//            if (chosenAction == Action.BET){
+//                betAmount = newBetAmount;
+//                pot += newBetAmount;
+//                turnsLeftInRound = game.getNumberOfPlayers();
+//            } else if (chosenAction == Action.CALL){
+//                if (newBetAmount == betAmount){
+//                    pot += newBetAmount;
+//                } else {
+//                    returnStatement = "Error. When calling, the bet amount must be the same.";
+//                }
+//            } else if (){
+//
+//            }
 //            if (newBetAmount > 0){
 //                betAmount = newBetAmount;
 //                pot += newBetAmount;
-//                betsLeft = game.getNumberOfPlayers();
+//                turnsLeftInRound = game.getNumberOfPlayers();
 //            }
-            betsLeft--;
-        }
-        return returnStatement;
-        //TODO finish function. do we need a bet class since we have bet request?
-    }
-    private String betIsValid(BetRequest betRequest, Player player){
+//            turnsLeftInRound--;
+ //       }
+
+    private String betAmountIsValid(BetRequest betRequest, Player player){
         String validatorError = "";
         int newBetAmount = betRequest.getBetAmount();
         if (!betRequest.getUsername().equals(player.getDisplayName())){
@@ -80,37 +99,53 @@ public class BetManager {
         if (newBetAmount > limit){
             validatorError += "This game has a maximum bet of " + limit;
         }
-        //TODO validation based on action
         return validatorError;
     }
 
-    private BetOptions adjustTurn(){
+    private boolean adjustTurn(){
         turn++;
+        turnsLeftInRound--;
+        if (turnsLeftInRound == 0){
+            //TODO is 0? or < 0?   || should I adjust the numbers before or after?
+            return false;
+        }
         if (turn == game.getNumberOfPlayers()){
             turn = 0;
         }
+        return true;
+    }
+
+    public BetOptions startNewDeal(){
+        pot = 0;
+        betAmount = 0;
+        activePlayers = game.getNumberOfPlayers();
+        turnsLeftInRound = activePlayers;
         return getBetOptions();
     }
 
-    public BetOptions startNewRound(){
-        pot = 0;
+    public void startNextRound(){
         betAmount = 0;
-        return getBetOptions();
+        turnsLeftInRound = activePlayers;
     }
 
     public BetOptions getBetOptions(){
         Player playerUp = game.getPlayers().get(turn);
-        adjustTurn();
-        Action[] actionOptions = getPossibleBetActions(betAmount);
-        betOptions = new BetOptions(playerUp, actionOptions, betAmount);
-        return betOptions;
+        if (adjustTurn()){
+            Action[] actionOptions = getPossibleBetActions(betAmount);
+            betOptions = new BetOptions(playerUp, actionOptions, betAmount);
+            return betOptions;
+        } else {
+            startNextRound();
+            return null;
+            //FIXME how to dictate flow if round is over?
+        }
     }
 
     private Action[] getPossibleBetActions(int betAmount){
         if (betAmount > 0){
-            return callActions;
+            return CALL_ACTIONS;
         } else {
-            return checkActions;
+            return CHECK_ACTIONS;
         }
     }
 //    public List<Action> getPossibleBetActions(int betAmount){

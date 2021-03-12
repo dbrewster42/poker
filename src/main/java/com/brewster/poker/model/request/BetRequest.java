@@ -1,13 +1,10 @@
 package com.brewster.poker.model.request;
 
-
-import com.brewster.poker.game.bet.Action;
-
 public class BetRequest {
     private String username;
-    //FIXME can action be an Action and not String?
-    private Action action;
+    private String action;
     private int betAmount;
+//    private Action action;
 //    private boolean fold;
 //    private int riverCardsCount;
 //    private Map<String, Integer> bets;
@@ -21,11 +18,11 @@ public class BetRequest {
         this.username = username;
     }
 
-    public Action getAction() {
+    public String getAction() {
         return action;
     }
 
-    public void setAction(Action action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
