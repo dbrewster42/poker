@@ -1,6 +1,6 @@
 package com.brewster.poker.model.request;
 
-public class PlayerRequest {
+public class UserRequest {
     private String username;
     private int money;
 

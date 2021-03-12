@@ -1,12 +1,12 @@
 package com.brewster.poker.model;
 
-import com.brewster.poker.model.request.PlayerRequest;
+import com.brewster.poker.model.request.UserRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Player {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -19,11 +19,11 @@ public class Player {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
 
-    public Player(PlayerRequest request){
+    public User(UserRequest request){
         username = request.getUsername();
         money = request.getMoney();
     }
-    public Player(){ }
+    public User(){ }
 
     public Integer getId() {
         return id;

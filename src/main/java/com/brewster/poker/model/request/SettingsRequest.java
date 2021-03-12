@@ -5,6 +5,7 @@ public class SettingsRequest {
     private String displayName;
     private int numberOfPlayers;
     private boolean customRules;
+    private int bigBlind;
 
     public String getUsername() {
         return username;
@@ -28,6 +29,14 @@ public class SettingsRequest {
 
     public void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
+    }
+
+    public int getBigBlind() {
+        return bigBlind;
+    }
+
+    public void setBigBlind(int bigBlind) {
+        this.bigBlind = bigBlind;
     }
 
     public boolean isCustomRules() {

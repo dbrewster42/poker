@@ -1,9 +1,9 @@
 package com.brewster.poker.controller;
 
-import com.brewster.poker.dto.PlayerDto;
-import com.brewster.poker.model.request.PlayerRequest;
+import com.brewster.poker.dto.UserDto;
+import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.model.response.Response;
-import com.brewster.poker.service.PlayerService;
+import com.brewster.poker.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.PropertyValueException;
@@ -14,26 +14,26 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
-public class PlayerController {
-    private final PlayerService playerService;
+public class UserController {
+    private final UserService userService;
     private final ObjectMapper mapper = new ObjectMapper();
-    private PlayerDto playerDto;
+    private UserDto userDto;
     private String body;
     private int statusCode = 200;
 
-    public PlayerController(PlayerService playerService) {
-        this.playerService = playerService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/register")
-    public Response register(@RequestBody PlayerRequest request) {
+    public Response register(@RequestBody UserRequest request) {
         System.out.println("-------------------------- " + request.getUsername() + request.getMoney());
-        PlayerDto dto = new PlayerDto();
+        UserDto dto = new UserDto();
         BeanUtils.copyProperties(request, dto);
 
         try {
-            playerDto = playerService.createPlayer(dto);
-            body = mapper.writeValueAsString(playerDto);
+            userDto = userService.createUser(dto);
+            body = mapper.writeValueAsString(userDto);
         } catch (ConstraintViolationException e) {
             body = "That username is already taken. You must choose a unique username";
             statusCode = 400;
@@ -55,10 +55,10 @@ public class PlayerController {
     }
 
     @PostMapping("/login")
-    public Response login(@RequestBody PlayerRequest request) {
-        playerDto = playerService.findPlayer(request.getUsername());
+    public Response login(@RequestBody UserRequest request) {
+        userDto = userService.findUser(request.getUsername());
         try {
-            body = mapper.writeValueAsString(playerDto);
+            body = mapper.writeValueAsString(userDto);
         } catch (JsonProcessingException e) {
             body = e.getMessage();
             statusCode = 400;
@@ -69,13 +69,13 @@ public class PlayerController {
     }
 
     @PutMapping("buyin")
-    public Response addMoney(@RequestBody PlayerRequest request){
-        PlayerDto dto = new PlayerDto();
+    public Response addMoney(@RequestBody UserRequest request){
+        UserDto dto = new UserDto();
         BeanUtils.copyProperties(request, dto);
 
-        playerDto = playerService.addMoneyToPlayer(dto);
+        userDto = userService.addMoneyToUser(dto);
         try {
-            body = mapper.writeValueAsString(playerDto);
+            body = mapper.writeValueAsString(userDto);
         } catch (JsonProcessingException e) {
             body = e.getMessage();
             statusCode = 400;
