@@ -32,21 +32,18 @@ public enum PokerHand {
     public static PokerHand lookupHand(List<Card> hand){
         List<Integer> cardValues = hand.stream().map(v -> v.getValue()).sorted().collect(Collectors.toList());
         PokerHand pokerHand = returnPairCombos(cardValues);
-
+        if (pokerHand.getScore() > 2){
+            return pokerHand;
+        }
         if (isFlush(hand)){
             if (isStraight(cardValues)){
                 return STRAIGHT_FLUSH;
             } else {
-                if (FLUSH.getScore() > pokerHand.getScore()){
-                    pokerHand = FLUSH;
-                }
+                pokerHand = FLUSH;
             }
         }
-
         if (isStraight(cardValues)){
-            if (STRAIGHT.getScore() > pokerHand.getScore()){
-                pokerHand = STRAIGHT;
-            }
+            pokerHand = STRAIGHT;
         }
 
         return pokerHand;
@@ -61,6 +58,7 @@ public enum PokerHand {
             start++;
         }
         return true;
+        //FIXME need to account for Ace
     }
     public static boolean isFlush(List<Card> hand){
         String suit = hand.get(0).getSuit();
@@ -72,17 +70,6 @@ public enum PokerHand {
         return true;
     }
 
-    public static boolean isPair(List<Integer> sortedCardValues){
-        for (int i = 0; i < sortedCardValues.size() - 1; i++){
-            for (int j = i + 1; j < sortedCardValues.size(); j++){
-                if (sortedCardValues.get(i) == sortedCardValues.get(j)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     public static PokerHand returnPairCombos(List<Integer> sortedCardValues){
         Map<Integer, Integer> cardCount = new HashMap<>();
         for (Integer cardValue : sortedCardValues){
@@ -91,7 +78,7 @@ public enum PokerHand {
         cardCount.values().stream().forEach(System.out::println);
         List<Integer> counts = cardCount.values().stream().filter(v -> v > 1).collect(Collectors.toList());
 
-        int firstPairCount = 1;
+        int firstPairCount;
         int secondPairCount = 1;
         if (counts.isEmpty()){
             return HIGH_CARD;

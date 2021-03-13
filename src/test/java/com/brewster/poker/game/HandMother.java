@@ -50,4 +50,40 @@ public class HandMother {
         }
         return hand;
     }
+
+    public static List<Card> buildHighCard(){
+        List<Card> hand = new ArrayList<>();
+        for (int i = 4; i < 36; i+=7){
+            hand.add(cards.get(i));
+        }
+        return hand;
+    }
+//    public static List<Card> buildPair(){
+//        List<Card> hand = new ArrayList<>();
+//        for (int i = 0; i < 10; i+=2){
+//            hand.add(cards.get(i));
+//        }
+//        return hand;
+//    }
+//    public static List<Card> buildStraight(){
+//        List<Card> hand = new ArrayList<>();
+//        for (int i = 0; i < 10; i+=2){
+//            hand.add(cards.get(i));
+//        }
+//        return hand;
+//    }
+//    public static List<Card> buildThreeOfAKind(){
+//        List<Card> hand = new ArrayList<>();
+//        for (int i = 0; i < 10; i+=2){
+//            hand.add(cards.get(i));
+//        }
+//        return hand;
+//    }
+    public static List<Card> buildTwoPair(){
+        List<Card> hand = new ArrayList<>();
+        for (int i = 0; i < 10; i+=2){
+            hand.add(cards.get(i));
+        }
+        return hand;
+    }
 }

@@ -4,7 +4,6 @@ import com.brewster.poker.card.Card;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,9 +16,17 @@ class PokerHandTest {
     static List<Integer> fullHouse;
     static List<Integer> fourKind;
     static List<Integer> straight;
-    static List<Card> flush = HandMother.buildStraightFlush();
+    static List<Card> flush = HandMother.buildFlush();
+    static List<Card> straightFlush = HandMother.buildStraightFlush();
     static List<Card> fullHouseCards = HandMother.buildFullHouse();
     List<Card> fourOfAKind = HandMother.buildFourOfKind();
+    List<Card> highCardCards = HandMother.buildHighCard();
+    List<Card> straightCards = HandMother.buildHighCard();
+    List<Card> pairCards = HandMother.buildHighCard();
+    List<Card> twoPairCards = HandMother.buildTwoPair();
+    List<Card> threeOfAKind = HandMother.buildHighCard();
+
+
 
 
     @BeforeAll
@@ -35,7 +42,23 @@ class PokerHandTest {
 
     @Test
     void lookupScoreForHandWithHighCard() {
-        //assertEquals(PokerHand.HIGH_CARD, PokerHand.lookupHand(highCard));
+        assertEquals(PokerHand.HIGH_CARD, PokerHand.lookupHand(highCardCards));
+    }
+    @Test
+    void lookupScoreForHandWithTwoPair() {
+        assertEquals(PokerHand.TWO_PAIR, PokerHand.lookupHand(twoPairCards));
+    }
+    @Test
+    void lookupScoreForHandWithFlush() {
+        assertEquals(PokerHand.FLUSH, PokerHand.lookupHand(flush));
+    }
+    @Test
+    void lookupScoreForHandWithFullHouse() {
+        assertEquals(PokerHand.FULL_HOUSE, PokerHand.lookupHand(fullHouseCards));
+    }
+    @Test
+    void lookupScoreForHandWithStraightFlush() {
+        assertEquals(PokerHand.STRAIGHT_FLUSH, PokerHand.lookupHand(straightFlush));
     }
 
     @Test
@@ -56,12 +79,6 @@ class PokerHandTest {
         assertFalse(PokerHand.isFlush(fullHouseCards));
     }
 
-    @Test
-    void isPair() {
-        assertFalse(PokerHand.isPair(highCard));
-        assertTrue(PokerHand.isPair(onePair));
-        assertTrue(PokerHand.isPair(twoPair));
-    }
     @Test
     void integerIdentity() {
         assertTrue(twoPair.get(0) == twoPair.get(1));
@@ -90,33 +107,11 @@ class PokerHandTest {
 
     @Test
     void HandMotherReturnsCorrectHands(){
-        flush = HandMother.buildStraightFlush();
-        List<Card> fourOfAKind = HandMother.buildFourOfKind();
-        for (Card i : flush){
-            i.show();
-        }
-        System.out.println();
-        for (Card i : fourOfAKind){
-            i.show();
-        }
-        System.out.println();
-        for (Card i : fullHouseCards){
-            i.show();
-        }
-
+        assertEquals(flush.size(), 5);
+        assertEquals(highCardCards.size(), 5);
+        assertEquals(fourOfAKind.size(), 5);
+        assertEquals(fullHouseCards.size(), 5);
+//        assertEquals(fourOfAKind.size(), 5);
     }
 
-//    static List<Card> createHand(boolean isFlush){
-//        List<Card> hand = new ArrayList<>();
-//        for (int i = 0; i < 5; i++){
-//            Card card = new Card("Clubs", i, "name", "A");
-//            hand.add(card);
-//        }
-//        if (!isFlush){
-//            hand.remove(0);
-//            Card card = new Card("Diamonds", 8, "name", "A");
-//            hand.add(card);
-//        }
-//        return hand;
-//    }
 }
