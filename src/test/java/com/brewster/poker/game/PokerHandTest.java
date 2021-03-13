@@ -69,23 +69,23 @@ class PokerHandTest {
 
     @Test
     void isMoreThanAPairWithPair() {
-        assertEquals(PokerHand.PAIR, PokerHand.isMoreThanAPair(onePair));
+        assertEquals(PokerHand.PAIR, PokerHand.returnPairCombos(onePair));
     }
     @Test
     void isMoreThanAPairWithTwoPair() {
-        assertEquals(PokerHand.TWO_PAIR, PokerHand.isMoreThanAPair(twoPair));
+        assertEquals(PokerHand.TWO_PAIR, PokerHand.returnPairCombos(twoPair));
     }
     @Test
     void isMoreThanAPairWithThreeOfKind() {
-        assertEquals(PokerHand.THREE_KIND, PokerHand.isMoreThanAPair(threeKind));
+        assertEquals(PokerHand.THREE_KIND, PokerHand.returnPairCombos(threeKind));
     }
     @Test
     void isMoreThanAPairWithFullHouse() {
-        assertEquals(PokerHand.FULL_HOUSE, PokerHand.isMoreThanAPair(fullHouse));
+        assertEquals(PokerHand.FULL_HOUSE, PokerHand.returnPairCombos(fullHouse));
     }
     @Test
     void isMoreThanAPairWithFourKind() {
-        assertEquals(PokerHand.FOUR_KIND, PokerHand.isMoreThanAPair(fourKind));
+        assertEquals(PokerHand.FOUR_KIND, PokerHand.returnPairCombos(fourKind));
     }
 
     @Test

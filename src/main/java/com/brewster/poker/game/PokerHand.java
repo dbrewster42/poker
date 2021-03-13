@@ -31,26 +31,21 @@ public enum PokerHand {
 
     public static PokerHand lookupHand(List<Card> hand){
         List<Integer> cardValues = hand.stream().map(v -> v.getValue()).sorted().collect(Collectors.toList());
-//        int[] cardValues = hand.stream().collect();
-        PokerHand pokerHand = HIGH_CARD;
-        PokerHand secondCombo;
+        PokerHand pokerHand = returnPairCombos(cardValues);
+
         if (isFlush(hand)){
             if (isStraight(cardValues)){
                 return STRAIGHT_FLUSH;
             } else {
-                pokerHand = FLUSH;
+                if (FLUSH.getScore() > pokerHand.getScore()){
+                    pokerHand = FLUSH;
+                }
             }
         }
 
-        secondCombo = isMoreThanAPair(cardValues);
-        if (secondCombo.getScore() > pokerHand.getScore()){
-            pokerHand = secondCombo;
-        }
-
         if (isStraight(cardValues)){
-            secondCombo = STRAIGHT;
-            if (secondCombo.getScore() > pokerHand.getScore()){
-                pokerHand = secondCombo;
+            if (STRAIGHT.getScore() > pokerHand.getScore()){
+                pokerHand = STRAIGHT;
             }
         }
 
@@ -88,7 +83,7 @@ public enum PokerHand {
         return false;
     }
 
-    public static PokerHand isMoreThanAPair(List<Integer> sortedCardValues){
+    public static PokerHand returnPairCombos(List<Integer> sortedCardValues){
         Map<Integer, Integer> cardCount = new HashMap<>();
         for (Integer cardValue : sortedCardValues){
             cardCount.put(cardValue, cardCount.getOrDefault(cardValue, 0) + 1);
@@ -130,48 +125,3 @@ public enum PokerHand {
         return handName;
     }
 }
-//        int firstPairCount = 1;
-//        int secondPairCount = 1;
-//        boolean isComplete = false;
-//        int countedPair = -1;
-//        for (int i = 0; i < 4; i++){
-//            if (sortedCardValues.get(i) == countedPair){
-//                continue;
-//            }
-//            int tempCount = 1;
-//            for (int j = i + 1; j < 5; j++){
-//                if (sortedCardValues.get(i) == sortedCardValues.get(j)){
-//                    tempCount++;
-//                    countedPair = sortedCardValues.get(i);
-//                } else {
-//                    if (firstPairCount == 1){
-//                        firstPairCount = tempCount;
-//                    } else {
-////                        if (tempCount > secondPairCount){
-//                        secondPairCount = tempCount;
-////                        }
-//
-//                    }
-//                }
-//
-//
-//            }
-//        }
-//        for (int i = 0; i < 4; i++){
-//            for (int j = i + 1; j < 5; j++){
-//                if (isComplete){
-//                    if (sortedCardValues.get(i) == sortedCardValues.get(j)){
-//                        secondPairCount++;
-//                    } else {
-//                        break;
-//                    }
-//                } else {
-//                    if (sortedCardValues.get(i) == sortedCardValues.get(j)){
-//                        firstPairCount++;
-//                    } else if (firstPairCount > 0){
-//                        isComplete = true;
-//                    }
-//                }
-//
-//            }
-//        }
