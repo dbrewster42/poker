@@ -21,13 +21,10 @@ class PokerHandTest {
     static List<Card> fullHouseCards = HandMother.buildFullHouse();
     List<Card> fourOfAKind = HandMother.buildFourOfKind();
     List<Card> highCardCards = HandMother.buildHighCard();
-    List<Card> straightCards = HandMother.buildHighCard();
-    List<Card> pairCards = HandMother.buildHighCard();
+    List<Card> straightCards = HandMother.buildStraight();
+    List<Card> pairCards = HandMother.buildPair();
     List<Card> twoPairCards = HandMother.buildTwoPair();
-    List<Card> threeOfAKind = HandMother.buildHighCard();
-
-
-
+    List<Card> threeOfAKind = HandMother.buildThreeOfAKind();
 
     @BeforeAll
     static void setup(){
@@ -45,8 +42,20 @@ class PokerHandTest {
         assertEquals(PokerHand.HIGH_CARD, PokerHand.lookupHand(highCardCards));
     }
     @Test
+    void lookupScoreForHandWithPair() {
+        assertEquals(PokerHand.HIGH_CARD, PokerHand.lookupHand(highCardCards));
+    }
+    @Test
     void lookupScoreForHandWithTwoPair() {
-        assertEquals(PokerHand.TWO_PAIR, PokerHand.lookupHand(twoPairCards));
+        assertEquals(PokerHand.PAIR, PokerHand.lookupHand(pairCards));
+    }
+    @Test
+    void lookupScoreForHandWithThreeKind() {
+        assertEquals(PokerHand.THREE_KIND, PokerHand.lookupHand(threeOfAKind));
+    }
+    @Test
+    void lookupScoreForHandWithStraight() {
+        assertEquals(PokerHand.STRAIGHT, PokerHand.lookupHand(straightCards));
     }
     @Test
     void lookupScoreForHandWithFlush() {
@@ -55,6 +64,10 @@ class PokerHandTest {
     @Test
     void lookupScoreForHandWithFullHouse() {
         assertEquals(PokerHand.FULL_HOUSE, PokerHand.lookupHand(fullHouseCards));
+    }
+    @Test
+    void lookupScoreForHandWithFourKind() {
+        assertEquals(PokerHand.FOUR_KIND, PokerHand.lookupHand(fourOfAKind));
     }
     @Test
     void lookupScoreForHandWithStraightFlush() {
@@ -106,12 +119,13 @@ class PokerHandTest {
     }
 
     @Test
-    void HandMotherReturnsCorrectHands(){
+    void HandMotherReturnsCorrectHandSize(){
         assertEquals(flush.size(), 5);
+        assertEquals(straightFlush.size(), 5);
         assertEquals(highCardCards.size(), 5);
         assertEquals(fourOfAKind.size(), 5);
         assertEquals(fullHouseCards.size(), 5);
-//        assertEquals(fourOfAKind.size(), 5);
+        assertEquals(twoPairCards.size(), 5);
     }
 
 }

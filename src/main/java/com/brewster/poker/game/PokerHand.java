@@ -37,12 +37,11 @@ public enum PokerHand {
         }
         if (isFlush(hand)){
             if (isStraight(cardValues)){
-                return STRAIGHT_FLUSH;
+                pokerHand = STRAIGHT_FLUSH;
             } else {
                 pokerHand = FLUSH;
             }
-        }
-        if (isStraight(cardValues)){
+        } else if (isStraight(cardValues)){
             pokerHand = STRAIGHT;
         }
 
@@ -75,7 +74,6 @@ public enum PokerHand {
         for (Integer cardValue : sortedCardValues){
             cardCount.put(cardValue, cardCount.getOrDefault(cardValue, 0) + 1);
         }
-        cardCount.values().stream().forEach(System.out::println);
         List<Integer> counts = cardCount.values().stream().filter(v -> v > 1).collect(Collectors.toList());
 
         int firstPairCount;

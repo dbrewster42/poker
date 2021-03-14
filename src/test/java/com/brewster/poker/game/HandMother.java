@@ -58,27 +58,32 @@ public class HandMother {
         }
         return hand;
     }
-//    public static List<Card> buildPair(){
-//        List<Card> hand = new ArrayList<>();
-//        for (int i = 0; i < 10; i+=2){
-//            hand.add(cards.get(i));
-//        }
-//        return hand;
-//    }
-//    public static List<Card> buildStraight(){
-//        List<Card> hand = new ArrayList<>();
-//        for (int i = 0; i < 10; i+=2){
-//            hand.add(cards.get(i));
-//        }
-//        return hand;
-//    }
-//    public static List<Card> buildThreeOfAKind(){
-//        List<Card> hand = new ArrayList<>();
-//        for (int i = 0; i < 10; i+=2){
-//            hand.add(cards.get(i));
-//        }
-//        return hand;
-//    }
+    public static List<Card> buildPair(){
+        List<Card> hand = new ArrayList<>();
+        for (int i = 0; i < 34; i+=11){
+            hand.add(cards.get(i));
+        }
+        hand.add(cards.get(1));
+        return hand;
+    }
+    public static List<Card> buildStraight(){
+        List<Card> hand = new ArrayList<>();
+        for (int i = 0; i < 13; i+=4){
+            hand.add(cards.get(i));
+        }
+        hand.add(cards.get(18));
+        return hand;
+    }
+    public static List<Card> buildThreeOfAKind(){
+        List<Card> hand = new ArrayList<>();
+        for (int i = 3; i < 9; i++){
+            if (i == 4){
+                continue;
+            }
+            hand.add(cards.get(i));
+        }
+        return hand;
+    }
     public static List<Card> buildTwoPair(){
         List<Card> hand = new ArrayList<>();
         for (int i = 0; i < 10; i+=2){
