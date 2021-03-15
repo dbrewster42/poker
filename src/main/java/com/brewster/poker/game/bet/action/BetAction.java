@@ -24,6 +24,7 @@ public class BetAction extends Bet {
     public String process() {
         betManager.setBetAmount(betAmount);
         betManager.setPot(betManager.getPot() + betAmount);
+        betManager.resetTurnsLeft();
         return player.getDisplayName() + " has made a bet of " + betAmount + ". The total pot is now at " + betManager.getPot();
     }
 }

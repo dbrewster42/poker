@@ -42,9 +42,9 @@ public class BetManager {
         this.smallBlind = bigBlind / 2;
         this.activePlayers = game.getNumberOfPlayers();
         this.turn = 0;
-        this.limit = limit;
         betFactory = new BetFactoryImplementation();
         betsMade = new ArrayList<>();
+        this.limit = limit;
     }
 
     public String placeBet(BetRequest betRequest){
@@ -57,6 +57,7 @@ public class BetManager {
 
             if (returnStatement.isEmpty()){
                 returnStatement = bet.process();
+                adjustTurn();
             }
         }
 
@@ -78,44 +79,41 @@ public class BetManager {
         return validatorError;
     }
 
-    protected boolean adjustTurn(){
+    protected void adjustTurn(){
         turn++;
         turnsLeftInRound--;
-        if (turnsLeftInRound == 0){
-            //TODO is 0? or < 0?   || should I adjust the numbers before or after?
-            return false;
-        }
         if (turn == activePlayers){
             turn = 0;
         }
-        return true;
+    }
+    public void resetTurnsLeft(){
+        turnsLeftInRound = activePlayers;
     }
 
     public void startNextRound(){
         betAmount = 0;
-        turn = game.getBigBlindTurn();
+        turn = game.getBigBlindTurn() + 1;
         activePlayers = game.getNumberOfPlayers();
         turnsLeftInRound = activePlayers;
     }
 
-    public BetOptions startNewDeal(){
+    public BetOptions startNewDeal(Player currentPlayer){
         pot = 0;
         betAmount = 0;
-        activePlayers = game.getNumberOfPlayers();
+        activePlayers = game.getNumberOfPlayers(); //todo better as param?
         turnsLeftInRound = activePlayers;
-        return getBetOptions();
+        return getBetOptions(currentPlayer);
     }
 
-    public BetOptions getBetOptions(){
-        Player playerUp = game.getPlayers().get(turn);
-        if (adjustTurn()){
+    public BetOptions getBetOptions(Player currentPlayer){
+        //TODO test turns left in round
+        if (turnsLeftInRound > 0){
             Action[] actionOptions = getPossibleBetActions(betAmount);
-            betOptions = new BetOptions(playerUp, actionOptions, betAmount);
+            betOptions = new BetOptions(currentPlayer, actionOptions, betAmount);
             return betOptions;
         } else {
-            startNextRound();
+            game.startNextRound();
             return null;
-            //FIXME how to dictate flow if round is over?
         }
     }
 

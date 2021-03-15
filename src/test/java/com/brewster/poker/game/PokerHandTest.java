@@ -1,7 +1,6 @@
 package com.brewster.poker.game;
 
 import com.brewster.poker.card.Card;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -9,16 +8,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PokerHandTest {
-    static List<Integer> highCard;
-    static List<Integer> onePair;
-    static List<Integer> twoPair;
-    static List<Integer> threeKind;
-    static List<Integer> fullHouse;
-    static List<Integer> fourKind;
-    static List<Integer> straight;
-    List<Integer> lowAceStraight = HandMother.buildLowAceStraightValues();
-    List<Integer> highAceStraight = HandMother.buildHighAceStraightValues();
-    List<Integer> almostStraight = HandMother.buildAlmostStraightValues();
+    int[] lowAceStraight = HandMother.buildLowAceStraightValues();
+    int[] highAceStraight = HandMother.buildHighAceStraightValues();
+    int[] almostStraight = HandMother.buildAlmostStraightValues();
     static List<Card> flush = HandMother.buildFlush();
     static List<Card> straightFlush = HandMother.buildStraightFlush();
     static List<Card> fullHouseCards = HandMother.buildFullHouse();
@@ -28,52 +20,49 @@ class PokerHandTest {
     List<Card> pairCards = HandMother.buildPair();
     List<Card> twoPairCards = HandMother.buildTwoPair();
     List<Card> threeOfAKind = HandMother.buildThreeOfAKind();
+    int[] highCard = new int[]{3, 5, 9, 12, 14};
+    int[] onePair = new int[]{4, 8, 9, 11, 11};
+    int[] twoPair = new int[]{4, 4, 9, 11, 11};
+    int[] threeKind = new int[]{4, 4, 4, 7, 11};
+    int[] fullHouse = new int[]{4, 4, 11, 11, 11};
+    int[] fourKind = new int[]{4, 11, 11, 11, 11};
+    int[] straight = new int[]{4, 5, 6, 7, 8};
 
-    @BeforeAll
-    static void setup(){
-        highCard = List.of(4, 8, 9, 10, 11);
-        onePair = List.of(4, 8, 9, 11, 11);
-        twoPair = List.of(4, 4, 9, 11, 11);
-        threeKind = List.of(4, 4, 4, 7, 11);
-        fullHouse = List.of(4, 4, 11, 11, 11);
-        fourKind = List.of(4, 11, 11, 11, 11);
-        straight = List.of(4, 5, 6, 7, 8);
-    }
 
     @Test
-    void lookupScoreForHandWithHighCard() {
+    void lookupHandWithHighCard() {
         assertEquals(PokerHand.HIGH_CARD, PokerHand.lookupHand(highCardCards));
     }
     @Test
-    void lookupScoreForHandWithPair() {
+    void lookupHandWithPair() {
         assertEquals(PokerHand.PAIR, PokerHand.lookupHand(pairCards));
     }
     @Test
-    void lookupScoreForHandWithTwoPair() {
+    void lookupHandWithTwoPair() {
         assertEquals(PokerHand.TWO_PAIR, PokerHand.lookupHand(twoPairCards));
     }
     @Test
-    void lookupScoreForHandWithThreeKind() {
+    void lookupHandWithThreeKind() {
         assertEquals(PokerHand.THREE_KIND, PokerHand.lookupHand(threeOfAKind));
     }
     @Test
-    void lookupScoreForHandWithStraight() {
+    void lookupHandWithStraight() {
         assertEquals(PokerHand.STRAIGHT, PokerHand.lookupHand(straightCards));
     }
     @Test
-    void lookupScoreForHandWithFlush() {
+    void lookupHandWithFlush() {
         assertEquals(PokerHand.FLUSH, PokerHand.lookupHand(flush));
     }
     @Test
-    void lookupScoreForHandWithFullHouse() {
+    void lookupHandWithFullHouse() {
         assertEquals(PokerHand.FULL_HOUSE, PokerHand.lookupHand(fullHouseCards));
     }
     @Test
-    void lookupScoreForHandWithFourKind() {
+    void lookupHandWithFourKind() {
         assertEquals(PokerHand.FOUR_KIND, PokerHand.lookupHand(fourOfAKind));
     }
     @Test
-    void lookupScoreForHandWithStraightFlush() {
+    void lookupHandWithStraightFlush() {
         assertEquals(PokerHand.STRAIGHT_FLUSH, PokerHand.lookupHand(straightFlush));
     }
 
@@ -108,28 +97,27 @@ class PokerHandTest {
     }
 
     @Test
-    void integerIdentity() {
-        assertTrue(twoPair.get(0) == twoPair.get(1));
+    void returnPairCombosWithHighCard() {
+        assertEquals(PokerHand.HIGH_CARD, PokerHand.returnPairCombos(highCard));
     }
-
     @Test
-    void isMoreThanAPairWithPair() {
+    void returnPairCombosWithPair() {
         assertEquals(PokerHand.PAIR, PokerHand.returnPairCombos(onePair));
     }
     @Test
-    void isMoreThanAPairWithTwoPair() {
+    void returnPairCombosWithTwoPair() {
         assertEquals(PokerHand.TWO_PAIR, PokerHand.returnPairCombos(twoPair));
     }
     @Test
-    void isMoreThanAPairWithThreeOfKind() {
+    void returnPairCombosWithThreeOfKind() {
         assertEquals(PokerHand.THREE_KIND, PokerHand.returnPairCombos(threeKind));
     }
     @Test
-    void isMoreThanAPairWithFullHouse() {
+    void returnPairCombosWithFullHouse() {
         assertEquals(PokerHand.FULL_HOUSE, PokerHand.returnPairCombos(fullHouse));
     }
     @Test
-    void isMoreThanAPairWithFourKind() {
+    void returnPairCombosWithFourKind() {
         assertEquals(PokerHand.FOUR_KIND, PokerHand.returnPairCombos(fourKind));
     }
 

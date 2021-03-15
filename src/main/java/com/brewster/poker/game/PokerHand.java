@@ -30,7 +30,7 @@ public enum PokerHand {
     }
 
     public static PokerHand lookupHand(List<Card> hand){
-        List<Integer> cardValues = hand.stream().map(v -> v.getValue()).sorted().collect(Collectors.toList());
+        int[] cardValues = hand.stream().mapToInt(v -> v.getValue()).sorted().toArray();
         PokerHand pokerHand = returnPairCombos(cardValues);
         if (pokerHand.getScore() > 2){
             return pokerHand;
@@ -48,9 +48,9 @@ public enum PokerHand {
         return pokerHand;
     }
 
-    public static PokerHand returnPairCombos(List<Integer> sortedCardValues){
+    public static PokerHand returnPairCombos(int[] sortedCardValues){
         Map<Integer, Integer> cardCount = new HashMap<>();
-        for (Integer cardValue : sortedCardValues){
+        for (int cardValue : sortedCardValues){
             cardCount.put(cardValue, cardCount.getOrDefault(cardValue, 0) + 1);
         }
         List<Integer> counts = cardCount.values().stream().filter(v -> v > 1).collect(Collectors.toList());
@@ -91,16 +91,18 @@ public enum PokerHand {
         return true;
     }
 
-    public static boolean isStraight(List<Integer> sortedCardValues){
-        int start = sortedCardValues.get(0);
+    public static boolean isStraight(int[] sortedCardValues){
+        int start = sortedCardValues[0];
         if (start == 2){
-            if (sortedCardValues.get(4) == 14){
-                sortedCardValues.remove(4);
-                sortedCardValues.add(0, 1);
+            if (sortedCardValues[4] == 14){
+                for (int i = 4; i > 0; i--){
+                    sortedCardValues[i] = sortedCardValues[i - 1];
+                }
+                sortedCardValues[0] = 1;
                 start = 1;
             }
         }
-        for (Integer i : sortedCardValues){
+        for (int i : sortedCardValues){
             if (start != i){
                 return false;
             }
