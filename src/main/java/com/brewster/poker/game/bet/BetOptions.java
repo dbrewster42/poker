@@ -13,14 +13,6 @@ public class BetOptions {
         this.betAmount = betAmount;
     }
 
-//    public BetOptions(int turn, Action[] possibleActions, int betAmount) {
-//        this.turn = turn;
-//        this.possibleActions = possibleActions;
-//        this.betAmount = betAmount;
-//    }
-
-
-
     public Player getPlayer() {
         return player;
     }

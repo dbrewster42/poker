@@ -52,7 +52,7 @@ public class Game {
         return riverCards;
     }
     private List<Card> getNewStandardDeck(){
-        return new DeckBuilder().withStandardDeck().build().getCards();
+        return DeckBuilder.aDeck().withStandardDeck().build().getCards();
     }
 
     //private List<PlayerDto> dealPlayerCards(){

@@ -1,5 +1,7 @@
 package com.brewster.poker.card;
 
+import java.util.Objects;
+
 public class Card {
     final private String suit;
     final private int value;
@@ -31,5 +33,19 @@ public class Card {
 
     public String getImage() {
         return image;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return value == card.value &&
+                suit.equals(card.suit);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(suit, value);
     }
 }

@@ -16,6 +16,9 @@ class PokerHandTest {
     static List<Integer> fullHouse;
     static List<Integer> fourKind;
     static List<Integer> straight;
+    List<Integer> lowAceStraight = HandMother.buildLowAceStraightValues();
+    List<Integer> highAceStraight = HandMother.buildHighAceStraightValues();
+    List<Integer> almostStraight = HandMother.buildAlmostStraightValues();
     static List<Card> flush = HandMother.buildFlush();
     static List<Card> straightFlush = HandMother.buildStraightFlush();
     static List<Card> fullHouseCards = HandMother.buildFullHouse();
@@ -43,11 +46,11 @@ class PokerHandTest {
     }
     @Test
     void lookupScoreForHandWithPair() {
-        assertEquals(PokerHand.HIGH_CARD, PokerHand.lookupHand(highCardCards));
+        assertEquals(PokerHand.PAIR, PokerHand.lookupHand(pairCards));
     }
     @Test
     void lookupScoreForHandWithTwoPair() {
-        assertEquals(PokerHand.PAIR, PokerHand.lookupHand(pairCards));
+        assertEquals(PokerHand.TWO_PAIR, PokerHand.lookupHand(twoPairCards));
     }
     @Test
     void lookupScoreForHandWithThreeKind() {
@@ -81,6 +84,18 @@ class PokerHandTest {
     @Test
     void isStraightFalse() {
         assertFalse(PokerHand.isStraight(twoPair));
+    }
+    @Test
+    void isStraightWithLowAce() {
+        assertEquals(true, PokerHand.isStraight(lowAceStraight));
+    }
+    @Test
+    void isStraightWithHighAce() {
+        assertEquals(true, PokerHand.isStraight(highAceStraight));
+    }
+    @Test
+    void isAlmostStraight() {
+        assertEquals(false, PokerHand.isStraight(almostStraight));
     }
 
     @Test

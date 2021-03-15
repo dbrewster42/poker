@@ -9,6 +9,34 @@ import java.util.List;
 public class HandMother {
     private static List<Card> cards = new DeckBuilder().buildStandardDeck();
 
+    public static List<Integer> buildHighAceStraightValues(){
+        List<Integer> aceStraight = new ArrayList<>();
+        aceStraight.add(10);
+        aceStraight.add(11);
+        aceStraight.add(12);
+        aceStraight.add(13);
+        aceStraight.add(14);
+        return aceStraight;
+    }
+    public static List<Integer> buildLowAceStraightValues(){
+        List<Integer> aceStraight = new ArrayList<>();
+        aceStraight.add(2);
+        aceStraight.add(3);
+        aceStraight.add(4);
+        aceStraight.add(5);
+        aceStraight.add(14);
+        return aceStraight;
+    }
+    public static List<Integer> buildAlmostStraightValues(){
+        List<Integer> aceStraight = new ArrayList<>();
+        aceStraight.add(2);
+        aceStraight.add(3);
+        aceStraight.add(4);
+        aceStraight.add(13);
+        aceStraight.add(14);
+        return aceStraight;
+    }
+
     public static List<Card> buildFourOfKind(){
         List<Card> hand = new ArrayList<>();
         for (Card card : cards){

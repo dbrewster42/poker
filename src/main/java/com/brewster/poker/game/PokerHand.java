@@ -48,27 +48,6 @@ public enum PokerHand {
         return pokerHand;
     }
 
-    public static boolean isStraight(List<Integer> sortedCardValues){
-        int start = sortedCardValues.get(0);
-        for (Integer i : sortedCardValues){
-            if (start != i){
-                return false;
-            }
-            start++;
-        }
-        return true;
-        //FIXME need to account for Ace
-    }
-    public static boolean isFlush(List<Card> hand){
-        String suit = hand.get(0).getSuit();
-        for (Card card : hand){
-            if (!card.getSuit().equals(suit)){
-                return false;
-            }
-        }
-        return true;
-    }
-
     public static PokerHand returnPairCombos(List<Integer> sortedCardValues){
         Map<Integer, Integer> cardCount = new HashMap<>();
         for (Integer cardValue : sortedCardValues){
@@ -102,10 +81,37 @@ public enum PokerHand {
         return returnValue;
     }
 
+    public static boolean isFlush(List<Card> hand){
+        String suit = hand.get(0).getSuit();
+        for (Card card : hand){
+            if (!card.getSuit().equals(suit)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isStraight(List<Integer> sortedCardValues){
+        int start = sortedCardValues.get(0);
+        if (start == 2){
+            if (sortedCardValues.get(4) == 14){
+                sortedCardValues.remove(4);
+                sortedCardValues.add(0, 1);
+                start = 1;
+            }
+        }
+        for (Integer i : sortedCardValues){
+            if (start != i){
+                return false;
+            }
+            start++;
+        }
+        return true;
+    }
+
     public int getScore() {
         return score;
     }
-
     public String getHandName() {
         return handName;
     }

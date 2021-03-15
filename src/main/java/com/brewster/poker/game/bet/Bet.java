@@ -9,12 +9,6 @@ public abstract class Bet {
     protected final Player player;
     protected final BetManager betManager;
 
-//    public Bet(Player player, String action, int betAmount) {
-//        this.player = player;
-//        this.chosenAction = Action.valueOf(action);
-//        this.betAmount = betAmount;
-//    }
-
     public Bet(Player player, BetRequest betRequest, BetManager betManager){
         this.player = player;
         this.betAmount = betRequest.getBetAmount();

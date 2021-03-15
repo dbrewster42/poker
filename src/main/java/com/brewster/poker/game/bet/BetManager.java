@@ -62,27 +62,6 @@ public class BetManager {
 
         return returnStatement;
     }
-//            Action chosenAction = bet.getChosenAction();
-//            if (chosenAction == Action.BET){
-//                betAmount = newBetAmount;
-//                pot += newBetAmount;
-//                turnsLeftInRound = game.getNumberOfPlayers();
-//            } else if (chosenAction == Action.CALL){
-//                if (newBetAmount == betAmount){
-//                    pot += newBetAmount;
-//                } else {
-//                    returnStatement = "Error. When calling, the bet amount must be the same.";
-//                }
-//            } else if (){
-//
-//            }
-//            if (newBetAmount > 0){
-//                betAmount = newBetAmount;
-//                pot += newBetAmount;
-//                turnsLeftInRound = game.getNumberOfPlayers();
-//            }
-//            turnsLeftInRound--;
- //       }
 
     private String betAmountIsValid(BetRequest betRequest, Player player){
         String validatorError = "";
