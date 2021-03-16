@@ -35,12 +35,13 @@ public class GameController {
     @PostMapping("/")
     public Response createGame(@RequestBody GameSettingsRequest request) {
         userDto = userService.findUser(request.getUsername());
-        List<UserDto> users = userService.generateNComputerUsers(4); //todo move to game. we don't need users, just players
-        users.add((userDto));
-        game = GamesContainer.createGame(users, request);
+//        List<UserDto> users = userService.generateNComputerUsers(4); //todo move to game. we don't need users, just players
+//        users.add((userDto));
+//        game = GamesContainer.createGame(users, request);
+        game = GamesContainer.createGame(userDto, request);
         try {
             //body =List<MyClass> myObjects = Arrays.asList(mapper.readValue(json, MyClass[].class))
-            body = mapper.writeValueAsString(users);
+            body = mapper.writeValueAsString(game);
         } catch (JsonProcessingException e) {
             body = e.getMessage();
             statusCode = 400;
@@ -67,10 +68,10 @@ public class GameController {
     @PostMapping("/join")
     public Response joinGame(@RequestBody JoinRequest request) {
         userDto = userService.findUser(request.getUsername());
-        Game game = GamesContainer.addPlayerToGame(userDto, request.getGameId());
-//        try {
-//TODO do i need to do this if I use annotations?
-//        }
+        Game game = GamesContainer.addPlayerToGame(userDto, request);
+        //        try {
+        //TODO do i need to do this if I use annotations?
+        //        }
         return new Response(body, statusCode);
     }
 

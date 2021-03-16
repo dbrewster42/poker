@@ -1,12 +1,12 @@
 package com.brewster.poker.dto;
 
-import com.brewster.poker.game.Player;
+import com.brewster.poker.game.HumanPlayer;
 
 public class UserDto {
     private Integer id;
     private String username;
     private Integer money;
-    private Player player;
+    private HumanPlayer player;
 //    private List<Card> hand;
 //    private Bet bet;
 
@@ -34,11 +34,11 @@ public class UserDto {
         this.money = money;
     }
 
-    public Player getPlayer() {
+    public HumanPlayer getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(HumanPlayer player) {
         this.player = player;
     }
 

@@ -1,10 +1,10 @@
 package com.brewster.poker.game.bet;
 
-import com.brewster.poker.game.Player;
+import com.brewster.poker.game.HumanPlayer;
 import com.brewster.poker.model.request.BetRequest;
 
 public class FoldAction extends Bet {
-    public FoldAction(Player player, BetRequest betRequest, BetManager betManager) {
+    public FoldAction(HumanPlayer player, BetRequest betRequest, BetManager betManager) {
         super(player, betRequest, betManager);
     }
 

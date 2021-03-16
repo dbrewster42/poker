@@ -2,6 +2,7 @@ package com.brewster.poker.game;
 
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.GameSettingsRequest;
+import com.brewster.poker.model.request.JoinRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,40 +18,41 @@ public class GamesContainer {
                 .collect(Collectors.toList());
     }
 
-    public static Game addPlayerToGame(UserDto user, int gameID){
-        Game game = findGameById(gameID);
-        game.addPlayerToGame(convertUserToPlayer(user));
+    public static Game addPlayerToGame(UserDto user, JoinRequest joinRequest){
+        Game game = findGameById(joinRequest.getGameId());
+        game.addPlayerToGame(convertUserToPlayer(user, joinRequest.getDisplayName()));
         return game;
     }
 
-    public static Game createGame(List<UserDto> users, GameSettingsRequest settingsRequest){
-        List<Player> players = convertUsersToPlayers(users);
-        Game game = new Game(gameID, players, settingsRequest);
-        gameID++;
-        allGames.add(game);
-        return game;
-    }
+//    public static Game createGame(List<UserDto> users, GameSettingsRequest settingsRequest){
+//        List<Player> players = convertUsersToPlayers(users);
+//        Game game = new Game(gameID, players, settingsRequest);
+//        gameID++;
+//        allGames.add(game);
+//        return game;
+//    }
 
     public static Game createGame(UserDto userDto, GameSettingsRequest settingsRequest){
-        Player player = convertUserToPlayer(userDto, settingsRequest);
+        HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
         Game game = new Game(gameID, player, settingsRequest);
         gameID++;
         allGames.add(game);
         return game;
     }
 
-    private static List<Player> convertUsersToPlayers(List<UserDto> users){
-        List<Player> players = new ArrayList<>();
-        for (UserDto user : users){
-            players.add(user.getPlayer());
-        }
-        return players;
-    }
+//    private static List<HumanPlayer> convertUsersToPlayers(List<UserDto> users){
+//        List<HumanPlayer> players = new ArrayList<>();
+//        for (UserDto user : users){
+//            players.add(user.getPlayer());
+//        }
+//        return players;
+//    }
 
-    private static Player convertUserToPlayer(UserDto userDto, GameSettingsRequest settingsRequest){
+    private static HumanPlayer convertUserToPlayer(UserDto userDto, String displayName){
         //todo need to create player. this won't work. maybe create player in controller?
-        //Player player = new Player();
-        return userDto.getPlayer();
+        HumanPlayer player = new HumanPlayer(displayName, userDto);
+        userDto.setPlayer(player);
+        return player;
     }
 
     public static Game findGameById(Integer id){

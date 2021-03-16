@@ -7,7 +7,7 @@ public class GameSettingsRequest {
     private Integer numberOfPlayers;
     private Integer bigBlind;
     private Integer maxBet;
-    private boolean fillEmptySlotsWithComputerPlayer;
+    private boolean fillWithComputerPlayers;
 
     public String getUsername() {
         return username;
@@ -55,5 +55,13 @@ public class GameSettingsRequest {
 
     public void setMaxBet(Integer maxBet) {
         this.maxBet = maxBet;
+    }
+
+    public boolean isFillWithComputerPlayers() {
+        return fillWithComputerPlayers;
+    }
+
+    public void setFillWithComputerPlayers(boolean fillWithComputerPlayers) {
+        this.fillWithComputerPlayers = fillWithComputerPlayers;
     }
 }

@@ -1,6 +1,7 @@
 package com.brewster.poker.game.bet;
 
 import com.brewster.poker.game.Game;
+import com.brewster.poker.game.HumanPlayer;
 import com.brewster.poker.game.Player;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
@@ -39,7 +40,7 @@ public class BetManager {
     }
 
     public String placeBet(BetRequest betRequest){
-        Player player = game.getCurrentPlayer();
+        HumanPlayer player = game.getCurrentPlayer();
         String returnStatement = betAmountIsValid(betRequest, player);
 
         if (returnStatement.isEmpty()){
@@ -55,7 +56,7 @@ public class BetManager {
         return returnStatement;
     }
 
-    private String betAmountIsValid(BetRequest betRequest, Player player){
+    private String betAmountIsValid(BetRequest betRequest, HumanPlayer player){
         String validatorError = "";
         int newBetAmount = betRequest.getBetAmount();
         if (!betRequest.getUsername().equals(player.getDisplayName())){

@@ -2,7 +2,16 @@ package com.brewster.poker.model.request;
 
 public class JoinRequest {
     private String username;
+    private String displayName;
     private int gameId;
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
     public String getUsername() {
         return username;

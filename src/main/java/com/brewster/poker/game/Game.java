@@ -2,12 +2,14 @@ package com.brewster.poker.game;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.card.DeckBuilder;
+import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.game.bet.BetManager;
 import com.brewster.poker.game.bet.BetOptions;
 import com.brewster.poker.model.request.GameSettingsRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Game {
     private int id;
@@ -32,23 +34,27 @@ public class Game {
         //todo if (request.isCustomRules()){ doSomething() };
     }
 
-    protected Game(int id, Player player, GameSettingsRequest settingsRequest){
+    protected Game(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
         this.id = id;
         this.players = new ArrayList<>();
         players.add(player);
         this.numberOfPlayers = players.size();
         betManager = new BetManager(this, settingsRequest);
         this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
+        openSlots = desiredNumberOfPlayers - 1;
+        if (settingsRequest.isFillWithComputerPlayers()){
+            generateNComputerUsers(openSlots);
+        }
         //todo if (request.isCustomRules()){ doSomething() };
     }
 
-    public Game(int id, List<Player> players, GameSettingsRequest settingsRequest){
-        this.id = id;
-        this.players = players;
-        this.numberOfPlayers = players.size();
-        betManager = new BetManager(this, settingsRequest);
-        this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
-    }
+//    public Game(int id, List<HumanPlayer> players, GameSettingsRequest settingsRequest){
+//        this.id = id;
+//        this.players = players;
+//        this.numberOfPlayers = players.size();
+//        betManager = new BetManager(this, settingsRequest);
+//        this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
+//    }
 
     public BetOptions startNewDeal(){
         cards = getNewStandardDeck();
@@ -91,10 +97,33 @@ public class Game {
         }
     }
 
-    public void addPlayerToGame(Player player){
+    public void addPlayerToGame(HumanPlayer player){
         players.add(player);
         numberOfPlayers = players.size();
     }
+
+    public void generateNComputerUsers(int n){
+        Random random = new Random();
+        for (int i = 0; i < n; i++) {
+            String displayName = "HAL" + random.nextInt(500);
+            Player player = new ComputerPlayer(displayName);
+            players.add(player);
+        }
+
+    }
+
+//    public List<UserDto> generateNComputerUsers(int numberOfUsers){
+//        List<UserDto> users = new ArrayList<>();
+//        Random random = new Random();
+//        for (int i = 0; i < numberOfUsers - 1; i++){
+//            UserDto computerUser = new UserDto();
+//            computerUser.setUsername("HAL" + random.nextInt(500));
+//            computerUser.setMoney(999);
+//            computerUser.setPlayer(new HumanPlayer(computerUser.getUsername()));
+//            users.add(computerUser);
+//        }
+//        return users;
+//    }
 
     public int getId() {
         return id;
