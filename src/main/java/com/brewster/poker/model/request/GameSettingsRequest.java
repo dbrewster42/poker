@@ -7,6 +7,7 @@ public class GameSettingsRequest {
     private Integer numberOfPlayers;
     private Integer bigBlind;
     private Integer maxBet;
+    private boolean fillEmptySlotsWithComputerPlayer;
 
     public String getUsername() {
         return username;

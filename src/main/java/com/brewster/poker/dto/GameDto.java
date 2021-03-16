@@ -11,4 +11,6 @@ public class GameDto {
     private Integer numberOfPlayers;
     private Integer bigBlind;
     private Integer maxBet;
+
+
 }

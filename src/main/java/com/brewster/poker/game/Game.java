@@ -17,8 +17,30 @@ public class Game {
     private List<Card> riverCards = new ArrayList<>();
     private int bigBlindTurn = 0;
     private int numberOfPlayers;
+    //private int humanPlayers;
+    private int openSlots;
     private int desiredNumberOfPlayers;
     private BetManager betManager;
+
+    protected Game(int id, GameSettingsRequest settingsRequest){
+        this.id = id;
+        this.players = new ArrayList<>();
+        this.numberOfPlayers = 0;
+        betManager = new BetManager(this, settingsRequest);
+        this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
+        this.openSlots = desiredNumberOfPlayers;
+        //todo if (request.isCustomRules()){ doSomething() };
+    }
+
+    protected Game(int id, Player player, GameSettingsRequest settingsRequest){
+        this.id = id;
+        this.players = new ArrayList<>();
+        players.add(player);
+        this.numberOfPlayers = players.size();
+        betManager = new BetManager(this, settingsRequest);
+        this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
+        //todo if (request.isCustomRules()){ doSomething() };
+    }
 
     public Game(int id, List<Player> players, GameSettingsRequest settingsRequest){
         this.id = id;
@@ -26,7 +48,6 @@ public class Game {
         this.numberOfPlayers = players.size();
         betManager = new BetManager(this, settingsRequest);
         this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
-        //todo if (request.isCustomRules()){ doSomething() };
     }
 
     public BetOptions startNewDeal(){

@@ -11,7 +11,6 @@ public class GamesContainer {
     private static int gameID = 0;
     private static List<Game> allGames = new ArrayList<>();
 
-
     public static List<Game> findAvailableGames(){
         return allGames.stream()
                 .filter(v -> v.getNumberOfPlayers() < v.getDesiredNumberOfPlayers())
@@ -32,6 +31,14 @@ public class GamesContainer {
         return game;
     }
 
+    public static Game createGame(UserDto userDto, GameSettingsRequest settingsRequest){
+        Player player = convertUserToPlayer(userDto, settingsRequest);
+        Game game = new Game(gameID, player, settingsRequest);
+        gameID++;
+        allGames.add(game);
+        return game;
+    }
+
     private static List<Player> convertUsersToPlayers(List<UserDto> users){
         List<Player> players = new ArrayList<>();
         for (UserDto user : users){
@@ -40,11 +47,11 @@ public class GamesContainer {
         return players;
     }
 
-    private static Player convertUserToPlayer(UserDto userDto){
-        //todo need to create player. this won't work
+    private static Player convertUserToPlayer(UserDto userDto, GameSettingsRequest settingsRequest){
+        //todo need to create player. this won't work. maybe create player in controller?
+        //Player player = new Player();
         return userDto.getPlayer();
     }
-
 
     public static Game findGameById(Integer id){
         //Game game = allGames.stream().filter(v -> v.getId() == id).findAny().orElse(null);
