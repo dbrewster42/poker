@@ -1,10 +1,10 @@
 package com.brewster.poker.game.bet;
 
-import com.brewster.poker.game.HumanPlayer;
+import com.brewster.poker.game.Player;
 import com.brewster.poker.model.request.BetRequest;
 
 public class CheckAction extends Bet {
-    public CheckAction(HumanPlayer player, BetRequest betRequest, BetManager betManager) {
+    public CheckAction(Player player, BetRequest betRequest, BetManager betManager) {
         super(player, betRequest, betManager);
     }
 

@@ -49,7 +49,6 @@ public class GamesContainer {
 //    }
 
     private static HumanPlayer convertUserToPlayer(UserDto userDto, String displayName){
-        //todo need to create player. this won't work. maybe create player in controller?
         HumanPlayer player = new HumanPlayer(displayName, userDto);
         userDto.setPlayer(player);
         return player;

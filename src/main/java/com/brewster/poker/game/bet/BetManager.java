@@ -40,7 +40,7 @@ public class BetManager {
     }
 
     public String placeBet(BetRequest betRequest){
-        HumanPlayer player = game.getCurrentPlayer();
+        Player player = game.getCurrentPlayer();
         String returnStatement = betAmountIsValid(betRequest, player);
 
         if (returnStatement.isEmpty()){
@@ -56,17 +56,20 @@ public class BetManager {
         return returnStatement;
     }
 
-    private String betAmountIsValid(BetRequest betRequest, HumanPlayer player){
+    private String betAmountIsValid(BetRequest betRequest, Player player){
         String validatorError = "";
         int newBetAmount = betRequest.getBetAmount();
         if (!betRequest.getUsername().equals(player.getDisplayName())){
             validatorError += "Critical error. The user who placed the bet was not the expected error. ";
         }
-        if (newBetAmount > player.getUser().getMoney()){
-            validatorError += "You do not have that much money to bet. Until you reload money, your maximum bet is " + player.getUser().getMoney() + ". ";
-        }
         if (newBetAmount > maxBet){
             validatorError += "This game has a maximum bet of " + maxBet;
+        }
+        if (player.getClass() == HumanPlayer.class ){
+            HumanPlayer humanPlayer = (HumanPlayer) player;
+            if (newBetAmount > humanPlayer.getMoney()){
+                validatorError += "You do not have that much money to bet. Until you reload money, your maximum bet is " + humanPlayer.getMoney() + ". ";
+            }
         }
         return validatorError;
     }
@@ -120,8 +123,7 @@ public class BetManager {
     public int getId() {
         return id;
     }
-
-
+    
 
     public Game getGame() {
         return game;
