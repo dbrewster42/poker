@@ -5,9 +5,9 @@ import com.brewster.poker.model.request.BetRequest;
 
 public abstract class Bet {
     protected final int betAmount;
-    protected final Action chosenAction;
     protected final Player player;
     protected final BetManager betManager;
+    protected final Action chosenAction;
 
     public Bet(Player player, BetRequest betRequest, BetManager betManager){
         this.player = player;

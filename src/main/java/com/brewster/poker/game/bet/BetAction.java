@@ -1,8 +1,6 @@
-package com.brewster.poker.game.bet.action;
+package com.brewster.poker.game.bet;
 
 import com.brewster.poker.game.Player;
-import com.brewster.poker.game.bet.Bet;
-import com.brewster.poker.game.bet.BetManager;
 import com.brewster.poker.model.request.BetRequest;
 
 public class BetAction extends Bet {
