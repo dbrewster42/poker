@@ -2,21 +2,27 @@ package com.brewster.poker.game.bet.action;
 
 import com.brewster.poker.game.Player;
 import com.brewster.poker.game.bet.Bet;
+import com.brewster.poker.game.bet.BetManager;
 import com.brewster.poker.model.request.BetRequest;
 
 public class CallAction extends Bet {
 
-    public CallAction(Player player, BetRequest betRequest) {
-        super(player, betRequest);
+    public CallAction(Player player, BetRequest betRequest, BetManager betManager) {
+        super(player, betRequest, betManager);
     }
 
     @Override
     public String validate() {
-        return null;
+        String validationError = "";
+        if (betAmount != betManager.getBetAmount()){
+            validationError = "Error. You have chosen to call the bet, the bet amount should be unchanged";
+        }
+        return validationError;
     }
 
     @Override
     public String process() {
-        return null;
+        betManager.setPot(betManager.getPot() + betAmount);
+        return player.getDisplayName() + " has called the bet of " + betAmount + ". The total pot is now at " + betManager.getPot();
     }
 }

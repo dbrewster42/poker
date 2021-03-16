@@ -6,11 +6,10 @@ import java.util.List;
 public class DeckBuilder {
     private final static String[] SUITS = { "Clubs", "Hearts", "Spades", "Diamonds" };
     private final static String[] NAMES = { "Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King" };
-    private final static int[] VALUES = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+    private final static int[] VALUES = { 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
     private final String[] IMAGE_PREFIXES = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
     private final Deck deck;
     private List<Card> cards = new ArrayList<>();
-//    private Card[] maybeCards;
 
     public DeckBuilder(){
         deck = new Deck();
@@ -20,6 +19,10 @@ public class DeckBuilder {
     }
     public DeckBuilder(List<String> customRules){
         deck = new Deck();
+    }
+
+    public static DeckBuilder aDeck(){
+        return new DeckBuilder();
     }
 
     public Deck build(){

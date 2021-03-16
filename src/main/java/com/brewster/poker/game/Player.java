@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Player {
     private List<Card> hand;
-    private Bet bet;
+    private Bet bet; //TODO bet or List<Bet>?
     private String displayName;
     private User user;
 

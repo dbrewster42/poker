@@ -42,9 +42,9 @@ public class BetManager {
         this.smallBlind = bigBlind / 2;
         this.activePlayers = game.getNumberOfPlayers();
         this.turn = 0;
-        this.limit = limit;
         betFactory = new BetFactoryImplementation();
         betsMade = new ArrayList<>();
+        this.limit = limit;
     }
 
     public String placeBet(BetRequest betRequest){
@@ -52,37 +52,17 @@ public class BetManager {
         String returnStatement = betAmountIsValid(betRequest, player);
 
         if (returnStatement.isEmpty()){
-            Bet bet = betFactory.createBet(player, betRequest);
+            Bet bet = betFactory.createBet(player, betRequest, this);
             returnStatement = bet.validate();
 
             if (returnStatement.isEmpty()){
                 returnStatement = bet.process();
+                adjustTurn();
             }
         }
 
         return returnStatement;
     }
-//            Action chosenAction = bet.getChosenAction();
-//            if (chosenAction == Action.BET){
-//                betAmount = newBetAmount;
-//                pot += newBetAmount;
-//                turnsLeftInRound = game.getNumberOfPlayers();
-//            } else if (chosenAction == Action.CALL){
-//                if (newBetAmount == betAmount){
-//                    pot += newBetAmount;
-//                } else {
-//                    returnStatement = "Error. When calling, the bet amount must be the same.";
-//                }
-//            } else if (){
-//
-//            }
-//            if (newBetAmount > 0){
-//                betAmount = newBetAmount;
-//                pot += newBetAmount;
-//                turnsLeftInRound = game.getNumberOfPlayers();
-//            }
-//            turnsLeftInRound--;
- //       }
 
     private String betAmountIsValid(BetRequest betRequest, Player player){
         String validatorError = "";
@@ -93,51 +73,47 @@ public class BetManager {
         if (newBetAmount > player.getUser().getMoney()){
             validatorError += "You do not have that much money to bet. Until you reload money, your maximum bet is " + player.getUser().getMoney() + ". ";
         }
-        if (newBetAmount < bigBlind){
-            validatorError += "The minimum bet is " + bigBlind + ". You may not bet less than the blind";
-        }
         if (newBetAmount > limit){
             validatorError += "This game has a maximum bet of " + limit;
         }
         return validatorError;
     }
 
-    private boolean adjustTurn(){
+    protected void adjustTurn(){
         turn++;
         turnsLeftInRound--;
-        if (turnsLeftInRound == 0){
-            //TODO is 0? or < 0?   || should I adjust the numbers before or after?
-            return false;
-        }
-        if (turn == game.getNumberOfPlayers()){
+        if (turn == activePlayers){
             turn = 0;
         }
-        return true;
     }
-
-    public BetOptions startNewDeal(){
-        pot = 0;
-        betAmount = 0;
-        activePlayers = game.getNumberOfPlayers();
+    public void resetTurnsLeft(){
         turnsLeftInRound = activePlayers;
-        return getBetOptions();
     }
 
     public void startNextRound(){
         betAmount = 0;
+        turn = game.getBigBlindTurn() + 1;
+        activePlayers = game.getNumberOfPlayers();
         turnsLeftInRound = activePlayers;
     }
 
-    public BetOptions getBetOptions(){
-        Player playerUp = game.getPlayers().get(turn);
-        if (adjustTurn()){
+    public BetOptions startNewDeal(Player currentPlayer){
+        pot = 0;
+        betAmount = 0;
+        activePlayers = game.getNumberOfPlayers(); //todo better as param?
+        turnsLeftInRound = activePlayers;
+        return getBetOptions(currentPlayer);
+    }
+
+    public BetOptions getBetOptions(Player currentPlayer){
+        //TODO test turns left in round
+        if (turnsLeftInRound > 0){
             Action[] actionOptions = getPossibleBetActions(betAmount);
-            betOptions = new BetOptions(playerUp, actionOptions, betAmount);
+            betOptions = new BetOptions(currentPlayer, actionOptions, betAmount);
             return betOptions;
         } else {
-            startNextRound();
+            game.startNextRound();
             return null;
-            //FIXME how to dictate flow if round is over?
         }
     }
 
@@ -148,18 +124,46 @@ public class BetManager {
             return CHECK_ACTIONS;
         }
     }
-//    public List<Action> getPossibleBetActions(int betAmount){
-//        possibleActions = new ArrayList<>();
-//        possibleActions.add(Action.FOLD);
-//        if (betAmount > 0){
-//            possibleActions.add(Action.CALL);
-//            possibleActions.add(Action.RAISE);
-//        } else {
-//            possibleActions.add(Action.BET);
-//            possibleActions.add(Action.CHECK);
-//        }
-//        return possibleActions;
-//    }
+
+    public int getId() {
+        return id;
+    }
 
 
+
+    public Game getGame() {
+        return game;
+    }
+
+    public int getBigBlind() {
+        return bigBlind;
+    }
+
+    public int getPot() {
+        return pot;
+    }
+
+    public int getBetAmount() {
+        return betAmount;
+    }
+
+    public List<Bet> getBetsMade() {
+        return betsMade;
+    }
+
+    public int getActivePlayers() {
+        return activePlayers;
+    }
+
+    public void setActivePlayers(int activePlayers) {
+        this.activePlayers = activePlayers;
+    }
+
+    public void setPot(int pot) {
+        this.pot = pot;
+    }
+
+    public void setBetAmount(int betAmount) {
+        this.betAmount = betAmount;
+    }
 }

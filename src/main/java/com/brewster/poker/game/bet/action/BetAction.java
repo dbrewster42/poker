@@ -2,21 +2,29 @@ package com.brewster.poker.game.bet.action;
 
 import com.brewster.poker.game.Player;
 import com.brewster.poker.game.bet.Bet;
+import com.brewster.poker.game.bet.BetManager;
 import com.brewster.poker.model.request.BetRequest;
 
 public class BetAction extends Bet {
 
-    public BetAction(Player player, BetRequest betRequest) {
-        super(player, betRequest);
+    public BetAction(Player player, BetRequest betRequest, BetManager betManager) {
+        super(player, betRequest, betManager);
     }
 
     @Override
     public String validate() {
-        return null;
+        String validationError = "";
+        if (betAmount < betManager.getBigBlind()){
+            validationError += "The minimum bet is " + betManager.getBigBlind() + ". You may not bet less than the blind";
+        }
+        return validationError;
     }
 
     @Override
     public String process() {
-        return null;
+        betManager.setBetAmount(betAmount);
+        betManager.setPot(betManager.getPot() + betAmount);
+        betManager.resetTurnsLeft();
+        return player.getDisplayName() + " has made a bet of " + betAmount + ". The total pot is now at " + betManager.getPot();
     }
 }

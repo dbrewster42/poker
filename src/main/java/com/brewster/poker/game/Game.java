@@ -13,6 +13,7 @@ public class Game {
     private List<Card> cards;
     private List<Card> riverCards = new ArrayList<>();
     private List<Player> players;
+    private int bigBlindTurn = 0;
     private Player currentPlayer;
     private int numberOfPlayers;
     private int id;
@@ -25,26 +26,27 @@ public class Game {
         betManager = new BetManager(this, settingsRequest.getBigBlind());
     }
 
-    public BetOptions beginNewDeal(){
+    public BetOptions startNewDeal(){
         cards = getNewStandardDeck();
         dealPlayerCards();
-        return betManager.startNewRound();
-        //return betManager.getBetOptions(0);
-        //return betManager.getPossibleBetActions(0);
+        currentPlayer = players.get(bigBlindTurn + 1);
+        return betManager.startNewDeal(currentPlayer);
     }
 
+    public BetOptions getBetOptions(){
+        return betManager.getBetOptions(currentPlayer);
+    }
 
-//    public List<Player> beginNewRound(){
-//        cards = getNewStandardDeck();
-//        dealPlayerCards();
-//        return players;
-//    }
-
-    public List<Card> dealRiverCardNTimes(){
+    public List<Card> startNextRound(){
+        betManager.startNextRound();
         int count = 1;
         if (riverCards.size() == 0){
             count = 3;
         }
+        return dealRiverCardNTimes(count);
+    }
+
+    public List<Card> dealRiverCardNTimes(int count){
         cards.remove(0);
         for (int i = 0; i < count; i++){
             riverCards.add(cards.get(0));
@@ -53,10 +55,9 @@ public class Game {
         return riverCards;
     }
     private List<Card> getNewStandardDeck(){
-        return new DeckBuilder().withStandardDeck().build().getCards();
+        return DeckBuilder.aDeck().withStandardDeck().build().getCards();
     }
 
-    //private List<PlayerDto> dealPlayerCards(){
     private void dealPlayerCards(){
         for (int i = 0; i < 2; i++){
             for (Player player : players){
@@ -64,7 +65,6 @@ public class Game {
                 cards.remove(0);
             }
         }
-        //return players;
     }
 
     public int getId() {
@@ -99,11 +99,11 @@ public class Game {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    //    public List<Card> getCards() {
-//        return cards;
-//    }
-//
-//    public void setCards(List<Card> cards) {
-//        this.cards = cards;
-//    }
+    public int getBigBlindTurn() {
+        return bigBlindTurn;
+    }
+
+    public void setBigBlindTurn(int bigBlindTurn) {
+        this.bigBlindTurn = bigBlindTurn;
+    }
 }

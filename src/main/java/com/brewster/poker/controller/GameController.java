@@ -58,7 +58,7 @@ public class GameController {
         if (game == null){
             throw new ClassNotFoundException("We could not find your game, sorry.");
         }
-        List<Card> riverCards = game.dealRiverCardNTimes();
+        List<Card> riverCards = game.startNextRound();
         try {
             body = mapper.writeValueAsString(riverCards);
             body += mapper.writeValueAsString(userDto);
@@ -70,10 +70,24 @@ public class GameController {
         return new Response(body, statusCode);
     }
 
-    @GetMapping("/{id}/bet")
-    public Response startNewRound(@PathVariable int id){
+    @GetMapping("/{id}/bet/new-deal")
+    public Response startNewDeal(@PathVariable int id){
         game = GamesContainer.findGameById(id);
-        BetOptions options = game.beginNewDeal();
+        BetOptions options = game.startNewDeal();
+        try {
+            body = mapper.writeValueAsString(options);
+        } catch (JsonProcessingException e) {
+            body = e.getMessage();
+            statusCode = 400;
+            e.printStackTrace();
+        }
+        return new Response(body, statusCode);
+    }
+
+    @GetMapping("/{id}/bet")
+    public Response getBetOptions(@PathVariable int id){
+        game = GamesContainer.findGameById(id);
+        BetOptions options = game.getBetOptions();
         try {
             body = mapper.writeValueAsString(options);
         } catch (JsonProcessingException e) {
