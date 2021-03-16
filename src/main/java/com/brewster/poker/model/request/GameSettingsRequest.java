@@ -1,11 +1,12 @@
 package com.brewster.poker.model.request;
 
-public class SettingsRequest {
+public class GameSettingsRequest {
     private String username;
     private String displayName;
-    private int numberOfPlayers;
     private boolean customRules;
-    private int bigBlind;
+    private Integer numberOfPlayers;
+    private Integer bigBlind;
+    private Integer maxBet;
 
     public String getUsername() {
         return username;
@@ -23,19 +24,19 @@ public class SettingsRequest {
         this.displayName = displayName;
     }
 
-    public int getNumberOfPlayers() {
+    public Integer getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
-    public void setNumberOfPlayers(int numberOfPlayers) {
+    public void setNumberOfPlayers(Integer numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public int getBigBlind() {
+    public Integer getBigBlind() {
         return bigBlind;
     }
 
-    public void setBigBlind(int bigBlind) {
+    public void setBigBlind(Integer bigBlind) {
         this.bigBlind = bigBlind;
     }
 
@@ -45,5 +46,13 @@ public class SettingsRequest {
 
     public void setCustomRules(boolean customRules) {
         this.customRules = customRules;
+    }
+
+    public Integer getMaxBet() {
+        return maxBet;
+    }
+
+    public void setMaxBet(Integer maxBet) {
+        this.maxBet = maxBet;
     }
 }

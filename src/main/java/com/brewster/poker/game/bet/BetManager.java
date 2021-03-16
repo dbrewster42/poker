@@ -3,9 +3,11 @@ package com.brewster.poker.game.bet;
 import com.brewster.poker.game.Game;
 import com.brewster.poker.game.Player;
 import com.brewster.poker.model.request.BetRequest;
+import com.brewster.poker.model.request.GameSettingsRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BetManager {
     private int id;
@@ -15,7 +17,7 @@ public class BetManager {
     private int smallBlind;
     private int turn;
     private int turnsLeftInRound;
-    private final int limit;
+    private final Integer maxBet;
     private static final Action[] CHECK_ACTIONS = { Action.BET, Action.CHECK, Action.FOLD };
     private static final Action[] CALL_ACTIONS = { Action.CALL, Action.RAISE, Action.FOLD };
     private int pot = 0;
@@ -24,27 +26,16 @@ public class BetManager {
     private final BetFactory betFactory;
     private List<Bet> betsMade;
 
-    public BetManager(Game game, int bigBlind) {
+    public BetManager(Game game, GameSettingsRequest request) {
         this.id = game.getId();
         this.game = game;
-        this.bigBlind = bigBlind;
+        this.bigBlind = Optional.ofNullable(request.getBigBlind()).orElse(500);
         this.smallBlind = bigBlind / 2;
         this.activePlayers = game.getNumberOfPlayers();
         this.turn = 0;
-        this.limit = bigBlind * 20;
+        this.maxBet = Optional.ofNullable(request.getMaxBet()).map(v -> v < 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
         betFactory = new BetFactoryImplementation();
         betsMade = new ArrayList<>();
-    }
-    public BetManager(Game game, int bigBlind, int limit) {
-        this.id = game.getId();
-        this.game = game;
-        this.bigBlind = bigBlind;
-        this.smallBlind = bigBlind / 2;
-        this.activePlayers = game.getNumberOfPlayers();
-        this.turn = 0;
-        betFactory = new BetFactoryImplementation();
-        betsMade = new ArrayList<>();
-        this.limit = limit;
     }
 
     public String placeBet(BetRequest betRequest){
@@ -73,8 +64,8 @@ public class BetManager {
         if (newBetAmount > player.getUser().getMoney()){
             validatorError += "You do not have that much money to bet. Until you reload money, your maximum bet is " + player.getUser().getMoney() + ". ";
         }
-        if (newBetAmount > limit){
-            validatorError += "This game has a maximum bet of " + limit;
+        if (newBetAmount > maxBet){
+            validatorError += "This game has a maximum bet of " + maxBet;
         }
         return validatorError;
     }

@@ -6,8 +6,9 @@ import com.brewster.poker.game.Game;
 import com.brewster.poker.game.GamesContainer;
 import com.brewster.poker.game.bet.BetOptions;
 import com.brewster.poker.model.request.BetRequest;
+import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.model.request.UserRequest;
-import com.brewster.poker.model.request.SettingsRequest;
+import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.Response;
 import com.brewster.poker.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,9 +33,9 @@ public class GameController {
     }
 
     @PostMapping("/")
-    public Response createGame(@RequestBody SettingsRequest request) {
+    public Response createGame(@RequestBody GameSettingsRequest request) {
         userDto = userService.findUser(request.getUsername());
-        List<UserDto> users = userService.generateNComputerUsers(4);
+        List<UserDto> users = userService.generateNComputerUsers(4); //todo move to game. we don't need users, just players
         users.add((userDto));
         game = GamesContainer.createGame(users, request);
         try {
@@ -49,6 +50,28 @@ public class GameController {
         Response response = new Response(body, statusCode);
         response.setGameId(game.getId());
         return response;
+    }
+
+    @GetMapping("/join")
+    public Response findGame() {
+        List<Game> openGames = GamesContainer.findAvailableGames();
+        try {
+            body = mapper.writeValueAsString(openGames);
+        } catch (JsonProcessingException e) {
+            body = e.getMessage();
+            statusCode = 400;
+            e.printStackTrace();
+        }
+        return new Response(body, statusCode);
+    }
+    @PostMapping("/join")
+    public Response joinGame(@RequestBody JoinRequest request) {
+        userDto = userService.findUser(request.getUsername());
+        Game game = GamesContainer.addPlayerToGame(userDto, request.getGameId());
+//        try {
+//TODO do i need to do this if I use annotations?
+//        }
+        return new Response(body, statusCode);
     }
 
     @PostMapping("/{id}")

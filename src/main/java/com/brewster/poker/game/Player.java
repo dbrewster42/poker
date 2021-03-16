@@ -7,10 +7,12 @@ import com.brewster.poker.model.User;
 import java.util.List;
 
 public class Player {
-    private List<Card> hand;
-    private Bet bet; //TODO bet or List<Bet>?
-    private String displayName;
     private User user;
+    private List<Card> hand;
+    private String displayName;
+    private Bet bet; //TODO bet or List<Bet>?
+    private Game game;
+    private int money;
 
     //TODO shared interface for human/computer or computer extends? interface I think. // does it need its own package? should the package be in game?
 

@@ -4,26 +4,29 @@ import com.brewster.poker.card.Card;
 import com.brewster.poker.card.DeckBuilder;
 import com.brewster.poker.game.bet.BetManager;
 import com.brewster.poker.game.bet.BetOptions;
-import com.brewster.poker.model.request.SettingsRequest;
+import com.brewster.poker.model.request.GameSettingsRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
+    private int id;
+    private List<Player> players;
+    private Player currentPlayer;
     private List<Card> cards;
     private List<Card> riverCards = new ArrayList<>();
-    private List<Player> players;
     private int bigBlindTurn = 0;
-    private Player currentPlayer;
     private int numberOfPlayers;
-    private int id;
+    private int desiredNumberOfPlayers;
     private BetManager betManager;
 
-    public Game(int id, List<Player> players, SettingsRequest settingsRequest){
+    public Game(int id, List<Player> players, GameSettingsRequest settingsRequest){
         this.id = id;
         this.players = players;
         this.numberOfPlayers = players.size();
-        betManager = new BetManager(this, settingsRequest.getBigBlind());
+        betManager = new BetManager(this, settingsRequest);
+        this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
+        //todo if (request.isCustomRules()){ doSomething() };
     }
 
     public BetOptions startNewDeal(){
@@ -67,6 +70,11 @@ public class Game {
         }
     }
 
+    public void addPlayerToGame(Player player){
+        players.add(player);
+        numberOfPlayers = players.size();
+    }
+
     public int getId() {
         return id;
     }
@@ -105,5 +113,13 @@ public class Game {
 
     public void setBigBlindTurn(int bigBlindTurn) {
         this.bigBlindTurn = bigBlindTurn;
+    }
+
+    public int getDesiredNumberOfPlayers() {
+        return desiredNumberOfPlayers;
+    }
+
+    public void setDesiredNumberOfPlayers(int desiredNumberOfPlayers) {
+        this.desiredNumberOfPlayers = desiredNumberOfPlayers;
     }
 }

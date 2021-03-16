@@ -1,16 +1,30 @@
 package com.brewster.poker.game;
 
 import com.brewster.poker.dto.UserDto;
-import com.brewster.poker.model.request.SettingsRequest;
+import com.brewster.poker.model.request.GameSettingsRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GamesContainer {
     private static int gameID = 0;
     private static List<Game> allGames = new ArrayList<>();
 
-    public static Game createGame(List<UserDto> users, SettingsRequest settingsRequest){
+
+    public static List<Game> findAvailableGames(){
+        return allGames.stream()
+                .filter(v -> v.getNumberOfPlayers() < v.getDesiredNumberOfPlayers())
+                .collect(Collectors.toList());
+    }
+
+    public static Game addPlayerToGame(UserDto user, int gameID){
+        Game game = findGameById(gameID);
+        game.addPlayerToGame(convertUserToPlayer(user));
+        return game;
+    }
+
+    public static Game createGame(List<UserDto> users, GameSettingsRequest settingsRequest){
         List<Player> players = convertUsersToPlayers(users);
         Game game = new Game(gameID, players, settingsRequest);
         gameID++;
@@ -24,6 +38,11 @@ public class GamesContainer {
             players.add(user.getPlayer());
         }
         return players;
+    }
+
+    private static Player convertUserToPlayer(UserDto userDto){
+        //todo need to create player. this won't work
+        return userDto.getPlayer();
     }
 
 
