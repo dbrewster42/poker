@@ -6,9 +6,7 @@ public class UserDto {
     private Integer id;
     private String username;
     private Integer money;
-    private HumanPlayer player;
-//    private List<Card> hand;
-//    private Bet bet;
+    //private HumanPlayer player;
 
     public Integer getId() {
         return id;
@@ -33,32 +31,15 @@ public class UserDto {
     public void setMoney(Integer money) {
         this.money = money;
     }
-
-    public HumanPlayer getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(HumanPlayer player) {
-        this.player = player;
-    }
-
-    //    public List<Card> getHand() {
-//        return hand;
+//
+//    public HumanPlayer getPlayer() {
+//        return player;
 //    }
 //
-//    public void setHand(List<Card> hand) {
-//        this.hand = hand;
+//    public void setPlayer(HumanPlayer player) {
+//        this.player = player;
 //    }
 //
-//    public void dealCard(Card card){ this.hand.add(card); }
-//
-//    public Bet getBet() {
-//        return bet;
-//    }
-//
-//    public void setBet(Bet bet) {
-//        this.bet = bet;
-//    }
 
     @Override
     public String toString() {

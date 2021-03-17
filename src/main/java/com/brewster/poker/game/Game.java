@@ -43,7 +43,7 @@ public class Game {
         this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
         openSlots = desiredNumberOfPlayers - 1;
         if (settingsRequest.isFillWithComputerPlayers()){
-            generateNComputerUsers(openSlots);
+            generateNComputerPlayers(openSlots);
         }
         //todo if (request.isCustomRules()){ doSomething() };
     }
@@ -100,19 +100,19 @@ public class Game {
     public void addPlayerToGame(HumanPlayer player){
         players.add(player);
         numberOfPlayers = players.size();
+        openSlots--;
     }
 
-    public void generateNComputerUsers(int n){
+    public void generateNComputerPlayers(int n){
         Random random = new Random();
         for (int i = 0; i < n; i++) {
             String displayName = "HAL" + random.nextInt(500);
             Player player = new ComputerPlayer(displayName);
             players.add(player);
         }
-
     }
 
-//    public List<UserDto> generateNComputerUsers(int numberOfUsers){
+//    public List<UserDto> generateNComputerPlayers(int numberOfUsers){
 //        List<UserDto> users = new ArrayList<>();
 //        Random random = new Random();
 //        for (int i = 0; i < numberOfUsers - 1; i++){

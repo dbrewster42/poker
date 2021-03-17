@@ -1,7 +1,9 @@
 package com.brewster.poker.game;
 
+import com.brewster.poker.dto.UserDto;
+
 public class ComputerPlayer extends Player {
-    private static int money = 10000;
+    private static int bank = 10000;
 
     public ComputerPlayer(String displayName) {
         super(displayName);

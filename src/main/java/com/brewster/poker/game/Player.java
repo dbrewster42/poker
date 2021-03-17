@@ -1,6 +1,7 @@
 package com.brewster.poker.game;
 
 import com.brewster.poker.card.Card;
+import com.brewster.poker.dto.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +10,17 @@ public abstract class Player {
     private List<Card> hand;
     private String displayName;
     private Game game;
+    private int money;
+    private UserDto user;
 
     public Player(String displayName){
         this.displayName = displayName;
+        hand = new ArrayList<>();
+    }
+    public Player(String displayName, UserDto userDto){
+        this.displayName = displayName;
+        this.user = userDto;
+        this.money = userDto.getMoney();
         hand = new ArrayList<>();
     }
 
@@ -44,5 +53,21 @@ public abstract class Player {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public UserDto getUser() {
+        return user;
+    }
+
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 }
