@@ -3,6 +3,9 @@ package com.brewster.poker.game;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.request.JoinRequest;
+import com.brewster.poker.player.ComputerPlayer;
+import com.brewster.poker.player.HumanPlayer;
+import com.brewster.poker.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.brewster.poker.game.bet;
 
 import com.brewster.poker.game.Game;
-import com.brewster.poker.game.HumanPlayer;
-import com.brewster.poker.game.Player;
+import com.brewster.poker.player.HumanPlayer;
+import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
 

@@ -1,6 +1,7 @@
-package com.brewster.poker.game;
+package com.brewster.poker.player;
 
 import com.brewster.poker.dto.UserDto;
+import com.brewster.poker.player.Player;
 
 public class HumanPlayer extends Player {
 

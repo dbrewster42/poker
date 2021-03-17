@@ -1,6 +1,6 @@
 package com.brewster.poker.game.bet;
 
-import com.brewster.poker.game.Player;
+import com.brewster.poker.player.Player;
 
 public class BetOptions {
     private Action[] possibleActions;

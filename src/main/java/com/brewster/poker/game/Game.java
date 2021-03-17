@@ -5,6 +5,9 @@ import com.brewster.poker.card.DeckBuilder;
 import com.brewster.poker.game.bet.BetManager;
 import com.brewster.poker.game.bet.BetOptions;
 import com.brewster.poker.model.request.GameSettingsRequest;
+import com.brewster.poker.player.ComputerPlayer;
+import com.brewster.poker.player.HumanPlayer;
+import com.brewster.poker.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;

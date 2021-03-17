@@ -1,7 +1,8 @@
-package com.brewster.poker.game;
+package com.brewster.poker.player;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
+import com.brewster.poker.game.Game;
 
 import java.util.ArrayList;
 import java.util.List;

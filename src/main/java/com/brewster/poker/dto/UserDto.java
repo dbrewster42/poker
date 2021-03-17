@@ -1,7 +1,5 @@
 package com.brewster.poker.dto;
 
-import com.brewster.poker.game.HumanPlayer;
-
 public class UserDto {
     private Integer id;
     private String username;

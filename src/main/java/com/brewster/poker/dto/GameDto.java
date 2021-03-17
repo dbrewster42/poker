@@ -1,6 +1,6 @@
 package com.brewster.poker.dto;
 
-import com.brewster.poker.game.HumanPlayer;
+import com.brewster.poker.player.HumanPlayer;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.brewster.poker.game;
+package com.brewster.poker.player;
 
 import com.brewster.poker.dto.UserDto;
 

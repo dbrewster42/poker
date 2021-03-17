@@ -1,11 +1,9 @@
 # TODO
-should money be a part of abstract Player class?
-add money and then override getter/setters?
 
 separate Game/BetManager into service/repo
 combine BetManager and Game?
 
-annotations for jackson
+improve JSON serialization. aka annotations for jackson
 
 make Game extendable (make Game an abstract class, TexasHoldEm will be implementation)
 
