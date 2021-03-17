@@ -123,7 +123,6 @@ public class BetManager {
     public int getId() {
         return id;
     }
-    
 
     public Game getGame() {
         return game;

@@ -1,5 +1,6 @@
 # TODO
-add computer controlled player
+should money be a part of abstract Player class?
+add money and then override getter/setters?
 
 separate Game/BetManager into service/repo
 combine BetManager and Game?

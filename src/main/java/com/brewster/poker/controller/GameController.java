@@ -35,7 +35,7 @@ public class GameController {
     @PostMapping("/")
     public Response createGame(@RequestBody GameSettingsRequest request) {
         userDto = userService.findUser(request.getUsername());
-//        List<UserDto> users = userService.generateNComputerUsers(4); //todo move to game. we don't need users, just players
+//        List<UserDto> users = userService.generateNComputerUsers(4);
 //        users.add((userDto));
 //        game = GamesContainer.createGame(users, request);
         game = GamesContainer.createGame(userDto, request);
