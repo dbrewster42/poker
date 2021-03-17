@@ -18,6 +18,7 @@ public class BetManager {
     private int smallBlind;
     private int turn;
     private int turnsLeftInRound;
+    //private int lastBet;
     private final Integer maxBet;
     private static final Action[] CHECK_ACTIONS = { Action.BET, Action.CHECK, Action.FOLD };
     private static final Action[] CALL_ACTIONS = { Action.CALL, Action.RAISE, Action.FOLD };
@@ -32,7 +33,7 @@ public class BetManager {
         this.game = game;
         this.bigBlind = Optional.ofNullable(request.getBigBlind()).orElse(500);
         this.smallBlind = bigBlind / 2;
-        this.activePlayers = game.getNumberOfPlayers();
+        this.activePlayers = game.getPlayers().size();
         this.turn = 0;
         this.maxBet = Optional.ofNullable(request.getMaxBet()).map(v -> v < 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
         betFactory = new BetFactoryImplementation();
@@ -88,14 +89,14 @@ public class BetManager {
     public void startNextRound(){
         betAmount = 0;
         turn = game.getBigBlindTurn() + 1;
-        activePlayers = game.getNumberOfPlayers();
+        activePlayers = game.getPlayers().size();
         turnsLeftInRound = activePlayers;
     }
 
     public BetOptions startNewDeal(Player currentPlayer){
         pot = 0;
         betAmount = 0;
-        activePlayers = game.getNumberOfPlayers(); //todo better as param?
+        activePlayers = game.getPlayers().size(); //todo better as param?
         turnsLeftInRound = activePlayers;
         return getBetOptions(currentPlayer);
     }

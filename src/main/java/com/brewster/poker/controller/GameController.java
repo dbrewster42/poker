@@ -24,6 +24,7 @@ public class GameController {
     private Game game;
     private final UserService userService;
     private UserDto userDto;
+    private UserDto computerUser;
     private String body;
     private int statusCode = 200;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -35,10 +36,13 @@ public class GameController {
     @PostMapping("/")
     public Response createGame(@RequestBody GameSettingsRequest request) {
         userDto = userService.findUser(request.getUsername());
-//        List<UserDto> users = userService.generateNComputerUsers(4);
-//        users.add((userDto));
-//        game = GamesContainer.createGame(users, request);
-        game = GamesContainer.createGame(userDto, request);
+        if (request.isFillWithComputerPlayers()){
+            computerUser = userService.findUser("HAL");
+            game = GamesContainer.createGame(userDto, request, computerUser);
+        } else {
+            game = GamesContainer.createGame(userDto, request);
+        }
+
         try {
             //body =List<MyClass> myObjects = Arrays.asList(mapper.readValue(json, MyClass[].class))
             body = mapper.writeValueAsString(game);

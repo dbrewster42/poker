@@ -6,15 +6,27 @@ import com.brewster.poker.model.request.JoinRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class GamesContainer {
     private static int gameID = 0;
     private static List<Game> allGames = new ArrayList<>();
+    private static UserDto computer;
+
+    public static Game findGameById(Integer id){
+        Game game = allGames.get(id);
+        if (game.getId() == id){
+            return game;
+        } else {
+            return allGames.stream().filter(v -> v.getId() == id)
+                    .findAny().orElse(null);
+        }
+    }
 
     public static List<Game> findAvailableGames(){
         return allGames.stream()
-                .filter(v -> v.getNumberOfPlayers() < v.getDesiredNumberOfPlayers())
+                .filter(v -> v.getOpenSlots() > 0)
                 .collect(Collectors.toList());
     }
 
@@ -24,14 +36,6 @@ public class GamesContainer {
         return game;
     }
 
-//    public static Game createGame(List<UserDto> users, GameSettingsRequest settingsRequest){
-//        List<Player> players = convertUsersToPlayers(users);
-//        Game game = new Game(gameID, players, settingsRequest);
-//        gameID++;
-//        allGames.add(game);
-//        return game;
-//    }
-
     public static Game createGame(UserDto userDto, GameSettingsRequest settingsRequest){
         HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
         Game game = new Game(gameID, player, settingsRequest);
@@ -39,6 +43,29 @@ public class GamesContainer {
         allGames.add(game);
         return game;
     }
+    public static Game createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
+        computer = computerUser;
+        List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1);
+        HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
+        players.add(player);
+        Game game = new Game(gameID, players, settingsRequest);
+        gameID++;
+        allGames.add(game);
+        return game;
+    }
+//    public static Game createGame(List<UserDto> users, GameSettingsRequest settingsRequest){
+//        List<Player> players = convertUsersToPlayers(users);
+//        Game game = new Game(gameID, players, settingsRequest);
+//        gameID++;
+//        allGames.add(game);
+//        return game;
+//    }
+//public static Game createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
+//    Game game = createGame(userDto, settingsRequest);
+//    computer = computerUser;
+//    generateNComputerPlayers();
+//    return game;
+//}
 
 //    private static List<HumanPlayer> convertUsersToPlayers(List<UserDto> users){
 //        List<HumanPlayer> players = new ArrayList<>();
@@ -50,23 +77,18 @@ public class GamesContainer {
 
     private static HumanPlayer convertUserToPlayer(UserDto userDto, String displayName){
         HumanPlayer player = new HumanPlayer(displayName, userDto);
-        userDto.setPlayer(player);
         return player;
     }
 
-    public static Game findGameById(Integer id){
-        //Game game = allGames.stream().filter(v -> v.getId() == id).findAny().orElse(null);
-        Game game = allGames.get(id);
-        if (game.getId() == id){
-            return game;
-        } else {
-            for (Game i : allGames){
-                if (i.getId() == id){
-                    return i;
-                }
-            }
-            return null;
+    public static List<Player> generateNComputerPlayers(int n){
+        List<Player> players = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < n; i++) {
+            String displayName = "HAL" + random.nextInt(500);
+            Player player = new ComputerPlayer(displayName, computer);
+            players.add(player);
         }
+        return players;
     }
 
     public static int getGameID() {

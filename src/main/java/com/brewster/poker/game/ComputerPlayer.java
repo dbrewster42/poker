@@ -5,8 +5,13 @@ import com.brewster.poker.dto.UserDto;
 public class ComputerPlayer extends Player {
     private static int bank = 10000;
 
-    public ComputerPlayer(String displayName) {
+//    public ComputerPlayer(String displayName, UserDto userDto) {
+//        super(displayName, userDto);
+//    }
+    public ComputerPlayer(String displayName, UserDto userDto) {
         super(displayName);
+        setUser(userDto);
+        setMoney(1000);
     }
 
     @Override
@@ -28,4 +33,14 @@ public class ComputerPlayer extends Player {
     public void leaveGame() {
 
     }
+
+//    private static UserDto getComputerUser(){
+//        UserDto userDto =
+////        UserDto userDto = new UserDto();
+////        userDto.setId(0);
+////        userDto.setMoney(bank);
+////        userDto.setUsername("HAL");
+////        return userDto;
+//    }
+
 }

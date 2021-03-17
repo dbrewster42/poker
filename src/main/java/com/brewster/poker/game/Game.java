@@ -18,43 +18,37 @@ public class Game {
     private List<Card> cards;
     private List<Card> riverCards = new ArrayList<>();
     private int bigBlindTurn = 0;
-    private int numberOfPlayers;
+//    private int numberOfPlayers;
     //private int humanPlayers;
     private int openSlots;
     private int desiredNumberOfPlayers;
     private BetManager betManager;
 
-    protected Game(int id, GameSettingsRequest settingsRequest){
-        this.id = id;
-        this.players = new ArrayList<>();
-        this.numberOfPlayers = 0;
-        betManager = new BetManager(this, settingsRequest);
-        this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
-        this.openSlots = desiredNumberOfPlayers;
-        //todo if (request.isCustomRules()){ doSomething() };
-    }
-
+//    protected Game(int id, GameSettingsRequest settingsRequest){
+//        this.id = id;
+//        this.players = new ArrayList<>();
+//        this.numberOfPlayers = 0;
+//        betManager = new BetManager(this, settingsRequest);
+//        this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
+//        this.openSlots = desiredNumberOfPlayers;
+//    }
     protected Game(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
         this.id = id;
         this.players = new ArrayList<>();
         players.add(player);
-        this.numberOfPlayers = players.size();
         betManager = new BetManager(this, settingsRequest);
         this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
         openSlots = desiredNumberOfPlayers - 1;
-        if (settingsRequest.isFillWithComputerPlayers()){
-            generateNComputerPlayers(openSlots);
-        }
         //todo if (request.isCustomRules()){ doSomething() };
     }
-
-//    public Game(int id, List<HumanPlayer> players, GameSettingsRequest settingsRequest){
-//        this.id = id;
-//        this.players = players;
-//        this.numberOfPlayers = players.size();
-//        betManager = new BetManager(this, settingsRequest);
-//        this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
-//    }
+    protected Game(int id, List<Player> players, GameSettingsRequest settingsRequest){
+        this.id = id;
+        this.players = players;
+        betManager = new BetManager(this, settingsRequest);
+        this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
+        openSlots = desiredNumberOfPlayers - 1;
+        //todo if (request.isCustomRules()){ doSomething() };
+    }
 
     public BetOptions startNewDeal(){
         cards = getNewStandardDeck();
@@ -98,32 +92,21 @@ public class Game {
     }
 
     public void addPlayerToGame(HumanPlayer player){
-        players.add(player);
-        numberOfPlayers = players.size();
-        openSlots--;
-    }
-
-    public void generateNComputerPlayers(int n){
-        Random random = new Random();
-        for (int i = 0; i < n; i++) {
-            String displayName = "HAL" + random.nextInt(500);
-            Player player = new ComputerPlayer(displayName);
+        if (desiredNumberOfPlayers == players.size()){
+            for (Player eachPlayer : players){
+                if (eachPlayer.getClass() == ComputerPlayer.class){
+                    eachPlayer = player;
+                }
+            }
+        } else {
             players.add(player);
         }
-    }
+        openSlots--;
 
-//    public List<UserDto> generateNComputerPlayers(int numberOfUsers){
-//        List<UserDto> users = new ArrayList<>();
-//        Random random = new Random();
-//        for (int i = 0; i < numberOfUsers - 1; i++){
-//            UserDto computerUser = new UserDto();
-//            computerUser.setUsername("HAL" + random.nextInt(500));
-//            computerUser.setMoney(999);
-//            computerUser.setPlayer(new HumanPlayer(computerUser.getUsername()));
-//            users.add(computerUser);
-//        }
-//        return users;
-//    }
+    }
+    public void addPlayerToGame(ComputerPlayer player){
+        players.add(player);
+    }
 
     public int getId() {
         return id;
@@ -149,14 +132,6 @@ public class Game {
         this.players = players;
     }
 
-    public int getNumberOfPlayers() {
-        return numberOfPlayers;
-    }
-
-    public void setNumberOfPlayers(int numberOfPlayers) {
-        this.numberOfPlayers = numberOfPlayers;
-    }
-
     public int getBigBlindTurn() {
         return bigBlindTurn;
     }
@@ -165,11 +140,11 @@ public class Game {
         this.bigBlindTurn = bigBlindTurn;
     }
 
-    public int getDesiredNumberOfPlayers() {
-        return desiredNumberOfPlayers;
+    public int getOpenSlots() {
+        return openSlots;
     }
 
-    public void setDesiredNumberOfPlayers(int desiredNumberOfPlayers) {
-        this.desiredNumberOfPlayers = desiredNumberOfPlayers;
+    public void setOpenSlots(int openSlots) {
+        this.openSlots = openSlots;
     }
 }
