@@ -54,27 +54,4 @@ public class DeckBuilder {
         }
         return cards;
     }
-
-//    public Card[] buildStandardDeck(){
-//        int count = 0;
-//        for (int i = 0; i < 13; i++){
-//            for (int j = 0; j < 4; j++){
-//                Card card = new Card(SUITS[j], VALUES[i], NAMES[i], IMAGE_PREFIXES[i]);
-//                cards[count] = card;
-//                count++;
-//            }
-//        }
-//        return cards;
-//    }
-//public DeckBuilder withJokersDeck(int wildcards){
-//    cards = new Card[52 + wildcards];
-//    cards = buildStandardDeck();
-//    Card joker = new Card("any", 20, "Joker", "purple_back");
-//    int count = 52;
-//    for (int i = 0; i < wildcards; i++){
-//        cards[count] = joker;
-//    }
-//    deck.setCards(cards);
-//    return this;
-//}
 }

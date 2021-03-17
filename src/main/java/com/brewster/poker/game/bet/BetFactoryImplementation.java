@@ -1,7 +1,6 @@
 package com.brewster.poker.game.bet;
 
-import com.brewster.poker.game.Player;
-import com.brewster.poker.game.bet.action.*;
+import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
 
 public class BetFactoryImplementation implements BetFactory {

@@ -1,15 +1,10 @@
 package com.brewster.poker.service;
 
-import com.brewster.poker.game.Player;
 import com.brewster.poker.repository.UserRepository;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 @Service
 public class UserServiceImplementation implements UserService {
@@ -52,32 +47,4 @@ public class UserServiceImplementation implements UserService {
 
         return returnValue;
     }
-
-
-    public List<UserDto> generateNComputerUsers(int numberOfUsers){
-        List<UserDto> users = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < numberOfUsers - 1; i++){
-            UserDto computerUser = new UserDto();
-            computerUser.setUsername("HAL" + random.nextInt(500));
-            computerUser.setMoney(999);
-            computerUser.setPlayer(new Player(computerUser.getUsername()));
-            users.add(computerUser);
-        }
-        return users;
-    }
-//    public List<UserDto> gatherUsersForGame(UserDto dto, int numberOfUsers){
-//        List<UserDto> players = new ArrayList<>();
-//        players.add(dto);
-//        Random random = new Random();
-//        for (int i = 0; i < numberOfUsers - 1; i++){
-//            UserDto computerUser = new UserDto();
-//            //computerUser.setId(0);
-//            computerUser.setUsername("HAL" + random.nextInt(500));
-//            computerUser.setMoney(999);
-//            players.add(computerUser);
-//        }
-//        return players;
-//    }
-
 }

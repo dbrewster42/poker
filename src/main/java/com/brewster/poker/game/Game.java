@@ -4,26 +4,41 @@ import com.brewster.poker.card.Card;
 import com.brewster.poker.card.DeckBuilder;
 import com.brewster.poker.game.bet.BetManager;
 import com.brewster.poker.game.bet.BetOptions;
-import com.brewster.poker.model.request.SettingsRequest;
+import com.brewster.poker.model.request.GameSettingsRequest;
+import com.brewster.poker.player.ComputerPlayer;
+import com.brewster.poker.player.HumanPlayer;
+import com.brewster.poker.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
+    private int id;
+    private List<Player> players;
+    private Player currentPlayer;
     private List<Card> cards;
     private List<Card> riverCards = new ArrayList<>();
-    private List<Player> players;
     private int bigBlindTurn = 0;
-    private Player currentPlayer;
-    private int numberOfPlayers;
-    private int id;
+    private int openSlots;
+    private int desiredNumberOfPlayers;
     private BetManager betManager;
 
-    public Game(int id, List<Player> players, SettingsRequest settingsRequest){
+    protected Game(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
+        this.id = id;
+        this.players = new ArrayList<>();
+        players.add(player);
+        betManager = new BetManager(this, settingsRequest);
+        this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
+        openSlots = desiredNumberOfPlayers - 1;
+        //todo if (request.isCustomRules()){ doSomething() };
+    }
+    protected Game(int id, List<Player> players, GameSettingsRequest settingsRequest){
         this.id = id;
         this.players = players;
-        this.numberOfPlayers = players.size();
-        betManager = new BetManager(this, settingsRequest.getBigBlind());
+        betManager = new BetManager(this, settingsRequest);
+        this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
+        openSlots = desiredNumberOfPlayers - 1;
+        //todo if (request.isCustomRules()){ doSomething() };
     }
 
     public BetOptions startNewDeal(){
@@ -67,6 +82,23 @@ public class Game {
         }
     }
 
+    public void addPlayerToGame(HumanPlayer player){
+        if (desiredNumberOfPlayers == players.size()){
+            for (Player eachPlayer : players){
+                if (eachPlayer.getClass() == ComputerPlayer.class){
+                    eachPlayer = player;
+                }
+            }
+        } else {
+            players.add(player);
+        }
+        openSlots--;
+
+    }
+    public void addPlayerToGame(ComputerPlayer player){
+        players.add(player);
+    }
+
     public int getId() {
         return id;
     }
@@ -91,19 +123,19 @@ public class Game {
         this.players = players;
     }
 
-    public int getNumberOfPlayers() {
-        return numberOfPlayers;
-    }
-
-    public void setNumberOfPlayers(int numberOfPlayers) {
-        this.numberOfPlayers = numberOfPlayers;
-    }
-
     public int getBigBlindTurn() {
         return bigBlindTurn;
     }
 
     public void setBigBlindTurn(int bigBlindTurn) {
         this.bigBlindTurn = bigBlindTurn;
+    }
+
+    public int getOpenSlots() {
+        return openSlots;
+    }
+
+    public void setOpenSlots(int openSlots) {
+        this.openSlots = openSlots;
     }
 }
