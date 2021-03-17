@@ -33,14 +33,4 @@ public class ComputerPlayer extends Player {
     public void leaveGame() {
 
     }
-
-//    private static UserDto getComputerUser(){
-//        UserDto userDto =
-////        UserDto userDto = new UserDto();
-////        userDto.setId(0);
-////        userDto.setMoney(bank);
-////        userDto.setUsername("HAL");
-////        return userDto;
-//    }
-
 }

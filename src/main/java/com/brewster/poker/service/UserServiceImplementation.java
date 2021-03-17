@@ -6,7 +6,6 @@ import com.brewster.poker.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
@@ -48,18 +47,4 @@ public class UserServiceImplementation implements UserService {
 
         return returnValue;
     }
-
-//    public List<UserDto> generateNComputerUsers(int numberOfUsers){
-//        List<UserDto> users = new ArrayList<>();
-//        Random random = new Random();
-//        for (int i = 0; i < numberOfUsers - 1; i++){
-//            UserDto computerUser = new UserDto();
-//            computerUser.setUsername("HAL" + random.nextInt(500));
-//            computerUser.setMoney(999);
-//            computerUser.setPlayer(new HumanPlayer(computerUser.getUsername()));
-//            users.add(computerUser);
-//        }
-//        return users;
-//    }
-
 }

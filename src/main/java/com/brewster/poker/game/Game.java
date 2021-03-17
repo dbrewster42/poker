@@ -2,14 +2,12 @@ package com.brewster.poker.game;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.card.DeckBuilder;
-import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.game.bet.BetManager;
 import com.brewster.poker.game.bet.BetOptions;
 import com.brewster.poker.model.request.GameSettingsRequest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Game {
     private int id;
@@ -18,20 +16,10 @@ public class Game {
     private List<Card> cards;
     private List<Card> riverCards = new ArrayList<>();
     private int bigBlindTurn = 0;
-//    private int numberOfPlayers;
-    //private int humanPlayers;
     private int openSlots;
     private int desiredNumberOfPlayers;
     private BetManager betManager;
 
-//    protected Game(int id, GameSettingsRequest settingsRequest){
-//        this.id = id;
-//        this.players = new ArrayList<>();
-//        this.numberOfPlayers = 0;
-//        betManager = new BetManager(this, settingsRequest);
-//        this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
-//        this.openSlots = desiredNumberOfPlayers;
-//    }
     protected Game(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
         this.id = id;
         this.players = new ArrayList<>();

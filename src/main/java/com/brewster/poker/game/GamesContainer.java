@@ -53,27 +53,6 @@ public class GamesContainer {
         allGames.add(game);
         return game;
     }
-//    public static Game createGame(List<UserDto> users, GameSettingsRequest settingsRequest){
-//        List<Player> players = convertUsersToPlayers(users);
-//        Game game = new Game(gameID, players, settingsRequest);
-//        gameID++;
-//        allGames.add(game);
-//        return game;
-//    }
-//public static Game createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
-//    Game game = createGame(userDto, settingsRequest);
-//    computer = computerUser;
-//    generateNComputerPlayers();
-//    return game;
-//}
-
-//    private static List<HumanPlayer> convertUsersToPlayers(List<UserDto> users){
-//        List<HumanPlayer> players = new ArrayList<>();
-//        for (UserDto user : users){
-//            players.add(user.getPlayer());
-//        }
-//        return players;
-//    }
 
     private static HumanPlayer convertUserToPlayer(UserDto userDto, String displayName){
         HumanPlayer player = new HumanPlayer(displayName, userDto);
