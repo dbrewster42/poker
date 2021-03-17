@@ -1,9 +1,9 @@
 package com.brewster.poker.game;
 
-import com.brewster.poker.card.Card;
-import com.brewster.poker.card.DeckBuilder;
-import com.brewster.poker.game.bet.BetManager;
-import com.brewster.poker.game.bet.BetOptions;
+import com.brewster.poker.cards.Card;
+import com.brewster.poker.cards.DeckBuilder;
+import com.brewster.poker.bets.BetManager;
+import com.brewster.poker.bets.BetOptions;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
@@ -30,7 +30,6 @@ public class Game {
         betManager = new BetManager(this, settingsRequest);
         this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
         openSlots = desiredNumberOfPlayers - 1;
-        //todo if (request.isCustomRules()){ doSomething() };
     }
     protected Game(int id, List<Player> players, GameSettingsRequest settingsRequest){
         this.id = id;

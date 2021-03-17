@@ -1,4 +1,4 @@
-package com.brewster.poker.game.bet;
+package com.brewster.poker.bets;
 
 import com.brewster.poker.game.Game;
 import com.brewster.poker.player.HumanPlayer;

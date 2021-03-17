@@ -1,6 +1,6 @@
 package com.brewster.poker.model.response;
 
-import com.brewster.poker.game.bet.Action;
+import com.brewster.poker.bets.Action;
 
 import java.util.HashMap;
 import java.util.List;

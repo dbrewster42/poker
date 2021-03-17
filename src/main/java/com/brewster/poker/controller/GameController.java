@@ -1,10 +1,10 @@
 package com.brewster.poker.controller;
 
-import com.brewster.poker.card.Card;
+import com.brewster.poker.cards.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.game.Game;
 import com.brewster.poker.game.GamesContainer;
-import com.brewster.poker.game.bet.BetOptions;
+import com.brewster.poker.bets.BetOptions;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.model.request.UserRequest;

@@ -1,4 +1,4 @@
-package com.brewster.poker.game.bet;
+package com.brewster.poker.bets;
 
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;

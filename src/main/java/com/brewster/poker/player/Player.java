@@ -1,6 +1,6 @@
 package com.brewster.poker.player;
 
-import com.brewster.poker.card.Card;
+import com.brewster.poker.cards.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.game.Game;
 

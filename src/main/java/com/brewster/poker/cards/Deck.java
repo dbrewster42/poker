@@ -1,4 +1,4 @@
-package com.brewster.poker.card;
+package com.brewster.poker.cards;
 
 import java.util.List;
 import java.util.Random;

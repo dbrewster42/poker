@@ -1,4 +1,4 @@
-package com.brewster.poker.game.bet;
+package com.brewster.poker.bets;
 
 public enum Action {
     BET,
