@@ -15,6 +15,7 @@ class DeckBuilderTest {
     void withStandardDeckIsCorrectSize() {
         assertEquals(52, standardDeck.size());
     }
+
     @Test
     void withStandardDeckListsAllCardsOnce() {
         Set<Card> uniqueCards = new HashSet<>();

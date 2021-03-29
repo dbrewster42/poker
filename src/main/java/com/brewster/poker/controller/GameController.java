@@ -9,6 +9,7 @@ import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
+import com.brewster.poker.model.response.PlayersResponse;
 import com.brewster.poker.model.response.Response;
 import com.brewster.poker.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -36,16 +37,22 @@ public class GameController {
     @PostMapping("/")
     public Response createGame(@RequestBody GameSettingsRequest request) {
         userDto = userService.findUser(request.getUsername());
+        System.out.println(request.toString());
         if (request.isFillWithComputerPlayers()){
+            System.out.println("true");
             computerUser = userService.findUser("HAL");
             game = GamesContainer.createGame(userDto, request, computerUser);
         } else {
+            System.out.println("false");
             game = GamesContainer.createGame(userDto, request);
         }
+        PlayersResponse playersResponse = game.getGameResponse();
+
+        System.out.println(game.toString());
 
         try {
             //body =List<MyClass> myObjects = Arrays.asList(mapper.readValue(json, MyClass[].class))
-            body = mapper.writeValueAsString(game);
+            body = mapper.writeValueAsString(playersResponse);
         } catch (JsonProcessingException e) {
             body = e.getMessage();
             statusCode = 400;
@@ -98,7 +105,7 @@ public class GameController {
         return new Response(body, statusCode);
     }
 
-    @GetMapping("/{id}/bet/new-deal")
+    @GetMapping("/{id}/new-deal")
     public Response startNewDeal(@PathVariable int id){
         game = GamesContainer.findGameById(id);
         BetOptions options = game.startNewDeal();

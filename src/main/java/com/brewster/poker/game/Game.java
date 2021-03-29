@@ -5,12 +5,15 @@ import com.brewster.poker.cards.DeckBuilder;
 import com.brewster.poker.bets.BetManager;
 import com.brewster.poker.bets.BetOptions;
 import com.brewster.poker.model.request.GameSettingsRequest;
+import com.brewster.poker.model.response.PlayersResponse;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Game {
     private int id;
@@ -94,6 +97,16 @@ public class Game {
         openSlots--;
 
     }
+    public PlayersResponse getGameResponse(){
+        PlayersResponse playersResponse = new PlayersResponse();
+        Map<String, Integer> playersInfo = new HashMap<>();
+        for (Player player : players){
+            playersInfo.put(player.getDisplayName(), player.getMoney());
+        }
+        playersResponse.setPlayers(playersInfo);
+        return playersResponse;
+    }
+
     public void addPlayerToGame(ComputerPlayer player){
         players.add(player);
     }
@@ -136,5 +149,13 @@ public class Game {
 
     public void setOpenSlots(int openSlots) {
         this.openSlots = openSlots;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", players=" + players +
+                '}';
     }
 }

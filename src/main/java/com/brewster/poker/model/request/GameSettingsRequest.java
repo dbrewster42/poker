@@ -64,4 +64,17 @@ public class GameSettingsRequest {
     public void setFillWithComputerPlayers(boolean fillWithComputerPlayers) {
         this.fillWithComputerPlayers = fillWithComputerPlayers;
     }
+
+    @Override
+    public String toString() {
+        return "GameSettingsRequest{" +
+                "username='" + username + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", customRules=" + customRules +
+                ", numberOfPlayers=" + numberOfPlayers +
+                ", bigBlind=" + bigBlind +
+                ", maxBet=" + maxBet +
+                ", fillWithComputerPlayers=" + fillWithComputerPlayers +
+                '}';
+    }
 }

@@ -47,13 +47,13 @@ public class GamesContainer {
         return game;
     }
     public static Game createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
-        computer = computerUser;
-        List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1);
+//        computer = computerUser;
+        List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
         HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
-        players.add(player);
         Game game = new Game(gameID, players, settingsRequest);
         gameID++;
         allGames.add(game);
+        players.add(player);
         return game;
     }
 
@@ -62,7 +62,7 @@ public class GamesContainer {
         return player;
     }
 
-    public static List<Player> generateNComputerPlayers(int n){
+    public static List<Player> generateNComputerPlayers(int n, UserDto computer){
         List<Player> players = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < n; i++) {
