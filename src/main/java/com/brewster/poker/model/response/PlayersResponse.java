@@ -4,6 +4,7 @@ import java.util.Map;
 
 public class PlayersResponse {
     Map<String, Integer> players;
+    String username;
 
     public Map<String, Integer> getPlayers() {
         return players;

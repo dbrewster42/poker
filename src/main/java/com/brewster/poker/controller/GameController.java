@@ -46,13 +46,16 @@ public class GameController {
             System.out.println("false");
             game = GamesContainer.createGame(userDto, request);
         }
+        //TODO change response to include username, or just get rid of displayName
         PlayersResponse playersResponse = game.getGameResponse();
-
         System.out.println(game.toString());
-
+        BetOptions options = game.startNewDeal();
+        //TODO only return betOptions if player == player
+        //TODO return rivercards, I think
         try {
             //body =List<MyClass> myObjects = Arrays.asList(mapper.readValue(json, MyClass[].class))
             body = mapper.writeValueAsString(playersResponse);
+            body += mapper.writeValueAsString(options);
         } catch (JsonProcessingException e) {
             body = e.getMessage();
             statusCode = 400;
@@ -63,6 +66,19 @@ public class GameController {
         response.setGameId(game.getId());
         return response;
     }
+//    @GetMapping("/{id}/new-deal")
+//    public Response startNewDeal(@PathVariable int id){
+//        game = GamesContainer.findGameById(id);
+//        BetOptions options = game.startNewDeal();
+//        try {
+//            body = mapper.writeValueAsString(options);
+//        } catch (JsonProcessingException e) {
+//            body = e.getMessage();
+//            statusCode = 400;
+//            e.printStackTrace();
+//        }
+//        return new Response(body, statusCode);
+//    }
 
     @GetMapping("/join")
     public Response findGame() {
@@ -86,17 +102,16 @@ public class GameController {
         return new Response(body, statusCode);
     }
 
-    @PostMapping("/{id}")
-    public Response deal(@PathVariable int id, @RequestBody UserRequest request) throws ClassNotFoundException {
-        userDto = userService.findUser(request.getUsername());
+
+    @GetMapping("/{id}")
+    public Response deal(@PathVariable int id) {
         game = GamesContainer.findGameById(id);
         if (game == null){
-            throw new ClassNotFoundException("We could not find your game, sorry.");
+            System.out.println("ERROR !!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!! ERROR");
         }
         List<Card> riverCards = game.startNextRound();
         try {
             body = mapper.writeValueAsString(riverCards);
-            body += mapper.writeValueAsString(userDto);
         } catch (JsonProcessingException e) {
             statusCode = 400;
             body = e.getMessage();
@@ -104,20 +119,24 @@ public class GameController {
         }
         return new Response(body, statusCode);
     }
-
-    @GetMapping("/{id}/new-deal")
-    public Response startNewDeal(@PathVariable int id){
-        game = GamesContainer.findGameById(id);
-        BetOptions options = game.startNewDeal();
-        try {
-            body = mapper.writeValueAsString(options);
-        } catch (JsonProcessingException e) {
-            body = e.getMessage();
-            statusCode = 400;
-            e.printStackTrace();
-        }
-        return new Response(body, statusCode);
-    }
+//    @PostMapping("/{id}")
+//    public Response deal(@PathVariable int id, @RequestBody UserRequest request) {
+//        userDto = userService.findUser(request.getUsername());
+//        game = GamesContainer.findGameById(id);
+//        if (game == null){
+//            System.out.println("ERROR !!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!! ERROR");
+//        }
+//        List<Card> riverCards = game.startNextRound();
+//        try {
+//            body = mapper.writeValueAsString(riverCards);
+//            body += mapper.writeValueAsString(userDto);
+//        } catch (JsonProcessingException e) {
+//            statusCode = 400;
+//            body = e.getMessage();
+//            e.printStackTrace();
+//        }
+//        return new Response(body, statusCode);
+//    }
 
     @GetMapping("/{id}/bet")
     public Response getBetOptions(@PathVariable int id){
