@@ -106,6 +106,13 @@ public class Game {
         GameResponse gameResponse = new GameResponse(users, bigBlindTurn, betManager.getTurn());
         return gameResponse;
     }
+    public List<UserDto> getUsers(){
+        List<UserDto> users = new ArrayList<>();
+        for (Player player : players){
+            users.add(player.getUser());
+        }
+       return users;
+    }
 
     public void addPlayerToGame(ComputerPlayer player){
         players.add(player);

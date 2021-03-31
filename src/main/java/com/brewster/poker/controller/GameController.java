@@ -9,6 +9,7 @@ import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.GameResponse;
+import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.model.response.Response;
 import com.brewster.poker.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,8 +34,8 @@ public class GameController {
         this.userService = userService;
     }
 
-    @PostMapping("/")
-    public Response createGame(@RequestBody GameSettingsRequest request) {
+    @PostMapping
+    public NewGameResponse createGame(@RequestBody GameSettingsRequest request) {
         userDto = userService.findUser(request.getUsername());
         System.out.println(request.toString());
         if (request.isFillWithComputerPlayers()){
@@ -45,25 +46,44 @@ public class GameController {
             System.out.println("false");
             game = GamesContainer.createGame(userDto, request);
         }
-        GameResponse gameResponse = game.getGameResponse();
-        System.out.println(game.toString());
+//        GameResponse gameResponse = game.getGameResponse();
+//        System.out.println(game.toString());
         BetOptions options = game.startNewDeal();
         List<Card> playerCards = userDto.getPlayer().getHand();
+        playerCards.stream().forEach(v -> v.show());
         //TODO only return betOptions if player == player
+//        try {
+//            //body =List<MyClass> myObjects = Arrays.asList(mapper.readValue(json, MyClass[].class))
+//            body = mapper.writeValueAsString(gameResponse);
+//            body += mapper.writeValueAsString(options);
+//            body += mapper.writeValueAsString(playerCards);
+//        } catch (JsonProcessingException e) {
+//            body = e.getMessage();
+//            statusCode = 400;
+//            e.printStackTrace();
+//        }
+//        System.out.println(game.getId() + " !!!!!!!!!!!!!!!!! " + body);
+//        Response response = new Response(body, statusCode);
+        NewGameResponse response = new NewGameResponse(game.getId(), playerCards, game.getUsers(), options);
+//        response.setGameId(game.getId());
+        return response;
+    }
+
+    @GetMapping("/{id}")
+    public Response deal(@PathVariable int id) {
+        game = GamesContainer.findGameById(id);
+        if (game == null){
+            System.out.println("ERROR !!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!! ERROR");
+        }
+        List<Card> riverCards = game.startNextRound();
         try {
-            //body =List<MyClass> myObjects = Arrays.asList(mapper.readValue(json, MyClass[].class))
-            body = mapper.writeValueAsString(gameResponse);
-            body += mapper.writeValueAsString(options);
-            body += mapper.writeValueAsString(playerCards);
+            body = mapper.writeValueAsString(riverCards);
         } catch (JsonProcessingException e) {
-            body = e.getMessage();
             statusCode = 400;
+            body = e.getMessage();
             e.printStackTrace();
         }
-        System.out.println(game.getId() + " !!!!!!!!!!!!!!!!! " + body);
-        Response response = new Response(body, statusCode);
-        response.setGameId(game.getId());
-        return response;
+        return new Response(body, statusCode);
     }
 //    @GetMapping("/{id}/new-deal")
 //    public Response startNewDeal(@PathVariable int id){
@@ -101,23 +121,6 @@ public class GameController {
         return new Response(body, statusCode);
     }
 
-
-    @GetMapping("/{id}")
-    public Response deal(@PathVariable int id) {
-        game = GamesContainer.findGameById(id);
-        if (game == null){
-            System.out.println("ERROR !!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!! ERROR");
-        }
-        List<Card> riverCards = game.startNextRound();
-        try {
-            body = mapper.writeValueAsString(riverCards);
-        } catch (JsonProcessingException e) {
-            statusCode = 400;
-            body = e.getMessage();
-            e.printStackTrace();
-        }
-        return new Response(body, statusCode);
-    }
 //    @PostMapping("/{id}")
 //    public Response deal(@PathVariable int id, @RequestBody UserRequest request) {
 //        userDto = userService.findUser(request.getUsername());
