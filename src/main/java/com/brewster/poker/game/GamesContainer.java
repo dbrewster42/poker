@@ -59,6 +59,7 @@ public class GamesContainer {
 
     private static HumanPlayer convertUserToPlayer(UserDto userDto, String displayName){
         HumanPlayer player = new HumanPlayer(displayName, userDto);
+        userDto.setPlayer(player);
         return player;
     }
 

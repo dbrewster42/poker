@@ -12,3 +12,6 @@ probably need to use table inheritance.
 need to research superclass vs single table
 
 needs reference to both Game and Player
+
+
+fix/delete displayName

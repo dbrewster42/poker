@@ -4,8 +4,9 @@ import com.brewster.poker.cards.Card;
 import com.brewster.poker.cards.DeckBuilder;
 import com.brewster.poker.bets.BetManager;
 import com.brewster.poker.bets.BetOptions;
+import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.GameSettingsRequest;
-import com.brewster.poker.model.response.PlayersResponse;
+import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
@@ -97,14 +98,13 @@ public class Game {
         openSlots--;
 
     }
-    public PlayersResponse getGameResponse(){
-        PlayersResponse playersResponse = new PlayersResponse();
-        Map<String, Integer> playersInfo = new HashMap<>();
+    public GameResponse getGameResponse(){
+        List<UserDto> users = new ArrayList<>();
         for (Player player : players){
-            playersInfo.put(player.getDisplayName(), player.getMoney());
+            users.add(player.getUser());
         }
-        playersResponse.setPlayers(playersInfo);
-        return playersResponse;
+        GameResponse gameResponse = new GameResponse(users, bigBlindTurn, betManager.getTurn());
+        return gameResponse;
     }
 
     public void addPlayerToGame(ComputerPlayer player){

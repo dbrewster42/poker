@@ -7,9 +7,8 @@ import com.brewster.poker.game.GamesContainer;
 import com.brewster.poker.bets.BetOptions;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.JoinRequest;
-import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
-import com.brewster.poker.model.response.PlayersResponse;
+import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.model.response.Response;
 import com.brewster.poker.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -46,16 +45,16 @@ public class GameController {
             System.out.println("false");
             game = GamesContainer.createGame(userDto, request);
         }
-        //TODO change response to include username, or just get rid of displayName
-        PlayersResponse playersResponse = game.getGameResponse();
+        GameResponse gameResponse = game.getGameResponse();
         System.out.println(game.toString());
         BetOptions options = game.startNewDeal();
+        List<Card> playerCards = userDto.getPlayer().getHand();
         //TODO only return betOptions if player == player
-        //TODO return rivercards, I think
         try {
             //body =List<MyClass> myObjects = Arrays.asList(mapper.readValue(json, MyClass[].class))
-            body = mapper.writeValueAsString(playersResponse);
+            body = mapper.writeValueAsString(gameResponse);
             body += mapper.writeValueAsString(options);
+            body += mapper.writeValueAsString(playerCards);
         } catch (JsonProcessingException e) {
             body = e.getMessage();
             statusCode = 400;

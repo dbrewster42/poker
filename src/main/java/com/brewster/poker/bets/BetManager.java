@@ -160,4 +160,8 @@ public class BetManager {
     public void setBetAmount(int betAmount) {
         this.betAmount = betAmount;
     }
+
+    public int getTurn() {
+        return turn;
+    }
 }
