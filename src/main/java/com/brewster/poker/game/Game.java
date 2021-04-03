@@ -109,6 +109,7 @@ public class Game {
     public List<UserDto> getUsers(){
         List<UserDto> users = new ArrayList<>();
         for (Player player : players){
+            player.getUser().setDisplayName(player.getDisplayName());
             users.add(player.getUser());
         }
        return users;

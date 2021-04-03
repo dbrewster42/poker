@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDto {
     private String username;
+    private String displayName;
     private Integer money;
     @JsonIgnore
     private Integer id;
@@ -44,6 +45,13 @@ public class UserDto {
         this.player = player;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
     @Override
     public String toString() {

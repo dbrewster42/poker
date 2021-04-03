@@ -31,7 +31,8 @@ public class BetManager {
     public BetManager(Game game, GameSettingsRequest request) {
         this.id = game.getId();
         this.game = game;
-        this.bigBlind = Optional.ofNullable(request.getBigBlind()).orElse(500);
+//        this.bigBlind = Optional.ofNullable(request.getBigBlind()).orElse(500);
+        this.bigBlind = request.getBigBlind() * 100;
         this.smallBlind = bigBlind / 2;
         this.activePlayers = game.getPlayers().size();
         this.turn = 0;
@@ -53,7 +54,6 @@ public class BetManager {
                 adjustTurn();
             }
         }
-
         return returnStatement;
     }
 

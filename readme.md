@@ -16,5 +16,3 @@ needs reference to both Game and Player
 
 fix/delete displayName
 
-
-## fix bug with card images

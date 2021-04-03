@@ -24,6 +24,12 @@ public class NewGameResponse {
         this.users = users;
         this.betOptions = betOptions;
     }
+    public NewGameResponse(final int gameId, final List<Card> hand, final List<UserDto> users){
+        this.gameId = gameId;
+        this.hand = hand;
+        this.users = users;
+        betOptions = null;
+    }
 
 //    public int getBigBlindTurn() {
 //        return bigBlindTurn;
