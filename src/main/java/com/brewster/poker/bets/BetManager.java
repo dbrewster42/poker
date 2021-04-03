@@ -105,7 +105,7 @@ public class BetManager {
         //TODO test turns left in round
         if (turnsLeftInRound > 0){
             Action[] actionOptions = getPossibleBetActions(betAmount);
-            betOptions = new BetOptions(currentPlayer, actionOptions, betAmount);
+            betOptions = new BetOptions(currentPlayer, actionOptions, betAmount, pot);
             return betOptions;
         } else {
             game.startNextRound();
