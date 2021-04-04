@@ -9,6 +9,7 @@ import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.request.UserRequest;
+import com.brewster.poker.model.response.BetResponse;
 import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.model.response.Response;
 import com.brewster.poker.player.HumanPlayer;
@@ -27,9 +28,9 @@ public class GameController {
     private final UserService userService;
     private UserDto userDto;
     private UserDto computerUser;
-    private String body;
-    private int statusCode = 200;
-    private final ObjectMapper mapper = new ObjectMapper();
+//    private String body;
+//    private int statusCode = 200;
+//    private final ObjectMapper mapper = new ObjectMapper();
 
     public GameController(UserService userService) {
         this.userService = userService;
@@ -46,6 +47,8 @@ public class GameController {
             game = GamesContainer.createGame(userDto, request);
         }
         List<Card> playerCards = userDto.getPlayer().getHand();
+        //TODO return game.getGameResponse or construct here?
+        //return game.getGameResponse();
         List<UserDto> users = game.getUsers();
         BetOptions options = game.startNewDeal();
 
@@ -65,6 +68,20 @@ public class GameController {
             System.out.println("ERROR !!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!! ERROR");
         }
         return game.startNextRound();
+    }
+
+    @GetMapping("/join")
+    public List<Game> findGame() {
+        return GamesContainer.findAvailableGames();
+    }
+    @PostMapping("/join")
+    public Response joinGame(@RequestBody JoinRequest request) {
+        userDto = userService.findUser(request.getUsername());
+        Game game = GamesContainer.addPlayerToGame(userDto, request);
+        //        try {
+        //TODO do i need to do this if I use annotations?
+        //        }
+        return null;
     }
 //    @GetMapping("/{id}")
 //    public Response deal(@PathVariable int id) {
@@ -96,27 +113,27 @@ public class GameController {
 //        return new Response(body, statusCode);
 //    }
 
-    @GetMapping("/join")
-    public Response findGame() {
-        List<Game> openGames = GamesContainer.findAvailableGames();
-        try {
-            body = mapper.writeValueAsString(openGames);
-        } catch (JsonProcessingException e) {
-            body = e.getMessage();
-            statusCode = 400;
-            e.printStackTrace();
-        }
-        return new Response(body, statusCode);
-    }
-    @PostMapping("/join")
-    public Response joinGame(@RequestBody JoinRequest request) {
-        userDto = userService.findUser(request.getUsername());
-        Game game = GamesContainer.addPlayerToGame(userDto, request);
-        //        try {
-        //TODO do i need to do this if I use annotations?
-        //        }
-        return new Response(body, statusCode);
-    }
+//    @GetMapping("/join")
+//    public Response findGame() {
+//        List<Game> openGames = GamesContainer.findAvailableGames();
+//        try {
+//            body = mapper.writeValueAsString(openGames);
+//        } catch (JsonProcessingException e) {
+//            body = e.getMessage();
+//            statusCode = 400;
+//            e.printStackTrace();
+//        }
+//        return new Response(body, statusCode);
+//    }
+//    @PostMapping("/join")
+//    public Response joinGame(@RequestBody JoinRequest request) {
+//        userDto = userService.findUser(request.getUsername());
+//        Game game = GamesContainer.addPlayerToGame(userDto, request);
+//        //        try {
+//        //TODO do i need to do this if I use annotations?
+//        //        }
+//        return new Response(body, statusCode);
+//    }
 
 //    @PostMapping("/{id}")
 //    public Response deal(@PathVariable int id, @RequestBody UserRequest request) {
@@ -150,22 +167,33 @@ public class GameController {
 //        }
 //        return new Response(body, statusCode);
 //    }
-    @GetMapping("/{id}/bet")
-    public BetOptions getBetOptions(@PathVariable int id, @RequestBody UserRequest request){
-        game = GamesContainer.findGameById(id);
-        //TODO good practice?
-        BetOptions options =  game.getBetOptions();
-        if (options.getPlayer() instanceof HumanPlayer){
-            return options;
-        } else {
-            options.getPlayer().placeBet();
-        }
-        return null;
-    }
-    @PostMapping("/{id}/bet")
-    public Response bet(@PathVariable int id, @RequestBody BetRequest request){
-        game = GamesContainer.findGameById(id);
-        return new Response(body, statusCode);
-    }
+//    @GetMapping("/{id}/bet")
+//    public BetOptions getBetOptions(@PathVariable int id, @RequestBody UserRequest request){
+//        game = GamesContainer.findGameById(id);
+//        //TODO good practice?
+//        BetOptions options =  game.getBetOptions();
+//        if (options.getPlayer() instanceof HumanPlayer){
+//            return options;
+//        } else {
+//            options.getPlayer().placeBet();
+//        }
+//        return null;
+//    }
+//    @PostMapping("/{id}/bet")
+//    public Response bet(@PathVariable int id, @RequestBody BetRequest request){
+//        game = GamesContainer.findGameById(id);
+//        userDto = userService.findUser(request.getUsername());
+//
+//        return new Response(body, statusCode);
+//    }
+//    //TODO should bet have own controller?
+//    @PostMapping("/{id}/bet")
+//    public BetResponse bet(@PathVariable int id, @RequestBody BetRequest request){
+//        game = GamesContainer.findGameById(id);
+//        userDto = userService.findUser(request.getUsername());
+//        String message = game.placeBet(request);
+//        //FIXME need all bets and way of checking if turn is over
+//        return new BetResponse(true, message, null);
+//    }
 
 }

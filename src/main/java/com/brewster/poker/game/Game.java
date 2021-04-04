@@ -5,6 +5,7 @@ import com.brewster.poker.cards.DeckBuilder;
 import com.brewster.poker.bets.BetManager;
 import com.brewster.poker.bets.BetOptions;
 import com.brewster.poker.dto.UserDto;
+import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.player.ComputerPlayer;
@@ -42,6 +43,10 @@ public class Game {
         this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
         openSlots = desiredNumberOfPlayers - 1;
         //todo if (request.isCustomRules()){ doSomething() };
+    }
+    //TODO is placeBet a good practice?
+    public String placeBet(BetRequest betRequest){
+        return betManager.placeBet(betRequest);
     }
 
     public BetOptions startNewDeal(){
@@ -157,6 +162,10 @@ public class Game {
 
     public void setOpenSlots(int openSlots) {
         this.openSlots = openSlots;
+    }
+
+    public BetManager getBetManager() {
+        return betManager;
     }
 
     @Override

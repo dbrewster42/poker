@@ -27,6 +27,7 @@ public class BetManager {
     private BetOptions betOptions;
     private final BetFactory betFactory;
     private List<Bet> betsMade;
+    private boolean isBet;
 
     public BetManager(Game game, GameSettingsRequest request) {
         this.id = game.getId();
@@ -51,6 +52,7 @@ public class BetManager {
 
             if (returnStatement.isEmpty()){
                 returnStatement = bet.process();
+                betsMade.add(bet);
                 adjustTurn();
             }
         }
@@ -81,6 +83,9 @@ public class BetManager {
         if (turn == activePlayers){
             turn = 0;
         }
+        if (turnsLeftInRound == 0){
+            isBet = false;
+        }
     }
     public void resetTurnsLeft(){
         turnsLeftInRound = activePlayers;
@@ -91,6 +96,7 @@ public class BetManager {
         turn = game.getBigBlindTurn() + 1;
         activePlayers = game.getPlayers().size();
         turnsLeftInRound = activePlayers;
+        isBet = true;
     }
 
     public BetOptions startNewDeal(Player currentPlayer){
@@ -163,5 +169,9 @@ public class BetManager {
 
     public int getTurn() {
         return turn;
+    }
+
+    public boolean isBet() {
+        return isBet;
     }
 }
