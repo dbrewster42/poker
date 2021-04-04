@@ -1,37 +1,39 @@
 package com.brewster.poker.model.response;
 
-import com.brewster.poker.game.bet.Action;
+import com.brewster.poker.bets.Bet;
+import com.brewster.poker.bets.BetOptions;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BetResponse {
-    private int minimumBet;
-    private int betAmount;
-    private List<Action> possibleActions;
-    private final Map<String, String> headers;
+    private boolean isBet;
+    private BetOptions betOptions;
+    private List<Bet> bets;
+    String message;
 
-    public BetResponse(int betAmount) {
-        this.headers = createHeaders();
-        this.betAmount = betAmount;
-        //this.possibleActions = getPossibleBetActions(betAmount);
+    public BetResponse(boolean isBet, BetOptions betOptions, List<Bet> bets) {
+        this.isBet = isBet;
+        this.betOptions = betOptions;
+        this.bets = bets;
+    }
+    public BetResponse(boolean isBet, String message, List<Bet> bets) {
+        this.isBet = isBet;
+        this.message = message;
+        this.bets = bets;
     }
 
-//    public BetResponse(int betAmount, int smallBlind) {
-//        this.headers = createHeaders();
-//        this.betAmount = betAmount;
-//        this.minimumBet = smallBlind;
-//        this.possibleActions = getPossibleBetActions(betAmount);
-//    }
+    public boolean isBet() {
+        return isBet;
+    }
 
-    protected Map<String, String> createHeaders() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
-        headers.put("Access-Control-Allow-Origin", "*");
-        headers.put("Access-Control-Allow-Methods", "*");
-        headers.put("Access-Control-Allow-Headers", "*");
-        return headers;
+    public String getMessage(){ return message; }
+
+    public BetOptions getBetOptions() {
+        return betOptions;
+    }
+
+    public List<Bet> getBets() {
+        return bets;
     }
 }
 //public class BetResponse extends Response {

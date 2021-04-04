@@ -1,16 +1,21 @@
 package com.brewster.poker.game;
 
-import com.brewster.poker.card.Card;
-import com.brewster.poker.card.DeckBuilder;
-import com.brewster.poker.game.bet.BetManager;
-import com.brewster.poker.game.bet.BetOptions;
+import com.brewster.poker.cards.Card;
+import com.brewster.poker.cards.DeckBuilder;
+import com.brewster.poker.bets.BetManager;
+import com.brewster.poker.bets.BetOptions;
+import com.brewster.poker.dto.UserDto;
+import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
+import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Game {
     private int id;
@@ -30,7 +35,6 @@ public class Game {
         betManager = new BetManager(this, settingsRequest);
         this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
         openSlots = desiredNumberOfPlayers - 1;
-        //todo if (request.isCustomRules()){ doSomething() };
     }
     protected Game(int id, List<Player> players, GameSettingsRequest settingsRequest){
         this.id = id;
@@ -39,6 +43,10 @@ public class Game {
         this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
         openSlots = desiredNumberOfPlayers - 1;
         //todo if (request.isCustomRules()){ doSomething() };
+    }
+    //TODO is placeBet a good practice?
+    public String placeBet(BetRequest betRequest){
+        return betManager.placeBet(betRequest);
     }
 
     public BetOptions startNewDeal(){
@@ -95,6 +103,23 @@ public class Game {
         openSlots--;
 
     }
+    public GameResponse getGameResponse(){
+        List<UserDto> users = new ArrayList<>();
+        for (Player player : players){
+            users.add(player.getUser());
+        }
+        GameResponse gameResponse = new GameResponse(users, bigBlindTurn, betManager.getTurn());
+        return gameResponse;
+    }
+    public List<UserDto> getUsers(){
+        List<UserDto> users = new ArrayList<>();
+        for (Player player : players){
+            player.getUser().setDisplayName(player.getDisplayName());
+            users.add(player.getUser());
+        }
+       return users;
+    }
+
     public void addPlayerToGame(ComputerPlayer player){
         players.add(player);
     }
@@ -137,5 +162,17 @@ public class Game {
 
     public void setOpenSlots(int openSlots) {
         this.openSlots = openSlots;
+    }
+
+    public BetManager getBetManager() {
+        return betManager;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", players=" + players +
+                '}';
     }
 }

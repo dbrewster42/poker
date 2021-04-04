@@ -1,9 +1,12 @@
-package com.brewster.poker.card;
+package com.brewster.poker.cards;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Objects;
 
 public class Card {
     final private String suit;
+    @JsonIgnore
     final private int value;
     final private String name;
     final private String image;

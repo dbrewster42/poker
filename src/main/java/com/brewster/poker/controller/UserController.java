@@ -27,7 +27,6 @@ public class UserController {
 
     @PostMapping("/register")
     public Response register(@RequestBody UserRequest request) {
-        System.out.println("-------------------------- " + request.getUsername() + request.getMoney());
         UserDto dto = new UserDto();
         BeanUtils.copyProperties(request, dto);
 
@@ -50,7 +49,6 @@ public class UserController {
             statusCode = 400;
             e.printStackTrace();
         }
-        System.out.println(body + "____________________________________" + statusCode);
         return new Response(body, statusCode);
     }
 
@@ -64,7 +62,6 @@ public class UserController {
             statusCode = 400;
             e.printStackTrace();
         }
-        System.out.println(body + "____________________________________" + statusCode);
         return new Response(body, statusCode);
     }
 

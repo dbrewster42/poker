@@ -1,4 +1,4 @@
-package com.brewster.poker.game.bet;
+package com.brewster.poker.bets;
 
 import com.brewster.poker.game.Game;
 import com.brewster.poker.player.HumanPlayer;
@@ -27,11 +27,13 @@ public class BetManager {
     private BetOptions betOptions;
     private final BetFactory betFactory;
     private List<Bet> betsMade;
+    private boolean isBet;
 
     public BetManager(Game game, GameSettingsRequest request) {
         this.id = game.getId();
         this.game = game;
-        this.bigBlind = Optional.ofNullable(request.getBigBlind()).orElse(500);
+//        this.bigBlind = Optional.ofNullable(request.getBigBlind()).orElse(500);
+        this.bigBlind = request.getBigBlind() * 100;
         this.smallBlind = bigBlind / 2;
         this.activePlayers = game.getPlayers().size();
         this.turn = 0;
@@ -50,10 +52,10 @@ public class BetManager {
 
             if (returnStatement.isEmpty()){
                 returnStatement = bet.process();
+                betsMade.add(bet);
                 adjustTurn();
             }
         }
-
         return returnStatement;
     }
 
@@ -81,6 +83,9 @@ public class BetManager {
         if (turn == activePlayers){
             turn = 0;
         }
+        if (turnsLeftInRound == 0){
+            isBet = false;
+        }
     }
     public void resetTurnsLeft(){
         turnsLeftInRound = activePlayers;
@@ -91,6 +96,7 @@ public class BetManager {
         turn = game.getBigBlindTurn() + 1;
         activePlayers = game.getPlayers().size();
         turnsLeftInRound = activePlayers;
+        isBet = true;
     }
 
     public BetOptions startNewDeal(Player currentPlayer){
@@ -105,7 +111,7 @@ public class BetManager {
         //TODO test turns left in round
         if (turnsLeftInRound > 0){
             Action[] actionOptions = getPossibleBetActions(betAmount);
-            betOptions = new BetOptions(currentPlayer, actionOptions, betAmount);
+            betOptions = new BetOptions(currentPlayer, actionOptions, betAmount, pot);
             return betOptions;
         } else {
             game.startNextRound();
@@ -159,5 +165,13 @@ public class BetManager {
 
     public void setBetAmount(int betAmount) {
         this.betAmount = betAmount;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public boolean isBet() {
+        return isBet;
     }
 }

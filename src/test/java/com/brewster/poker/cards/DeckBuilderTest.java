@@ -1,4 +1,4 @@
-package com.brewster.poker.card;
+package com.brewster.poker.cards;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +15,7 @@ class DeckBuilderTest {
     void withStandardDeckIsCorrectSize() {
         assertEquals(52, standardDeck.size());
     }
+
     @Test
     void withStandardDeckListsAllCardsOnce() {
         Set<Card> uniqueCards = new HashSet<>();
@@ -22,5 +23,16 @@ class DeckBuilderTest {
             uniqueCards.add(card);
         }
         assertEquals(52, uniqueCards.size());
+    }
+
+    @Test
+    void cardsHaveCorrectImage(){
+        List<Card> unshuffledDeck = DeckBuilder.aDeck().buildStandardDeck();
+
+        assertEquals(unshuffledDeck.get(0).getImage(), "AC.png");
+        assertEquals(unshuffledDeck.get(3).getImage(), "AD.png");
+        assertEquals(unshuffledDeck.get(4).getImage(), "2C.png");
+        assertEquals(unshuffledDeck.get(5).getImage(), "2H.png");
+        assertEquals(unshuffledDeck.get(10).getImage(), "3S.png");
     }
 }

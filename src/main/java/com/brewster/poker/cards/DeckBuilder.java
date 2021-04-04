@@ -1,4 +1,4 @@
-package com.brewster.poker.card;
+package com.brewster.poker.cards;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class DeckBuilder {
     public List<Card> buildStandardDeck(){
         for (int i = 0; i < 13; i++){
             for (int j = 0; j < 4; j++){
-                Card card = new Card(SUITS[j], VALUES[i], NAMES[i], IMAGE_PREFIXES[i]);
+                Card card = new Card(SUITS[j], VALUES[i], NAMES[i], IMAGE_PREFIXES[i] + SUITS[j].substring(0, 1));
                 cards.add(card);
             }
         }

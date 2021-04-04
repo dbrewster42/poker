@@ -1,10 +1,17 @@
 package com.brewster.poker.dto;
 
+import com.brewster.poker.player.Player;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class UserDto {
-    private Integer id;
     private String username;
+    private String displayName;
     private Integer money;
-    //private HumanPlayer player;
+    @JsonIgnore
+    private Integer id;
+    @JsonIgnore
+    private Player player;
+
 
     public Integer getId() {
         return id;
@@ -29,15 +36,22 @@ public class UserDto {
     public void setMoney(Integer money) {
         this.money = money;
     }
-//
-//    public HumanPlayer getPlayer() {
-//        return player;
-//    }
-//
-//    public void setPlayer(HumanPlayer player) {
-//        this.player = player;
-//    }
-//
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
     @Override
     public String toString() {
