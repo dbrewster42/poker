@@ -1,5 +1,6 @@
 package com.brewster.poker.bets;
 
+import com.brewster.poker.dto.BetDto;
 import com.brewster.poker.game.Game;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
@@ -26,7 +27,9 @@ public class BetManager {
     private int betAmount;
     private BetOptions betOptions;
     private final BetFactory betFactory;
-    private List<Bet> betsMade;
+    private List<BetDto> betsMade;
+//    private List<Bet> betsMade;
+    //    private List<String> betMessages;
     private boolean isBet;
 
     public BetManager(Game game, GameSettingsRequest request) {
@@ -52,7 +55,7 @@ public class BetManager {
 
             if (returnStatement.isEmpty()){
                 returnStatement = bet.process();
-                betsMade.add(bet);
+                betsMade.add(new BetDto(bet, returnStatement));
                 adjustTurn();
             }
         }
@@ -147,7 +150,7 @@ public class BetManager {
         return betAmount;
     }
 
-    public List<Bet> getBetsMade() {
+    public List<BetDto> getBetsMade() {
         return betsMade;
     }
 

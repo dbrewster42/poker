@@ -2,21 +2,24 @@ package com.brewster.poker.model.response;
 
 import com.brewster.poker.bets.Bet;
 import com.brewster.poker.bets.BetOptions;
+import com.brewster.poker.dto.BetDto;
 
 import java.util.List;
 
 public class BetResponse {
     private boolean isBet;
     private BetOptions betOptions;
-    private List<Bet> bets;
+//    private List<Bet> bets;
+    private List<BetDto> bets;
+
     String message;
 
-    public BetResponse(boolean isBet, BetOptions betOptions, List<Bet> bets) {
+    public BetResponse(boolean isBet, BetOptions betOptions, List<BetDto> bets) {
         this.isBet = isBet;
         this.betOptions = betOptions;
         this.bets = bets;
     }
-    public BetResponse(boolean isBet, String message, List<Bet> bets) {
+    public BetResponse(boolean isBet, String message, List<BetDto> bets) {
         this.isBet = isBet;
         this.message = message;
         this.bets = bets;
@@ -32,7 +35,7 @@ public class BetResponse {
         return betOptions;
     }
 
-    public List<Bet> getBets() {
+    public List<BetDto> getBets() {
         return bets;
     }
 }
