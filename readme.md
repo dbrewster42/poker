@@ -16,3 +16,7 @@ needs reference to both Game and Player
 
 fix/delete displayName
 
+### how to end rounds/games
+should it be done by the front end or backend?
+
+

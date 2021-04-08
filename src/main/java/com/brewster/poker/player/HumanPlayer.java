@@ -1,6 +1,9 @@
 package com.brewster.poker.player;
 
+import com.brewster.poker.cards.Card;
 import com.brewster.poker.dto.UserDto;
+
+import java.util.List;
 
 public class HumanPlayer extends Player {
 
@@ -9,7 +12,7 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    public void placeBet() {
+    public void placeBet(List<Card> riverCards) {
 
     }
 

@@ -27,6 +27,7 @@ public class Game {
     private int openSlots;
     private int desiredNumberOfPlayers;
     private BetManager betManager;
+    private boolean isLastRound;
 
     protected Game(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
         this.id = id;

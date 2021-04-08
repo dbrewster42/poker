@@ -45,6 +45,7 @@ public class GameController {
             game = GamesContainer.createGame(userDto, request, computerUser);
         } else {
             game = GamesContainer.createGame(userDto, request);
+            //TODO wait for players to join
         }
         List<Card> playerCards = userDto.getPlayer().getHand();
         //TODO return game.getGameResponse or construct here?
@@ -52,14 +53,15 @@ public class GameController {
         List<UserDto> users = game.getUsers();
         BetOptions options = game.startNewDeal();
 
-        NewGameResponse response;
-        if (options.getPlayer() == userDto.getPlayer()){
-            response = new NewGameResponse(game.getId(), playerCards, users, options);
-        } else {
-            response = new NewGameResponse(game.getId(), playerCards, users);
-        }
-
-        return response;
+        return new NewGameResponse(game.getId(), playerCards, users, options);
+//        NewGameResponse response;
+//        if (options.getPlayer() == userDto.getPlayer()){
+//            response = new NewGameResponse(game.getId(), playerCards, users, options);
+//        } else {
+//            response = new NewGameResponse(game.getId(), playerCards, users);
+//        }
+//
+//        return response;
     }
     @GetMapping("/{id}")
     public List<Card> deal(@PathVariable int id) {
@@ -170,7 +172,6 @@ public class GameController {
 //    @GetMapping("/{id}/bet")
 //    public BetOptions getBetOptions(@PathVariable int id, @RequestBody UserRequest request){
 //        game = GamesContainer.findGameById(id);
-//        //TODO good practice?
 //        BetOptions options =  game.getBetOptions();
 //        if (options.getPlayer() instanceof HumanPlayer){
 //            return options;
@@ -186,7 +187,6 @@ public class GameController {
 //
 //        return new Response(body, statusCode);
 //    }
-//    //TODO should bet have own controller?
 //    @PostMapping("/{id}/bet")
 //    public BetResponse bet(@PathVariable int id, @RequestBody BetRequest request){
 //        game = GamesContainer.findGameById(id);

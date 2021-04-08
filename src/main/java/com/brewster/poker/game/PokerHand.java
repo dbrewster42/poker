@@ -47,6 +47,18 @@ public enum PokerHand {
 
         return pokerHand;
     }
+    public static int lookupHoleCards(List<Card> hand){
+        if (hand.get(0).getValue() == hand.get(1).getValue()){
+            if (hand.get(0).getValue() > 8){
+                return 5;
+            }
+            return 4;
+        }
+        if (hand.get(0).getValue() > 10 || hand.get(1).getValue() > 10){
+            return 2;
+        }
+        return 0;
+    }
 
     public static PokerHand returnPairCombos(int[] sortedCardValues){
         Map<Integer, Integer> cardCount = new HashMap<>();

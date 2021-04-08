@@ -25,7 +25,7 @@ public abstract class Player {
         hand = new ArrayList<>();
     }
 
-    public abstract void placeBet();
+    public abstract void placeBet(List<Card> riverCards);
     public abstract void collectWinnings();
     public abstract void joinGame();
     public abstract void leaveGame();
