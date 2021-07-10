@@ -10,16 +10,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FindBestHand {
-    Map<String, Integer> suitCount;
-    int chaseCards;
-    List<Card> hand;
-    int strength = 0;
+    private Map<String, Integer> suitMap;
+    private int chaseCards;
+    private List<Card> hand;
+    private int strength = 0;
 
     public FindBestHand(List<Card> holeCards, List<Card> riverCards){
         chaseCards = 5 - riverCards.size();
         hand = Stream.concat(holeCards.stream(), riverCards.stream())
                 .sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
-        suitCount = getSuitCount(hand);
+        suitMap = getSuitCount(hand);
+        strength = findBestHand();
     }
 
     public int findBestHand(){
@@ -41,28 +42,29 @@ public class FindBestHand {
     }
 
     public Map<String, Integer> getSuitCount(List<Card> hand){
-        suitCount = new HashMap<>();
+        suitMap = new HashMap<>();
         for (Card card : hand){
-            suitCount.put(card.getSuit(), suitCount.getOrDefault(card.getSuit(), 0) + 1);
+            suitMap.put(card.getSuit(), suitMap.getOrDefault(card.getSuit(), 0) + 1);
         }
-        return suitCount;
+        return suitMap;
     }
 
     public int pairCount(){
         int score = 0;
-        List<Integer> cardValues = hand.stream().map(v -> v.getValue()).collect(Collectors.toList());
+        List<Integer> cardValues = hand.stream().map(Card::getValue).collect(Collectors.toList());
         Map<Integer, Integer> cardCount = new HashMap<>();
         for (int cardValue : cardValues){
             cardCount.put(cardValue, cardCount.getOrDefault(cardValue, 0) + 1);
         }
         List<Integer> counts = cardCount.values().stream().filter(v -> v > 1)
                 .sorted().collect(Collectors.toList());
-        if (counts.size() > 0){
+        if (!counts.isEmpty()){
             int highestNumberOfCards = counts.get(counts.size()-1);
             score = (int) Math.pow(2, highestNumberOfCards);
             if (counts.size() > 1){
                 score *= 2;
             }
+            //TODO more elegant solution needed to account for chase cards
             if (chaseCards == 1){
                 score += 2;
             } else if (chaseCards == 2){
@@ -74,7 +76,7 @@ public class FindBestHand {
 
     public int flushCount(){
         int score = 0;
-        int count = suitCount.values().stream().mapToInt(v -> v).max()
+        int count = suitMap.values().stream().mapToInt(v -> v).max()
                 .orElseThrow(() -> new RuntimeException("computer could not find card suits"));
         if (count == 5){
             score = 12;
@@ -88,9 +90,9 @@ public class FindBestHand {
         return score;
     }
 
-    public int straightCount(){
+    public int straightCount(){ //TODO does this function work?
         List<Integer> cardValues = new ArrayList<>();
-        for (int i = hand.size() - 1; i > 0; i++){
+        for (int i = hand.size() - 1; i > 0; i--){
             if (hand.get(i).getValue() == 14){
                 cardValues.add(1);
             } else {
@@ -152,5 +154,7 @@ public class FindBestHand {
 //    }
 
 
-
+    public int getStrength() {
+        return strength;
+    }
 }

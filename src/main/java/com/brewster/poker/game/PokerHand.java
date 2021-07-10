@@ -30,7 +30,7 @@ public enum PokerHand {
     }
 
     public static PokerHand lookupHand(List<Card> hand){
-        int[] cardValues = hand.stream().mapToInt(v -> v.getValue()).sorted().toArray();
+        int[] cardValues = hand.stream().mapToInt(Card::getValue).sorted().toArray();
         PokerHand pokerHand = returnPairCombos(cardValues);
         if (pokerHand.getScore() > 2){
             return pokerHand;
@@ -105,14 +105,12 @@ public enum PokerHand {
 
     public static boolean isStraight(int[] sortedCardValues){
         int start = sortedCardValues[0];
-        if (start == 2){
-            if (sortedCardValues[4] == 14){
-                for (int i = 4; i > 0; i--){
-                    sortedCardValues[i] = sortedCardValues[i - 1];
-                }
-                sortedCardValues[0] = 1;
-                start = 1;
+        if (start == 2 && sortedCardValues[4] == 14){
+            for (int i = 4; i > 0; i--){
+                sortedCardValues[i] = sortedCardValues[i - 1];
             }
+            sortedCardValues[0] = 1;
+            start = 1;
         }
         for (int i : sortedCardValues){
             if (start != i){
