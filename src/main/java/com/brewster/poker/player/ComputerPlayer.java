@@ -2,12 +2,15 @@ package com.brewster.poker.player;
 
 import com.brewster.poker.cards.Card;
 import com.brewster.poker.dto.UserDto;
+import com.brewster.poker.game.FindBestHand;
 import com.brewster.poker.game.PokerHand;
+import com.brewster.poker.model.request.BetRequest;
 
 import java.util.List;
 
 public class ComputerPlayer extends Player {
     private static int bank = 10000;
+    private FindBestHand findBestHand;
 
 //    public ComputerPlayer(String displayName, UserDto userDto) {
 //        super(displayName, userDto);
@@ -21,6 +24,12 @@ public class ComputerPlayer extends Player {
     @Override
     public void placeBet(List<Card> riverCards) {
        int strength = calculateCards(riverCards);
+        BetRequest betRequest = new BetRequest();
+        betRequest.setUsername(this.getDisplayName());
+       //TODO where/how is bet placed?
+       if (strength > 10){
+            //TODO how to set action? Need to have two sets of options depending on whether a call or new bet
+       }
     }
 
     public int calculateCards(List<Card> riverCards){
@@ -29,12 +38,16 @@ public class ComputerPlayer extends Player {
         int riverCount = riverCards.size();
         if (riverCount == 0){
             strength = PokerHand.lookupHoleCards(getHand());
-        } else if (riverCount == 5) {
-            //FIXME this won't work. it needs the 5 best cards
-            strength = PokerHand.lookupHand(this.getHand()).getScore();
         } else {
-            strength =
+            findBestHand = new FindBestHand(getHand(), riverCards);
+            strength = findBestHand.getStrength();
         }
+//        else if (riverCount == 5) {
+//            strength = PokerHand.lookupHand(this.getHand()).getScore();
+//        } else {
+//
+//            strength =
+//        }
 
         return strength;
     }
