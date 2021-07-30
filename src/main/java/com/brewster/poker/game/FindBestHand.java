@@ -141,19 +141,6 @@ public class FindBestHand {
         return score;
     }
 
-    public int chaseStrength(){
-        return 1;
-    }
-
-
-//    public boolean isFlush(List<Card> hand){
-//        for (Card card : hand){
-//            suitCount.put(card.getSuit(), suitCount.getOrDefault(card.getSuit(), 0) + 1);
-//        }
-//        return suitCount.values().stream().map(v -> v > 4).findFirst().orElse(false);
-//    }
-
-
     public int getStrength() {
         return strength;
     }

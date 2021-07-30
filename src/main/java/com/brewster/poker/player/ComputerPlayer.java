@@ -1,5 +1,8 @@
 package com.brewster.poker.player;
 
+import com.brewster.poker.bets.Action;
+import com.brewster.poker.bets.BetManager;
+import com.brewster.poker.bets.BetOptions;
 import com.brewster.poker.cards.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.game.FindBestHand;
@@ -22,14 +25,67 @@ public class ComputerPlayer extends Player {
     }
 
     @Override
-    public void placeBet(List<Card> riverCards) {
-       int strength = calculateCards(riverCards);
+    public void placeBet(List<Card> riverCards, BetOptions options, BetManager betManager) {
+        int strength = calculateCards(riverCards);
+
+//        Action[] possibleActions = options.getPossibleActions();
+        Action primaryAction = options.getPossibleActions()[0];
+        BetRequest betRequest;
+        if (primaryAction.equals(Action.BET)){
+            betRequest = createCheckActionsBet(strength, betManager.getBigBlind());
+        } else {
+            betRequest = createCallActionBet(strength, options, betManager.getBigBlind());
+        }
+        betRequest.setUsername(options.getName());
+
+        betManager.placeBet(betRequest);
+    }
+
+    private BetRequest createCheckActionsBet(int strength, int bigBlind){
         BetRequest betRequest = new BetRequest();
-        betRequest.setUsername(this.getDisplayName());
-       //TODO where/how is bet placed?
-       if (strength > 10){
-            //TODO how to set action? Need to have two sets of options depending on whether a call or new bet
-       }
+        if (strength > 4){
+            betRequest.setAction(Action.BET.name());
+            int betAmount = strength * bigBlind / 5;
+            if (betAmount < bank){
+                betRequest.setBetAmount(betAmount);
+            } else {
+                System.out.println("ERROR - COMPUTER RUNNING OUT OF MONEY => " + bank + "$");
+                betRequest.setBetAmount(bank);
+            }
+        } else {
+            betRequest.setAction(Action.CHECK.name());
+            betRequest.setBetAmount(0);
+        }
+        return betRequest;
+    }
+
+    private BetRequest createCallActionBet(int strength, BetOptions options, int bigBlind){
+        BetRequest betRequest = new BetRequest();
+        if (strength > 3){
+            if (strength > 6){
+                int betAmount = strength * bigBlind / 5;
+                if (betAmount > bank){
+                    System.out.println("ERROR - COMPUTER RUNNING OUT OF MONEY => " + bank + "$");
+                    betRequest.setBetAmount(bank);
+                } else if (betAmount < options.getBetAmount()){
+                    checkTurn(betRequest, options);
+                } else {
+                    betRequest.setBetAmount(betAmount);
+                    betRequest.setAction(Action.RAISE.name());
+                }
+            } else {
+                checkTurn(betRequest, options);
+            }
+        } else {
+            betRequest.setAction(Action.FOLD.name());
+            betRequest.setBetAmount(0);
+        }
+        return betRequest;
+    }
+
+    private void checkTurn(BetRequest betRequest, BetOptions options){
+        betRequest.setAction(Action.CHECK.name());
+        betRequest.setBetAmount(options.getBetAmount());
     }
 
     public int calculateCards(List<Card> riverCards){

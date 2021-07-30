@@ -66,7 +66,7 @@ public class BetManager {
         String validatorError = "";
         int newBetAmount = betRequest.getBetAmount();
         if (!betRequest.getUsername().equals(player.getDisplayName())){
-            validatorError += "Critical error. The user who placed the bet was not the expected error. ";
+            validatorError += "Critical error. The user who placed the bet was not the expected user. ";
         }
         if (newBetAmount > maxBet){
             validatorError += "This game has a maximum bet of " + maxBet;

@@ -1,5 +1,7 @@
 package com.brewster.poker.player;
 
+import com.brewster.poker.bets.BetManager;
+import com.brewster.poker.bets.BetOptions;
 import com.brewster.poker.cards.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.game.Game;
@@ -25,7 +27,7 @@ public abstract class Player {
         hand = new ArrayList<>();
     }
 
-    public abstract void placeBet(List<Card> riverCards);
+    public abstract void placeBet(List<Card> riverCards, BetOptions options, BetManager betManager);
     public abstract void collectWinnings();
     public abstract void joinGame();
     public abstract void leaveGame();

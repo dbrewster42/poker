@@ -1,5 +1,7 @@
 package com.brewster.poker.player;
 
+import com.brewster.poker.bets.BetManager;
+import com.brewster.poker.bets.BetOptions;
 import com.brewster.poker.cards.Card;
 import com.brewster.poker.dto.UserDto;
 
@@ -12,7 +14,7 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    public void placeBet(List<Card> riverCards) {
+    public void placeBet(List<Card> riverCards, BetOptions options, BetManager betManager) {
 
     }
 

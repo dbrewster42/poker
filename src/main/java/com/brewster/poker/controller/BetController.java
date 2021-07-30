@@ -24,6 +24,19 @@ public class BetController {
 //        this.userService = userService;
 //    }
 
+    @GetMapping("/{id}/bet")
+    public BetOptions getBetOptions(@PathVariable int id){
+        game = GamesContainer.findGameById(id);
+        //TODO good practice?
+        BetOptions options = game.getBetOptions();
+
+        while (options.getPlayer() instanceof ComputerPlayer){
+            options.getPlayer().placeBet(game.getRiverCards(), options, game.getBetManager());
+            options = game.getBetOptions();
+        }
+
+        return options;
+    }
 
     @PostMapping("/{id}/bet")
     public BetResponse bet(@PathVariable int id, @RequestBody BetRequest request){
@@ -34,19 +47,6 @@ public class BetController {
         String message = betManager.placeBet(request);
         return new BetResponse(betManager.isBet(), message, betManager.getBetsMade());
         //FIXME need to move to betOptions after return. new method that front end auto calls?
-    }
-    @GetMapping("/{id}/bet")
-    public BetOptions getBetOptions(@PathVariable int id){
-        game = GamesContainer.findGameById(id);
-        //TODO good practice?
-        BetOptions options = game.getBetOptions();
-
-        while (options.getPlayer() instanceof ComputerPlayer){
-            options.getPlayer().placeBet(game.getRiverCards());
-            options = game.getBetOptions();
-        }
-
-        return options;
     }
 //    @GetMapping("/{id}/bet")
 //    public BetOptions getBetOptions(@PathVariable int id){
