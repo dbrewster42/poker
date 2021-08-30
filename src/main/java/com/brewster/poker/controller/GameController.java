@@ -1,22 +1,22 @@
 package com.brewster.poker.controller;
 
+import com.brewster.poker.bets.BetOptions;
 import com.brewster.poker.cards.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.game.Game;
 import com.brewster.poker.game.GamesContainer;
-import com.brewster.poker.bets.BetOptions;
-import com.brewster.poker.model.request.BetRequest;
-import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
-import com.brewster.poker.model.request.UserRequest;
-import com.brewster.poker.model.response.BetResponse;
+import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.model.response.Response;
-import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -67,7 +67,7 @@ public class GameController {
     public List<Card> deal(@PathVariable int id) {
         game = GamesContainer.findGameById(id);
         if (game == null){
-            System.out.println("ERROR !!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!! ERROR");
+            System.out.println("ERROR !!!!!!!!!!!!!!!!! game is null !!!!!!!!!!!!!!!!! ERROR");
         }
         return game.startNextRound();
     }

@@ -48,27 +48,5 @@ public class BetController {
         return new BetResponse(betManager.isBet(), message, betManager.getBetsMade());
         //FIXME need to move to betOptions after return. new method that front end auto calls?
     }
-//    @GetMapping("/{id}/bet")
-//    public BetOptions getBetOptions(@PathVariable int id){
-//        game = GamesContainer.findGameById(id);
-//        //TODO good practice?
-//        BetOptions options = game.getBetOptions();
-//        Player player = options.getPlayer();
-//        boolean shouldReturn = false;
-//        while (!shouldReturn){
-//            shouldReturn = isHuman(player);
-//        }
-//
-//        return options;
-//    }
-//
-//    public boolean isHuman(Player player){
-//        //FIXME use best practices. does this method belong in controller?
-//        if (player instanceof HumanPlayer){
-//            return true;
-//        } else {
-//            player.placeBet();
-//            return false;
-//        }
-//    }
+
 }

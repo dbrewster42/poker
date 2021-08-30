@@ -6,7 +6,7 @@ import com.brewster.poker.cards.DeckBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HandMother {
+public class CardHandBuilder {
     private static List<Card> cards = new DeckBuilder().buildStandardDeck();
 
     public static int[] buildHighAceStraightValues(){
