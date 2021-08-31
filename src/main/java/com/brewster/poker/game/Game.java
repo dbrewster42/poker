@@ -13,9 +13,7 @@ import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Game {
     private int id;
@@ -58,6 +56,8 @@ public class Game {
     }
 
     public BetOptions getBetOptions(){
+        System.out.println("getting betOptions for " + currentPlayer.getDisplayName());
+        System.out.println("turn number " + players.indexOf(currentPlayer));
         return betManager.getBetOptions(currentPlayer);
     }
 
@@ -109,7 +109,7 @@ public class Game {
         for (Player player : players){
             users.add(player.getUser());
         }
-        GameResponse gameResponse = new GameResponse(users, bigBlindTurn, betManager.getTurn());
+        GameResponse gameResponse = new GameResponse(users, bigBlindTurn, betManager.getTurnNumber());
         return gameResponse;
     }
     public List<UserDto> getUsers(){
@@ -135,6 +135,10 @@ public class Game {
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+
+    public void adjustCurrentPlayer(int turn){
+        currentPlayer = players.get(turn);
     }
 
     public List<Card> getRiverCards() {

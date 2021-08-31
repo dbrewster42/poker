@@ -17,7 +17,7 @@ public class BetManager {
     private int activePlayers;
     private int bigBlind;
     private int smallBlind;
-    private int turn;
+    private int turnNumber;
     private int turnsLeftInRound;
     //private int lastBet;
     private final Integer maxBet;
@@ -39,7 +39,7 @@ public class BetManager {
         this.bigBlind = request.getBigBlind() * 100;
         this.smallBlind = bigBlind / 2;
         this.activePlayers = game.getPlayers().size();
-        this.turn = 0;
+        this.turnNumber = 0;
         this.maxBet = Optional.ofNullable(request.getMaxBet()).map(v -> v < 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
         betFactory = new BetFactoryImplementation();
         betsMade = new ArrayList<>();
@@ -81,13 +81,15 @@ public class BetManager {
     }
 
     protected void adjustTurn(){
-        turn++;
+        turnNumber++;
         turnsLeftInRound--;
-        if (turn == activePlayers){
-            turn = 0;
+        if (turnNumber == activePlayers){
+            turnNumber = 0;
         }
         if (turnsLeftInRound == 0){
             isBet = false;
+        } else {
+            game.adjustCurrentPlayer(turnNumber);
         }
     }
     public void resetTurnsLeft(){
@@ -96,7 +98,7 @@ public class BetManager {
 
     public void startNextRound(){
         betAmount = 0;
-        turn = game.getBigBlindTurn() + 1;
+        turnNumber = game.getBigBlindTurn() + 1;
         activePlayers = game.getPlayers().size();
         turnsLeftInRound = activePlayers;
         isBet = true;
@@ -118,7 +120,7 @@ public class BetManager {
             return betOptions;
         } else {
             game.startNextRound();
-            return null;
+            return new BetOptions();
         }
     }
 
@@ -170,8 +172,8 @@ public class BetManager {
         this.betAmount = betAmount;
     }
 
-    public int getTurn() {
-        return turn;
+    public int getTurnNumber() {
+        return turnNumber;
     }
 
     public boolean isBet() {

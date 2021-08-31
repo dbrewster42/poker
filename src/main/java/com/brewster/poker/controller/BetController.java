@@ -8,11 +8,17 @@ import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.response.BetResponse;
 import com.brewster.poker.player.ComputerPlayer;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@CrossOrigin("http://localhost:3000")
+@RequestMapping("/game")
 public class BetController {
     private Game game;
     private BetManager betManager;
@@ -26,11 +32,12 @@ public class BetController {
 
     @GetMapping("/{id}/bet")
     public BetOptions getBetOptions(@PathVariable int id){
+        System.out.println("getting betOptions");
         game = GamesContainer.findGameById(id);
         //TODO good practice?
         BetOptions options = game.getBetOptions();
 
-        while (options.getPlayer() instanceof ComputerPlayer){
+        while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer){
             options.getPlayer().placeBet(game.getRiverCards(), options, game.getBetManager());
             options = game.getBetOptions();
         }

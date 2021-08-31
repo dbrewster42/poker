@@ -38,8 +38,8 @@ public class GameController {
 
     @PostMapping
     public NewGameResponse createGame(@RequestBody GameSettingsRequest request) {
-        userDto = userService.findUser(request.getUsername());
         System.out.println(request.toString());
+        userDto = userService.findUser(request.getUsername());
         if (request.isFillWithComputerPlayers()){
             computerUser = userService.findUser("HAL");
             game = GamesContainer.createGame(userDto, request, computerUser);
@@ -69,6 +69,7 @@ public class GameController {
         if (game == null){
             System.out.println("ERROR !!!!!!!!!!!!!!!!! game is null !!!!!!!!!!!!!!!!! ERROR");
         }
+        System.out.println("Found Game " + id);
         return game.startNextRound();
     }
 

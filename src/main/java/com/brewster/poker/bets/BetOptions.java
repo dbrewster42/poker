@@ -4,6 +4,7 @@ import com.brewster.poker.player.Player;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class BetOptions {
+    private boolean isBetActive;
     private Action[] possibleActions;
     private int betAmount;
     private int pot;
@@ -23,6 +24,11 @@ public class BetOptions {
         this.betAmount = betAmount;
         this.name = player.getDisplayName();
         this.pot = pot;
+        isBetActive = true;
+    }
+
+    public BetOptions(){
+        isBetActive = false;
     }
 
     public String getName() {
@@ -43,5 +49,9 @@ public class BetOptions {
 
     public int getPot() {
         return pot;
+    }
+
+    public boolean isBetActive() {
+        return isBetActive;
     }
 }

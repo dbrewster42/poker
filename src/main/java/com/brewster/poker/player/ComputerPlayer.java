@@ -89,7 +89,6 @@ public class ComputerPlayer extends Player {
     }
 
     public int calculateCards(List<Card> riverCards){
-//        int strength = PokerHand.lookupHand(this.getHand()).getScore();
         int strength = 0;
         int riverCount = riverCards.size();
         if (riverCount == 0){
@@ -98,12 +97,6 @@ public class ComputerPlayer extends Player {
             findBestHand = new FindBestHand(getHand(), riverCards);
             strength = findBestHand.getStrength();
         }
-//        else if (riverCount == 5) {
-//            strength = PokerHand.lookupHand(this.getHand()).getScore();
-//        } else {
-//
-//            strength =
-//        }
 
         return strength;
     }
