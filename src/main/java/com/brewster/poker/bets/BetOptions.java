@@ -3,6 +3,8 @@ package com.brewster.poker.bets;
 import com.brewster.poker.player.Player;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.Arrays;
+
 public class BetOptions {
     private boolean isBetActive;
     private Action[] possibleActions;
@@ -53,5 +55,10 @@ public class BetOptions {
 
     public boolean isBetActive() {
         return isBetActive;
+    }
+
+    @Override
+    public String toString() {
+        return "BetOptions{" + "isBetActive=" + isBetActive + ", possibleActions=" + Arrays.toString(possibleActions) + ", betAmount=" + betAmount + ", pot=" + pot + ", player=" + player + ", name='" + name + '\'' + '}';
     }
 }

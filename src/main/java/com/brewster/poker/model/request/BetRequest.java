@@ -28,4 +28,9 @@ public class BetRequest {
     public void setBetAmount(int betAmount) {
         this.betAmount = betAmount;
     }
+
+    @Override
+    public String toString() {
+        return "BetRequest{" + "username='" + username + '\'' + ", action='" + action + '\'' + ", betAmount=" + betAmount + '}';
+    }
 }

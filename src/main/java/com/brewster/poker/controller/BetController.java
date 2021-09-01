@@ -34,13 +34,8 @@ public class BetController {
     public BetOptions getBetOptions(@PathVariable int id){
         System.out.println("getting betOptions");
         game = GamesContainer.findGameById(id);
-        //TODO good practice?
-        BetOptions options = game.getBetOptions();
-
-        while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer){
-            options.getPlayer().placeBet(game.getRiverCards(), options, game.getBetManager());
-            options = game.getBetOptions();
-        }
+//        BetOptions options = game.getBetOptions();;
+        BetOptions options = game.getBetManager().manageComputerBets();
 
         return options;
     }

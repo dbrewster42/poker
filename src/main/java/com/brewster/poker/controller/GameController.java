@@ -1,5 +1,6 @@
 package com.brewster.poker.controller;
 
+import com.brewster.poker.bets.BetManager;
 import com.brewster.poker.bets.BetOptions;
 import com.brewster.poker.cards.Card;
 import com.brewster.poker.dto.UserDto;
@@ -51,7 +52,9 @@ public class GameController {
         //TODO return game.getGameResponse or construct here?
         //return game.getGameResponse();
         List<UserDto> users = game.getUsers();
-        BetOptions options = game.startNewDeal();
+//        BetOptions options = game.startNewDeal();
+        BetOptions options = game.getBetManager().manageComputerBets();
+
 
         return new NewGameResponse(game.getId(), playerCards, users, options);
 //        NewGameResponse response;

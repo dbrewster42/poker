@@ -2,6 +2,7 @@ package com.brewster.poker.bets;
 
 import com.brewster.poker.dto.BetDto;
 import com.brewster.poker.game.Game;
+import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
@@ -46,13 +47,14 @@ public class BetManager {
     }
 
     public String placeBet(BetRequest betRequest){
+        System.out.println("Placing bet " + betRequest.toString());
         Player player = game.getCurrentPlayer();
         String returnStatement = betAmountIsValid(betRequest, player);
-
+        System.out.println("Is bet amount valid - " + returnStatement);
         if (returnStatement.isEmpty()){
             Bet bet = betFactory.createBet(player, betRequest, this);
             returnStatement = bet.validate();
-
+            System.out.println("Validating bet - " + returnStatement);
             if (returnStatement.isEmpty()){
                 returnStatement = bet.process();
                 betsMade.add(new BetDto(bet, returnStatement));
@@ -91,6 +93,7 @@ public class BetManager {
         } else {
             game.adjustCurrentPlayer(turnNumber);
         }
+
     }
     public void resetTurnsLeft(){
         turnsLeftInRound = activePlayers;
@@ -104,24 +107,40 @@ public class BetManager {
         isBet = true;
     }
 
-    public BetOptions startNewDeal(Player currentPlayer){
+    public BetOptions startNewDeal(){
         pot = 0;
         betAmount = 0;
         activePlayers = game.getPlayers().size(); //todo better as param?
         turnsLeftInRound = activePlayers;
-        return getBetOptions(currentPlayer);
+        System.out.println("starting new deal with " + turnsLeftInRound + " turns");
+        return getBetOptions();
     }
 
-    public BetOptions getBetOptions(Player currentPlayer){
+    public BetOptions getBetOptions(){
+        Player currentPlayer = game.getPlayers().get(turnNumber);
         //TODO test turns left in round
+        System.out.println("betManager.getBetOptions " + currentPlayer.getDisplayName() + " turnsLeft = " + turnsLeftInRound);
         if (turnsLeftInRound > 0){
             Action[] actionOptions = getPossibleBetActions(betAmount);
             betOptions = new BetOptions(currentPlayer, actionOptions, betAmount, pot);
+            System.out.println("betManager.getBetOptions " + betOptions.toString());
             return betOptions;
         } else {
             game.startNextRound();
             return new BetOptions();
         }
+    }
+
+    public BetOptions manageComputerBets(){
+        BetOptions options = game.getBetOptions();
+
+        while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer) {
+            System.out.println("displayName = " + options.getPlayer().getDisplayName());
+            options.getPlayer().placeBet(game.getRiverCards(), options, game.getBetManager());
+            options = game.getBetOptions();
+        }
+
+        return options;
     }
 
     private Action[] getPossibleBetActions(int betAmount){
@@ -178,5 +197,9 @@ public class BetManager {
 
     public boolean isBet() {
         return isBet;
+    }
+
+    public int getTurnsLeftInRound() {
+        return turnsLeftInRound;
     }
 }

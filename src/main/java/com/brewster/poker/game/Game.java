@@ -21,7 +21,7 @@ public class Game {
     private Player currentPlayer;
     private List<Card> cards;
     private List<Card> riverCards = new ArrayList<>();
-    private int bigBlindTurn = 0;
+    private int bigBlindTurn = -1;
     private int openSlots;
     private int desiredNumberOfPlayers;
     private BetManager betManager;
@@ -52,13 +52,13 @@ public class Game {
         cards = getNewStandardDeck();
         dealPlayerCards();
         currentPlayer = players.get(bigBlindTurn + 1);
-        return betManager.startNewDeal(currentPlayer);
+        return betManager.startNewDeal();
     }
 
     public BetOptions getBetOptions(){
-        System.out.println("getting betOptions for " + currentPlayer.getDisplayName());
-        System.out.println("turn number " + players.indexOf(currentPlayer));
-        return betManager.getBetOptions(currentPlayer);
+//        System.out.println("getting betOptions for " + currentPlayer.getDisplayName());
+//        System.out.println("turn number " + players.indexOf(currentPlayer));
+        return betManager.getBetOptions();
     }
 
     public List<Card> startNextRound(){

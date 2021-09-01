@@ -26,7 +26,9 @@ public class ComputerPlayer extends Player {
 
     @Override
     public void placeBet(List<Card> riverCards, BetOptions options, BetManager betManager) {
+        System.out.println("placing bet");
         int strength = calculateCards(riverCards);
+        System.out.println("strength of cards = " + strength);
 
 //        Action[] possibleActions = options.getPossibleActions();
         Action primaryAction = options.getPossibleActions()[0];
@@ -38,7 +40,20 @@ public class ComputerPlayer extends Player {
         }
         betRequest.setUsername(options.getName());
 
-        betManager.placeBet(betRequest);
+        String placedBet = betManager.placeBet(betRequest);
+        System.out.println("Bet has been placed - " + placedBet);
+//        if (!isValid.isBlank()){
+//            System.out.println("Problem with bet " + isValid);
+//            fold(options);
+//        }
+    }
+
+    private BetRequest fold(BetOptions options){
+        BetRequest betRequest = new BetRequest();
+        betRequest.setAction(Action.FOLD.name());
+        betRequest.setUsername(options.getName());
+        betRequest.setBetAmount(0);
+        return betRequest;
     }
 
     private BetRequest createCheckActionsBet(int strength, int bigBlind){
