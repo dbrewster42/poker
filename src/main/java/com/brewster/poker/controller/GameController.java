@@ -29,9 +29,6 @@ public class GameController {
     private final UserService userService;
     private UserDto userDto;
     private UserDto computerUser;
-//    private String body;
-//    private int statusCode = 200;
-//    private final ObjectMapper mapper = new ObjectMapper();
 
     public GameController(UserService userService) {
         this.userService = userService;
@@ -48,31 +45,17 @@ public class GameController {
             game = GamesContainer.createGame(userDto, request);
             //TODO wait for players to join
         }
-        List<Card> playerCards = userDto.getPlayer().getHand();
         //TODO return game.getGameResponse or construct here?
-        //return game.getGameResponse();
+        List<Card> playerCards = userDto.getPlayer().getHand();
         List<UserDto> users = game.getUsers();
-//        BetOptions options = game.startNewDeal();
         BetOptions options = game.getBetManager().manageComputerBets();
 
-
         return new NewGameResponse(game.getId(), playerCards, users, options);
-//        NewGameResponse response;
-//        if (options.getPlayer() == userDto.getPlayer()){
-//            response = new NewGameResponse(game.getId(), playerCards, users, options);
-//        } else {
-//            response = new NewGameResponse(game.getId(), playerCards, users);
-//        }
-//
-//        return response;
     }
+
     @GetMapping("/{id}")
     public List<Card> deal(@PathVariable int id) {
         game = GamesContainer.findGameById(id);
-        if (game == null){
-            System.out.println("ERROR !!!!!!!!!!!!!!!!! game is null !!!!!!!!!!!!!!!!! ERROR");
-        }
-        System.out.println("Found Game " + id);
         return game.startNextRound();
     }
 
@@ -80,6 +63,7 @@ public class GameController {
     public List<Game> findGame() {
         return GamesContainer.findAvailableGames();
     }
+
     @PostMapping("/join")
     public Response joinGame(@RequestBody JoinRequest request) {
         userDto = userService.findUser(request.getUsername());

@@ -6,7 +6,6 @@ import com.brewster.poker.game.Game;
 import com.brewster.poker.game.GamesContainer;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.response.BetResponse;
-import com.brewster.poker.player.ComputerPlayer;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,9 +34,9 @@ public class BetController {
         System.out.println("getting betOptions");
         game = GamesContainer.findGameById(id);
 //        BetOptions options = game.getBetOptions();;
-        BetOptions options = game.getBetManager().manageComputerBets();
+//        BetOptions options = game.getBetManager().manageComputerBets();
 
-        return options;
+        return game.getBetManager().manageComputerBets();
     }
 
     @PostMapping("/{id}/bet")

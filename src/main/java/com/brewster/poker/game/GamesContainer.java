@@ -1,6 +1,7 @@
 package com.brewster.poker.game;
 
 import com.brewster.poker.dto.UserDto;
+import com.brewster.poker.exception.GameNotFoundException;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.player.ComputerPlayer;
@@ -23,7 +24,7 @@ public class GamesContainer {
             return game;
         } else {
             return allGames.stream().filter(v -> v.getId() == id)
-                    .findAny().orElse(null);
+                    .findAny().orElseThrow(() -> new GameNotFoundException("Game could not be found"));
         }
     }
 
