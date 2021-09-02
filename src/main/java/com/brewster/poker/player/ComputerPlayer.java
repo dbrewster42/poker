@@ -76,8 +76,8 @@ public class ComputerPlayer extends Player {
 
     private BetRequest createCallActionBet(int strength, BetOptions options, int bigBlind){
         BetRequest betRequest = new BetRequest();
-        if (strength > 3){
-            if (strength > 6){
+        if (strength >= 3){
+            if (strength >= 6){
                 int betAmount = strength * bigBlind / 5;
                 if (betAmount > bank){
                     System.out.println("ERROR - COMPUTER RUNNING OUT OF MONEY => " + bank + "$");
@@ -92,8 +92,12 @@ public class ComputerPlayer extends Player {
                 checkTurn(betRequest, options);
             }
         } else {
-            betRequest.setAction(Action.FOLD.name());
-            betRequest.setBetAmount(0);
+            if (options.getBetAmount() > bigBlind){
+                betRequest.setAction(Action.FOLD.name());
+                betRequest.setBetAmount(0);
+            } else {
+                checkTurn(betRequest, options);
+            }
         }
         return betRequest;
     }

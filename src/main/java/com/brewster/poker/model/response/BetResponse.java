@@ -8,17 +8,16 @@ import java.util.List;
 
 public class BetResponse {
     private boolean isBet;
-    private BetOptions betOptions;
 //    private List<Bet> bets;
     private List<BetDto> bets;
-
-    String message;
-
-    public BetResponse(boolean isBet, BetOptions betOptions, List<BetDto> bets) {
-        this.isBet = isBet;
-        this.betOptions = betOptions;
-        this.bets = bets;
-    }
+    private String message;
+//    private BetOptions betOptions;
+//
+//    public BetResponse(boolean isBet, BetOptions betOptions, List<BetDto> bets) {
+//        this.isBet = isBet;
+//        this.betOptions = betOptions;
+//        this.bets = bets;
+//    }
     public BetResponse(boolean isBet, String message, List<BetDto> bets) {
         this.isBet = isBet;
         this.message = message;
@@ -31,9 +30,9 @@ public class BetResponse {
 
     public String getMessage(){ return message; }
 
-    public BetOptions getBetOptions() {
-        return betOptions;
-    }
+//    public BetOptions getBetOptions() {
+//        return betOptions;
+//    }
 
     public List<BetDto> getBets() {
         return bets;

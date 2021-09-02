@@ -37,7 +37,8 @@ public class BetManager {
         this.id = game.getId();
         this.game = game;
 //        this.bigBlind = Optional.ofNullable(request.getBigBlind()).orElse(500);
-        this.bigBlind = request.getBigBlind() * 100;
+//        this.bigBlind = request.getBigBlind() * 100;
+        this.bigBlind = request.getBigBlind();
         this.smallBlind = bigBlind / 2;
         this.activePlayers = game.getPlayers().size();
         this.turnNumber = 0;

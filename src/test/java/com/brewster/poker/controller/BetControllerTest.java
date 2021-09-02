@@ -1,10 +1,13 @@
 package com.brewster.poker.controller;
 
+import com.brewster.poker.bets.Action;
 import com.brewster.poker.bets.BetOptions;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.game.Game;
 import com.brewster.poker.game.GamesContainer;
+import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
+import com.brewster.poker.model.response.BetResponse;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,22 +49,52 @@ class BetControllerTest {
           BetOptions betOptions = betController.getBetOptions(id);
           assertTrue(betOptions.getPlayer() instanceof HumanPlayer);
 
-          if (betOptions.isBetActive()){
-
-          } else {
-               assertEquals(0, game.getBetManager().getTurnsLeftInRound());
-          }
+//          if (betOptions.isBetActive()){
+//
+//          } else {
+//               assertEquals(0, game.getBetManager().getTurnsLeftInRound());
+//          }
 
      }
 
      @Test
      void bet() {
+          BetOptions betOptions = betController.getBetOptions(id);
+          BetResponse betResponse;
+          if (betOptions.getPot() == 0){
+               betResponse = betController.bet(id, getBetBetRequest());
+               int size = betResponse.getBets().size();
+               assertEquals(20, betResponse.getBets().get(size - 1).getBetAmount());
+               assertEquals(betResponse.getMessage(), betResponse.getBets().get(size - 1).getBetMessage());
+
+          } else {
+               betResponse = betController.bet(id, getCheckBetRequest(betOptions.getBetAmount()));
+               int size = betResponse.getBets().size();
+               assertEquals(betOptions.getBetAmount(), betResponse.getBets().get(size - 1).getBetAmount());
+               assertEquals(betResponse.getMessage(), betResponse.getBets().get(size - 1).getBetMessage());
+          }
+          System.out.println(betResponse.getMessage());
+     }
+
+     private BetRequest getCheckBetRequest(int amount){
+          BetRequest betRequest = new BetRequest();
+          betRequest.setBetAmount(amount);
+          betRequest.setUsername("HUMAN");
+          betRequest.setAction(Action.CHECK.name());
+          return betRequest;
+     }
+
+     private BetRequest getBetBetRequest(){
+          BetRequest betRequest = new BetRequest();
+          betRequest.setBetAmount(20);
+          betRequest.setUsername("BREWSTER");
+          betRequest.setAction(Action.BET.name());
+          return betRequest;
      }
 
      private UserDto getUserDto(){
           UserDto userDto = new UserDto();
           userDto.setUsername("HUMAN");
-          userDto.setDisplayName("HUMAN");
           userDto.setMoney(1000);
           userDto.setId(1);
           return userDto;

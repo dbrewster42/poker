@@ -50,14 +50,14 @@ public enum PokerHand {
     public static int lookupHoleCards(List<Card> hand){
         if (hand.get(0).getValue() == hand.get(1).getValue()){
             if (hand.get(0).getValue() > 8){
-                return 5;
+                return 7;
             }
-            return 4;
+            return 6;
         }
         if (hand.get(0).getValue() > 10 || hand.get(1).getValue() > 10){
-            return 2;
+            return 4;
         }
-        return 0;
+        return 2;
     }
 
     public static PokerHand returnPairCombos(int[] sortedCardValues){
