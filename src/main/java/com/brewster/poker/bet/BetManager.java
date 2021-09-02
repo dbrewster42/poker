@@ -1,6 +1,7 @@
 package com.brewster.poker.bet;
 
 import com.brewster.poker.dto.BetDto;
+import com.brewster.poker.exception.InvalidBetException;
 import com.brewster.poker.game.Game;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
@@ -60,7 +61,11 @@ public class BetManager {
                 returnStatement = bet.process();
                 betsMade.add(new BetDto(bet, returnStatement));
                 adjustTurn();
+            } else {
+                throw new InvalidBetException(returnStatement);
             }
+        } else {
+            throw new InvalidBetException(returnStatement);
         }
         return returnStatement;
     }

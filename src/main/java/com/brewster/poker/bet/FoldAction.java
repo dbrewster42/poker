@@ -10,7 +10,7 @@ public class FoldAction extends Bet {
 
     @Override
     public String validate() {
-        return null;
+        return "";
     }
 
     @Override

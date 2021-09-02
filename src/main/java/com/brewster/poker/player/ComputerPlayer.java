@@ -82,7 +82,7 @@ public class ComputerPlayer extends Player {
                 if (betAmount > bank){
                     System.out.println("ERROR - COMPUTER RUNNING OUT OF MONEY => " + bank + "$");
                     betRequest.setBetAmount(bank);
-                } else if (betAmount < options.getBetAmount()){
+                } else if (betAmount <= options.getBetAmount()){
                     checkTurn(betRequest, options);
                 } else {
                     betRequest.setBetAmount(betAmount);

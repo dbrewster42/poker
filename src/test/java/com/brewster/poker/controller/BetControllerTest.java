@@ -35,10 +35,8 @@ class BetControllerTest {
           BetOptions betOptions = betController.getBetOptions(id);
           assertTrue(betOptions.getPlayer() instanceof HumanPlayer);
 //          if (betOptions.isBetActive()){
-//
-//          } else {
-//               assertEquals(0, game.getBetManager().getTurnsLeftInRound());
-//          }
+//               assertEquals(0, game.getBetManager().getTurnsLftInRound());
+////          }
 
      }
 
@@ -48,12 +46,6 @@ class BetControllerTest {
           game.startNextRound();
           BetOptions betOptions = betController.getBetOptions(id);
           assertTrue(betOptions.getPlayer() instanceof HumanPlayer);
-
-//          if (betOptions.isBetActive()){
-//
-//          } else {
-//               assertEquals(0, game.getBetManager().getTurnsLeftInRound());
-//          }
 
      }
 
