@@ -1,6 +1,6 @@
 package com.brewster.poker.model.response;
 
-import com.brewster.poker.cards.Card;
+import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
 
 import java.util.List;

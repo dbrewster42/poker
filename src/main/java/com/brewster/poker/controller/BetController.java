@@ -1,7 +1,7 @@
 package com.brewster.poker.controller;
 
-import com.brewster.poker.bets.BetManager;
-import com.brewster.poker.bets.BetOptions;
+import com.brewster.poker.bet.BetManager;
+import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.game.Game;
 import com.brewster.poker.game.GamesContainer;
 import com.brewster.poker.model.request.BetRequest;

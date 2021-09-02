@@ -1,10 +1,11 @@
-package com.brewster.poker.bets;
+package com.brewster.poker.bet;
 
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
 
-public class RaiseAction extends Bet {
-    public RaiseAction(Player player, BetRequest betRequest, BetManager betManager) {
+public class BetAction extends Bet {
+
+    public BetAction(Player player, BetRequest betRequest, BetManager betManager) {
         super(player, betRequest, betManager);
     }
 
@@ -14,9 +15,6 @@ public class RaiseAction extends Bet {
         if (betAmount < betManager.getBigBlind()){
             validationError += "The minimum bet is " + betManager.getBigBlind() + ". You may not bet less than the blind";
         }
-        if (betAmount <= betManager.getBetAmount()){
-            validationError = "You selected to Raise the bet. Your bet must be higher than the current bet";
-        }
         return validationError;
     }
 
@@ -25,6 +23,6 @@ public class RaiseAction extends Bet {
         betManager.setBetAmount(betAmount);
         betManager.setPot(betManager.getPot() + betAmount);
         betManager.resetTurnsLeft();
-        return player.getDisplayName() + " has raised the bet to " + betAmount + ". The total pot is now at " + betManager.getPot();
+        return player.getDisplayName() + " has made a bet of " + betAmount + ". The total pot is now at " + betManager.getPot();
     }
 }

@@ -1,6 +1,6 @@
 package com.brewster.poker.game;
 
-import com.brewster.poker.cards.Card;
+import com.brewster.poker.card.Card;
 
 import java.util.HashMap;
 import java.util.List;

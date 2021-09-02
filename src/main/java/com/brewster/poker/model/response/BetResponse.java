@@ -1,7 +1,5 @@
 package com.brewster.poker.model.response;
 
-import com.brewster.poker.bets.Bet;
-import com.brewster.poker.bets.BetOptions;
 import com.brewster.poker.dto.BetDto;
 
 import java.util.List;

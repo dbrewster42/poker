@@ -1,4 +1,4 @@
-package com.brewster.poker.bets;
+package com.brewster.poker.bet;
 
 import com.brewster.poker.player.Player;
 import com.fasterxml.jackson.annotation.JsonIgnore;
