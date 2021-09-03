@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ComputerPlayer extends Player {
     private static int bank = 10000;
-    private FindBestHand findBestHand;
+//    private FindBestHand findBestHand;
 
 //    public ComputerPlayer(String displayName, UserDto userDto) {
 //        super(displayName, userDto);
@@ -113,7 +113,7 @@ public class ComputerPlayer extends Player {
         if (riverCount == 0){
             strength = PokerHand.lookupHoleCards(getHand());
         } else {
-            findBestHand = new FindBestHand(getHand(), riverCards);
+            FindBestHand findBestHand = new FindBestHand(getHand(), riverCards);
             strength = findBestHand.getStrength();
         }
 

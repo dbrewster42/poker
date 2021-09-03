@@ -31,7 +31,7 @@ public class BetController {
 
     @GetMapping("/{id}/bet")
     public BetOptions getBetOptions(@PathVariable int id){
-        System.out.println("getting betOptions");
+        System.out.println("Controller : getting betOptions");
         game = GamesContainer.findGameById(id);
 //        BetOptions options = game.getBetOptions();;
 //        BetOptions options = game.getBetManager().manageComputerBets();
@@ -41,11 +41,13 @@ public class BetController {
 
     @PostMapping("/{id}/bet")
     public BetResponse bet(@PathVariable int id, @RequestBody BetRequest request){
+        System.out.println("Controller: Placing bet - " + request.toString());
         game = GamesContainer.findGameById(id);
         betManager = game.getBetManager();
 //        userDto = userService.findUser(request.getUsername());
 
         String message = betManager.placeBet(request);
+        System.out.println("Controller: Bet has been placed - " + message);
         return new BetResponse(betManager.isBet(), message, betManager.getBetsMade());
         //FIXME need to move to betOptions after return. new method that front end auto calls?
     }

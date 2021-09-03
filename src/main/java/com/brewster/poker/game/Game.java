@@ -56,8 +56,6 @@ public class Game {
     }
 
     public BetOptions getBetOptions(){
-//        System.out.println("getting betOptions for " + currentPlayer.getDisplayName());
-//        System.out.println("turn number " + players.indexOf(currentPlayer));
         return betManager.getBetOptions();
     }
 

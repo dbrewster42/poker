@@ -59,6 +59,7 @@ public class BetManager {
             System.out.println("Validating bet - " + returnStatement);
             if (returnStatement.isEmpty()){
                 returnStatement = bet.process();
+                System.out.println("Bet has been processed - " + returnStatement);
                 betsMade.add(new BetDto(bet, returnStatement));
                 adjustTurn();
             } else {
@@ -145,6 +146,7 @@ public class BetManager {
             options.getPlayer().placeBet(game.getRiverCards(), options, game.getBetManager());
             options = game.getBetOptions();
         }
+        System.out.println("returning betOptions = " + options.toString());
 
         return options;
     }

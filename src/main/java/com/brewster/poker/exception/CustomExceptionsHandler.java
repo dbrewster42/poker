@@ -11,7 +11,16 @@ public class CustomExceptionsHandler extends ResponseEntityExceptionHandler {
 
      @ExceptionHandler(value = GameNotFoundException.class)
 //     @ResponseStatus(HttpStatus.NOT_FOUND)
-     public ErrorResponse resolveInvalidMove(GameNotFoundException e, WebRequest req) {
+     public ErrorResponse resolveGameNotFoundException(GameNotFoundException e, WebRequest req) {
+          return new ErrorResponse(HttpStatus.NOT_FOUND.value(),
+                  HttpStatus.NOT_FOUND.getReasonPhrase(),
+                  e.getMessage(),
+                  req.getDescription(true));
+     }
+
+     @ExceptionHandler(value = InvalidBetException.class)
+//     @ResponseStatus(HttpStatus.NOT_FOUND)
+     public ErrorResponse resolveInvalidBetException(InvalidBetException e, WebRequest req) {
           return new ErrorResponse(HttpStatus.NOT_FOUND.value(),
                   HttpStatus.NOT_FOUND.getReasonPhrase(),
                   e.getMessage(),

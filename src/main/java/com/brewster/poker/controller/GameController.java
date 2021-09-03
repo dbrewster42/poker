@@ -44,6 +44,8 @@ public class GameController {
             game = GamesContainer.createGame(userDto, request);
             //TODO wait for players to join
         }
+//        BetOptions options = game.startNewDeal();
+        game.startNewDeal();
         //TODO return game.getGameResponse or construct here?
         List<Card> playerCards = userDto.getPlayer().getHand();
         List<UserDto> users = game.getUsers();
