@@ -83,27 +83,27 @@ public class ComputerPlayer extends Player {
                     System.out.println("ERROR - COMPUTER RUNNING OUT OF MONEY => " + bank + "$");
                     betRequest.setBetAmount(bank);
                 } else if (betAmount <= options.getBetAmount()){
-                    checkTurn(betRequest, options);
+                    createCallBet(betRequest, options);
                 } else {
                     betRequest.setBetAmount(betAmount);
                     betRequest.setAction(Action.RAISE.name());
                 }
             } else {
-                checkTurn(betRequest, options);
+                createCallBet(betRequest, options);
             }
         } else {
             if (options.getBetAmount() > bigBlind){
                 betRequest.setAction(Action.FOLD.name());
                 betRequest.setBetAmount(0);
             } else {
-                checkTurn(betRequest, options);
+                createCallBet(betRequest, options);
             }
         }
         return betRequest;
     }
 
-    private void checkTurn(BetRequest betRequest, BetOptions options){
-        betRequest.setAction(Action.CHECK.name());
+    private void createCallBet(BetRequest betRequest, BetOptions options){
+        betRequest.setAction(Action.CALL.name());
         betRequest.setBetAmount(options.getBetAmount());
     }
 

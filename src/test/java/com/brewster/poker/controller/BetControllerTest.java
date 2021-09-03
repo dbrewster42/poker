@@ -3,6 +3,7 @@ package com.brewster.poker.controller;
 import com.brewster.poker.bet.Action;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.dto.UserDto;
+import com.brewster.poker.exception.InvalidBetException;
 import com.brewster.poker.game.Game;
 import com.brewster.poker.game.GamesContainer;
 import com.brewster.poker.model.request.BetRequest;
@@ -68,11 +69,31 @@ class BetControllerTest {
           System.out.println(betResponse.getMessage());
      }
 
+     @Test
+     void betThrowsException() {
+          BetOptions betOptions = betController.getBetOptions(id);
+          BetRequest betRequest = getBetBetRequest();
+          betRequest.setBetAmount(1200);
+          if (betOptions.getPot() == 0){
+
+               InvalidBetException exception = assertThrows(
+                       InvalidBetException.class, () -> betController.bet(id, betRequest)
+               );
+               System.out.println(exception.getMessage());
+          } else {
+               betRequest.setAction(Action.RAISE.name());
+               InvalidBetException exception = assertThrows(
+                       InvalidBetException.class, () -> betController.bet(id, betRequest)
+               );
+               System.out.println(exception.getMessage());
+          }
+     }
+
      private BetRequest getCheckBetRequest(int amount){
           BetRequest betRequest = new BetRequest();
           betRequest.setBetAmount(amount);
-          betRequest.setUsername("HUMAN");
-          betRequest.setAction(Action.CHECK.name());
+          betRequest.setUsername("BREWSTER");
+          betRequest.setAction(Action.CALL.name());
           return betRequest;
      }
 

@@ -78,7 +78,7 @@ public class BetManager {
             validatorError += "Critical error. The user who placed the bet was not the expected user. ";
         }
         if (newBetAmount > maxBet){
-            validatorError += "This game has a maximum bet of " + maxBet;
+            validatorError += "This game has a maximum bet of " + maxBet + ". ";
         }
         if (player.getClass() == HumanPlayer.class ){
             HumanPlayer humanPlayer = (HumanPlayer) player;
