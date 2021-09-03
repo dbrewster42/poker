@@ -7,8 +7,8 @@ import java.util.List;
 public class BetResponse {
     private boolean isBet;
 //    private List<Bet> bets;
-    private List<BetDto> bets;
-    private String message;
+//    private List<BetDto> bets;
+    private List<String> messages;
 //    private BetOptions betOptions;
 //
 //    public BetResponse(boolean isBet, BetOptions betOptions, List<BetDto> bets) {
@@ -16,25 +16,33 @@ public class BetResponse {
 //        this.betOptions = betOptions;
 //        this.bets = bets;
 //    }
-    public BetResponse(boolean isBet, String message, List<BetDto> bets) {
+//    public BetResponse(boolean isBet, String message, List<BetDto> bets) {
+//        this.isBet = isBet;
+//        this.message = message;
+//        this.bets = bets;
+//    }
+    public BetResponse(boolean isBet, List<String> messages) {
         this.isBet = isBet;
-        this.message = message;
-        this.bets = bets;
+        this.messages = messages;
     }
 
     public boolean isBet() {
         return isBet;
     }
 
-    public String getMessage(){ return message; }
+    public List<String> getMessages() {
+        return messages;
+    }
+
+    //    public String getMessage(){ return message; }
 
 //    public BetOptions getBetOptions() {
 //        return betOptions;
 //    }
 
-    public List<BetDto> getBets() {
-        return bets;
-    }
+//    public List<BetDto> getBets() {
+//        return bets;
+//    }
 }
 //public class BetResponse extends Response {
 //    private int minimumBet = 0;

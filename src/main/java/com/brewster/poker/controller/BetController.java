@@ -48,8 +48,9 @@ public class BetController {
 
         String message = betManager.placeBet(request);
         System.out.println("Controller: Bet has been placed - " + message);
-        return new BetResponse(betManager.isBet(), message, betManager.getBetsMade());
-        //FIXME need to move to betOptions after return. new method that front end auto calls?
+        return new BetResponse(betManager.isBet(), betManager.getBetMessages());
+        //FIXME need to only return list of Messages
+        //TODO do we need isBet?
     }
 
 }

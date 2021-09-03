@@ -29,9 +29,8 @@ public class BetManager {
     private int betAmount;
     private BetOptions betOptions;
     private final BetFactory betFactory;
-    private List<BetDto> betsMade;
-//    private List<Bet> betsMade;
-    //    private List<String> betMessages;
+//    private List<BetDto> betsMade;
+    private List<String> betMessages;
     private boolean isBet;
 
     public BetManager(Game game, GameSettingsRequest request) {
@@ -45,7 +44,8 @@ public class BetManager {
         this.turnNumber = 0;
         this.maxBet = Optional.ofNullable(request.getMaxBet()).map(v -> v < 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
         betFactory = new BetFactoryImplementation();
-        betsMade = new ArrayList<>();
+//        betsMade = new ArrayList<>();
+        betMessages = new ArrayList<>();
     }
 
     public String placeBet(BetRequest betRequest){
@@ -60,7 +60,8 @@ public class BetManager {
             if (returnStatement.isEmpty()){
                 returnStatement = bet.process();
                 System.out.println("Bet has been processed - " + returnStatement);
-                betsMade.add(new BetDto(bet, returnStatement));
+                betMessages.add(returnStatement);
+//                betsMade.add(new BetDto(bet, returnStatement));
                 adjustTurn();
             } else {
                 throw new InvalidBetException(returnStatement);
@@ -179,8 +180,13 @@ public class BetManager {
         return betAmount;
     }
 
-    public List<BetDto> getBetsMade() {
-        return betsMade;
+//    public List<BetDto> getBetsMade() {
+//        return betsMade;
+//    }
+
+
+    public List<String> getBetMessages() {
+        return betMessages;
     }
 
     public int getActivePlayers() {
