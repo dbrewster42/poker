@@ -121,7 +121,6 @@ public class GameController {
 //        userDto = userService.findUser(request.getUsername());
 //        Game game = GamesContainer.addPlayerToGame(userDto, request);
 //        //        try {
-//        //TODO do i need to do this if I use annotations?
 //        //        }
 //        return new Response(body, statusCode);
 //    }

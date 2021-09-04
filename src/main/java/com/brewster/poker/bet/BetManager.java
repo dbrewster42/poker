@@ -1,6 +1,5 @@
 package com.brewster.poker.bet;
 
-import com.brewster.poker.dto.BetDto;
 import com.brewster.poker.exception.InvalidBetException;
 import com.brewster.poker.game.Game;
 import com.brewster.poker.player.ComputerPlayer;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+//TODO move this and Game to Service package
 public class BetManager {
     private int id;
     private final Game game;
@@ -49,8 +49,8 @@ public class BetManager {
     }
 
     public String placeBet(BetRequest betRequest){
-        System.out.println("Placing bet " + betRequest.toString());
         Player player = game.getCurrentPlayer();
+        System.out.println(player.getDisplayName() + " is placing bet " + betRequest.toString());
         String returnStatement = betAmountIsValid(betRequest, player);
         System.out.println("Is bet amount valid - " + returnStatement);
         if (returnStatement.isEmpty()){
@@ -98,13 +98,12 @@ public class BetManager {
         }
         if (turnsLeftInRound == 0){
             isBet = false;
-        } else {
-            game.adjustCurrentPlayer(turnNumber);
         }
-
+        game.adjustCurrentPlayer(turnNumber);
     }
     public void resetTurnsLeft(){
-        turnsLeftInRound = activePlayers;
+        //needs the +1 because turn is adjusted afterwards
+        turnsLeftInRound = activePlayers + 1;
     }
 
     public void startNextRound(){
@@ -127,7 +126,7 @@ public class BetManager {
     public BetOptions getBetOptions(){
         Player currentPlayer = game.getPlayers().get(turnNumber);
         //TODO test turns left in round
-        System.out.println("betManager.getBetOptions " + currentPlayer.getDisplayName() + " turnsLeft = " + turnsLeftInRound);
+        System.out.println("betManager.getBetOptions " + currentPlayer.getDisplayName() + " turnsLeft = " + turnsLeftInRound + " turnNumber = " + turnNumber);
         if (turnsLeftInRound > 0){
             Action[] actionOptions = getPossibleBetActions(betAmount);
             betOptions = new BetOptions(currentPlayer, actionOptions, betAmount, pot);
@@ -141,7 +140,7 @@ public class BetManager {
 
     public BetOptions manageComputerBets(){
         BetOptions options = game.getBetOptions();
-
+        System.out.println("betManager options = " + options.toString());
         while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer) {
             System.out.println("displayName = " + options.getPlayer().getDisplayName());
             options.getPlayer().placeBet(game.getRiverCards(), options, game.getBetManager());

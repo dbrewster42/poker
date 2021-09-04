@@ -22,18 +22,11 @@ public class BetController {
     private Game game;
     private BetManager betManager;
 
-//    private UserDto userDto;
-//    private UserService userService;
-//
-//    public BetController(UserService userService) {
-//        this.userService = userService;
-//    }
 
     @GetMapping("/{id}/bet")
     public BetOptions getBetOptions(@PathVariable int id){
         System.out.println("Controller : getting betOptions");
         game = GamesContainer.findGameById(id);
-//        BetOptions options = game.getBetOptions();;
 //        BetOptions options = game.getBetManager().manageComputerBets();
 
         return game.getBetManager().manageComputerBets();
@@ -49,8 +42,6 @@ public class BetController {
         String message = betManager.placeBet(request);
         System.out.println("Controller: Bet has been placed - " + message);
         return new BetResponse(betManager.isBet(), betManager.getBetMessages());
-        //FIXME need to only return list of Messages
-        //TODO do we need isBet?
     }
 
 }

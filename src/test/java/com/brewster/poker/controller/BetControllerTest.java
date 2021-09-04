@@ -56,17 +56,15 @@ class BetControllerTest {
           BetResponse betResponse;
           if (betOptions.getPot() == 0){
                betResponse = betController.bet(id, getBetBetRequest());
-               int size = betResponse.getBets().size();
-               assertEquals(20, betResponse.getBets().get(size - 1).getBetAmount());
-               assertEquals(betResponse.getMessage(), betResponse.getBets().get(size - 1).getBetMessage());
-
+               int size = betResponse.getMessages().size();
+               assertEquals("BREWSTER has made a bet of 20. The total pot is now at 20", betResponse.getMessages().get(size - 1));
+               System.out.println(betResponse.getMessages().get(size - 1));
           } else {
                betResponse = betController.bet(id, getCheckBetRequest(betOptions.getBetAmount()));
-               int size = betResponse.getBets().size();
-               assertEquals(betOptions.getBetAmount(), betResponse.getBets().get(size - 1).getBetAmount());
-               assertEquals(betResponse.getMessage(), betResponse.getBets().get(size - 1).getBetMessage());
+               int size = betResponse.getMessages().size();
+               assertEquals(20, betResponse.getMessages().get(size - 1));
+               System.out.println(betResponse.getMessages().get(size - 1));
           }
-          System.out.println(betResponse.getMessage());
      }
 
      @Test

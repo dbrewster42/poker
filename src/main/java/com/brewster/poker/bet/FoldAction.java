@@ -15,7 +15,8 @@ public class FoldAction extends Bet {
 
     @Override
     public String process() {
-        betManager.setActivePlayers(betManager.getActivePlayers() - 1);
+        //FIXME how to skip player who folds?
+//        betManager.setActivePlayers(betManager.getActivePlayers() - 1);
         return player.getDisplayName() + " has folded";
     }
 }
