@@ -127,17 +127,17 @@ public class Game {
         return id;
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
+//    public Player getCurrentPlayer() {
+//        return currentPlayer;
+//    }
 
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    public void adjustCurrentPlayer(int turn){
-        currentPlayer = players.get(turn);
-    }
+//    public void setCurrentPlayer(Player currentPlayer) {
+//        this.currentPlayer = currentPlayer;
+//    }
+//
+//    public void adjustCurrentPlayer(int turn){
+//        currentPlayer = players.get(turn);
+//    }
 
     public List<Card> getRiverCards() {
         return riverCards;

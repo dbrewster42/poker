@@ -16,11 +16,13 @@ import java.util.Optional;
 public class BetManager {
     private int id;
     private final Game game;
-    private int activePlayers;
+    private int activePlayersSize;
     private int bigBlind;
     private int smallBlind;
     private int turnNumber;
     private int turnsLeftInRound;
+    private List<Player> activeBetters;
+    private Player currentBetter;
     //private int lastBet;
     private final Integer maxBet;
     private static final Action[] CHECK_ACTIONS = { Action.BET, Action.CHECK, Action.FOLD };
@@ -40,8 +42,9 @@ public class BetManager {
 //        this.bigBlind = request.getBigBlind() * 100;
         this.bigBlind = request.getBigBlind();
         this.smallBlind = bigBlind / 2;
-        this.activePlayers = game.getPlayers().size();
-        this.turnNumber = 0;
+        this.turnNumber = game.getBigBlindTurn() + 1;
+        this.activeBetters = game.getPlayers();
+        this.activePlayersSize = activeBetters.size();
         this.maxBet = Optional.ofNullable(request.getMaxBet()).map(v -> v < 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
         betFactory = new BetFactoryImplementation();
 //        betsMade = new ArrayList<>();
@@ -49,7 +52,8 @@ public class BetManager {
     }
 
     public String placeBet(BetRequest betRequest){
-        Player player = game.getCurrentPlayer();
+//        Player player = game.getCurrentPlayer();
+        Player player = currentBetter;
         System.out.println(player.getDisplayName() + " is placing bet " + betRequest.toString());
         String returnStatement = betAmountIsValid(betRequest, player);
         System.out.println("Is bet amount valid - " + returnStatement);
@@ -93,43 +97,45 @@ public class BetManager {
     protected void adjustTurn(){
         turnNumber++;
         turnsLeftInRound--;
-        if (turnNumber == activePlayers){
+        if (turnNumber == activePlayersSize){
             turnNumber = 0;
         }
         if (turnsLeftInRound == 0){
             isBet = false;
         }
-        game.adjustCurrentPlayer(turnNumber);
+//        game.adjustCurrentPlayer(turnNumber);
     }
     public void resetTurnsLeft(){
         //needs the +1 because turn is adjusted afterwards
-        turnsLeftInRound = activePlayers + 1;
+        turnsLeftInRound = activePlayersSize + 1;
     }
 
     public void startNextRound(){
         betAmount = 0;
         turnNumber = game.getBigBlindTurn() + 1;
-        activePlayers = game.getPlayers().size();
-        turnsLeftInRound = activePlayers;
+        activeBetters = game.getPlayers();
+        activePlayersSize =activeBetters.size();
+        turnsLeftInRound = activePlayersSize;
         isBet = true;
     }
 
     public BetOptions startNewDeal(){
         pot = 0;
         betAmount = 0;
-        activePlayers = game.getPlayers().size(); //todo better as param?
-        turnsLeftInRound = activePlayers;
+        activePlayersSize = game.getPlayers().size(); //todo better as param?
+        turnsLeftInRound = activePlayersSize;
         System.out.println("starting new deal with " + turnsLeftInRound + " turns");
         return getBetOptions();
     }
 
     public BetOptions getBetOptions(){
-        Player currentPlayer = game.getPlayers().get(turnNumber);
+//        Player currentPlayer = game.getPlayers().get(turnNumber);
+        currentBetter = activeBetters.get(turnNumber);
         //TODO test turns left in round
-        System.out.println("betManager.getBetOptions " + currentPlayer.getDisplayName() + " turnsLeft = " + turnsLeftInRound + " turnNumber = " + turnNumber);
+        System.out.println("betManager.getBetOptions " + currentBetter.getDisplayName() + " turnsLeft = " + turnsLeftInRound + " turnNumber = " + turnNumber);
         if (turnsLeftInRound > 0){
             Action[] actionOptions = getPossibleBetActions(betAmount);
-            betOptions = new BetOptions(currentPlayer, actionOptions, betAmount, pot);
+            betOptions = new BetOptions(currentBetter, actionOptions, betAmount, pot);
             System.out.println("betManager.getBetOptions " + betOptions.toString());
             return betOptions;
         } else {
@@ -157,6 +163,16 @@ public class BetManager {
         } else {
             return CHECK_ACTIONS;
         }
+    }
+
+    public void processFold(Player player){
+        activeBetters.remove(player);
+        turnNumber--;
+        updateActivePlayersSize();
+    }
+
+    public Player adjustCurrentPlayer(int turn){
+        return activeBetters.get(turn);
     }
 
     public int getId() {
@@ -188,12 +204,24 @@ public class BetManager {
         return betMessages;
     }
 
-    public int getActivePlayers() {
-        return activePlayers;
+    public int getActivePlayersSize() {
+        return activePlayersSize;
     }
 
-    public void setActivePlayers(int activePlayers) {
-        this.activePlayers = activePlayers;
+    public void setActivePlayersSize(int activePlayersSize) {
+        this.activePlayersSize = activePlayersSize;
+    }
+
+    public List<Player> getActiveBetters() {
+        return activeBetters;
+    }
+
+    public void updateActivePlayersSize(){
+        this.activePlayersSize = activeBetters.size();
+    }
+
+    public void setActiveBetters(List<Player> activeBetters) {
+        this.activeBetters = activeBetters;
     }
 
     public void setPot(int pot) {

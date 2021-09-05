@@ -62,7 +62,7 @@ class BetControllerTest {
           } else {
                betResponse = betController.bet(id, getCheckBetRequest(betOptions.getBetAmount()));
                int size = betResponse.getMessages().size();
-               assertEquals(20, betResponse.getMessages().get(size - 1));
+               assertEquals("BREWSTER has called the bet of " + betOptions.getBetAmount() + ". The total pot is now at", betResponse.getMessages().get(size - 1));
                System.out.println(betResponse.getMessages().get(size - 1));
           }
      }
