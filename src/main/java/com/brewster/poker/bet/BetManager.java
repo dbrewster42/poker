@@ -25,7 +25,7 @@ public class BetManager {
     private Player currentBetter;
     //private int lastBet;
     private final Integer maxBet;
-    private static final Action[] CHECK_ACTIONS = { Action.BET, Action.CHECK, Action.FOLD };
+    private static final Action[] CHECK_ACTIONS = { Action.CHECK, Action.BET, Action.FOLD };
     private static final Action[] CALL_ACTIONS = { Action.CALL, Action.RAISE, Action.FOLD };
     private int pot = 0;
     private int betAmount;

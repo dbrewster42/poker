@@ -36,11 +36,7 @@ public class UserController {
         } catch (ConstraintViolationException e) {
             body = "That username is already taken. You must choose a unique username";
             statusCode = 400;
-        }catch (DataIntegrityViolationException e) {
-            body = e.getMessage();
-            statusCode = 500;
-            e.printStackTrace();
-        } catch (PropertyValueException e) {
+        } catch (PropertyValueException | DataIntegrityViolationException e) {
             body = e.getMessage();
             statusCode = 500;
             e.printStackTrace();
@@ -53,32 +49,16 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Response login(@RequestBody UserRequest request) {
-        userDto = userService.findUser(request.getUsername());
-        try {
-            body = mapper.writeValueAsString(userDto);
-        } catch (JsonProcessingException e) {
-            body = e.getMessage();
-            statusCode = 400;
-            e.printStackTrace();
-        }
-        return new Response(body, statusCode);
+    public UserDto login(@RequestBody UserRequest request) {
+        return userService.findUser(request.getUsername());
     }
 
     @PutMapping("buyin")
-    public Response addMoney(@RequestBody UserRequest request){
+    public UserDto addMoney(@RequestBody UserRequest request){
         UserDto dto = new UserDto();
         BeanUtils.copyProperties(request, dto);
 
-        userDto = userService.addMoneyToUser(dto);
-        try {
-            body = mapper.writeValueAsString(userDto);
-        } catch (JsonProcessingException e) {
-            body = e.getMessage();
-            statusCode = 400;
-            e.printStackTrace();
-        }
-        return new Response(body, statusCode);
+        return userService.addMoneyToUser(dto);
     }
 
 

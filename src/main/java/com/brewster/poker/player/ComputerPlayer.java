@@ -13,11 +13,7 @@ import java.util.List;
 
 public class ComputerPlayer extends Player {
     private static int bank = 10000;
-//    private FindBestHand findBestHand;
 
-//    public ComputerPlayer(String displayName, UserDto userDto) {
-//        super(displayName, userDto);
-//    }
     public ComputerPlayer(String displayName, UserDto userDto) {
         super(displayName);
         setUser(userDto);
@@ -26,14 +22,12 @@ public class ComputerPlayer extends Player {
 
     @Override
     public void placeBet(List<Card> riverCards, BetOptions options, BetManager betManager) {
-        System.out.println("placing bet");
         int strength = calculateCards(riverCards);
         System.out.println("strength of cards = " + strength);
 
-//        Action[] possibleActions = options.getPossibleActions();
         Action primaryAction = options.getPossibleActions()[0];
         BetRequest betRequest;
-        if (primaryAction.equals(Action.BET)){
+        if (primaryAction.equals(Action.CHECK)){
             betRequest = createCheckActionsBet(strength, betManager.getBigBlind());
         } else {
             betRequest = createCallActionBet(strength, options, betManager.getBigBlind());

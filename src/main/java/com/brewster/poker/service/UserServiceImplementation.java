@@ -16,7 +16,7 @@ public class UserServiceImplementation implements UserService {
 
     public UserDto findUser(String username){
         User user = userRepository.findByUsername(username);
-
+        System.out.println(user.getUsername() + " - " + user.getMoney() + " - " + user.getId());
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(user, returnValue);
 
