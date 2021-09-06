@@ -25,6 +25,7 @@ public class Game {
     private int openSlots;
     private int desiredNumberOfPlayers;
     private BetManager betManager;
+    private boolean isBet;
     private boolean isLastRound;
 
     protected Game(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
@@ -43,7 +44,7 @@ public class Game {
         openSlots = desiredNumberOfPlayers - 1;
         //todo if (request.isCustomRules()){ doSomething() };
     }
-    //TODO is placeBet a good practice?
+
     public String placeBet(BetRequest betRequest){
         return betManager.placeBet(betRequest);
     }

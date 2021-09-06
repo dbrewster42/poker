@@ -19,8 +19,7 @@ public class BetFactoryImplementation implements BetFactory {
             case "RAISE":
                 return new RaiseAction(player, betRequest, betManager);
             default:
-                return null;
-                //TODO throw invalid action exception
+                throw new IllegalArgumentException("That action is not valid");
         }
     }
 }

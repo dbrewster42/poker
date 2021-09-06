@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -79,9 +78,6 @@ public class GameController {
     public Response joinGame(@RequestBody JoinRequest request) {
         userDto = userService.findUser(request.getUsername());
         Game game = GamesContainer.addPlayerToGame(userDto, request);
-        //        try {
-        //TODO do i need to do this if I use annotations?
-        //        }
         return null;
     }
 //    @GetMapping("/{id}")
@@ -190,7 +186,6 @@ public class GameController {
 //        game = GamesContainer.findGameById(id);
 //        userDto = userService.findUser(request.getUsername());
 //        String message = game.placeBet(request);
-//        //FIXME need all bets and way of checking if turn is over
 //        return new BetResponse(true, message, null);
 //    }
 

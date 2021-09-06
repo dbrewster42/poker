@@ -121,16 +121,14 @@ public class BetManager {
     public BetOptions startNewDeal(){
         pot = 0;
         betAmount = 0;
-        activePlayersSize = game.getPlayers().size(); //todo better as param?
+        activePlayersSize = game.getPlayers().size();
         turnsLeftInRound = activePlayersSize;
         System.out.println("starting new deal with " + turnsLeftInRound + " turns");
         return getBetOptions();
     }
 
     public BetOptions getBetOptions(){
-//        Player currentPlayer = game.getPlayers().get(turnNumber);
         currentBetter = activeBetters.get(turnNumber);
-        //TODO test turns left in round
         System.out.println("betManager.getBetOptions " + currentBetter.getDisplayName() + " turnsLeft = " + turnsLeftInRound + " turnNumber = " + turnNumber);
         if (turnsLeftInRound > 0){
             Action[] actionOptions = getPossibleBetActions(betAmount);
