@@ -74,6 +74,7 @@ public class Game {
     }
 
     public List<Card> dealRiverCardNTimes(int count){
+        System.out.println("dealing " + count + " cards");
         cards.remove(0);
         for (int i = 0; i < count; i++){
             riverCards.add(cards.get(0));

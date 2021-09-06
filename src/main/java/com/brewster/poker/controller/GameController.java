@@ -9,6 +9,7 @@ import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.model.response.Response;
+import com.brewster.poker.player.Player;
 import com.brewster.poker.service.UserService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -59,6 +61,11 @@ public class GameController {
         System.out.println("dealing card");
         game = GamesContainer.findGameById(id);
         //TODO prevent repeat deals. bet must go first.
+        for (Player each : game.getPlayers()){
+            System.out.println(each.getDisplayName());
+            each.getHand().forEach(Card::show);
+        }
+        System.out.println();
         return game.startNextRound();
     }
 
