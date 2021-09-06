@@ -33,7 +33,7 @@ class BetControllerTest {
 
      @Test
      void getBetOptions() {
-          BetOptions betOptions = betController.getBetOptions(id);
+          BetOptions betOptions = betController.getBetOptions(id).getBetOptions();
           assertTrue(betOptions.getPlayer() instanceof HumanPlayer);
 //          if (betOptions.isBetActive()){
 //               assertEquals(0, game.getBetManager().getTurnsLftInRound());
@@ -45,14 +45,14 @@ class BetControllerTest {
      void getBetOptions2() {
           List<Player> playerList = game.getPlayers();
           game.startNextRound();
-          BetOptions betOptions = betController.getBetOptions(id);
+          BetOptions betOptions = betController.getBetOptions(id).getBetOptions();
           assertTrue(betOptions.getPlayer() instanceof HumanPlayer);
 
      }
 
      @Test
      void bet() {
-          BetOptions betOptions = betController.getBetOptions(id);
+          BetOptions betOptions = betController.getBetOptions(id).getBetOptions();
           BetResponse betResponse;
           if (betOptions.getPot() == 0){
                betResponse = betController.bet(id, getBetBetRequest());
@@ -69,7 +69,7 @@ class BetControllerTest {
 
      @Test
      void betThrowsException() {
-          BetOptions betOptions = betController.getBetOptions(id);
+          BetOptions betOptions = betController.getBetOptions(id).getBetOptions();
           BetRequest betRequest = getBetBetRequest();
           betRequest.setBetAmount(1200);
           if (betOptions.getPot() == 0){

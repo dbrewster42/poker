@@ -24,12 +24,13 @@ public class BetController {
 
 
     @GetMapping("/{id}/bet")
-    public BetOptions getBetOptions(@PathVariable int id){
+    public BetResponse getBetOptions(@PathVariable int id){
         System.out.println("Controller : getting betOptions");
         game = GamesContainer.findGameById(id);
 //        BetOptions options = game.getBetManager().manageComputerBets();
 
-        return game.getBetManager().manageComputerBets();
+        BetOptions options = game.getBetManager().manageComputerBets();
+        return new BetResponse(options, game.getBetManager().getBetMessages());
     }
 
     @PostMapping("/{id}/bet")

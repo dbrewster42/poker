@@ -56,7 +56,9 @@ public class GameController {
 
     @GetMapping("/{id}")
     public List<Card> deal(@PathVariable int id) {
+        System.out.println("dealing card");
         game = GamesContainer.findGameById(id);
+        //TODO prevent repeat deals. bet must go first.
         return game.startNextRound();
     }
 

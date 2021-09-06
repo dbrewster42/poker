@@ -103,11 +103,10 @@ public class BetManager {
         if (turnsLeftInRound == 0){
             isBet = false;
         }
-//        game.adjustCurrentPlayer(turnNumber);
     }
+
     public void resetTurnsLeft(){
-        //needs the +1 because turn is adjusted afterwards
-        turnsLeftInRound = activePlayersSize + 1;
+        turnsLeftInRound = activePlayersSize;
     }
 
     public void startNextRound(){
