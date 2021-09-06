@@ -1,10 +1,13 @@
 package com.brewster.poker.service;
 
+import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.repository.UserRepository;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserServiceImplementation implements UserService {
@@ -15,8 +18,9 @@ public class UserServiceImplementation implements UserService {
     }
 
     public UserDto findUser(String username){
-        User user = userRepository.findByUsername(username);
-        System.out.println(user.getUsername() + " - " + user.getMoney() + " - " + user.getId());
+        User user = Optional.ofNullable(userRepository.findByUsername(username))
+                .orElseThrow(() -> new UserNotFoundException());
+
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(user, returnValue);
 
@@ -24,7 +28,8 @@ public class UserServiceImplementation implements UserService {
     }
 
     public UserDto addMoneyToUser(UserDto dto){
-        User oldUser =  userRepository.findByUsername(dto.getUsername());
+        User oldUser =  Optional.ofNullable(userRepository.findByUsername(dto.getUsername()))
+                .orElseThrow(() -> new UserNotFoundException());
         oldUser.setMoney(oldUser.getMoney() + dto.getMoney());
 
         User updatedUser = userRepository.save(oldUser);
@@ -41,6 +46,7 @@ public class UserServiceImplementation implements UserService {
         System.out.println("Service copied " + newUser.getUsername() + newUser.getMoney());
 
         User savedUser = userRepository.save(newUser);
+//        Optional.ofNullable(savedUser).orElseThrow(() -> new RuntimeException("user not saved correctly"));
 
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(savedUser, returnValue);

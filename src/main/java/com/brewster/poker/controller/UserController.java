@@ -36,13 +36,9 @@ public class UserController {
         } catch (ConstraintViolationException e) {
             body = "That username is already taken. You must choose a unique username";
             statusCode = 400;
-        } catch (PropertyValueException | DataIntegrityViolationException e) {
+        } catch (Exception e) {
             body = e.getMessage();
             statusCode = 500;
-            e.printStackTrace();
-        } catch (JsonProcessingException e) {
-            body = e.getMessage();
-            statusCode = 400;
             e.printStackTrace();
         }
         return new Response(body, statusCode);
