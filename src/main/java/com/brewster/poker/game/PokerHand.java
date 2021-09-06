@@ -1,6 +1,6 @@
 package com.brewster.poker.game;
 
-import com.brewster.poker.cards.Card;
+import com.brewster.poker.card.Card;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +30,7 @@ public enum PokerHand {
     }
 
     public static PokerHand lookupHand(List<Card> hand){
-        int[] cardValues = hand.stream().mapToInt(v -> v.getValue()).sorted().toArray();
+        int[] cardValues = hand.stream().mapToInt(Card::getValue).sorted().toArray();
         PokerHand pokerHand = returnPairCombos(cardValues);
         if (pokerHand.getScore() > 2){
             return pokerHand;
@@ -46,6 +46,18 @@ public enum PokerHand {
         }
 
         return pokerHand;
+    }
+    public static int lookupHoleCards(List<Card> hand){
+        if (hand.get(0).getValue() == hand.get(1).getValue()){
+            if (hand.get(0).getValue() > 8){
+                return 7;
+            }
+            return 6;
+        }
+        if (hand.get(0).getValue() > 10 || hand.get(1).getValue() > 10){
+            return 4;
+        }
+        return 2;
     }
 
     public static PokerHand returnPairCombos(int[] sortedCardValues){
@@ -93,14 +105,12 @@ public enum PokerHand {
 
     public static boolean isStraight(int[] sortedCardValues){
         int start = sortedCardValues[0];
-        if (start == 2){
-            if (sortedCardValues[4] == 14){
-                for (int i = 4; i > 0; i--){
-                    sortedCardValues[i] = sortedCardValues[i - 1];
-                }
-                sortedCardValues[0] = 1;
-                start = 1;
+        if (start == 2 && sortedCardValues[4] == 14){
+            for (int i = 4; i > 0; i--){
+                sortedCardValues[i] = sortedCardValues[i - 1];
             }
+            sortedCardValues[0] = 1;
+            start = 1;
         }
         for (int i : sortedCardValues){
             if (start != i){

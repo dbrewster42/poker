@@ -1,12 +1,12 @@
 package com.brewster.poker.game;
 
-import com.brewster.poker.cards.Card;
-import com.brewster.poker.cards.DeckBuilder;
+import com.brewster.poker.card.Card;
+import com.brewster.poker.card.DeckBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HandMother {
+public class CardHandBuilder {
     private static List<Card> cards = new DeckBuilder().buildStandardDeck();
 
     public static int[] buildHighAceStraightValues(){

@@ -1,4 +1,4 @@
-package com.brewster.poker.bets;
+package com.brewster.poker.bet;
 
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
@@ -10,12 +10,12 @@ public class FoldAction extends Bet {
 
     @Override
     public String validate() {
-        return null;
+        return "";
     }
 
     @Override
     public String process() {
-        betManager.setActivePlayers(betManager.getActivePlayers() - 1);
+        betManager.processFold(player);
         return player.getDisplayName() + " has folded";
     }
 }

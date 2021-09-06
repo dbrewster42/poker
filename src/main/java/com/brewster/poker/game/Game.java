@@ -1,9 +1,9 @@
 package com.brewster.poker.game;
 
-import com.brewster.poker.cards.Card;
-import com.brewster.poker.cards.DeckBuilder;
-import com.brewster.poker.bets.BetManager;
-import com.brewster.poker.bets.BetOptions;
+import com.brewster.poker.card.Card;
+import com.brewster.poker.card.DeckBuilder;
+import com.brewster.poker.bet.BetManager;
+import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
@@ -13,9 +13,7 @@ import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Game {
     private int id;
@@ -23,10 +21,12 @@ public class Game {
     private Player currentPlayer;
     private List<Card> cards;
     private List<Card> riverCards = new ArrayList<>();
-    private int bigBlindTurn = 0;
+    private int bigBlindTurn = -1;
     private int openSlots;
     private int desiredNumberOfPlayers;
     private BetManager betManager;
+    private boolean isBet;
+    private boolean isLastRound;
 
     protected Game(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
         this.id = id;
@@ -44,7 +44,7 @@ public class Game {
         openSlots = desiredNumberOfPlayers - 1;
         //todo if (request.isCustomRules()){ doSomething() };
     }
-    //TODO is placeBet a good practice?
+
     public String placeBet(BetRequest betRequest){
         return betManager.placeBet(betRequest);
     }
@@ -53,14 +53,18 @@ public class Game {
         cards = getNewStandardDeck();
         dealPlayerCards();
         currentPlayer = players.get(bigBlindTurn + 1);
-        return betManager.startNewDeal(currentPlayer);
+        return betManager.startNewDeal();
     }
 
     public BetOptions getBetOptions(){
-        return betManager.getBetOptions(currentPlayer);
+        return betManager.getBetOptions();
     }
 
     public List<Card> startNextRound(){
+        if (riverCards.size() == 5){
+            System.out.println("cards have all already been dealt");
+            return cards;
+        }
         betManager.startNextRound();
         int count = 1;
         if (riverCards.size() == 0){
@@ -70,6 +74,7 @@ public class Game {
     }
 
     public List<Card> dealRiverCardNTimes(int count){
+        System.out.println("dealing " + count + " cards");
         cards.remove(0);
         for (int i = 0; i < count; i++){
             riverCards.add(cards.get(0));
@@ -108,7 +113,7 @@ public class Game {
         for (Player player : players){
             users.add(player.getUser());
         }
-        GameResponse gameResponse = new GameResponse(users, bigBlindTurn, betManager.getTurn());
+        GameResponse gameResponse = new GameResponse(users, bigBlindTurn, betManager.getTurnNumber());
         return gameResponse;
     }
     public List<UserDto> getUsers(){
@@ -128,13 +133,17 @@ public class Game {
         return id;
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
+//    public Player getCurrentPlayer() {
+//        return currentPlayer;
+//    }
 
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
+//    public void setCurrentPlayer(Player currentPlayer) {
+//        this.currentPlayer = currentPlayer;
+//    }
+//
+//    public void adjustCurrentPlayer(int turn){
+//        currentPlayer = players.get(turn);
+//    }
 
     public List<Card> getRiverCards() {
         return riverCards;

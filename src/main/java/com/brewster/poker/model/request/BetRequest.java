@@ -4,11 +4,6 @@ public class BetRequest {
     private String username;
     private String action;
     private int betAmount;
-//    private Action action;
-//    private boolean fold;
-//    private int riverCardsCount;
-//    private Map<String, Integer> bets;
-
 
     public String getUsername() {
         return username;
@@ -32,5 +27,10 @@ public class BetRequest {
 
     public void setBetAmount(int betAmount) {
         this.betAmount = betAmount;
+    }
+
+    @Override
+    public String toString() {
+        return "BetRequest{" + "username='" + username + '\'' + ", action='" + action + '\'' + ", betAmount=" + betAmount + '}';
     }
 }

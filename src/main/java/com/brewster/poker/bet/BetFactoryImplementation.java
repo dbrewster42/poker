@@ -1,4 +1,4 @@
-package com.brewster.poker.bets;
+package com.brewster.poker.bet;
 
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
@@ -19,8 +19,7 @@ public class BetFactoryImplementation implements BetFactory {
             case "RAISE":
                 return new RaiseAction(player, betRequest, betManager);
             default:
-                return null;
-                //TODO throw invalid action exception
+                throw new IllegalArgumentException("That action is not valid");
         }
     }
 }
