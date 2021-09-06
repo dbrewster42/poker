@@ -62,8 +62,7 @@ public class Game {
     public List<Card> startNextRound(){
         if (riverCards.size() == 5){
             System.out.println("cards have all already been dealt");
-            //TODO throw exception
-            return null;
+            return cards;
         }
         betManager.startNextRound();
         int count = 1;

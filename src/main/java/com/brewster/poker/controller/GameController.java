@@ -51,6 +51,7 @@ public class GameController {
         //TODO return game.getGameResponse or construct here?
         List<Card> playerCards = userDto.getPlayer().getHand();
         List<UserDto> users = game.getUsers();
+        users.remove(userDto);
         BetOptions options = game.getBetManager().manageComputerBets();
 
         return new NewGameResponse(game.getId(), playerCards, users, options);
