@@ -2,6 +2,7 @@ package com.brewster.poker.game;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.card.DeckBuilder;
+import com.brewster.poker.player.Player;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +54,11 @@ public enum PokerHand {
 //        }
 
         return pokerHand;
+    }
+    public static Player getTieBreaker(Player first, Player second){
+        PokerHand pokerHand = first.getPokerHand();
+        //TODO do I have to do each separately?
+        return first;
     }
 
     public static PokerHand getBestHand(PokerHand first, PokerHand second){

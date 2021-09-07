@@ -5,6 +5,7 @@ import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.game.Game;
+import com.brewster.poker.game.PokerHand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public abstract class Player {
     private Game game;
     private int money;
     private UserDto user;
+    private PokerHand pokerHand;
 
     public Player(String displayName){
         this.displayName = displayName;
@@ -28,7 +30,9 @@ public abstract class Player {
     }
 
     public abstract void placeBet(List<Card> riverCards, BetOptions options, BetManager betManager);
-    public abstract void collectWinnings();
+    public void collectWinnings(int pot){
+        this.money += pot;
+    }
     public abstract void joinGame();
     public abstract void leaveGame();
 
@@ -72,5 +76,13 @@ public abstract class Player {
 
     public void setUser(UserDto user) {
         this.user = user;
+    }
+
+    public PokerHand getPokerHand() {
+        return pokerHand;
+    }
+
+    public void setPokerHand(PokerHand pokerHand) {
+        this.pokerHand = pokerHand;
     }
 }

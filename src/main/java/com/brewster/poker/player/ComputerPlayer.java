@@ -101,10 +101,10 @@ public class ComputerPlayer extends Player {
         return strength;
     }
 
-    @Override
-    public void collectWinnings() {
-
-    }
+//    @Override
+//    public void collectWinnings() {
+//
+//    }
 
     @Override
     public void joinGame() {

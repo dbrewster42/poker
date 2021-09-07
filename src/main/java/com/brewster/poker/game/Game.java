@@ -4,10 +4,11 @@ import com.brewster.poker.card.Card;
 import com.brewster.poker.card.DeckBuilder;
 import com.brewster.poker.bet.BetManager;
 import com.brewster.poker.bet.BetOptions;
+import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
-import com.brewster.poker.model.response.GameResponse;
+import com.brewster.poker.model.response.EndRoundResponse;
 import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
@@ -19,7 +20,7 @@ import java.util.List;
 public class Game {
     private int id;
     private List<Player> players;
-    private Player currentPlayer;
+    private Player currentPlayer; //to be used for dealing
     private List<Card> cards;
     private List<Card> riverCards = new ArrayList<>();
     private int bigBlindTurn = -1;
@@ -50,10 +51,36 @@ public class Game {
         return betManager.placeBet(betRequest);
     }
 
-    public void calculateWinningHand(){
+    public EndRoundResponse calculateWinningHand(){
         if (isLastRound && !isBet){
-
+            List<Player> activePlayers = betManager.getActiveBetters();
+            List<PlayerDto> playerDtos = new ArrayList<>();
+            int winningStrength = 0;
+            Player winner = null;
+            for (Player player : activePlayers){
+                if (player.getHand().addAll(riverCards)){
+//                    PlayerDto playerDto = new PlayerDto(player.getDisplayName(), PokerHand.lookupHand(player.getHand()));
+                    PokerHand pokerHand = PokerHand.lookupHand(player.getHand());
+                    playerDtos.add(new PlayerDto(player.getDisplayName(), pokerHand.getHandName()));
+                    player.setPokerHand(pokerHand);
+                    int score = pokerHand.getScore();
+                    if (winningStrength < score){
+                        winningStrength = score;
+                        winner = player;
+                    } else if (winningStrength == score){
+                        //TODO
+                        System.out.println("THERE IS A TIE, I WILL ARBITRALY CHOOSE A WINNER of " + pokerHand.getHandName());
+                        PokerHand.getTieBreaker(winner, player);
+                    }
+                } else {
+                    throw new RuntimeException("problem getting cards");
+                }
+            }
+            int pot = betManager.getPot();
+            winner.collectWinnings(pot);
+            return new EndRoundResponse(pot, new PlayerDto(winner.getDisplayName(), winner.getPokerHand().getHandName()), playerDtos);
         }
+        throw new IllegalArgumentException("Game is still on-going");
     }
 
     public BetOptions startNewDeal(){

@@ -18,10 +18,10 @@ public class HumanPlayer extends Player {
 
     }
 
-    @Override
-    public void collectWinnings() {
-
-    }
+//    @Override
+//    public void collectWinnings() {
+//
+//    }
 
     @Override
     public void joinGame() {
