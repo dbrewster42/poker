@@ -30,6 +30,12 @@ public class CardHandBuilder {
         }
         return hand;
     }
+    public static List<Card> buildFourOfKindWithSevenCards(){
+        List<Card> hand = buildFourOfKind();
+        hand.add(cards.get(17));
+        hand.add(cards.get(23));
+        return hand;
+    }
     public static List<Card> buildFullHouse(){
         List<Card> hand = new ArrayList<>();
         int count = 0;
@@ -45,12 +51,24 @@ public class CardHandBuilder {
         }
         return hand;
     }
+    public static List<Card> buildFullHouseWithSeven(){
+        List<Card> hand = buildFullHouse();
+        hand.add(cards.get(33));
+        hand.add(cards.get(39));
+        return hand;
+    }
 
     public static List<Card> buildStraightFlush(){
         List<Card> hand = new ArrayList<>();
-        for (int i = 0; i < 20; i+=4){
+        for (int i = 4; i < 24; i+=4){
             hand.add(cards.get(i));
         }
+        return hand;
+    }
+    public static List<Card> buildStraightFlushWithSeven(){
+        List<Card> hand = buildStraightFlush();
+        hand.add(cards.get(1));
+        hand.add(cards.get(44));
         return hand;
     }
 
@@ -61,6 +79,12 @@ public class CardHandBuilder {
         }
         return hand;
     }
+    public static List<Card> buildFlushWithSeven(){
+        List<Card> hand = buildFlush();
+        hand.add(cards.get(1));
+        hand.add(cards.get(2));
+        return hand;
+    }
 
     public static List<Card> buildHighCard(){
         List<Card> hand = new ArrayList<>();
@@ -69,6 +93,7 @@ public class CardHandBuilder {
         }
         return hand;
     }
+
     public static List<Card> buildPair(){
         List<Card> hand = new ArrayList<>();
         for (int i = 0; i < 34; i+=11){
@@ -77,12 +102,24 @@ public class CardHandBuilder {
         hand.add(cards.get(1));
         return hand;
     }
+    public static List<Card> buildPairWithSeven(){
+        List<Card> hand = buildPair();
+        hand.add(cards.get(39));
+        hand.add(cards.get(44));
+        return hand;
+    }
     public static List<Card> buildStraight(){
         List<Card> hand = new ArrayList<>();
-        for (int i = 0; i < 13; i+=4){
+        for (int i = 4; i < 17; i+=4){
             hand.add(cards.get(i));
         }
-        hand.add(cards.get(18));
+        hand.add(cards.get(22));
+        return hand;
+    }
+    public static List<Card> buildStraightWithSevenCards(){
+        List<Card> hand = buildStraight();
+        hand.add(cards.get(33));
+        hand.add(cards.get(45));
         return hand;
     }
     public static List<Card> buildThreeOfAKind(){
@@ -95,11 +132,24 @@ public class CardHandBuilder {
         }
         return hand;
     }
+    public static List<Card> buildThreeOfAKindWithSeven(){
+        List<Card> hand = buildThreeOfAKind();
+        hand.add(cards.get(24));
+        hand.add(cards.get(34));
+        return hand;
+    }
     public static List<Card> buildTwoPair(){
         List<Card> hand = new ArrayList<>();
         for (int i = 0; i < 10; i+=2){
             hand.add(cards.get(i));
         }
+        return hand;
+    }
+    public static List<Card> buildTwoPairWithSevenCards(){
+        List<Card> hand = buildTwoPair();
+        hand.add(cards.get(24));
+        hand.add(cards.get(34));
+
         return hand;
     }
 }

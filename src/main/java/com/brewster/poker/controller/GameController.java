@@ -68,6 +68,9 @@ public class GameController {
     public EndRoundResponse calculateWinner(@PathVariable int id) {
         game = GamesContainer.findGameById(id);
         game.calculateWinningHand();
+
+        //TODO
+        return null;
     }
 
     @GetMapping("/join")

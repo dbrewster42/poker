@@ -54,4 +54,8 @@ public class DeckBuilder {
         }
         return cards;
     }
+
+    public static String[] getSUITS() {
+        return SUITS;
+    }
 }

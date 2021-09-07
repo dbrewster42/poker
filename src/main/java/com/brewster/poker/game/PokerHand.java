@@ -1,6 +1,7 @@
 package com.brewster.poker.game;
 
 import com.brewster.poker.card.Card;
+import com.brewster.poker.card.DeckBuilder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,20 +34,32 @@ public enum PokerHand {
         int[] cardValues = hand.stream().mapToInt(Card::getValue).sorted().toArray();
         PokerHand pokerHand = returnPairCombos(cardValues);
         //TODO refactor for 7 cards
-        if (pokerHand.getScore() > 2){
-            return pokerHand;
-        }
-        if (isFlush(hand)){
-            if (isStraight(cardValues)){
-                pokerHand = STRAIGHT_FLUSH;
-            } else {
-                pokerHand = FLUSH;
-            }
+        int isFlush = isStraightFlush(hand);
+        if (isFlush == 2){
+            pokerHand = STRAIGHT_FLUSH;
+        } else if (isFlush == 1){
+            pokerHand = getBestHand(FLUSH, pokerHand);
         } else if (isStraight(cardValues)){
-            pokerHand = STRAIGHT;
+            pokerHand = getBestHand(STRAIGHT, pokerHand);
         }
+//        if (isFlush(hand)){
+//            if (isStraight(cardValues)){
+//                pokerHand = STRAIGHT_FLUSH;
+//            } else {
+//                pokerHand = getBestHand(FLUSH, pokerHand);
+//            }
+//        } else if (isStraight(cardValues)){
+//            pokerHand = getBestHand(STRAIGHT, pokerHand);
+//        }
 
         return pokerHand;
+    }
+
+    public static PokerHand getBestHand(PokerHand first, PokerHand second){
+        if (first.getScore() < second.getScore()){
+            first = second;
+        }
+        return first;
     }
 
     public static PokerHand returnPairCombos(int[] sortedCardValues){
@@ -83,32 +96,82 @@ public enum PokerHand {
     }
 
     public static boolean isFlush(List<Card> hand){
-        String suit = hand.get(0).getSuit();
-        for (Card card : hand){
-            if (!card.getSuit().equals(suit)){
-                return false;
+        for (String suit : DeckBuilder.getSUITS()){
+            int count = 0;
+            for (Card card : hand){
+                if (card.getSuit().equals(suit)){
+                    count++;
+                }
+            }
+            if (count == 5){
+                return true;
             }
         }
-        return true;
+        return false;
+//        String suit = hand.get(0).getSuit();
+//        for (Card card : hand){
+//            if (!card.getSuit().equals(suit)){
+//                return false;
+//            }
+//        }
+//        return true;
+    }
+    public static int isStraightFlush(List<Card> hand){
+        for (String suit : DeckBuilder.getSUITS()){
+            int count = 0;
+            for (Card card : hand){
+                if (card.getSuit().equals(suit)){
+                    count++;
+                }
+            }
+            if (count >= 5){
+                int[] cards = hand.stream().filter(v -> v.getSuit().equals(suit))
+                        .mapToInt(v -> v.getValue())
+                        .sorted().toArray();
+                if (isStraight(cards)){
+                    return 2;
+                }
+                return 1;
+            }
+        }
+        return 0;
+
     }
 
     public static boolean isStraight(int[] sortedCardValues){
         int start = sortedCardValues[0];
-        if (start == 2 && sortedCardValues[4] == 14){
-            for (int i = 4; i > 0; i--){
-                sortedCardValues[i] = sortedCardValues[i - 1];
-            }
-            sortedCardValues[0] = 1;
-            start = 1;
-        }
+        int count = 0;
         for (int i : sortedCardValues){
-            if (start != i){
-                return false;
-            }
-            start++;
+          if (start == i){
+              count++;
+          } else {
+              count = 0;
+              start = i;
+          }
+          if (count == 5){
+              return true;
+          }
+          start++;
         }
-        return true;
+        return false;
     }
+//    public static boolean isStraight(int[] sortedCardValues){
+//        int start = sortedCardValues[0];
+//        if (start == 2 && sortedCardValues[4] == 14){
+//            for (int i = 4; i > 0; i--){
+//                sortedCardValues[i] = sortedCardValues[i - 1];
+//            }
+//            sortedCardValues[0] = 1;
+//            start = 1;
+//        }
+//        for (int i : sortedCardValues){
+//            if (start != i){
+//                return false;
+//            }
+//            start++;
+//        }
+//        return true;
+//    }
 
     public int getScore() {
         return score;
