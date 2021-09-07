@@ -5,8 +5,7 @@ import com.brewster.poker.bet.BetManager;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
-import com.brewster.poker.game.FindBestHand;
-import com.brewster.poker.game.PokerHand;
+import com.brewster.poker.game.HandStrengthCalc;
 import com.brewster.poker.model.request.BetRequest;
 
 import java.util.List;
@@ -36,18 +35,6 @@ public class ComputerPlayer extends Player {
 
         String placedBet = betManager.placeBet(betRequest);
         System.out.println("Bet has been placed - " + placedBet);
-//        if (!isValid.isBlank()){
-//            System.out.println("Problem with bet " + isValid);
-//            fold(options);
-//        }
-    }
-
-    private BetRequest fold(BetOptions options){
-        BetRequest betRequest = new BetRequest();
-        betRequest.setAction(Action.FOLD.name());
-        betRequest.setUsername(options.getName());
-        betRequest.setBetAmount(0);
-        return betRequest;
     }
 
     private BetRequest createCheckActionsBet(int strength, int bigBlind){
@@ -105,10 +92,10 @@ public class ComputerPlayer extends Player {
         int strength = 0;
         int riverCount = riverCards.size();
         if (riverCount == 0){
-            strength = PokerHand.lookupHoleCards(getHand());
+            strength = HandStrengthCalc.lookupHoleCards(getHand());
         } else {
-            FindBestHand findBestHand = new FindBestHand(getHand(), riverCards);
-            strength = findBestHand.getStrength();
+            HandStrengthCalc strengthCalc = new HandStrengthCalc(getHand(), riverCards);
+            strength = strengthCalc.getStrength();
         }
 
         return strength;

@@ -9,21 +9,34 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FindBestHand {
+public class HandStrengthCalc {
     private Map<String, Integer> suitMap;
     private int chaseCards;
     private List<Card> hand;
     private int strength = 0;
 
-    public FindBestHand(List<Card> holeCards, List<Card> riverCards){
+    public HandStrengthCalc(List<Card> holeCards, List<Card> riverCards){
         chaseCards = 5 - riverCards.size();
         hand = Stream.concat(holeCards.stream(), riverCards.stream())
                 .sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
         suitMap = getSuitCount(hand);
-        strength = findBestHand();
+        strength = findHandStrength();
     }
 
-    public int findBestHand(){
+    public static int lookupHoleCards(List<Card> hand){
+        if (hand.get(0).getValue() == hand.get(1).getValue()){
+            if (hand.get(0).getValue() > 8){
+                return 7;
+            }
+            return 6;
+        }
+        if (hand.get(0).getValue() > 10 || hand.get(1).getValue() > 10){
+            return 4;
+        }
+        return 2;
+    }
+
+    public int findHandStrength(){
         int score = getHigherScore(flushCount(), straightCount());
 //                flushCount();
 //        int score2 = straightCount();

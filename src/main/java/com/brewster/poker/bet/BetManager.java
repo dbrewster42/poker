@@ -136,6 +136,7 @@ public class BetManager {
             System.out.println("betManager.getBetOptions " + betOptions.toString());
             return betOptions;
         } else {
+            game.setBet(false);
             //FIXME should we auto call or not? if yes, need logic in game controller for Deal
 //            game.startNextRound();
             return new BetOptions();

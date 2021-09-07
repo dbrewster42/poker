@@ -8,6 +8,7 @@ import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.GameResponse;
+import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
@@ -49,10 +50,17 @@ public class Game {
         return betManager.placeBet(betRequest);
     }
 
+    public void calculateWinningHand(){
+        if (isLastRound && !isBet){
+
+        }
+    }
+
     public BetOptions startNewDeal(){
         cards = getNewStandardDeck();
         dealPlayerCards();
         currentPlayer = players.get(bigBlindTurn + 1);
+        isBet = true;
         return betManager.startNewDeal();
     }
 
@@ -61,7 +69,11 @@ public class Game {
     }
 
     public List<Card> startNextRound(){
-        if (riverCards.size() == 5){
+        if (isBet){
+            System.out.println("Cannot deal cards until betting has finished");
+            return cards;
+        }
+        if (isLastRound){
             System.out.println("cards have all already been dealt");
             return cards;
         }
@@ -80,6 +92,10 @@ public class Game {
             riverCards.add(cards.get(0));
             cards.remove(0);
         }
+        if (riverCards.size() == 5){
+            isLastRound = true;
+        }
+        isBet = true;
         return riverCards;
     }
     private List<Card> getNewStandardDeck(){
@@ -108,14 +124,22 @@ public class Game {
         openSlots--;
 
     }
-    public GameResponse getGameResponse(){
-        List<UserDto> users = new ArrayList<>();
-        for (Player player : players){
-            users.add(player.getUser());
-        }
-        GameResponse gameResponse = new GameResponse(users, bigBlindTurn, betManager.getTurnNumber());
-        return gameResponse;
+    public NewGameResponse getNewGameResponse(UserDto userDto){
+        List<Card> playerCards = userDto.getPlayer().getHand();
+        List<UserDto> users = getUsers();
+        users.remove(userDto);
+        BetOptions options = betManager.manageComputerBets();
+
+        return new NewGameResponse(id, playerCards, users, options);
     }
+//    public GameResponse getGameResponse(){
+//        List<UserDto> users = new ArrayList<>();
+//        for (Player player : players){
+//            users.add(player.getUser());
+//        }
+//        GameResponse gameResponse = new GameResponse(users, bigBlindTurn, betManager.getTurnNumber());
+//        return gameResponse;
+//    }
     public List<UserDto> getUsers(){
         List<UserDto> users = new ArrayList<>();
         for (Player player : players){
@@ -175,6 +199,14 @@ public class Game {
 
     public BetManager getBetManager() {
         return betManager;
+    }
+
+    public boolean isBet() {
+        return isBet;
+    }
+
+    public void setBet(boolean bet) {
+        isBet = bet;
     }
 
     @Override

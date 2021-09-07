@@ -7,6 +7,7 @@ import com.brewster.poker.game.Game;
 import com.brewster.poker.game.GamesContainer;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.request.JoinRequest;
+import com.brewster.poker.model.response.EndRoundResponse;
 import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.model.response.Response;
 import com.brewster.poker.player.Player;
@@ -45,15 +46,9 @@ public class GameController {
             game = GamesContainer.createGame(userDto, request);
             //TODO wait for players to join
         }
-//        BetOptions options = game.startNewDeal();
         game.startNewDeal();
-        //TODO return game.getGameResponse or construct here?
-        List<Card> playerCards = userDto.getPlayer().getHand();
-        List<UserDto> users = game.getUsers();
-        users.remove(userDto);
-        BetOptions options = game.getBetManager().manageComputerBets();
 
-        return new NewGameResponse(game.getId(), playerCards, users, options);
+        return game.getNewGameResponse(userDto);
     }
 
     @GetMapping("/{id}")
@@ -67,6 +62,12 @@ public class GameController {
         }
         System.out.println();
         return game.startNextRound();
+    }
+
+    @GetMapping("/{id}/winner")
+    public EndRoundResponse calculateWinner(@PathVariable int id) {
+        game = GamesContainer.findGameById(id);
+        game.calculateWinningHand();
     }
 
     @GetMapping("/join")
