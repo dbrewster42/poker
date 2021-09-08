@@ -88,14 +88,14 @@ class PokerHandTest {
         assertEquals(false, PokerHand.isStraight(almostStraight));
     }
 
-    @Test
-    void isFlush() {
-        assertTrue(PokerHand.isFlush(flush));
-    }
-    @Test
-    void isFlushFalse() {
-        assertFalse(PokerHand.isFlush(fullHouseCards));
-    }
+//    @Test
+//    void isFlush() {
+//        assertTrue(PokerHand.isFlush(flush));
+//    }
+//    @Test
+//    void isFlushFalse() {
+//        assertFalse(PokerHand.isFlush(fullHouseCards));
+//    }
 
     @Test
     void returnPairCombosWithHighCard() {

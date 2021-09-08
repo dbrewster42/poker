@@ -58,27 +58,25 @@ public class Game {
             int winningStrength = 0;
             Player winner = null;
             for (Player player : activePlayers){
-                if (player.getHand().addAll(riverCards)){
+                player.getHand().addAll(riverCards);
 //                    PlayerDto playerDto = new PlayerDto(player.getDisplayName(), PokerHand.lookupHand(player.getHand()));
-                    PokerHand pokerHand = PokerHand.lookupHand(player.getHand());
-                    playerDtos.add(new PlayerDto(player.getDisplayName(), pokerHand.getHandName()));
-                    player.setPokerHand(pokerHand);
-                    int score = pokerHand.getScore();
-                    if (winningStrength < score){
-                        winningStrength = score;
-                        winner = player;
-                    } else if (winningStrength == score){
-                        //TODO
-                        System.out.println("THERE IS A TIE, I WILL ARBITRALY CHOOSE A WINNER of " + pokerHand.getHandName());
-                        PokerHand.getTieBreaker(winner, player);
-                    }
-                } else {
-                    throw new RuntimeException("problem getting cards");
+                PokerHand pokerHand = PokerHand.lookupHand(player.getHand());
+                playerDtos.add(new PlayerDto(player.getDisplayName(), pokerHand.getHandName()));
+                player.setPokerHand(pokerHand);
+                int score = pokerHand.getScore();
+                if (winningStrength < score){
+                    winningStrength = score;
+                    winner = player;
+                } else if (winningStrength == score){
+                    //TODO
+                    System.out.println("THERE IS A TIE, I WILL ARBITRARILY CHOOSE A WINNER of " + pokerHand.getHandName());
+                    PokerHand.getTieBreaker(winner, player);
                 }
             }
             int pot = betManager.getPot();
             winner.collectWinnings(pot);
-            return new EndRoundResponse(pot, new PlayerDto(winner.getDisplayName(), winner.getPokerHand().getHandName()), playerDtos);
+            PlayerDto playerDto = new PlayerDto(winner.getDisplayName(), winner.getPokerHand().getHandName());
+            return new EndRoundResponse(pot, playerDto, playerDtos);
         }
         throw new IllegalArgumentException("Game is still on-going");
     }

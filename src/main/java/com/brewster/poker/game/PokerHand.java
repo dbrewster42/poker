@@ -25,6 +25,7 @@ public enum PokerHand {
 
     private final int score;
     private final String handName;
+    private static int highCardValue; //TODO
 
     PokerHand(int score, String handName){
         this.score = score;
@@ -34,7 +35,7 @@ public enum PokerHand {
     public static PokerHand lookupHand(List<Card> hand){
         int[] cardValues = hand.stream().mapToInt(Card::getValue).sorted().toArray();
         PokerHand pokerHand = returnPairCombos(cardValues);
-        //TODO refactor for 7 cards
+
         int isFlush = isStraightFlush(hand);
         if (isFlush == 2){
             pokerHand = STRAIGHT_FLUSH;
@@ -43,32 +44,33 @@ public enum PokerHand {
         } else if (isStraight(cardValues)){
             pokerHand = getBestHand(STRAIGHT, pokerHand);
         }
-//        if (isFlush(hand)){
-//            if (isStraight(cardValues)){
-//                pokerHand = STRAIGHT_FLUSH;
-//            } else {
-//                pokerHand = getBestHand(FLUSH, pokerHand);
-//            }
-//        } else if (isStraight(cardValues)){
-//            pokerHand = getBestHand(STRAIGHT, pokerHand);
-//        }
 
         return pokerHand;
     }
+
     public static Player getTieBreaker(Player first, Player second){
         PokerHand pokerHand = first.getPokerHand();
+        List<Card> firstHand = first.getHand().stream().sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
+        List<Card> secondHand = second.getHand().stream().sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
+
+        firstHand = getFiveBestCards(firstHand, pokerHand);
         //TODO do I have to do each separately?
         return first;
     }
 
-    public static PokerHand getBestHand(PokerHand first, PokerHand second){
+    private static List<Card> getFiveBestCards(List<Card> cards, PokerHand pokerHand){
+        //TODO
+        return cards;
+    }
+
+    private static PokerHand getBestHand(PokerHand first, PokerHand second){
         if (first.getScore() < second.getScore()){
             first = second;
         }
         return first;
     }
 
-    public static PokerHand returnPairCombos(int[] sortedCardValues){
+    protected static PokerHand returnPairCombos(int[] sortedCardValues){
         Map<Integer, Integer> cardCount = new HashMap<>();
         for (int cardValue : sortedCardValues){
             cardCount.put(cardValue, cardCount.getOrDefault(cardValue, 0) + 1);
@@ -78,6 +80,7 @@ public enum PokerHand {
         int firstPairCount;
         int secondPairCount = 1;
         if (counts.isEmpty()){
+            highCardValue = sortedCardValues[sortedCardValues.length - 1];
             return HIGH_CARD;
         } else {
             firstPairCount = counts.get(0);
@@ -101,27 +104,28 @@ public enum PokerHand {
         return returnValue;
     }
 
-    public static boolean isFlush(List<Card> hand){
-        for (String suit : DeckBuilder.getSUITS()){
-            int count = 0;
-            for (Card card : hand){
-                if (card.getSuit().equals(suit)){
-                    count++;
-                }
-            }
-            if (count == 5){
-                return true;
-            }
-        }
-        return false;
-//        String suit = hand.get(0).getSuit();
-//        for (Card card : hand){
-//            if (!card.getSuit().equals(suit)){
-//                return false;
+//    public static boolean isFlush(List<Card> hand){
+//        for (String suit : DeckBuilder.getSUITS()){
+//            int count = 0;
+//            for (Card card : hand){
+//                if (card.getSuit().equals(suit)){
+//                    count++;
+//                }
+//            }
+//            if (count == 5){
+//                highCardValue = hand.stream().mapToInt(v -> v.getValue()).max().orElse(0);
+//                return true;
 //            }
 //        }
-//        return true;
-    }
+//        return false;
+////        String suit = hand.get(0).getSuit();
+////        for (Card card : hand){
+////            if (!card.getSuit().equals(suit)){
+////                return false;
+////            }
+////        }
+////        return true;
+//    }
     public static int isStraightFlush(List<Card> hand){
         for (String suit : DeckBuilder.getSUITS()){
             int count = 0;
@@ -184,5 +188,9 @@ public enum PokerHand {
     }
     public String getHandName() {
         return handName;
+    }
+
+    public int getHighCardValue() {
+        return highCardValue;
     }
 }
