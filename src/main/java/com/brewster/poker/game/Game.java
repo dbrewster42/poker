@@ -78,6 +78,7 @@ public class Game {
             PlayerDto playerDto = new PlayerDto(winner.getDisplayName(), winner.getPokerHand().getHandName());
             return new EndRoundResponse(pot, playerDto, playerDtos);
         }
+        System.out.println(isLastRound + " - " + isBet);
         throw new IllegalArgumentException("Game is still on-going");
     }
 
@@ -96,11 +97,11 @@ public class Game {
     public List<Card> startNextRound(){
         if (isBet){
             System.out.println("Cannot deal cards until betting has finished");
-            return cards;
+            return riverCards;
         }
         if (isLastRound){
             System.out.println("cards have all already been dealt");
-            return cards;
+            return riverCards;
         }
         betManager.startNextRound();
         int count = 1;

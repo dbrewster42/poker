@@ -133,9 +133,9 @@ public class BetManager {
         if (turnsLeftInRound > 0){
             Action[] actionOptions = getPossibleBetActions(betAmount);
             betOptions = new BetOptions(currentBetter, actionOptions, betAmount, pot);
-            System.out.println("betManager.getBetOptions " + betOptions.toString());
             return betOptions;
         } else {
+            System.out.println("end of betting round");
             game.setBet(false);
             //FIXME should we auto call or not? if yes, need logic in game controller for Deal
 //            game.startNextRound();

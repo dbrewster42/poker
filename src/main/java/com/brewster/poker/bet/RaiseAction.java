@@ -22,7 +22,7 @@ public class RaiseAction extends Bet {
 
     @Override
     public String process() {
-        betManager.setBetAmount(betAmount);
+        betManager.setBetAmount(betAmount);//TODO
         betManager.setPot(betManager.getPot() + betAmount);
         betManager.resetTurnsLeft();
         return player.getDisplayName() + " has raised the bet to " + betAmount + ". The total pot is now at " + betManager.getPot();

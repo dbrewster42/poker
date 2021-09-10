@@ -19,10 +19,9 @@ public class CustomExceptionsHandler extends ResponseEntityExceptionHandler {
      }
 
      @ExceptionHandler(value = InvalidBetException.class)
-//     @ResponseStatus(HttpStatus.NOT_FOUND)
      public ErrorResponse resolveInvalidBetException(InvalidBetException e, WebRequest req) {
-          return new ErrorResponse(HttpStatus.NOT_FOUND.value(),
-                  HttpStatus.NOT_FOUND.getReasonPhrase(),
+          return new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+                  HttpStatus.BAD_REQUEST.getReasonPhrase(),
                   e.getMessage(),
                   req.getDescription(true));
      }

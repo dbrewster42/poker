@@ -13,3 +13,7 @@ Would it be better if the score included the high card?
 change all println to log
 add custom exceptions
 get rid of Response
+
+## bugs
+Raise should only include extra amount. + raise needs to be clearer in the front end
+How do we define who has bet already for the raise?

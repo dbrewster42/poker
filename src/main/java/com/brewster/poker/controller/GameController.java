@@ -45,19 +45,24 @@ public class GameController {
             //TODO wait for players to join
         }
         game.startNewDeal();
+        debug();
 
         return game.getNewGameResponse(userDto);
+    }
+
+    private void debug(){
+        for (Player each : game.getPlayers()){
+            System.out.println(each.getDisplayName());
+            each.getHand().forEach(Card::show);
+        }
+        System.out.println();
     }
 
     @GetMapping("/{id}")
     public List<Card> deal(@PathVariable int id) {
         game = GamesContainer.findGameById(id);
         System.out.println("dealing card");
-        for (Player each : game.getPlayers()){
-            System.out.println(each.getDisplayName());
-            each.getHand().forEach(Card::show);
-        }
-        System.out.println();
+
         return game.startNextRound();
     }
 
