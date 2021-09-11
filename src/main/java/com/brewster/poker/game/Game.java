@@ -104,6 +104,7 @@ public class Game {
             return riverCards;
         }
         betManager.startNextRound();
+        isBet = true;
         int count = 1;
         if (riverCards.size() == 0){
             count = 3;
@@ -231,7 +232,7 @@ public class Game {
         return isBet;
     }
 
-    public void setBet(boolean bet) {
+    public void setIsBet(boolean bet) {
         isBet = bet;
     }
 

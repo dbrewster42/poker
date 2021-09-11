@@ -42,7 +42,7 @@ public class BetController {
 
         String message = betManager.placeBet(request);
         System.out.println("Controller: Bet has been placed - " + message);
-        return new BetResponse(betManager.isBet(), betManager.getBetMessages());
+        return new BetResponse(game.isBet(), betManager.getBetMessages());
     }
 
 }

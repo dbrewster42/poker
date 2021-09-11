@@ -17,3 +17,5 @@ get rid of Response
 ## bugs
 Raise should only include extra amount. + raise needs to be clearer in the front end
 How do we define who has bet already for the raise?
+betting should start with bigBlind and then auto bet on first turn
+should we set turnNumber on newRound or adjustTurn?

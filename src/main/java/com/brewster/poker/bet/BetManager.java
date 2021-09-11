@@ -33,7 +33,7 @@ public class BetManager {
     private final BetFactory betFactory;
 //    private List<BetDto> betsMade;
     private List<String> betMessages;
-    private boolean isBet;
+//    private boolean isBet;
 
     public BetManager(Game game, GameSettingsRequest request) {
         this.id = game.getId();
@@ -95,13 +95,17 @@ public class BetManager {
     }
 
     protected void adjustTurn(){
+        System.out.println("Adjusting turn - " + turnsLeftInRound);
         turnNumber++;
         turnsLeftInRound--;
         if (turnNumber == activePlayersSize){
             turnNumber = 0;
         }
+        currentBetter = activeBetters.get(turnNumber);
         if (turnsLeftInRound == 0){
-            isBet = false;
+            game.setIsBet(false);
+            System.out.println("Round over");
+            //TODO could set turnNumber here
         }
     }
 
@@ -111,11 +115,10 @@ public class BetManager {
 
     public void startNextRound(){
         betAmount = 0;
-        turnNumber = game.getBigBlindTurn() + 1;
+        turnNumber = game.getBigBlindTurn() + 1; //TODO bug I think. should be bigblind turn and then auto bet for first round
         activeBetters = game.getPlayers();
         activePlayersSize =activeBetters.size();
         turnsLeftInRound = activePlayersSize;
-        isBet = true;
     }
 
     public BetOptions startNewDeal(){
@@ -136,7 +139,7 @@ public class BetManager {
             return betOptions;
         } else {
             System.out.println("end of betting round");
-            game.setBet(false);
+            game.setIsBet(false);
             //FIXME should we auto call or not? if yes, need logic in game controller for Deal
 //            game.startNextRound();
             return new BetOptions();
@@ -235,9 +238,9 @@ public class BetManager {
         return turnNumber;
     }
 
-    public boolean isBet() {
-        return isBet;
-    }
+//    public boolean isBet() {
+//        return isBet;
+//    }
 
     public int getTurnsLeftInRound() {
         return turnsLeftInRound;
