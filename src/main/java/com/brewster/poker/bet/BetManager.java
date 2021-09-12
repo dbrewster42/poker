@@ -34,6 +34,7 @@ public class BetManager {
 //    private List<BetDto> betsMade;
     private List<String> betMessages;
 //    private boolean isBet;
+    private int bigBlindTurn = 0;
 
     public BetManager(Game game, GameSettingsRequest request) {
         this.id = game.getId();
@@ -42,9 +43,9 @@ public class BetManager {
 //        this.bigBlind = request.getBigBlind() * 100;
         this.bigBlind = request.getBigBlind();
         this.smallBlind = bigBlind / 2;
-        this.turnNumber = game.getBigBlindTurn() + 1;
-        this.activeBetters = game.getPlayers();
-        this.activePlayersSize = activeBetters.size();
+//        this.turnNumber = game.getBigBlindTurn() + 1;
+//        this.activeBetters = game.getPlayers();
+//        this.activePlayersSize = activeBetters.size();
         this.maxBet = Optional.ofNullable(request.getMaxBet()).map(v -> v < 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
         betFactory = new BetFactoryImplementation();
 //        betsMade = new ArrayList<>();
@@ -114,24 +115,28 @@ public class BetManager {
     }
 
     public void startNextRound(){
-        betAmount = 0;
-        turnNumber = game.getBigBlindTurn() + 1; //TODO bug I think. should be bigblind turn and then auto bet for first round
-        activeBetters = game.getPlayers();
-        activePlayersSize =activeBetters.size();
-        turnsLeftInRound = activePlayersSize;
+        setAllRoundInformation();
+        System.out.println("starting new round with " + currentBetter.getDisplayName());
     }
 
     public BetOptions startNewDeal(){
-        pot = 0;
-        betAmount = 0;
-        activePlayersSize = game.getPlayers().size();
-        turnsLeftInRound = activePlayersSize;
+        bigBlindTurn++;
+        setAllRoundInformation();
         System.out.println("starting new deal with " + turnsLeftInRound + " turns");
         return getBetOptions();
     }
 
-    public BetOptions getBetOptions(){
+    private void setAllRoundInformation(){
+        pot = 0;
+        betAmount = 0;
+        turnNumber = bigBlindTurn;
+        activeBetters = game.getPlayers();
         currentBetter = activeBetters.get(turnNumber);
+        activePlayersSize = activeBetters.size();
+        turnsLeftInRound = activePlayersSize;
+    }
+
+    public BetOptions getBetOptions(){
         System.out.println("betManager.getBetOptions " + currentBetter.getDisplayName() + " turnsLeft = " + turnsLeftInRound + " turnNumber = " + turnNumber);
         if (turnsLeftInRound > 0){
             Action[] actionOptions = getPossibleBetActions(betAmount);
@@ -171,6 +176,10 @@ public class BetManager {
         activeBetters.remove(player);
         turnNumber--;
         updateActivePlayersSize();
+    }
+
+    public int getCurrentBettersMoney(){
+        return currentBetter.getMoney();
     }
 
     public Player adjustCurrentPlayer(int turn){

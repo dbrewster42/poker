@@ -20,11 +20,11 @@ import java.util.List;
 public class Game {
     private int id;
     private List<Player> players;
-    private Player currentPlayer; //to be used for dealing
+//    private Player currentPlayer; //to be used for dealing
+//    private int bigBlindTurn = 0;
+    private int openSlots;
     private List<Card> cards;
     private List<Card> riverCards = new ArrayList<>();
-    private int bigBlindTurn = -1;
-    private int openSlots;
     private int desiredNumberOfPlayers;
     private BetManager betManager;
     private boolean isBet;
@@ -85,7 +85,8 @@ public class Game {
     public BetOptions startNewDeal(){
         cards = getNewStandardDeck();
         dealPlayerCards();
-        currentPlayer = players.get(bigBlindTurn + 1);
+//        bigBlindTurn++;
+//        currentPlayer = players.get(bigBlindTurn);
         isBet = true;
         return betManager.startNewDeal();
     }
@@ -157,7 +158,7 @@ public class Game {
         users.remove(userDto);
         BetOptions options = betManager.manageComputerBets();
 
-        return new NewGameResponse(id, playerCards, users, options);
+        return new NewGameResponse(id, playerCards, users, options, userDto.getMoney());
     }
 //    public GameResponse getGameResponse(){
 //        List<UserDto> users = new ArrayList<>();
@@ -184,18 +185,6 @@ public class Game {
         return id;
     }
 
-//    public Player getCurrentPlayer() {
-//        return currentPlayer;
-//    }
-
-//    public void setCurrentPlayer(Player currentPlayer) {
-//        this.currentPlayer = currentPlayer;
-//    }
-//
-//    public void adjustCurrentPlayer(int turn){
-//        currentPlayer = players.get(turn);
-//    }
-
     public List<Card> getRiverCards() {
         return riverCards;
     }
@@ -206,14 +195,6 @@ public class Game {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
-    }
-
-    public int getBigBlindTurn() {
-        return bigBlindTurn;
-    }
-
-    public void setBigBlindTurn(int bigBlindTurn) {
-        this.bigBlindTurn = bigBlindTurn;
     }
 
     public int getOpenSlots() {

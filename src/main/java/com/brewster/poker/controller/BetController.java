@@ -27,7 +27,6 @@ public class BetController {
     public BetResponse getBetOptions(@PathVariable int id){
         System.out.println("Controller : getting betOptions");
         game = GamesContainer.findGameById(id);
-//        BetOptions options = game.getBetManager().manageComputerBets();
 
         BetOptions options = game.getBetManager().manageComputerBets();
         return new BetResponse(options, game.getBetManager().getBetMessages());
@@ -38,11 +37,10 @@ public class BetController {
         System.out.println("Controller: Placing bet - " + request.toString());
         game = GamesContainer.findGameById(id);
         betManager = game.getBetManager();
-//        userDto = userService.findUser(request.getUsername());
 
         String message = betManager.placeBet(request);
         System.out.println("Controller: Bet has been placed - " + message);
-        return new BetResponse(game.isBet(), betManager.getBetMessages());
+        return new BetResponse(game.isBet(), betManager.getBetMessages(), betManager.getCurrentBettersMoney());
     }
 
 }

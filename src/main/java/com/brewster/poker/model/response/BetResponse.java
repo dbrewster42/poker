@@ -9,10 +9,12 @@ public class BetResponse {
     private boolean isBet;
     private List<String> messages;
     private BetOptions betOptions;
+    private int userMoney;
 
-    public BetResponse(boolean isBet, List<String> messages) {
+    public BetResponse(boolean isBet, List<String> messages, int userMoney) {
         this.isBet = isBet;
         this.messages = messages;
+        this.userMoney = userMoney;
     }
 
     public BetResponse(BetOptions betOptions, List<String> messages){
@@ -30,5 +32,9 @@ public class BetResponse {
 
     public BetOptions getBetOptions() {
         return betOptions;
+    }
+
+    public int getUserMoney() {
+        return userMoney;
     }
 }
