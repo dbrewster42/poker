@@ -20,8 +20,6 @@ import java.util.List;
 public class TexasHoldEm implements GameService {
      private int id;
      private List<Player> players;
-     //    private Player currentPlayer; //to be used for dealing
-//    private int bigBlindTurn = 0;
      private int openSlots;
      private List<Card> cards;
      private List<Card> riverCards = new ArrayList<>();
@@ -30,7 +28,7 @@ public class TexasHoldEm implements GameService {
      private boolean isBet;
      private boolean isLastRound;
 
-     protected TexasHoldEm(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
+     TexasHoldEm(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
           this.id = id;
           this.players = new ArrayList<>();
           players.add(player);
@@ -38,7 +36,7 @@ public class TexasHoldEm implements GameService {
           this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
           openSlots = desiredNumberOfPlayers - 1;
      }
-     protected TexasHoldEm(int id, List<Player> players, GameSettingsRequest settingsRequest){
+     TexasHoldEm(int id, List<Player> players, GameSettingsRequest settingsRequest){
           this.id = id;
           this.players = players;
           betManager = new BetService(this, settingsRequest);
@@ -69,6 +67,7 @@ public class TexasHoldEm implements GameService {
                     player.getHand().addAll(riverCards);
 //                    PlayerDto playerDto = new PlayerDto(player.getDisplayName(), PokerHand.lookupHand(player.getHand()));
                     PokerHand pokerHand = PokerHand.lookupHand(player.getHand());
+                    System.out.println(player.getDisplayName() + " has a " + pokerHand.getHandName());
                     playerDtos.add(new PlayerDto(player.getDisplayName(), pokerHand.getHandName()));
                     player.setPokerHand(pokerHand);
                     int score = pokerHand.getScore();
@@ -93,8 +92,6 @@ public class TexasHoldEm implements GameService {
      public BetOptions startNewDeal(){
           cards = getNewStandardDeck();
           dealPlayerCards();
-//        bigBlindTurn++;
-//        currentPlayer = players.get(bigBlindTurn);
           isBet = true;
           return betManager.startNewDeal();
      }
@@ -158,8 +155,11 @@ public class TexasHoldEm implements GameService {
                players.add(player);
           }
           openSlots--;
-
      }
+     public void addPlayerToGame(ComputerPlayer player){
+          players.add(player);
+     }
+
      public NewGameResponse getNewGameResponse(UserDto userDto){
           List<Card> playerCards = userDto.getPlayer().getHand();
           List<UserDto> users = getUsers();
@@ -168,14 +168,7 @@ public class TexasHoldEm implements GameService {
 
           return new NewGameResponse(id, playerCards, users, options, userDto.getMoney());
      }
-     //    public GameResponse getGameResponse(){
-//        List<UserDto> users = new ArrayList<>();
-//        for (Player player : players){
-//            users.add(player.getUser());
-//        }
-//        GameResponse gameResponse = new GameResponse(users, bigBlindTurn, betManager.getTurnNumber());
-//        return gameResponse;
-//    }
+
      private List<UserDto> getUsers(){
           List<UserDto> users = new ArrayList<>();
           for (Player player : players){
@@ -185,9 +178,6 @@ public class TexasHoldEm implements GameService {
           return users;
      }
 
-     public void addPlayerToGame(ComputerPlayer player){
-          players.add(player);
-     }
 
      public int getId() {
           return id;

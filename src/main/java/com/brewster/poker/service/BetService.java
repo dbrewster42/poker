@@ -26,7 +26,6 @@ public class BetService {
     private int turnsLeftInRound;
     private List<Player> activeBetters;
     private Player currentBetter;
-    //private int lastBet;
     private final Integer maxBet;
     private static final Action[] CHECK_ACTIONS = { Action.CHECK, Action.BET, Action.FOLD };
     private static final Action[] CALL_ACTIONS = { Action.CALL, Action.RAISE, Action.FOLD };
@@ -34,29 +33,20 @@ public class BetService {
     private int betAmount;
     private BetOptions betOptions;
     private final BetFactory betFactory;
-//    private List<BetDto> betsMade;
     private List<String> betMessages;
-//    private boolean isBet;
     private int bigBlindTurn = 0;
 
     public BetService(GameService game, GameSettingsRequest request) {
         this.id = game.getId();
         this.game = game;
 //        this.bigBlind = Optional.ofNullable(request.getBigBlind()).orElse(500);
-//        this.bigBlind = request.getBigBlind() * 100;
         this.bigBlind = request.getBigBlind();
-        this.smallBlind = bigBlind / 2;
-//        this.turnNumber = game.getBigBlindTurn() + 1;
-//        this.activeBetters = game.getPlayers();
-//        this.activePlayersSize = activeBetters.size();
         this.maxBet = Optional.ofNullable(request.getMaxBet()).map(v -> v < 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
         betFactory = new BetFactoryImplementation();
-//        betsMade = new ArrayList<>();
         betMessages = new ArrayList<>();
     }
 
     public String placeBet(BetRequest betRequest){
-//        Player player = game.getCurrentPlayer();
         Player player = currentBetter;
         System.out.println(player.getDisplayName() + " is placing bet " + betRequest.toString());
         String returnStatement = betAmountIsValid(betRequest, player);
@@ -247,5 +237,9 @@ public class BetService {
 
     public int getTurnsLeftInRound() {
         return turnsLeftInRound;
+    }
+
+    public static void test(){
+        throw new InvalidBetException("testing");
     }
 }

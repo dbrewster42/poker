@@ -29,4 +29,8 @@ public class EndRoundResponse {
      public PlayerDto getWinner() {
           return winner;
      }
+
+     public List<PlayerDto> getActivePlayers() {
+          return activePlayers;
+     }
 }

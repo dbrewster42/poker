@@ -43,4 +43,10 @@ public class BetController {
         return new BetResponse(game.isBet(), betManager.getBetMessages(), betManager.getCurrentBettersMoney());
     }
 
+    @PostMapping("test")
+    public String test(){
+        BetService.test();
+        return "This has been a test";
+    }
+
 }
