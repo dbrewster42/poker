@@ -149,13 +149,16 @@ public enum PokerHand {
     }
 
     public static boolean isStraight(int[] sortedCardValues){
-        int start = sortedCardValues[0];
-        int count = 0;
+        int start = -1;
+        int count = 1;
         for (int i : sortedCardValues){
           if (start == i){
               count++;
           } else {
-              count = 0;
+              if (start - 1 == i){
+                  continue;
+              }
+              count = 1;
               start = i;
           }
           if (count == 5){

@@ -39,6 +39,12 @@ public class PokerHandSevenCardsTest {
           assertEquals(PokerHand.STRAIGHT, PokerHand.lookupHand(straightCards));
      }
      @Test
+     void lookupHandWithStraight2() {
+          List<Card> straightCards2 = CardHandBuilder.buildStraightWithSevenCards2();
+
+          assertEquals(PokerHand.STRAIGHT, PokerHand.lookupHand(straightCards2));
+     }
+     @Test
      void lookupHandWithFlush() {
           assertEquals(PokerHand.FLUSH, PokerHand.lookupHand(flush));
      }

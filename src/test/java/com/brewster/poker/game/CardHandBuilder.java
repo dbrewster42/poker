@@ -116,7 +116,18 @@ public class CardHandBuilder {
         hand.add(cards.get(22));
         return hand;
     }
-    public static List<Card> buildStraightWithSevenCards(){
+    public static List<Card> buildStraightWithSevenCards2() {
+        List<Card> straightCards2 = new ArrayList<>();
+        straightCards2.add(cards.get(0));
+        straightCards2.add(cards.get(21));
+        straightCards2.add(cards.get(38));
+        straightCards2.add(cards.get(41));
+        straightCards2.add(cards.get(44));
+        straightCards2.add(cards.get(49));
+        straightCards2.add(cards.get(50));
+        return straightCards2;
+    }
+        public static List<Card> buildStraightWithSevenCards(){
         List<Card> hand = buildStraight();
         hand.add(cards.get(33));
         hand.add(cards.get(45));
