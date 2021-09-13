@@ -1,8 +1,8 @@
 package com.brewster.poker.controller;
 
-import com.brewster.poker.bet.BetManager;
+import com.brewster.poker.service.BetService;
 import com.brewster.poker.bet.BetOptions;
-import com.brewster.poker.game.Game;
+import com.brewster.poker.service.GameService;
 import com.brewster.poker.game.GamesContainer;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.response.BetResponse;
@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("/game")
 public class BetController {
-    private Game game;
-    private BetManager betManager;
+    private GameService game;
+    private BetService betManager;
 
 
     @GetMapping("/{id}/bet")

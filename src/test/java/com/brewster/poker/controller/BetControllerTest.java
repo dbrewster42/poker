@@ -4,7 +4,7 @@ import com.brewster.poker.bet.Action;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.InvalidBetException;
-import com.brewster.poker.game.Game;
+import com.brewster.poker.service.GameService;
 import com.brewster.poker.game.GamesContainer;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BetControllerTest {
      private BetController betController;
-     Game game;
+     GameService game;
      int id;
 
      @BeforeEach

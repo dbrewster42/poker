@@ -2,18 +2,18 @@ package com.brewster.poker.dto;
 
 import com.brewster.poker.bet.Action;
 import com.brewster.poker.bet.Bet;
-import com.brewster.poker.bet.BetManager;
+import com.brewster.poker.service.BetService;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.player.Player;
 
 public class BetDto {
     protected final int betAmount;
     protected final Player player;
-    protected final BetManager betManager;
+    protected final BetService betManager;
     protected final Action chosenAction;
     protected final String betMessage;
 
-    public BetDto(Player player, BetRequest betRequest, BetManager betManager, String betMessage){
+    public BetDto(Player player, BetRequest betRequest, BetService betManager, String betMessage){
         this.player = player;
         this.betAmount = betRequest.getBetAmount();
         this.chosenAction = Action.valueOf(betRequest.getAction());
@@ -37,7 +37,7 @@ public class BetDto {
         return player;
     }
 
-    public BetManager getBetManager() {
+    public BetService getBetManager() {
         return betManager;
     }
 

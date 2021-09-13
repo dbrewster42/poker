@@ -2,11 +2,12 @@ package com.brewster.poker.bet;
 
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
+import com.brewster.poker.service.BetService;
 
 public class BetFactoryImplementation implements BetFactory {
 
     @Override
-    public Bet createBet(Player player, BetRequest betRequest, BetManager betManager) {
+    public Bet createBet(Player player, BetRequest betRequest, BetService betManager) {
         switch (betRequest.getAction()){
             case "BET":
                 return new BetAction(player, betRequest, betManager);

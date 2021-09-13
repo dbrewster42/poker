@@ -2,10 +2,11 @@ package com.brewster.poker.bet;
 
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
+import com.brewster.poker.service.BetService;
 
 public class CallAction extends Bet {
 
-    public CallAction(Player player, BetRequest betRequest, BetManager betManager) {
+    public CallAction(Player player, BetRequest betRequest, BetService betManager) {
         super(player, betRequest, betManager);
     }
 

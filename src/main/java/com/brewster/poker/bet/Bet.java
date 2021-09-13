@@ -2,14 +2,15 @@ package com.brewster.poker.bet;
 
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
+import com.brewster.poker.service.BetService;
 
 public abstract class Bet {
     protected final int betAmount;
     protected final Player player;
-    protected final BetManager betManager;
+    protected final BetService betManager;
     protected final Action chosenAction;
 
-    public Bet(Player player, BetRequest betRequest, BetManager betManager){
+    public Bet(Player player, BetRequest betRequest, BetService betManager){
         this.player = player;
         this.betAmount = betRequest.getBetAmount();
         this.chosenAction = Action.valueOf(betRequest.getAction());
@@ -32,7 +33,7 @@ public abstract class Bet {
         return chosenAction;
     }
 
-    public BetManager getBetManager() {
+    public BetService getBetManager() {
         return betManager;
     }
 }

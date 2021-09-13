@@ -1,7 +1,11 @@
-package com.brewster.poker.bet;
+package com.brewster.poker.service;
 
+import com.brewster.poker.bet.Action;
+import com.brewster.poker.bet.Bet;
+import com.brewster.poker.bet.BetFactory;
+import com.brewster.poker.bet.BetFactoryImplementation;
+import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.exception.InvalidBetException;
-import com.brewster.poker.game.Game;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
@@ -12,10 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//TODO move this and Game to Service package
-public class BetManager {
+public class BetService {
     private int id;
-    private final Game game;
+    private final GameService game;
     private int activePlayersSize;
     private int bigBlind;
     private int smallBlind;
@@ -36,7 +39,7 @@ public class BetManager {
 //    private boolean isBet;
     private int bigBlindTurn = 0;
 
-    public BetManager(Game game, GameSettingsRequest request) {
+    public BetService(GameService game, GameSettingsRequest request) {
         this.id = game.getId();
         this.game = game;
 //        this.bigBlind = Optional.ofNullable(request.getBigBlind()).orElse(500);
@@ -156,7 +159,7 @@ public class BetManager {
         System.out.println("betManager options = " + options.toString());
         while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer) {
             System.out.println("displayName = " + options.getPlayer().getDisplayName());
-            options.getPlayer().placeBet(game.getRiverCards(), options, game.getBetManager());
+            options.getPlayer().placeBet(game.getRiverCards(), options, this);
             options = game.getBetOptions();
         }
         System.out.println("returning betOptions = " + options.toString());
@@ -190,7 +193,7 @@ public class BetManager {
         return id;
     }
 
-    public Game getGame() {
+    public GameService getGame() {
         return game;
     }
 
@@ -205,11 +208,6 @@ public class BetManager {
     public int getBetAmount() {
         return betAmount;
     }
-
-//    public List<BetDto> getBetsMade() {
-//        return betsMade;
-//    }
-
 
     public List<String> getBetMessages() {
         return betMessages;
@@ -246,10 +244,6 @@ public class BetManager {
     public int getTurnNumber() {
         return turnNumber;
     }
-
-//    public boolean isBet() {
-//        return isBet;
-//    }
 
     public int getTurnsLeftInRound() {
         return turnsLeftInRound;

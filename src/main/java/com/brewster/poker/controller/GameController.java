@@ -2,7 +2,7 @@ package com.brewster.poker.controller;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
-import com.brewster.poker.game.Game;
+import com.brewster.poker.service.GameService;
 import com.brewster.poker.game.GamesContainer;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.request.JoinRequest;
@@ -24,7 +24,7 @@ import java.util.List;
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("/game")
 public class GameController {
-    private Game game;
+    private GameService game;
     private final UserService userService;
     private UserDto userDto;
     private UserDto computerUser;
@@ -73,14 +73,14 @@ public class GameController {
     }
 
     @GetMapping("/join")
-    public List<Game> findGame() {
+    public List<GameService> findGame() {
         return GamesContainer.findAvailableGames();
     }
 
     @PostMapping("/join")
     public void joinGame(@RequestBody JoinRequest request) {
         userDto = userService.findUser(request.getUsername());
-        Game game = GamesContainer.addPlayerToGame(userDto, request);
+        GameService game = GamesContainer.addPlayerToGame(userDto, request);
     }
 
 }
