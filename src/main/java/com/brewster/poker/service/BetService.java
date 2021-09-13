@@ -90,16 +90,19 @@ public class BetService {
 
     protected void adjustTurn(){
         System.out.println("Adjusting turn - " + turnsLeftInRound);
-        turnNumber++;
         turnsLeftInRound--;
-        if (turnNumber == activePlayersSize){
-            turnNumber = 0;
-        }
+        adjustTurnNumber();
         currentBetter = activeBetters.get(turnNumber);
         if (turnsLeftInRound == 0){
             game.setIsBet(false);
             System.out.println("Round over");
             //TODO could set turnNumber here
+        }
+    }
+    private void adjustTurnNumber(){
+        turnNumber++;
+        if (turnNumber == activePlayersSize){
+            turnNumber = 0;
         }
     }
 
@@ -113,17 +116,21 @@ public class BetService {
     }
 
     public BetOptions startNewDeal(){
+        pot = 0;
         bigBlindTurn++;
+        activeBetters = game.getPlayers();
         setAllRoundInformation();
         System.out.println("starting new deal with " + turnsLeftInRound + " turns");
         return getBetOptions();
     }
 
     private void setAllRoundInformation(){
-        pot = 0;
         betAmount = 0;
         turnNumber = bigBlindTurn;
-        activeBetters = game.getPlayers();
+        if (turnNumber == activePlayersSize){
+            System.out.println("not enough players left");
+            turnNumber = 0;
+        }
         currentBetter = activeBetters.get(turnNumber);
         activePlayersSize = activeBetters.size();
         turnsLeftInRound = activePlayersSize;
@@ -217,6 +224,9 @@ public class BetService {
 
     public void updateActivePlayersSize(){
         this.activePlayersSize = activeBetters.size();
+        if (activePlayersSize == 1){
+            game.setGameOver();
+        }
     }
 
     public void setActiveBetters(List<Player> activeBetters) {
@@ -239,7 +249,4 @@ public class BetService {
         return turnsLeftInRound;
     }
 
-    public static void test(){
-        throw new InvalidBetException("testing");
-    }
 }

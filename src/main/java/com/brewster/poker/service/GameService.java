@@ -15,6 +15,7 @@ public interface GameService {
     BetOptions startNewDeal();
     List<Card> startNextRound();
     BetOptions getBetOptions();
+    void setGameOver();
     EndRoundResponse calculateWinningHand();
     NewGameResponse getNewGameResponse(UserDto userDto);
     void addPlayerToGame(HumanPlayer player);

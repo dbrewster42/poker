@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
-@RequestMapping("/game")
+@RequestMapping("game")
 public class BetController {
     private GameService game;
     private BetService betManager;
 
 
-    @GetMapping("/{id}/bet")
+    @GetMapping("{id}/bet")
     public BetResponse getBetOptions(@PathVariable int id){
         System.out.println("Controller : getting betOptions");
         game = GamesContainer.findGameById(id);
@@ -32,7 +32,7 @@ public class BetController {
         return new BetResponse(options, game.getBetManager().getBetMessages());
     }
 
-    @PostMapping("/{id}/bet")
+    @PostMapping("{id}/bet")
     public BetResponse bet(@PathVariable int id, @RequestBody BetRequest request){
         System.out.println("Controller: Placing bet - " + request.toString());
         game = GamesContainer.findGameById(id);
@@ -41,12 +41,6 @@ public class BetController {
         String message = betManager.placeBet(request);
         System.out.println("Controller: Bet has been placed - " + message);
         return new BetResponse(game.isBet(), betManager.getBetMessages(), betManager.getCurrentBettersMoney());
-    }
-
-    @PostMapping("test")
-    public String test(){
-        BetService.test();
-        return "This has been a test";
     }
 
 }

@@ -57,6 +57,11 @@ public class TexasHoldEm implements GameService {
           return betManager.placeBet(betRequest);
      }
 
+     public void setGameOver(){
+          isLastRound = true;
+          isBet = false;
+     }
+
      public EndRoundResponse calculateWinningHand(){
           if (isLastRound && !isBet){
                List<Player> activePlayers = betManager.getActiveBetters();
@@ -167,6 +172,13 @@ public class TexasHoldEm implements GameService {
           BetOptions options = betManager.manageComputerBets();
 
           return new NewGameResponse(id, playerCards, users, options, userDto.getMoney());
+     }
+
+     public NewGameResponse getRestartGameResponse(UserDto userDto){
+          List<Card> playerCards = userDto.getPlayer().getHand();
+          BetOptions options = betManager.manageComputerBets();
+
+          return new NewGameResponse(playerCards, options, userDto.getMoney());
      }
 
      private List<UserDto> getUsers(){

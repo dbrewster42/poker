@@ -22,7 +22,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
-@RequestMapping("/game")
+@RequestMapping("game")
 public class GameController {
     private GameService game;
     private final UserService userService;
@@ -58,7 +58,7 @@ public class GameController {
         System.out.println();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public List<Card> deal(@PathVariable int id) {
         game = GamesContainer.findGameById(id);
         System.out.println("dealing card");
@@ -66,21 +66,28 @@ public class GameController {
         return game.startNextRound();
     }
 
-    @GetMapping("/{id}/winner")
+    @GetMapping("{id}/winner")
     public EndRoundResponse calculateWinner(@PathVariable int id) {
         game = GamesContainer.findGameById(id);
         return game.calculateWinningHand();
     }
 
-    @GetMapping("/join")
+    @GetMapping("join")
     public List<GameService> findGame() {
         return GamesContainer.findAvailableGames();
     }
 
-    @PostMapping("/join")
+    @PostMapping("join")
     public void joinGame(@RequestBody JoinRequest request) {
         userDto = userService.findUser(request.getUsername());
         GameService game = GamesContainer.addPlayerToGame(userDto, request);
+    }
+
+    @GetMapping("{id}/restart")
+    public void dealNewGame(@PathVariable int id, @RequestBody String displayName){
+        game = GamesContainer.findGameById(id);
+        game.startNewDeal();
+//        userDto = userService.findUser(username);
     }
 
 }

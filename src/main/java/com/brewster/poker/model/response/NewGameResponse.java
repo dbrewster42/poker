@@ -7,9 +7,9 @@ import com.brewster.poker.dto.UserDto;
 import java.util.List;
 
 public class NewGameResponse {
-    private final int gameId;
+    private int gameId;
     private final List<Card> hand;
-    private final List<UserDto> users;
+    private List<UserDto> users;
     private BetOptions betOptions;
     private int userMoney;
 
@@ -20,10 +20,10 @@ public class NewGameResponse {
         this.betOptions = betOptions;
         this.userMoney = userMoney;
     }
-    public NewGameResponse(final int gameId, final List<Card> hand, final List<UserDto> users){
-        this.gameId = gameId;
+    public NewGameResponse(final List<Card> hand, BetOptions betOptions, int userMoney){
         this.hand = hand;
-        this.users = users;
+        this.betOptions = betOptions;
+        this.userMoney = userMoney;
     }
 
 //    public int getBigBlindTurn() {

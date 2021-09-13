@@ -19,7 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("register")
     public UserDto register(@RequestBody UserRequest request) {
         UserDto dto = new UserDto();
         BeanUtils.copyProperties(request, dto);
@@ -27,7 +27,7 @@ public class UserController {
         return userService.createUser(dto);
     }
 
-    @PostMapping("/login")
+    @PostMapping("login")
     public UserDto login(@RequestBody UserRequest request) {
         return userService.findUser(request.getUsername());
     }
