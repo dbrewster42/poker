@@ -33,8 +33,7 @@ public class ComputerPlayer extends Player {
         }
         betRequest.setUsername(options.getName());
 
-        String placedBet = betManager.placeBet(betRequest);
-        System.out.println("Bet has been placed - " + placedBet);
+        betManager.placeBet(betRequest);
     }
 
     private BetRequest createCheckActionsBet(int strength, int bigBlind){

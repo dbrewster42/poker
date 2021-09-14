@@ -38,6 +38,10 @@ public abstract class Player {
 
     public void dealCard(Card card){ this.hand.add(card); }
 
+    public void betMoney(int moneyBet){
+        this.money = this.money - moneyBet;
+    }
+
     public List<Card> getHand() {
         return hand;
     }

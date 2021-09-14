@@ -5,6 +5,8 @@ A. add, subtract, and return money!!!
 //3. return money to front end
 4. after bets complete, it auto-deals the next card. either the controller method needs to account for this
 or it should require a manual call.
+5. add river cards to each hand to avoid getRiverCards
+6. add blinds
 
 ## Break Ties
 is there a way to break the tie no matter which or do I have to calculate

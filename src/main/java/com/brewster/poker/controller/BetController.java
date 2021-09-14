@@ -38,8 +38,8 @@ public class BetController {
         game = GamesContainer.findGameById(id);
         betManager = game.getBetManager();
 
-        String message = betManager.placeBet(request);
-        System.out.println("Controller: Bet has been placed - " + message);
+        betManager.placeBet(request);
+        System.out.println("Controller: Bet has been placed");
         return new BetResponse(game.isBet(), betManager.getBetMessages(), betManager.getCurrentBettersMoney());
     }
 

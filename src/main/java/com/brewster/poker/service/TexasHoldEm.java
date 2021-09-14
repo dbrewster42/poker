@@ -53,8 +53,8 @@ public class TexasHoldEm implements GameService {
           return new TexasHoldEm(id, players, settingsRequest);
      }
 
-     public String placeBet(BetRequest betRequest){
-          return betManager.placeBet(betRequest);
+     public void placeBet(BetRequest betRequest){
+          betManager.placeBet(betRequest);
      }
 
      public void setGameOver(){

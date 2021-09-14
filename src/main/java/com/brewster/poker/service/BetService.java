@@ -34,7 +34,7 @@ public class BetService {
     private BetOptions betOptions;
     private final BetFactory betFactory;
     private List<String> betMessages;
-    private int bigBlindTurn = 0;
+    private int bigBlindTurn = -1;
 
     public BetService(GameService game, GameSettingsRequest request) {
         this.id = game.getId();
@@ -46,47 +46,46 @@ public class BetService {
         betMessages = new ArrayList<>();
     }
 
-    public String placeBet(BetRequest betRequest){
+    public void placeBet(BetRequest betRequest){
         Player player = currentBetter;
         System.out.println(player.getDisplayName() + " is placing bet " + betRequest.toString());
-        String returnStatement = betAmountIsValid(betRequest, player);
-        System.out.println("Is bet amount valid - " + returnStatement);
-        if (returnStatement.isEmpty()){
+        String validationStatement = validateBet(betRequest, player);
+        if (validationStatement.isEmpty()) {
             Bet bet = betFactory.createBet(player, betRequest, this);
-            returnStatement = bet.validate();
-            System.out.println("Validating bet - " + returnStatement);
-            if (returnStatement.isEmpty()){
-                returnStatement = bet.process();
-                System.out.println("Bet has been processed - " + returnStatement);
-                betMessages.add(returnStatement);
+            validationStatement = bet.validate();
+            if (validationStatement.isEmpty()) {
+                String message = bet.process();
+                System.out.println("Bet has been processed - " + message);
+                player.betMoney(betRequest.getBetAmount());
+                betMessages.add(message);
 //                betsMade.add(new BetDto(bet, returnStatement));
                 adjustTurn();
-            } else {
-                throw new InvalidBetException(returnStatement);
+                return;
             }
-        } else {
-            throw new InvalidBetException(returnStatement);
         }
-        return returnStatement;
+        System.out.println("Bet Invalid - " + validationStatement);
+        throw new InvalidBetException(validationStatement);
     }
 
-    private String betAmountIsValid(BetRequest betRequest, Player player){
+    public String validateBet(BetRequest betRequest, Player player){
         String validatorError = "";
-        int newBetAmount = betRequest.getBetAmount();
         if (!betRequest.getUsername().equals(player.getDisplayName())){
             validatorError += "Critical error. The user who placed the bet was not the expected user. ";
         }
+
+        int newBetAmount = betRequest.getBetAmount();
         if (newBetAmount > maxBet){
             validatorError += "This game has a maximum bet of " + maxBet + ". ";
         }
+
         if (player.getClass() == HumanPlayer.class ){
-            HumanPlayer humanPlayer = (HumanPlayer) player;
-            if (newBetAmount > humanPlayer.getMoney()){
-                validatorError += "You do not have that much money to bet. Until you reload money, your maximum bet is " + humanPlayer.getMoney() + ". ";
+            if (newBetAmount > player.getMoney()){
+                validatorError += "You do not have that much money to bet. Until you reload money, your maximum bet is " + player.getMoney() + ". ";
             }
         }
         return validatorError;
     }
+
 
     protected void adjustTurn(){
         System.out.println("Adjusting turn - " + turnsLeftInRound);
