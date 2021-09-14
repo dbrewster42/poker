@@ -17,6 +17,7 @@ public abstract class Player {
     private int money;
     private UserDto user;
     private PokerHand pokerHand;
+    private int currentBetAmount = 0;
 
     public Player(String displayName){
         this.displayName = displayName;
@@ -40,6 +41,15 @@ public abstract class Player {
 
     public void betMoney(int moneyBet){
         this.money = this.money - moneyBet;
+        this.currentBetAmount = moneyBet;
+    }
+
+    public int getCurrentBetAmount() {
+        return currentBetAmount;
+    }
+
+    public void resetCurrentBetAmount() {
+        this.currentBetAmount = 0;
     }
 
     public List<Card> getHand() {

@@ -1,8 +1,10 @@
 package com.brewster.poker.repository;
 
-import com.brewster.poker.dto.BetDto;
+import com.brewster.poker.model.Bet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface BetRepository extends CrudRepository<BetDto, Long> {
+@Repository
+public interface BetRepository extends CrudRepository<Bet, Long> {
 }

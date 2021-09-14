@@ -133,6 +133,7 @@ public class BetService {
         currentBetter = activeBetters.get(turnNumber);
         activePlayersSize = activeBetters.size();
         turnsLeftInRound = activePlayersSize;
+        activeBetters.forEach(Player::resetCurrentBetAmount);
     }
 
     public BetOptions getBetOptions(){

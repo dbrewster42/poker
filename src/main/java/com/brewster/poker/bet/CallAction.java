@@ -8,15 +8,17 @@ public class CallAction extends Bet {
 
     public CallAction(Player player, BetRequest betRequest, BetService betManager) {
         super(player, betRequest, betManager);
+        this.betAmount = betManager.getBetAmount() - player.getCurrentBetAmount();
     }
 
     @Override
     public String validate() {
-        String validationError = "";
-        if (betAmount != betManager.getBetAmount()){
-            validationError = "Error. You have chosen to call the bet, the bet amount should be unchanged";
-        }
-        return validationError;
+//        String validationError = "";
+//        if (betAmount != betManager.getBetAmount()){
+//            validationError = "Error. You have chosen to call the bet, the bet amount should be unchanged";
+//        }
+//        return validationError;
+        return "";
     }
 
     @Override

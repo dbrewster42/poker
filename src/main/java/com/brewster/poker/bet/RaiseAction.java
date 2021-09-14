@@ -7,6 +7,7 @@ import com.brewster.poker.service.BetService;
 public class RaiseAction extends Bet {
     public RaiseAction(Player player, BetRequest betRequest, BetService betManager) {
         super(player, betRequest, betManager);
+        this.betAmount = betRequest.getBetAmount();
     }
 
     @Override
@@ -23,7 +24,7 @@ public class RaiseAction extends Bet {
 
     @Override
     public String process() {
-        betManager.setBetAmount(betAmount);//TODO
+        betManager.setBetAmount(betAmount);
         betManager.setPot(betManager.getPot() + betAmount);
         betManager.resetTurnsLeft();
         return player.getDisplayName() + " has raised the bet to " + betAmount + ". The total pot is now at " + betManager.getPot();

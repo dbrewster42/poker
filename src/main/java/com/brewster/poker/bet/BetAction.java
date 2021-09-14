@@ -8,6 +8,7 @@ public class BetAction extends Bet {
 
     public BetAction(Player player, BetRequest betRequest, BetService betManager) {
         super(player, betRequest, betManager);
+        this.betAmount = betRequest.getBetAmount();
     }
 
     @Override
