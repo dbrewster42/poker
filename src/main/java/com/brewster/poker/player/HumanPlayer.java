@@ -1,11 +1,7 @@
 package com.brewster.poker.player;
 
-import com.brewster.poker.service.BetService;
-import com.brewster.poker.bet.BetOptions;
-import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
 
-import java.util.List;
 
 public class HumanPlayer extends Player {
 
@@ -13,15 +9,6 @@ public class HumanPlayer extends Player {
         super(displayName, user);
     }
 
-    @Override
-    public void placeBet(List<Card> riverCards, BetOptions options, BetService betManager) {
-
-    }
-
-//    @Override
-//    public void collectWinnings() {
-//
-//    }
 
     @Override
     public void joinGame() {

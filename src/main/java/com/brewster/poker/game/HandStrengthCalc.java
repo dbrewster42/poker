@@ -15,11 +15,12 @@ public class HandStrengthCalc {
     private List<Card> hand;
     private int strength = 0;
 
-    public HandStrengthCalc(List<Card> holeCards, List<Card> riverCards){
-        chaseCards = 5 - riverCards.size();
-        hand = Stream.concat(holeCards.stream(), riverCards.stream())
-                .sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
-        suitMap = getSuitCount(hand);
+    public HandStrengthCalc(List<Card> holeCards){
+        chaseCards = 7 - holeCards.size();
+        hand = holeCards;
+//        hand = Stream.concat(holeCards.stream(), riverCards.stream())
+//                .sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
+        suitMap = getSuitCount();
         strength = findHandStrength();
     }
 
@@ -54,8 +55,8 @@ public class HandStrengthCalc {
         return score;
     }
 
-    public Map<String, Integer> getSuitCount(List<Card> hand){
-        suitMap = new HashMap<>();
+    public Map<String, Integer> getSuitCount(){
+        Map<String, Integer> suitMap = new HashMap<>();
         for (Card card : hand){
             suitMap.put(card.getSuit(), suitMap.getOrDefault(card.getSuit(), 0) + 1);
         }

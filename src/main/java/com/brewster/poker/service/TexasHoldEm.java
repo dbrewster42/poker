@@ -127,7 +127,9 @@ public class TexasHoldEm implements GameService {
           System.out.println("dealing " + count + " cards");
           cards.remove(0);
           for (int i = 0; i < count; i++){
-               riverCards.add(cards.get(0));
+               Card nextCard = cards.get(0);
+               riverCards.add(nextCard);
+               players.forEach(player -> player.dealCard(nextCard));
                cards.remove(0);
           }
           if (riverCards.size() == 5){

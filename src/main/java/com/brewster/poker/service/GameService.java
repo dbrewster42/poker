@@ -19,6 +19,7 @@ public interface GameService {
     EndRoundResponse calculateWinningHand();
     NewGameResponse getNewGameResponse(UserDto userDto);
     void addPlayerToGame(HumanPlayer player);
+
     BetService getBetManager();
     int getId();
     void setIsBet(boolean bet);

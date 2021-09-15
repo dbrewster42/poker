@@ -1,7 +1,5 @@
 package com.brewster.poker.player;
 
-import com.brewster.poker.service.BetService;
-import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.service.GameService;
@@ -30,12 +28,12 @@ public abstract class Player {
         hand = new ArrayList<>();
     }
 
-    public abstract void placeBet(List<Card> riverCards, BetOptions options, BetService betManager);
+    public abstract void joinGame();
+    public abstract void leaveGame();
+
     public void collectWinnings(int pot){
         this.money += pot;
     }
-    public abstract void joinGame();
-    public abstract void leaveGame();
 
     public void dealCard(Card card){ this.hand.add(card); }
 

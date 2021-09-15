@@ -93,7 +93,6 @@ public class BetService {
         if (turnsLeftInRound == 0){
             game.setIsBet(false);
             System.out.println("Round over");
-            //TODO could set turnNumber here
         }
     }
     private void adjustTurnNumber(){
@@ -153,8 +152,9 @@ public class BetService {
         BetOptions options = game.getBetOptions();
         System.out.println("betManager options = " + options.toString());
         while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer) {
-            System.out.println("displayName = " + options.getPlayer().getDisplayName());
-            options.getPlayer().placeBet(game.getRiverCards(), options, this);
+            ComputerPlayer computerPlayer = (ComputerPlayer) options.getPlayer();
+            System.out.println("displayName = " + computerPlayer.getDisplayName());
+            computerPlayer.placeBet(options, this);
             options = game.getBetOptions();
         }
         System.out.println("returning betOptions = " + options.toString());
@@ -208,14 +208,6 @@ public class BetService {
         return betMessages;
     }
 
-    public int getActivePlayersSize() {
-        return activePlayersSize;
-    }
-
-    public void setActivePlayersSize(int activePlayersSize) {
-        this.activePlayersSize = activePlayersSize;
-    }
-
     public List<Player> getActiveBetters() {
         return activeBetters;
     }
@@ -227,24 +219,12 @@ public class BetService {
         }
     }
 
-    public void setActiveBetters(List<Player> activeBetters) {
-        this.activeBetters = activeBetters;
-    }
-
     public void setPot(int pot) {
         this.pot = pot;
     }
 
     public void setBetAmount(int betAmount) {
         this.betAmount = betAmount;
-    }
-
-    public int getTurnNumber() {
-        return turnNumber;
-    }
-
-    public int getTurnsLeftInRound() {
-        return turnsLeftInRound;
     }
 
 }

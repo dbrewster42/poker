@@ -3,12 +3,10 @@ package com.brewster.poker.player;
 import com.brewster.poker.bet.Action;
 import com.brewster.poker.service.BetService;
 import com.brewster.poker.bet.BetOptions;
-import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.game.HandStrengthCalc;
 import com.brewster.poker.model.request.BetRequest;
 
-import java.util.List;
 
 public class ComputerPlayer extends Player {
     private static int bank = 10000;
@@ -19,9 +17,8 @@ public class ComputerPlayer extends Player {
         setMoney(1000);
     }
 
-    @Override
-    public void placeBet(List<Card> riverCards, BetOptions options, BetService betManager) {
-        int strength = calculateCards(riverCards);
+    public void placeBet(BetOptions options, BetService betManager) {
+        int strength = calculateCards();
         System.out.println("strength of cards = " + strength);
 
         Action primaryAction = options.getPossibleActions()[0];
@@ -87,23 +84,18 @@ public class ComputerPlayer extends Player {
         betRequest.setBetAmount(options.getBetAmount());
     }
 
-    public int calculateCards(List<Card> riverCards){
+    private int calculateCards(){
         int strength = 0;
-        int riverCount = riverCards.size();
+        int riverCount = getHand().size() - 2;
         if (riverCount == 0){
             strength = HandStrengthCalc.lookupHoleCards(getHand());
         } else {
-            HandStrengthCalc strengthCalc = new HandStrengthCalc(getHand(), riverCards);
+            HandStrengthCalc strengthCalc = new HandStrengthCalc(getHand());
             strength = strengthCalc.getStrength();
         }
 
         return strength;
     }
-
-//    @Override
-//    public void collectWinnings() {
-//
-//    }
 
     @Override
     public void joinGame() {
