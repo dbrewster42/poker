@@ -16,6 +16,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.brewster.poker.TestDataBuilder.getBetBetRequest;
+import static com.brewster.poker.TestDataBuilder.getCheckBetRequest;
+import static com.brewster.poker.TestDataBuilder.getGameSettingsRequest;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BetControllerTest {
@@ -87,21 +90,6 @@ class BetControllerTest {
           }
      }
 
-     private BetRequest getCheckBetRequest(int amount){
-          BetRequest betRequest = new BetRequest();
-          betRequest.setBetAmount(amount);
-          betRequest.setUsername("BREWSTER");
-          betRequest.setAction(Action.CALL.name());
-          return betRequest;
-     }
-
-     private BetRequest getBetBetRequest(){
-          BetRequest betRequest = new BetRequest();
-          betRequest.setBetAmount(20);
-          betRequest.setUsername("BREWSTER");
-          betRequest.setAction(Action.BET.name());
-          return betRequest;
-     }
 
      private UserDto getUserDto(){
           UserDto userDto = new UserDto();
@@ -118,12 +106,4 @@ class BetControllerTest {
           return userDto;
      }
 
-     private GameSettingsRequest getGameSettingsRequest(){
-          GameSettingsRequest gameSettingsRequest = new GameSettingsRequest();
-          gameSettingsRequest.setFillWithComputerPlayers(true);
-          gameSettingsRequest.setNumberOfPlayers(4);
-          gameSettingsRequest.setBigBlind(5);
-          gameSettingsRequest.setDisplayName("BREWSTER");
-          return gameSettingsRequest;
-     }
 }

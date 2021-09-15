@@ -65,7 +65,7 @@ public class BetService {
         }
     }
 
-    public String validateBet(BetRequest betRequest, Player player){
+    private String validateBet(BetRequest betRequest, Player player){
         String validatorError = "";
         if (!betRequest.getUsername().equals(player.getDisplayName())){
             validatorError += "Critical error. The user who placed the bet was not the expected user. ";
@@ -85,7 +85,7 @@ public class BetService {
     }
 
 
-    protected void adjustTurn(){
+    private void adjustTurn(){
         System.out.println("Adjusting turn - " + turnsLeftInRound);
         turnsLeftInRound--;
         adjustTurnNumber();
@@ -106,12 +106,12 @@ public class BetService {
         turnsLeftInRound = activePlayersSize;
     }
 
-    public void startNextRound(){
+    protected void startNextRound(){
         setAllRoundInformation();
         System.out.println("starting new round with " + currentBetter.getDisplayName());
     }
 
-    public BetOptions startNewDeal(){
+    protected BetOptions startNewDeal(){
         pot = 0;
         bigBlindTurn++;
         activeBetters = game.getPlayers();

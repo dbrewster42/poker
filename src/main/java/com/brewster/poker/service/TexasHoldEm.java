@@ -69,11 +69,10 @@ public class TexasHoldEm implements GameService {
                int winningStrength = 0;
                Player winner = null;
                for (Player player : activePlayers){
-                    player.getHand().addAll(riverCards);
 //                    PlayerDto playerDto = new PlayerDto(player.getDisplayName(), PokerHand.lookupHand(player.getHand()));
                     PokerHand pokerHand = PokerHand.lookupHand(player.getHand());
                     System.out.println(player.getDisplayName() + " has a " + pokerHand.getHandName());
-                    playerDtos.add(new PlayerDto(player.getDisplayName(), pokerHand.getHandName()));
+                    playerDtos.add(new PlayerDto(player.getDisplayName(), pokerHand.getHandName(), player.getHand()));
                     player.setPokerHand(pokerHand);
                     int score = pokerHand.getScore();
                     if (winningStrength < score){
@@ -87,7 +86,7 @@ public class TexasHoldEm implements GameService {
                }
                int pot = betManager.getPot();
                winner.collectWinnings(pot);
-               PlayerDto playerDto = new PlayerDto(winner.getDisplayName(), winner.getPokerHand().getHandName());
+               PlayerDto playerDto = new PlayerDto(winner.getDisplayName(), winner.getPokerHand().getHandName(), winner.getHand());
                return new EndRoundResponse(pot, playerDto, playerDtos);
           }
           System.out.println(isLastRound + " - " + isBet);
@@ -121,6 +120,14 @@ public class TexasHoldEm implements GameService {
                count = 3;
           }
           return dealRiverCardNTimes(count);
+     }
+
+     private void cardsDebug(){
+          for (Player each : players){
+               System.out.println(each.getDisplayName());
+               each.getHand().forEach(Card::show);
+          }
+          System.out.println();
      }
 
      private List<Card> dealRiverCardNTimes(int count){

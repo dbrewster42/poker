@@ -7,6 +7,7 @@ A. add, subtract, and return money!!!
 or it should require a manual call.
 5. add river cards to each hand to avoid getRiverCards
 6. add blinds
+7. add a space between rounds in betMessages
 
 ## Break Ties
 is there a way to break the tie no matter which or do I have to calculate
