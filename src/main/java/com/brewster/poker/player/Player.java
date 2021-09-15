@@ -41,7 +41,7 @@ public abstract class Player {
 
     public void betMoney(int moneyBet){
         this.money = this.money - moneyBet;
-        this.currentBetAmount = moneyBet;
+        this.currentBetAmount += moneyBet;
     }
 
     public int getCurrentBetAmount() {

@@ -52,19 +52,17 @@ public class BetService {
         String validationStatement = validateBet(betRequest, player);
         if (validationStatement.isEmpty()) {
             Bet bet = betFactory.createBet(player, betRequest, this);
-            validationStatement = bet.validate();
-            if (validationStatement.isEmpty()) {
-                String message = bet.process();
-                System.out.println("Bet has been processed - " + message);
-                player.betMoney(betRequest.getBetAmount());
-                betMessages.add(message);
+            String message = bet.process();
+            System.out.println("Bet has been processed - " + message);
+
+            betMessages.add(message);
 //                betsMade.add(new BetDto(bet, returnStatement));
-                adjustTurn();
-                return;
-            }
+            adjustTurn();
+            return;
+        } else {
+            System.out.println("Bet Invalid - " + validationStatement);
+            throw new InvalidBetException(validationStatement);
         }
-        System.out.println("Bet Invalid - " + validationStatement);
-        throw new InvalidBetException(validationStatement);
     }
 
     public String validateBet(BetRequest betRequest, Player player){

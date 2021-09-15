@@ -1,5 +1,6 @@
 package com.brewster.poker.bet;
 
+import com.brewster.poker.exception.InvalidBetException;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.service.BetService;
@@ -7,24 +8,24 @@ import com.brewster.poker.service.BetService;
 public class RaiseAction extends Bet {
     public RaiseAction(Player player, BetRequest betRequest, BetService betManager) {
         super(player, betRequest, betManager);
-        this.betAmount = betRequest.getBetAmount();
+//        this.betAmount = betRequest.getBetAmount();
+        this.betAmount = betRequest.getBetAmount() - player.getCurrentBetAmount();
+        validate();
     }
 
-    @Override
-    public String validate() {
-        String validationError = "";
+    private void validate() {
         if (betAmount < betManager.getBigBlind()){
-            validationError += "The minimum bet is " + betManager.getBigBlind() + ". You may not bet less than the blind";
+            throw new InvalidBetException("The minimum bet is " + betManager.getBigBlind() + ". You may not bet less than the blind");
         }
         if (betAmount <= betManager.getBetAmount()){
-            validationError = "You selected to Raise the bet. Your bet must be higher than the current bet";
+            throw new InvalidBetException("You selected to Raise the bet. Your bet must be higher than the current bet");
         }
-        return validationError;
     }
 
     @Override
     public String process() {
-        betManager.setBetAmount(betAmount);
+        betManager.setBetAmount(betAmount + player.getCurrentBetAmount());
+        player.betMoney(betAmount);
         betManager.setPot(betManager.getPot() + betAmount);
         betManager.resetTurnsLeft();
         return player.getDisplayName() + " has raised the bet to " + betAmount + ". The total pot is now at " + betManager.getPot();
