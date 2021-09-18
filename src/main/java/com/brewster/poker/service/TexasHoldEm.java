@@ -13,11 +13,18 @@ import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+//@Service
+//@Scope("prototype")
 public class TexasHoldEm implements GameService {
+     private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEm.class);
      private int id;
      private List<Player> players;
      private int openSlots;
@@ -71,7 +78,7 @@ public class TexasHoldEm implements GameService {
                for (Player player : activePlayers){
 //                    PlayerDto playerDto = new PlayerDto(player.getDisplayName(), PokerHand.lookupHand(player.getHand()));
                     PokerHand pokerHand = PokerHand.lookupHand(player.getHand());
-                    System.out.println(player.getDisplayName() + " has a " + pokerHand.getHandName());
+                    LOGGER.info("{} has a {}", player.getDisplayName(), pokerHand.getHandName());
                     playerDtos.add(new PlayerDto(player.getDisplayName(), pokerHand.getHandName(), player.getHand()));
                     player.setPokerHand(pokerHand);
                     int score = pokerHand.getScore();
@@ -80,17 +87,27 @@ public class TexasHoldEm implements GameService {
                          winner = player;
                     } else if (winningStrength == score){
                          //TODO
-                         System.out.println("THERE IS A TIE, I WILL ARBITRARILY CHOOSE A WINNER of " + pokerHand.getHandName());
-                         PokerHand.getTieBreaker(winner, player);
+                         LOGGER.info("THERE IS A TIE, I WILL ARBITRARILY CHOOSE A WINNER of {}", pokerHand.getHandName());
+//                         winner = PokerHand.getTieBreaker(winner, player).get();
+                         List<Player> winners = PokerHand.getTieBreaker(winner, player);
+                         if (winners.size() == 1){
+                              winner = winners.get(0);
+                         } else {
+                              //TODO need to check other hands before going to this method
+                              return getTieRoundResponse(winners);
+                         }
                     }
                }
-               int pot = betManager.getPot();
-               winner.collectWinnings(pot);
-               PlayerDto playerDto = new PlayerDto(winner.getDisplayName(), winner.getPokerHand().getHandName(), winner.getHand());
-               return new EndRoundResponse(pot, playerDto, playerDtos);
+               winner.collectWinnings(betManager.getPot());
+               PlayerDto playerDto = new PlayerDto(winner.getDisplayName(), winner.getPokerHand().getHandName());
+               return new EndRoundResponse(betManager.getPot(), playerDto, playerDtos);
           }
-          System.out.println(isLastRound + " - " + isBet);
+          LOGGER.info(isLastRound + " - " + isBet);
           throw new IllegalArgumentException("Game is still on-going");
+     }
+
+     public EndRoundResponse getTieRoundResponse(List<Player> winners){
+          return new EndRoundResponse();
      }
 
      public BetOptions startNewDeal(){
@@ -106,17 +123,17 @@ public class TexasHoldEm implements GameService {
 
      public List<Card> startNextRound(){
           if (isBet){
-               System.out.println("Cannot deal cards until betting has finished");
+               LOGGER.info("Cannot deal cards until betting has finished");
                return riverCards;
           }
           if (isLastRound){
-               System.out.println("cards have all already been dealt");
+               LOGGER.info("cards have all already been dealt");
                return riverCards;
           }
           betManager.startNextRound();
           isBet = true;
           int count = 1;
-          if (riverCards.size() == 0){
+          if (riverCards.isEmpty()){
                count = 3;
           }
           return dealRiverCardNTimes(count);
@@ -124,14 +141,14 @@ public class TexasHoldEm implements GameService {
 
      private void cardsDebug(){
           for (Player each : players){
-               System.out.println(each.getDisplayName());
+               LOGGER.info(each.getDisplayName());
                each.getHand().forEach(Card::show);
           }
-          System.out.println();
+          LOGGER.info("/n");
      }
 
      private List<Card> dealRiverCardNTimes(int count){
-          System.out.println("dealing " + count + " cards");
+          LOGGER.info("dealing {} cards", count);
           cards.remove(0);
           for (int i = 0; i < count; i++){
                Card nextCard = cards.get(0);
@@ -160,14 +177,20 @@ public class TexasHoldEm implements GameService {
 
      public void addPlayerToGame(HumanPlayer player){
           if (desiredNumberOfPlayers == players.size()){
+               Player playerToRemove = null;
                for (Player eachPlayer : players){
                     if (eachPlayer.getClass() == ComputerPlayer.class){
-                         eachPlayer = player;
+                         playerToRemove = eachPlayer;
+                         break;
+//                         eachPlayer = player;
+//                         //does this replace the computer player with a human player?
                     }
                }
-          } else {
-               players.add(player);
+               if (playerToRemove != null){
+                    players.remove(playerToRemove);
+               }
           }
+          players.add(player);
           openSlots--;
      }
      public void addPlayerToGame(ComputerPlayer player){

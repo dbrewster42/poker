@@ -8,11 +8,13 @@ or it should require a manual call.
 5. add river cards to each hand to avoid getRiverCards
 6. add blinds
 7. add a space between rounds in betMessages
+8. add logic for two winners in case of tie
 
 ## Break Ties
 is there a way to break the tie no matter which or do I have to calculate
 for each different hand? 
 Would it be better if the score included the high card?
+Add another pojo to wrap PokerHand and hold Cards
 
 ## clean up
 change all println to log

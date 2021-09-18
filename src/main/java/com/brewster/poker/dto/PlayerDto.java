@@ -1,19 +1,17 @@
 package com.brewster.poker.dto;
 
 import com.brewster.poker.card.Card;
-import com.brewster.poker.game.PokerHand;
 
 import java.util.List;
 
 public class PlayerDto {
      private String displayName;
-     private PokerHand pokerHand;
      private String pokerHandName;
      private List<Card> cards;
 
-     public PlayerDto(String displayName, PokerHand pokerHand) {
+     public PlayerDto(String displayName, String pokerHandName) {
           this.displayName = displayName;
-          this.pokerHand = pokerHand;
+          this.pokerHandName = pokerHandName;
      }
      public PlayerDto(String displayName, String pokerHandName, List<Card> cards) {
           this.displayName = displayName;
@@ -23,10 +21,6 @@ public class PlayerDto {
 
      public String getDisplayName() {
           return displayName;
-     }
-
-     public PokerHand getPokerHand() {
-          return pokerHand;
      }
 
      public String getPokerHandName() {

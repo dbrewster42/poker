@@ -11,12 +11,17 @@ import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+//@Service
 public class BetService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BetService.class);
     private int id;
     private final GameService game;
     private int activePlayersSize;
@@ -41,26 +46,26 @@ public class BetService {
         this.game = game;
 //        this.bigBlind = Optional.ofNullable(request.getBigBlind()).orElse(500);
         this.bigBlind = request.getBigBlind();
-        this.maxBet = Optional.ofNullable(request.getMaxBet()).map(v -> v < 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
+        this.maxBet = Optional.ofNullable(request.getMaxBet()).map(v -> v == 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
         betFactory = new BetFactoryImplementation();
         betMessages = new ArrayList<>();
     }
 
     public void placeBet(BetRequest betRequest){
         Player player = currentBetter;
-        System.out.println(player.getDisplayName() + " is placing bet " + betRequest.toString());
+        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
         String validationStatement = validateBet(betRequest, player);
         if (validationStatement.isEmpty()) {
             Bet bet = betFactory.createBet(player, betRequest, this);
             String message = bet.process();
-            System.out.println("Bet has been processed - " + message);
+            LOGGER.info("Bet has been processed - " + message);
 
             betMessages.add(message);
 //                betsMade.add(new BetDto(bet, returnStatement));
             adjustTurn();
             return;
         } else {
-            System.out.println("Bet Invalid - " + validationStatement);
+            LOGGER.info("Bet Invalid - " + validationStatement);
             throw new InvalidBetException(validationStatement);
         }
     }
@@ -86,13 +91,13 @@ public class BetService {
 
 
     private void adjustTurn(){
-        System.out.println("Adjusting turn - " + turnsLeftInRound);
+        LOGGER.info("Adjusting turn - " + turnsLeftInRound);
         turnsLeftInRound--;
         adjustTurnNumber();
         currentBetter = activeBetters.get(turnNumber);
         if (turnsLeftInRound == 0){
             game.setIsBet(false);
-            System.out.println("Round over");
+            LOGGER.info("Round over");
         }
     }
     private void adjustTurnNumber(){
@@ -108,7 +113,7 @@ public class BetService {
 
     protected void startNextRound(){
         setAllRoundInformation();
-        System.out.println("starting new round with " + currentBetter.getDisplayName());
+        LOGGER.info("starting new round with " + currentBetter.getDisplayName());
     }
 
     protected BetOptions startNewDeal(){
@@ -116,7 +121,7 @@ public class BetService {
         bigBlindTurn++;
         activeBetters = game.getPlayers();
         setAllRoundInformation();
-        System.out.println("starting new deal with " + turnsLeftInRound + " turns");
+        LOGGER.info("starting new deal with " + turnsLeftInRound + " turns");
         return getBetOptions();
     }
 
@@ -124,7 +129,7 @@ public class BetService {
         betAmount = 0;
         turnNumber = bigBlindTurn;
         if (turnNumber == activePlayersSize){
-            System.out.println("not enough players left");
+            LOGGER.info("not enough players left");
             turnNumber = 0;
         }
         currentBetter = activeBetters.get(turnNumber);
@@ -134,13 +139,13 @@ public class BetService {
     }
 
     public BetOptions getBetOptions(){
-        System.out.println("betManager.getBetOptions " + currentBetter.getDisplayName() + " turnsLeft = " + turnsLeftInRound + " turnNumber = " + turnNumber);
+        LOGGER.info("betManager.getBetOptions " + currentBetter.getDisplayName() + " turnsLeft = " + turnsLeftInRound + " turnNumber = " + turnNumber);
         if (turnsLeftInRound > 0){
             Action[] actionOptions = getPossibleBetActions(betAmount);
             betOptions = new BetOptions(currentBetter, actionOptions, betAmount, pot);
             return betOptions;
         } else {
-            System.out.println("end of betting round");
+            LOGGER.info("end of betting round");
             game.setIsBet(false);
             //FIXME should we auto call or not? if yes, need logic in game controller for Deal
 //            game.startNextRound();
@@ -150,14 +155,14 @@ public class BetService {
 
     public BetOptions manageComputerBets(){
         BetOptions options = game.getBetOptions();
-        System.out.println("betManager options = " + options.toString());
+        LOGGER.info("betManager options = " + options.toString());
         while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer) {
             ComputerPlayer computerPlayer = (ComputerPlayer) options.getPlayer();
-            System.out.println("displayName = " + computerPlayer.getDisplayName());
+            LOGGER.info("displayName = " + computerPlayer.getDisplayName());
             computerPlayer.placeBet(options, this);
             options = game.getBetOptions();
         }
-        System.out.println("returning betOptions = " + options.toString());
+        LOGGER.info("returning betOptions = " + options.toString());
 
         return options;
     }

@@ -1,6 +1,5 @@
 package com.brewster.poker.service;
 
-import com.brewster.poker.model.request.GameSettingsRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +20,7 @@ class BetServiceTest {
 
      @Test
      void placeBet() {
+          sut.startNewDeal();
           sut.placeBet(getBetBetRequest());
           //TODO
      }
