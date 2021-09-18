@@ -10,6 +10,8 @@ import com.brewster.poker.model.response.EndRoundResponse;
 import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,7 @@ import java.util.List;
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("game")
 public class GameController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
     private GameService game;
     private final UserService userService;
     private UserDto userDto;
@@ -35,7 +38,7 @@ public class GameController {
 
     @PostMapping
     public NewGameResponse createGame(@RequestBody GameSettingsRequest request) {
-        System.out.println(request.toString());
+        LOGGER.info(request.toString());
         userDto = userService.findUser(request.getUsername());
         if (request.isFillWithComputerPlayers()){
             computerUser = userService.findUser("HAL");
@@ -52,16 +55,16 @@ public class GameController {
 
     private void debug(){
         for (Player each : game.getPlayers()){
-            System.out.println(each.getDisplayName());
+            LOGGER.info(each.getDisplayName());
             each.getHand().forEach(Card::show);
         }
-        System.out.println();
+        LOGGER.info("");
     }
 
     @GetMapping("{id}")
     public List<Card> deal(@PathVariable int id) {
         game = GamesContainer.findGameById(id);
-        System.out.println("dealing card");
+        LOGGER.info("dealing card");
 
         return game.startNextRound();
     }

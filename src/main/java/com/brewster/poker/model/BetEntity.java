@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Bet {
+public class BetEntity {
      @Id
      @GeneratedValue(strategy = GenerationType.AUTO)
      private long id;
@@ -16,7 +16,7 @@ public class Bet {
      private User player;
      private String betMessage;
 
-     public Bet(int betAmount, User player, String betMessage) {
+     public BetEntity(int betAmount, User player, String betMessage) {
           this.betAmount = betAmount;
           this.player = player;
           this.betMessage = betMessage;
