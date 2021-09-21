@@ -10,6 +10,7 @@ import java.util.List;
 
 public abstract class Player {
     private List<Card> hand;
+    private List<Card> holeCards; //TODO
     private String displayName;
     private GameService game;
     private int money;
@@ -36,6 +37,8 @@ public abstract class Player {
     }
 
     public void dealCard(Card card){ this.hand.add(card); }
+
+    public void setHoleCards(){}
 
     public void betMoney(int moneyBet){
         this.money = this.money - moneyBet;

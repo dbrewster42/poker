@@ -15,14 +15,16 @@ import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //@Service
-//@Scope("prototype")
+//@Scope(value = WebApplicationContext.SCOPE_REQUEST)
 public class TexasHoldEm implements GameService {
      private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEm.class);
      private int id;
@@ -79,8 +81,10 @@ public class TexasHoldEm implements GameService {
 //                    PlayerDto playerDto = new PlayerDto(player.getDisplayName(), PokerHand.lookupHand(player.getHand()));
                     PokerHand pokerHand = PokerHand.lookupHand(player.getHand());
                     LOGGER.info("{} has a {}", player.getDisplayName(), pokerHand.getHandName());
-                    playerDtos.add(new PlayerDto(player.getDisplayName(), pokerHand.getHandName(), player.getHand()));
+//                    playerDtos.add(new PlayerDto(player.getDisplayName(), pokerHand.getHandName(), player.getHand(), player.getMoney()));
                     player.setPokerHand(pokerHand);
+//                    BeanUtils.copyProperties(player, new PlayerDto());
+                    playerDtos.add(new PlayerDto(player));
                     int score = pokerHand.getScore();
                     if (winningStrength < score){
                          winningStrength = score;
@@ -90,11 +94,12 @@ public class TexasHoldEm implements GameService {
                          LOGGER.info("THERE IS A TIE, I WILL ARBITRARILY CHOOSE A WINNER of {}", pokerHand.getHandName());
 //                         winner = PokerHand.getTieBreaker(winner, player).get();
                          List<Player> winners = PokerHand.getTieBreaker(winner, player);
+                         LOGGER.info(winners.size() + " winners");
                          if (winners.size() == 1){
                               winner = winners.get(0);
                          } else {
                               //TODO need to check other hands before going to this method
-                              return getTieRoundResponse(winners);
+                              return getTieRoundResponse(winners, playerDtos);
                          }
                     }
                }
@@ -106,8 +111,11 @@ public class TexasHoldEm implements GameService {
           throw new IllegalArgumentException("Game is still on-going");
      }
 
-     public EndRoundResponse getTieRoundResponse(List<Player> winners){
-          return new EndRoundResponse();
+     public EndRoundResponse getTieRoundResponse(List<Player> winners, List<PlayerDto> playerDtos){
+          PlayerDto winnerA = new PlayerDto(winners.get(0).getDisplayName(), winners.get(0).getPokerHand().getHandName());
+          PlayerDto winnerZ = new PlayerDto(winners.get(1).getDisplayName(), winners.get(1).getPokerHand().getHandName());
+
+          return new EndRoundResponse(betManager.getPot(), winnerA, winnerZ, playerDtos);
      }
 
      public BetOptions startNewDeal(){

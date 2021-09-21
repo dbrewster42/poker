@@ -13,12 +13,12 @@ public class BetEntity {
      private long id;
      private int betAmount;
      @ManyToOne
-     private User player;
+     private User user;
      private String betMessage;
 
-     public BetEntity(int betAmount, User player, String betMessage) {
+     public BetEntity(int betAmount, User user, String betMessage) {
           this.betAmount = betAmount;
-          this.player = player;
+          this.user = user;
           this.betMessage = betMessage;
      }
 
@@ -31,7 +31,7 @@ public class BetEntity {
      }
 
      public User getUser() {
-          return player;
+          return user;
      }
 
      public String getBetMessage() {

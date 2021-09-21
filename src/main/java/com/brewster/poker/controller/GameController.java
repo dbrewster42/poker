@@ -2,6 +2,7 @@ package com.brewster.poker.controller;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
+import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.service.GameService;
 import com.brewster.poker.game.GamesContainer;
 import com.brewster.poker.model.request.GameSettingsRequest;
@@ -52,6 +53,15 @@ public class GameController {
 
         return game.getNewGameResponse(userDto);
     }
+
+    @GetMapping("{id}/restart")
+    public NewGameResponse getNewRound(@PathVariable int id, @RequestBody UserRequest request){
+        game = GamesContainer.findGameById(id);
+        userDto = userService.findUser(request.getUsername());
+
+        return game.getRestartGameResponse(userDto);
+    }
+
 
     private void debug(){
         for (Player each : game.getPlayers()){
