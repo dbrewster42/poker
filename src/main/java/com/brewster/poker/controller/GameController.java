@@ -57,6 +57,7 @@ public class GameController {
     @GetMapping("{id}/restart")
     public NewGameResponse getNewRound(@PathVariable int id, @RequestBody UserRequest request){
         game = GamesContainer.findGameById(id);
+        game.startNewDeal();
         userDto = userService.findUser(request.getUsername());
 
         return game.getRestartGameResponse(userDto);
@@ -94,13 +95,6 @@ public class GameController {
     public void joinGame(@RequestBody JoinRequest request) {
         userDto = userService.findUser(request.getUsername());
         GameService game = GamesContainer.addPlayerToGame(userDto, request);
-    }
-
-    @GetMapping("{id}/restart")
-    public void dealNewGame(@PathVariable int id, @RequestBody String displayName){
-        game = GamesContainer.findGameById(id);
-        game.startNewDeal();
-//        userDto = userService.findUser(username);
     }
 
 }

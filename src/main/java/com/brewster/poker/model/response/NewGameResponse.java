@@ -20,10 +20,11 @@ public class NewGameResponse {
         this.betOptions = betOptions;
         this.userMoney = userMoney;
     }
-    public NewGameResponse(final List<Card> hand, BetOptions betOptions, int userMoney){
+    public NewGameResponse(final List<Card> hand, BetOptions betOptions, int userMoney, List<UserDto> users){
         this.hand = hand;
         this.betOptions = betOptions;
         this.userMoney = userMoney;
+        this.users = users;
     }
 
 //    public int getBigBlindTurn() {

@@ -207,25 +207,25 @@ public class TexasHoldEm implements GameService {
 
      public NewGameResponse getNewGameResponse(UserDto userDto){
           List<Card> playerCards = userDto.getPlayer().getHand();
-          List<UserDto> users = getUsers();
-          users.remove(userDto);
           BetOptions options = betManager.manageComputerBets();
 
-          return new NewGameResponse(id, playerCards, users, options, userDto.getMoney());
+          return new NewGameResponse(id, playerCards, getUsers(userDto), options, userDto.getMoney());
      }
 
      public NewGameResponse getRestartGameResponse(UserDto userDto){
           List<Card> playerCards = userDto.getPlayer().getHand();
           BetOptions options = betManager.manageComputerBets();
 
-          return new NewGameResponse(playerCards, options, userDto.getMoney());
+          return new NewGameResponse(playerCards, options, userDto.getMoney(), getUsers(userDto));
      }
 
-     private List<UserDto> getUsers(){
+     private List<UserDto> getUsers(UserDto userDto){
           List<UserDto> users = new ArrayList<>();
           for (Player player : players){
-               player.getUser().setDisplayName(player.getDisplayName());
-               users.add(player.getUser());
+               if (!player.getUser().equals(userDto)) {
+                    users.add(player.getUser());
+                    player.getUser().setDisplayName(player.getDisplayName());
+               }
           }
           return users;
      }
