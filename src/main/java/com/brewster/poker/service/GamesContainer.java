@@ -7,7 +7,6 @@ import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
-import com.brewster.poker.service.GameService;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,6 +7,7 @@ import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.card.PokerHandLookup;
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.dto.UserDto;
+import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.EndRoundResponse;
@@ -202,9 +203,10 @@ public class TexasHoldEmService implements GameService {
      }
 
      public NewGameResponse getNewGameResponse(UserDto userDto){
+          LOGGER.info(userDto.toString());
           List<Card> playerCards = userDto.getPlayer().getHand();
           BetOptions options = betManager.manageComputerBets();
-
+          LOGGER.info(options.toString(), playerCards);
           return new NewGameResponse(id, playerCards, getUsers(userDto), options, userDto.getMoney());
      }
 
@@ -224,6 +226,13 @@ public class TexasHoldEmService implements GameService {
                }
           }
           return users;
+     }
+     public UserDto getUser(String name){
+          Player thisPlayer = players.stream()
+                  .filter(v -> v.getDisplayName().equals(name))
+                  .findAny()
+                  .orElseThrow(()-> new UserNotFoundException());
+          return thisPlayer.getUser();
      }
 
 

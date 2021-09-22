@@ -54,13 +54,13 @@ public class GameController {
         return game.getNewGameResponse(userDto);
     }
 
-    @GetMapping("{id}/restart")
+    @PostMapping("{id}/restart")
     public NewGameResponse getNewRound(@PathVariable int id, @RequestBody UserRequest request){
         LOGGER.info(request.getUsername(), id);
         game = GamesContainer.findGameById(id);
         game.startNewDeal();
-        userDto = userService.findUser(request.getUsername());
-
+        userDto = game.getUser();
+        LOGGER.info(userDto.toString());
         return game.getNewGameResponse(userDto);
     }
 

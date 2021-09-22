@@ -32,6 +32,10 @@ public class PlayerDto {
           return displayName;
      }
 
+     public String getUsername() {
+          return displayName;
+     }
+
      public String getPokerHandName() {
           return pokerHandName;
      }

@@ -22,6 +22,7 @@ public interface GameService {
     void addPlayerToGame(HumanPlayer player);
     void setGameOver();
 
+    UserDto getUser();
     BetService getBetManager();
     int getId();
     void setIsBet(boolean bet);
