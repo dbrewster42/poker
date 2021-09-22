@@ -130,7 +130,8 @@ public class BetService {
         turnsLeftInRound = activePlayersSize;
     }
 
-    protected void startNextRound(){
+    protected void deal(){
+        betMessages.add("");
         setAllRoundInformation();
         LOGGER.info("starting new round with " + currentBetter.getDisplayName());
     }

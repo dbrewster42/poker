@@ -46,7 +46,7 @@ class BetControllerTest {
      @Test
      void getBetOptions2() {
           List<Player> playerList = game.getPlayers();
-          game.startNextRound();
+          game.deal();
           BetOptions betOptions = betController.getBetOptions(id).getBetOptions();
           assertTrue(betOptions.getPlayer() instanceof HumanPlayer);
 

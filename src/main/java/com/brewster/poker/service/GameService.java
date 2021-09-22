@@ -13,11 +13,11 @@ import java.util.List;
 
 public interface GameService {
     BetOptions startNewDeal();
-    List<Card> startNextRound();
+    List<Card> deal();
     BetOptions getBetOptions();
     EndRoundResponse calculateWinningHand();
     NewGameResponse getNewGameResponse(UserDto userDto);
-    NewGameResponse getRestartGameResponse(UserDto userDto);
+//    NewGameResponse getRestartGameResponse(UserDto userDto);
 
     void addPlayerToGame(HumanPlayer player);
     void setGameOver();

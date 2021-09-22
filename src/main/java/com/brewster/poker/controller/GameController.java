@@ -56,11 +56,12 @@ public class GameController {
 
     @GetMapping("{id}/restart")
     public NewGameResponse getNewRound(@PathVariable int id, @RequestBody UserRequest request){
+        LOGGER.info(request.getUsername(), id);
         game = GamesContainer.findGameById(id);
         game.startNewDeal();
         userDto = userService.findUser(request.getUsername());
 
-        return game.getRestartGameResponse(userDto);
+        return game.getNewGameResponse(userDto);
     }
 
 
@@ -77,7 +78,7 @@ public class GameController {
         game = GamesContainer.findGameById(id);
         LOGGER.info("dealing card");
 
-        return game.startNextRound();
+        return game.deal();
     }
 
     @GetMapping("{id}/winner")

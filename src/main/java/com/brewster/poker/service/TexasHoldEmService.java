@@ -32,7 +32,7 @@ public class TexasHoldEmService implements GameService {
      private int desiredNumberOfPlayers;
      private BetService betManager;
      private boolean isBet;
-     private boolean isLastRound;
+     private boolean isDealDone;
 
      TexasHoldEmService(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
           this.id = id;
@@ -64,12 +64,12 @@ public class TexasHoldEmService implements GameService {
      }
 
      public void setGameOver(){
-          isLastRound = true;
+          isDealDone = true;
           isBet = false;
      }
 
      public EndRoundResponse calculateWinningHand(){
-          if (isLastRound && !isBet){
+          if (isDealDone && !isBet){
                List<Player> activePlayers = betManager.getActiveBetters();
                List<PlayerDto> playerDtos = new ArrayList<>();
                int winningStrength = 0;
@@ -103,7 +103,7 @@ public class TexasHoldEmService implements GameService {
                PlayerDto playerDto = new PlayerDto(winner.getDisplayName(), winner.getPokerHand().getHandName());
                return new EndRoundResponse(betManager.getPot(), playerDto, playerDtos);
           }
-          LOGGER.info("{} - {}", isLastRound, isBet);
+          LOGGER.info("{} - {}", isDealDone, isBet);
           throw new IllegalArgumentException("Game is still on-going");
      }
 
@@ -125,16 +125,16 @@ public class TexasHoldEmService implements GameService {
           return betManager.getBetOptions();
      }
 
-     public List<Card> startNextRound(){
+     public List<Card> deal(){
           if (isBet){
                LOGGER.info("Cannot deal cards until betting has finished");
                return riverCards;
           }
-          if (isLastRound){
+          if (isDealDone){
                LOGGER.info("cards have all already been dealt");
                return riverCards;
           }
-          betManager.startNextRound();
+          betManager.deal();
           isBet = true;
           int count = 1;
           if (riverCards.isEmpty()){
@@ -161,7 +161,7 @@ public class TexasHoldEmService implements GameService {
                cards.remove(0);
           }
           if (riverCards.size() == 5){
-               isLastRound = true;
+               isDealDone = true;
           }
           isBet = true;
           return riverCards;
@@ -208,12 +208,12 @@ public class TexasHoldEmService implements GameService {
           return new NewGameResponse(id, playerCards, getUsers(userDto), options, userDto.getMoney());
      }
 
-     public NewGameResponse getRestartGameResponse(UserDto userDto){
-          List<Card> playerCards = userDto.getPlayer().getHand();
-          BetOptions options = betManager.manageComputerBets();
-
-          return new NewGameResponse(playerCards, options, userDto.getMoney(), getUsers(userDto));
-     }
+//     public NewGameResponse getRestartGameResponse(UserDto userDto){
+//          List<Card> playerCards = userDto.getPlayer().getHand();
+//          BetOptions options = betManager.manageComputerBets();
+//
+//          return new NewGameResponse(playerCards, options, userDto.getMoney(), getUsers(userDto));
+//     }
 
      private List<UserDto> getUsers(UserDto userDto){
           List<UserDto> users = new ArrayList<>();
