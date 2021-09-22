@@ -18,10 +18,10 @@ class BetServiceTest {
           sut = new BetService(game, getGameSettingsRequest());
      }
 
-     @Test
-     void placeBet() {
-          sut.startNewDeal();
-          sut.placeBet(getBetBetRequest());
-          //TODO
-     }
+//     @Test
+//     void placeBet() {
+//          game.startNewDeal();
+//          sut.placeBet(getBetBetRequest());
+//          //TODO
+//     }
 }

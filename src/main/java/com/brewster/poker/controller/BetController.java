@@ -5,7 +5,7 @@ import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.service.BetService;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.service.GameService;
-import com.brewster.poker.game.GamesContainer;
+import com.brewster.poker.service.GamesContainer;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.response.BetResponse;
 

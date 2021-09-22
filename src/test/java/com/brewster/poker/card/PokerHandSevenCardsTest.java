@@ -1,13 +1,13 @@
-package com.brewster.poker.game;
+package com.brewster.poker.card;
 
-import com.brewster.poker.card.Card;
+import com.brewster.poker.CardHandBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PokerHandSevenCardsTest {
+class PokerHandSevenCardsTest {
      List<Card> fourOfAKind = CardHandBuilder.buildFourOfKindWithSevenCards();
 //     List<Card> highCardCards = CardHandBuilder.buildHighCard();
      List<Card> straightCards = CardHandBuilder.buildStraightWithSevenCards();

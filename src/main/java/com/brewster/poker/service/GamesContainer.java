@@ -1,4 +1,4 @@
-package com.brewster.poker.game;
+package com.brewster.poker.service;
 
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.GameNotFoundException;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class GamesContainer {
     private static int gameID = 0;
     private static List<GameService> allGames = new ArrayList<>();
-    private static UserDto computer;
+//    private static UserDto computer;
 
     public static GameService findGameById(Integer id){
         GameService game = allGames.get(id);

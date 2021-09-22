@@ -1,4 +1,4 @@
-package com.brewster.poker.game;
+package com.brewster.poker;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.card.DeckBuilder;

@@ -2,8 +2,9 @@ package com.brewster.poker.service;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.card.DeckBuilder;
-import com.brewster.poker.game.PokerHand;
+import com.brewster.poker.card.PokerHand;
 import com.brewster.poker.bet.BetOptions;
+import com.brewster.poker.card.PokerHandLookup;
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.BetRequest;
@@ -15,18 +16,14 @@ import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //@Service
 //@Scope(value = WebApplicationContext.SCOPE_REQUEST)
-public class TexasHoldEm implements GameService {
-     private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEm.class);
+public class TexasHoldEmService implements GameService {
+     private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEmService.class);
      private int id;
      private List<Player> players;
      private int openSlots;
@@ -37,7 +34,7 @@ public class TexasHoldEm implements GameService {
      private boolean isBet;
      private boolean isLastRound;
 
-     TexasHoldEm(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
+     TexasHoldEmService(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
           this.id = id;
           this.players = new ArrayList<>();
           players.add(player);
@@ -45,7 +42,7 @@ public class TexasHoldEm implements GameService {
           this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
           openSlots = desiredNumberOfPlayers - 1;
      }
-     TexasHoldEm(int id, List<Player> players, GameSettingsRequest settingsRequest){
+     TexasHoldEmService(int id, List<Player> players, GameSettingsRequest settingsRequest){
           this.id = id;
           this.players = players;
           betManager = new BetService(this, settingsRequest);
@@ -55,11 +52,11 @@ public class TexasHoldEm implements GameService {
      }
 
      public static GameService createNewGame(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
-          return new TexasHoldEm(id, player, settingsRequest);
+          return new TexasHoldEmService(id, player, settingsRequest);
      }
 
      public static GameService createNewGame(int id, List<Player> players, GameSettingsRequest settingsRequest){
-          return new TexasHoldEm(id, players, settingsRequest);
+          return new TexasHoldEmService(id, players, settingsRequest);
      }
 
      public void placeBet(BetRequest betRequest){
@@ -93,8 +90,7 @@ public class TexasHoldEm implements GameService {
                          //TODO
                          LOGGER.info("THERE IS A TIE, I WILL ARBITRARILY CHOOSE A WINNER of {}", pokerHand.getHandName());
 //                         winner = PokerHand.getTieBreaker(winner, player).get();
-                         List<Player> winners = PokerHand.getTieBreaker(winner, player);
-                         LOGGER.info(winners.size() + " winners");
+                         List<Player> winners = PokerHandLookup.getTieBreaker(winner, player);
                          if (winners.size() == 1){
                               winner = winners.get(0);
                          } else {
@@ -107,14 +103,14 @@ public class TexasHoldEm implements GameService {
                PlayerDto playerDto = new PlayerDto(winner.getDisplayName(), winner.getPokerHand().getHandName());
                return new EndRoundResponse(betManager.getPot(), playerDto, playerDtos);
           }
-          LOGGER.info(isLastRound + " - " + isBet);
+          LOGGER.info("{} - {}", isLastRound, isBet);
           throw new IllegalArgumentException("Game is still on-going");
      }
 
      public EndRoundResponse getTieRoundResponse(List<Player> winners, List<PlayerDto> playerDtos){
           PlayerDto winnerA = new PlayerDto(winners.get(0).getDisplayName(), winners.get(0).getPokerHand().getHandName());
           PlayerDto winnerZ = new PlayerDto(winners.get(1).getDisplayName(), winners.get(1).getPokerHand().getHandName());
-
+          //TODO 3 way tie?
           return new EndRoundResponse(betManager.getPot(), winnerA, winnerZ, playerDtos);
      }
 

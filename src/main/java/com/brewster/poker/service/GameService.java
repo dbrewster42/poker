@@ -28,13 +28,12 @@ public interface GameService {
     boolean isBet();
     List<Player> getPlayers();
     int getOpenSlots();
-    List<Card> getRiverCards();
 
     static GameService createNewTexasHoldEmGame(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
-        return new TexasHoldEm(id, player, settingsRequest);
+        return new TexasHoldEmService(id, player, settingsRequest);
     }
 
     static GameService createNewTexasHoldEmGame(int id, List<Player> players, GameSettingsRequest settingsRequest){
-        return new TexasHoldEm(id, players, settingsRequest);
+        return new TexasHoldEmService(id, players, settingsRequest);
     }
 }

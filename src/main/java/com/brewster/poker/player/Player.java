@@ -3,7 +3,7 @@ package com.brewster.poker.player;
 import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.service.GameService;
-import com.brewster.poker.game.PokerHand;
+import com.brewster.poker.card.PokerHand;
 
 import java.util.ArrayList;
 import java.util.List;

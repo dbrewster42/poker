@@ -4,7 +4,7 @@ import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.service.GameService;
-import com.brewster.poker.game.GamesContainer;
+import com.brewster.poker.service.GamesContainer;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.model.response.EndRoundResponse;

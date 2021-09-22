@@ -4,7 +4,7 @@ import com.brewster.poker.bet.Action;
 import com.brewster.poker.service.BetService;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.dto.UserDto;
-import com.brewster.poker.game.HandStrengthCalc;
+import com.brewster.poker.service.HandStrengthCalculator;
 import com.brewster.poker.model.request.BetRequest;
 
 
@@ -88,9 +88,9 @@ public class ComputerPlayer extends Player {
         int strength = 0;
         int riverCount = getHand().size() - 2;
         if (riverCount == 0){
-            strength = HandStrengthCalc.lookupHoleCards(getHand());
+            strength = HandStrengthCalculator.lookupHoleCards(getHand());
         } else {
-            HandStrengthCalc strengthCalc = new HandStrengthCalc(getHand());
+            HandStrengthCalculator strengthCalc = new HandStrengthCalculator(getHand());
             strength = strengthCalc.getStrength();
         }
 

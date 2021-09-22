@@ -1,6 +1,7 @@
-package com.brewster.poker.game;
+package com.brewster.poker.service;
 
 import com.brewster.poker.card.Card;
+import com.brewster.poker.card.PokerHandLookup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,15 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class HandStrengthCalc {
+public class HandStrengthCalculator {
     private Map<String, Integer> suitMap;
     private int chaseCards;
     private List<Card> hand;
     private int strength = 0;
 
-    public HandStrengthCalc(List<Card> holeCards){
-        chaseCards = 7 - holeCards.size();
-        hand = holeCards;
+    public HandStrengthCalculator(List<Card> computerHand){
+        chaseCards = 7 - computerHand.size();
+        hand = computerHand;
 //        hand = Stream.concat(holeCards.stream(), riverCards.stream())
 //                .sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
         suitMap = getSuitCount();
@@ -38,13 +39,7 @@ public class HandStrengthCalc {
 
     public int findHandStrength(){
         int score = getHigherScore(flushCount(), straightCount());
-//                flushCount();
-//        int score2 = straightCount();
-//        if (score < score2){
-//            score = score2;
-//        }
         return getHigherScore(score, pairCount());
-
     }
 
     public int getHigherScore(int score, int score2){
@@ -146,7 +141,7 @@ public class HandStrengthCalc {
                 for (int j = 0; j < 5; j++){
                     fiveCardValues[j] = cardValues.get(i + j);
                 }
-                if (PokerHand.isStraight(fiveCardValues)){
+                if (PokerHandLookup.isStraight(fiveCardValues)){
                     score = 10;
                 }
             }
