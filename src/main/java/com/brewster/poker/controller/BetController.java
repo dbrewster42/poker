@@ -46,7 +46,7 @@ public class BetController {
 
         betManager.placeBet(request);
         LOGGER.info("Controller: Bet has been placed");
-        return new BetResponse(game.isBet(), betManager.getBetMessages(), betManager.getCurrentBettersMoney());
+        return new BetResponse(game.isBet(), betManager.getBetMessages(), betManager.getCurrentBettersMoney(), game.isDealDone());
     }
 
     @GetMapping("getUserBets")

@@ -228,6 +228,7 @@ public class TexasHoldEmService implements GameService {
           return users;
      }
      public UserDto getUser(String name){
+          cardsDebug();
           Player thisPlayer = players.stream()
                   .filter(v -> v.getDisplayName().equals(name))
                   .findAny()
@@ -270,6 +271,11 @@ public class TexasHoldEmService implements GameService {
 
      public void setIsBet(boolean bet) {
           isBet = bet;
+     }
+
+     @Override
+     public boolean isDealDone() {
+          return isDealDone;
      }
 
      @Override

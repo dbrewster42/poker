@@ -59,7 +59,7 @@ public class GameController {
         LOGGER.info(request.getUsername(), id);
         game = GamesContainer.findGameById(id);
         game.startNewDeal();
-        userDto = game.getUser();
+        userDto = game.getUser(request.getUsername());
         LOGGER.info(userDto.toString());
         return game.getNewGameResponse(userDto);
     }

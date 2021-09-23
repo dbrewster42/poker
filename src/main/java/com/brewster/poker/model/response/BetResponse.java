@@ -10,11 +10,13 @@ public class BetResponse {
     private List<String> messages;
     private BetOptions betOptions;
     private int userMoney;
+    private boolean isDealDone;
 
-    public BetResponse(boolean isBet, List<String> messages, int userMoney) {
+    public BetResponse(boolean isBet, List<String> messages, int userMoney, boolean isDealDone) {
         this.isBet = isBet;
         this.messages = messages;
         this.userMoney = userMoney;
+        this.isDealDone = isDealDone;
     }
 
     public BetResponse(BetOptions betOptions, List<String> messages){
@@ -36,5 +38,9 @@ public class BetResponse {
 
     public int getUserMoney() {
         return userMoney;
+    }
+
+    public boolean isDealDone() {
+        return isDealDone;
     }
 }

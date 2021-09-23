@@ -22,11 +22,12 @@ public interface GameService {
     void addPlayerToGame(HumanPlayer player);
     void setGameOver();
 
-    UserDto getUser();
+    UserDto getUser(String name);
     BetService getBetManager();
     int getId();
     void setIsBet(boolean bet);
     boolean isBet();
+    boolean isDealDone();
     List<Player> getPlayers();
     int getOpenSlots();
 

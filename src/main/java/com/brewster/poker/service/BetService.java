@@ -131,7 +131,7 @@ public class BetService {
     }
 
     protected void deal(){
-        betMessages.add("");
+        betMessages.add(" --- *** --- *** --- ");
         setAllRoundInformation();
         LOGGER.info("starting new round with " + currentBetter.getDisplayName());
     }
