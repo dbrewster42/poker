@@ -1,4 +1,4 @@
 package com.brewster.poker.model;
 
-public class PokerGame {
+public class BetManagerEntity {
 }

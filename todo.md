@@ -1,8 +1,5 @@
-A. add, subtract, and return money!!!
 
-
-4. after bets complete, it auto-deals the next card. either the controller method needs to account for this
-or it should require a manual call.
+4. change response to GameResponse and then calculate winner automatically after game is over
 6. add blinds
 7. add a space between rounds in betMessages -- 
 8. add logic for two winners in case of multi-tie
@@ -24,4 +21,6 @@ betting should start with bigBlind and then auto bet on first turn
 ## player vs user
 condense?
 
-## should I display other's money?
+### money
+A. add, subtract, and return money!!!
+B. should I display other's money?

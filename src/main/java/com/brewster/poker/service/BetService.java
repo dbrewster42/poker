@@ -31,8 +31,8 @@ public class BetService {
     private int id;
     private final GameService game;
     private int activePlayersSize;
-    private int bigBlind;
     private int smallBlind;
+    private int bigBlind;
     private int turnNumber;
     private int turnsLeftInRound;
     private List<Player> activeBetters;

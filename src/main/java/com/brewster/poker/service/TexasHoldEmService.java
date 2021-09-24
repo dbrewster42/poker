@@ -26,14 +26,14 @@ import java.util.List;
 public class TexasHoldEmService implements GameService {
      private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEmService.class);
      private int id;
+     private BetService betManager;
      private List<Player> players;
-     private int openSlots;
      private List<Card> cards;
      private List<Card> riverCards = new ArrayList<>();
-     private int desiredNumberOfPlayers;
-     private BetService betManager;
      private boolean isBet;
      private boolean isDealDone;
+     private int desiredNumberOfPlayers;
+     private int openSlots;
 
      TexasHoldEmService(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
           this.id = id;
@@ -132,6 +132,7 @@ public class TexasHoldEmService implements GameService {
                return riverCards;
           }
           if (isDealDone){
+               //todo calculateWinner
                LOGGER.info("cards have all already been dealt");
                return riverCards;
           }

@@ -75,6 +75,7 @@ public class GameController {
 
     @GetMapping("{id}")
     public List<Card> deal(@PathVariable int id) {
+        //TODO change response to GameResponse and then calculate winner automatically after game is over
         game = GamesContainer.findGameById(id);
         LOGGER.info("dealing card");
 
