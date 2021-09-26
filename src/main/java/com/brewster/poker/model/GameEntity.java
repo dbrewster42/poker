@@ -3,25 +3,21 @@ package com.brewster.poker.model;
 import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.model.request.GameSettingsRequest;
+import com.brewster.poker.model.response.PlayerResponse;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
+import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
-@Entity
 public class GameEntity {
      @Id
-     @GeneratedValue(strategy = GenerationType.AUTO)
      private long id;
 
      private List<Player> players;
@@ -37,7 +33,6 @@ public class GameEntity {
      private int pot = 0;
      private int betAmount;
      private int bigBlindTurn = -1;
-     @OneToMany
      private List<BetEntity> bets;
      private Integer maxBet;
 
@@ -67,9 +62,11 @@ public class GameEntity {
           this.id = id;
      }
 
-     public List<Player> getOtherPlayers() {
-          //TODO return as DTOs?
-          return players;
+     public List<PlayerResponse> getOtherPlayersResponse(PlayerDto playerDto) {
+          return players.stream()
+                  .filter(v -> !v.getDisplayName().equals(playerDto.getDisplayName()))
+                  .map(v -> new PlayerResponse(v))
+                  .collect(Collectors.toList());
      }
 
      public List<Player> getPlayers() {

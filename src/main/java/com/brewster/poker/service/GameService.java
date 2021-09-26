@@ -33,7 +33,7 @@ public class GameService {
           LOGGER.info(gameEntity.toString());
           List<Card> playerCards = playerDto.getCards();
 //          BetOptions options = betManager.manageComputerBets();
-          return new NewGameResponse(gameEntity.getId(), playerCards, gameEntity.getPlayers(), playerDto.getMoney());
+          return new NewGameResponse(gameEntity.getId(), playerCards, gameEntity.getOtherPlayersResponse(playerDto), playerDto.getMoney());
      }
 
      private void debug(){

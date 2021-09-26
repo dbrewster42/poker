@@ -1,13 +1,12 @@
 package com.brewster.poker.repository;
 
 import com.brewster.poker.model.BetEntity;
-import com.brewster.poker.model.User;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import com.brewster.poker.model.GameEntity;
+import com.brewster.poker.model.PlayerEntity;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.List;
-
-@Repository
-public interface BetRepository extends CrudRepository<BetEntity, Long> {
-     List<BetEntity> findAllByUser(User user);
-}
+//import java.util.List;
+//
+//public interface BetRepository extends MongoRepository<GameEntity, Long> {
+//     List<BetEntity> findAllByPlayerEntity(PlayerEntity user);
+//}

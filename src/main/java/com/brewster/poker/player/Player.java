@@ -10,14 +10,12 @@ import java.util.List;
 
 public abstract class Player {
     private List<Card> hand;
-    private List<Card> holeCards; //TODO
     private String displayName;
     private GameService2 game;
     private int money;
     private UserDto user;
     private PokerHand pokerHand;
     private int currentBetAmount = 0;
-    private boolean isHuman;
 
     public Player() {
     }

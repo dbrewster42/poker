@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -49,9 +48,9 @@ public class BetController {
         return new BetResponse(game.isBet(), betManager.getBetMessages(), betManager.getCurrentBettersMoney(), game.isDealDone());
     }
 
-    @GetMapping("getUserBets")
-    public List<BetEntity> getUserBets(@RequestBody UserRequest request){
-        return betManager.getUserBets(request.getUsername());
-    }
+//    @GetMapping("getUserBets")
+//    public List<BetEntity> getUserBets(@RequestBody UserRequest request){
+//        return betManager.getUserBets(request.getUsername());
+//    }
 
 }

@@ -1,23 +1,35 @@
 package com.brewster.poker.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.data.annotation.Id;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Date;
 
 public class PlayerEntity {
      @Id
-     @GeneratedValue(strategy = GenerationType.AUTO)
-     private Long id;
-     @Column(nullable = false, unique = true)
+     private String id;
      private String username;
      private Integer money;
-     @Column(updatable = false)
-     @DateTimeFormat(pattern="yyyy-MM-dd")
-     private Date createdAt;
-     @DateTimeFormat(pattern="yyyy-MM-dd")
-     private Date updatedAt;
+
+     public String getId() {
+          return id;
+     }
+
+     public void setId(String id) {
+          this.id = id;
+     }
+
+     public String getUsername() {
+          return username;
+     }
+
+     public void setUsername(String username) {
+          this.username = username;
+     }
+
+     public Integer getMoney() {
+          return money;
+     }
+
+     public void setMoney(Integer money) {
+          this.money = money;
+     }
 }

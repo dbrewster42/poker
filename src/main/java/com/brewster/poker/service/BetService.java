@@ -9,13 +9,11 @@ import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.InvalidBetException;
 import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.model.BetEntity;
-import com.brewster.poker.model.User;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
-import com.brewster.poker.repository.BetRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -46,8 +44,8 @@ public class BetService {
     private final BetFactory betFactory;
     private List<String> betMessages;
     private int bigBlindTurn = -1;
-    @Autowired
-    BetRepository betRepository;
+//    @Autowired
+//    BetRepository betRepository;
 
     public BetService(GameService2 game, GameSettingsRequest request) {
         this.id = game.getId();
@@ -59,16 +57,16 @@ public class BetService {
         betMessages = new ArrayList<>();
     }
 
-    public List<BetEntity> getUserBets(String username){
-        Player player = game.getPlayers().stream().filter(v -> v.getDisplayName().equals(username)).findAny()
-                .orElseThrow(() -> new UserNotFoundException());
-
-        UserDto userDto = player.getUser();
-        User user = new User();
-        BeanUtils.copyProperties(userDto, user);
-
-        return betRepository.findAllByUser(user);
-    }
+//    public List<BetEntity> getUserBets(String username){
+//        Player player = game.getPlayers().stream().filter(v -> v.getDisplayName().equals(username)).findAny()
+//                .orElseThrow(() -> new UserNotFoundException());
+//
+//        UserDto userDto = player.getUser();
+//        User user = new ser();
+//        BeanUtils.copyProperties(userDto, user);
+//
+//        return betRepository.findAllByUser(user);
+//    }
 
     public void placeBet(BetRequest betRequest){
         Player player = currentBetter;
