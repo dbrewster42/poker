@@ -2,14 +2,18 @@ package com.brewster.poker.model.response;
 
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.card.Card;
+import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.dto.UserDto;
+import com.brewster.poker.player.Player;
 
 import java.util.List;
 
 public class NewGameResponse {
     private int gameId;
+    private long id;
     private final List<Card> hand;
     private List<UserDto> users;
+    private List<Player> players;
     private BetOptions betOptions;
     private int userMoney;
 
@@ -18,6 +22,12 @@ public class NewGameResponse {
         this.hand = hand;
         this.users = users;
         this.betOptions = betOptions;
+        this.userMoney = userMoney;
+    }
+    public NewGameResponse(final long id, final List<Card> hand, final List<Player> players, final int userMoney){
+        this.id = id;
+        this.hand = hand;
+        this.players = players;
         this.userMoney = userMoney;
     }
     public NewGameResponse(final List<Card> hand, BetOptions betOptions, int userMoney, List<UserDto> users){

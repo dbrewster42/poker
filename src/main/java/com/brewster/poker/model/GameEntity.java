@@ -1,6 +1,7 @@
 package com.brewster.poker.model;
 
 import com.brewster.poker.card.Card;
+import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
@@ -47,8 +48,9 @@ public class GameEntity {
      @DateTimeFormat(pattern = "yyyy-MM-dd")
      private Date updatedAt;
 
-     public GameEntity(HumanPlayer player, GameSettingsRequest settingsRequest){
+     public GameEntity(PlayerDto playerDto, GameSettingsRequest settingsRequest){
           this.players = new ArrayList<>();
+          Player player = new HumanPlayer(playerDto.getDisplayName());
           players.add(player);
           this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
           openSlots = desiredNumberOfPlayers - 1;
@@ -65,12 +67,21 @@ public class GameEntity {
           this.id = id;
      }
 
+     public List<Player> getOtherPlayers() {
+          //TODO return as DTOs?
+          return players;
+     }
+
      public List<Player> getPlayers() {
           return players;
      }
 
      public void setPlayers(List<Player> players) {
           this.players = players;
+     }
+
+     public void addPlayers(List<Player> players){
+          this.players.addAll(players);
      }
 
      public List<Card> getCards() {

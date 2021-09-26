@@ -23,8 +23,8 @@ import java.util.List;
 
 //@Service
 //@Scope(value = WebApplicationContext.SCOPE_REQUEST)
-public class TexasHoldEmService implements GameService {
-     private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEmService.class);
+public class TexasHoldEmService2 implements GameService2 {
+     private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEmService2.class);
      private int id;
      private BetService betManager;
      private List<Player> players;
@@ -35,7 +35,7 @@ public class TexasHoldEmService implements GameService {
      private int desiredNumberOfPlayers;
      private int openSlots;
 
-     TexasHoldEmService(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
+     TexasHoldEmService2(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
           this.id = id;
           this.players = new ArrayList<>();
           players.add(player);
@@ -43,7 +43,7 @@ public class TexasHoldEmService implements GameService {
           this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
           openSlots = desiredNumberOfPlayers - 1;
      }
-     TexasHoldEmService(int id, List<Player> players, GameSettingsRequest settingsRequest){
+     TexasHoldEmService2(int id, List<Player> players, GameSettingsRequest settingsRequest){
           this.id = id;
           this.players = players;
           betManager = new BetService(this, settingsRequest);
@@ -52,12 +52,12 @@ public class TexasHoldEmService implements GameService {
           //todo if (request.isCustomRules()){ doSomething() };
      }
 
-     public static GameService createNewGame(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
-          return new TexasHoldEmService(id, player, settingsRequest);
+     public static GameService2 createNewGame(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
+          return new TexasHoldEmService2(id, player, settingsRequest);
      }
 
-     public static GameService createNewGame(int id, List<Player> players, GameSettingsRequest settingsRequest){
-          return new TexasHoldEmService(id, players, settingsRequest);
+     public static GameService2 createNewGame(int id, List<Player> players, GameSettingsRequest settingsRequest){
+          return new TexasHoldEmService2(id, players, settingsRequest);
      }
 
      public void placeBet(BetRequest betRequest){

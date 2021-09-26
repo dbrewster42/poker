@@ -29,7 +29,7 @@ import java.util.Optional;
 public class BetService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BetService.class);
     private int id;
-    private final GameService game;
+    private final GameService2 game;
     private int activePlayersSize;
     private int smallBlind;
     private int bigBlind;
@@ -49,7 +49,7 @@ public class BetService {
     @Autowired
     BetRepository betRepository;
 
-    public BetService(GameService game, GameSettingsRequest request) {
+    public BetService(GameService2 game, GameSettingsRequest request) {
         this.id = game.getId();
         this.game = game;
 //        this.bigBlind = Optional.ofNullable(request.getBigBlind()).orElse(500);
@@ -213,7 +213,7 @@ public class BetService {
         return id;
     }
 
-    public GameService getGame() {
+    public GameService2 getGame() {
         return game;
     }
 

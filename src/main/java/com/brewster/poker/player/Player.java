@@ -2,7 +2,7 @@ package com.brewster.poker.player;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
-import com.brewster.poker.service.GameService;
+import com.brewster.poker.service.GameService2;
 import com.brewster.poker.card.PokerHand;
 
 import java.util.ArrayList;
@@ -12,11 +12,12 @@ public abstract class Player {
     private List<Card> hand;
     private List<Card> holeCards; //TODO
     private String displayName;
-    private GameService game;
+    private GameService2 game;
     private int money;
     private UserDto user;
     private PokerHand pokerHand;
     private int currentBetAmount = 0;
+    private boolean isHuman;
 
     public Player() {
     }
@@ -72,11 +73,11 @@ public abstract class Player {
         this.displayName = displayName;
     }
 
-    public GameService getGame() {
+    public GameService2 getGame() {
         return game;
     }
 
-    public void setGame(GameService game) {
+    public void setGame(GameService2 game) {
         this.game = game;
     }
 

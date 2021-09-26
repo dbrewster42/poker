@@ -17,6 +17,11 @@ public class ComputerPlayer extends Player {
         setMoney(1000);
     }
 
+    public ComputerPlayer(String displayName) {
+        super(displayName);
+        setMoney(1000);
+    }
+
     public void placeBet(BetOptions options, BetService betManager) {
         int strength = calculateCards();
         System.out.println("strength of cards = " + strength);

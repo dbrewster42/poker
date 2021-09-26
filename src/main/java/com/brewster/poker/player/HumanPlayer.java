@@ -8,7 +8,9 @@ public class HumanPlayer extends Player {
     public HumanPlayer(String displayName, UserDto user) {
         super(displayName, user);
     }
-
+    public HumanPlayer(String displayName) {
+        super(displayName);
+    }
 
     @Override
     public void joinGame() {

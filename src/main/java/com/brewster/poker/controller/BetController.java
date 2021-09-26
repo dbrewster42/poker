@@ -4,7 +4,7 @@ import com.brewster.poker.model.BetEntity;
 import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.service.BetService;
 import com.brewster.poker.bet.BetOptions;
-import com.brewster.poker.service.GameService;
+import com.brewster.poker.service.GameService2;
 import com.brewster.poker.service.GamesContainer;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.response.BetResponse;
@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("game")
 public class BetController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BetController.class);
-    private GameService game;
+    private GameService2 game;
     private BetService betManager;
 
     @GetMapping("{id}/bet")
