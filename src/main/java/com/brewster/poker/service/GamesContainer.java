@@ -1,5 +1,6 @@
 package com.brewster.poker.service;
 
+import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.GameNotFoundException;
 import com.brewster.poker.model.request.GameSettingsRequest;
@@ -57,7 +58,20 @@ public class GamesContainer {
         players.add(player);
         return game;
     }
-
+//    public static GameService createNewGame(PlayerDto userDto, GameSettingsRequest settingsRequest){
+//        HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
+//        GameService game = GameService.createNewTexasHoldEmGame(gameID, player, settingsRequest);
+//        return game;
+//    }
+    public static GameService fillGameWithCPs(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
+        List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
+        HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
+        GameService game = GameService.createNewTexasHoldEmGame(gameID, players, settingsRequest);
+        gameID++;
+        allGames.add(game);
+        players.add(player);
+        return game;
+    }
     private static HumanPlayer convertUserToPlayer(UserDto userDto, String displayName){
         HumanPlayer player = new HumanPlayer(displayName, userDto);
         userDto.setPlayer(player);

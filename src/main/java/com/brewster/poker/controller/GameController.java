@@ -1,8 +1,11 @@
 package com.brewster.poker.controller;
 
 import com.brewster.poker.card.Card;
+import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.dto.UserDto;
+import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.model.request.UserRequest;
+import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.service.GameService;
 import com.brewster.poker.service.GamesContainer;
 import com.brewster.poker.model.request.GameSettingsRequest;
@@ -10,9 +13,11 @@ import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.model.response.EndRoundResponse;
 import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.player.Player;
+import com.brewster.poker.service.PlayerService;
 import com.brewster.poker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,9 +37,32 @@ public class GameController {
     private final UserService userService;
     private UserDto userDto;
     private UserDto computerUser;
+    @Autowired
+    private PlayerService playerService;
 
     public GameController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostMapping
+    public NewGameResponse saveGame(@RequestBody GameSettingsRequest request) {
+        LOGGER.info(request.toString());
+        PlayerDto playerDto = playerService.findPlayer(request.getUsername());
+        Player player = new HumanPlayer();
+        
+
+        game = new GameEntity(playerDto, request);
+//        game = GamesContainer.createNewGame(playerDto, request);
+        if (request.isFillWithComputerPlayers()){
+            computerUser = userService.findUser("HAL");
+            game = GamesContainer.createGame(playerDto, request, computerUser);
+        } else {
+            game = GamesContainer.createGame(playerDto, request);
+            //TODO wait for players to join
+        }
+        game.startNewDeal();
+
+        return game.getNewGameResponse(playerDto);
     }
 
     @PostMapping

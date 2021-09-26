@@ -11,6 +11,9 @@ public class PlayerDto {
      private List<Card> cards;
      private int money;
 
+     public PlayerDto() {
+     }
+
      public PlayerDto(String displayName, String pokerHandName) {
           this.displayName = displayName;
           this.pokerHandName = pokerHandName;

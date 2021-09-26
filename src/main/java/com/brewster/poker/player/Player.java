@@ -18,6 +18,9 @@ public abstract class Player {
     private PokerHand pokerHand;
     private int currentBetAmount = 0;
 
+    public Player() {
+    }
+
     public Player(String displayName){
         this.displayName = displayName;
         hand = new ArrayList<>();
