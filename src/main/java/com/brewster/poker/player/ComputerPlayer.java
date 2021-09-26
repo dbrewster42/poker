@@ -1,15 +1,12 @@
 package com.brewster.poker.player;
 
 import com.brewster.poker.bet.Action;
-import com.brewster.poker.bet.BetManager;
+import com.brewster.poker.service.BetService;
 import com.brewster.poker.bet.BetOptions;
-import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
-import com.brewster.poker.game.FindBestHand;
-import com.brewster.poker.game.PokerHand;
+import com.brewster.poker.service.HandStrengthCalculator;
 import com.brewster.poker.model.request.BetRequest;
 
-import java.util.List;
 
 public class ComputerPlayer extends Player {
     private static int bank = 10000;
@@ -20,9 +17,8 @@ public class ComputerPlayer extends Player {
         setMoney(1000);
     }
 
-    @Override
-    public void placeBet(List<Card> riverCards, BetOptions options, BetManager betManager) {
-        int strength = calculateCards(riverCards);
+    public void placeBet(BetOptions options, BetService betManager) {
+        int strength = calculateCards();
         System.out.println("strength of cards = " + strength);
 
         Action primaryAction = options.getPossibleActions()[0];
@@ -34,20 +30,7 @@ public class ComputerPlayer extends Player {
         }
         betRequest.setUsername(options.getName());
 
-        String placedBet = betManager.placeBet(betRequest);
-        System.out.println("Bet has been placed - " + placedBet);
-//        if (!isValid.isBlank()){
-//            System.out.println("Problem with bet " + isValid);
-//            fold(options);
-//        }
-    }
-
-    private BetRequest fold(BetOptions options){
-        BetRequest betRequest = new BetRequest();
-        betRequest.setAction(Action.FOLD.name());
-        betRequest.setUsername(options.getName());
-        betRequest.setBetAmount(0);
-        return betRequest;
+        betManager.placeBet(betRequest);
     }
 
     private BetRequest createCheckActionsBet(int strength, int bigBlind){
@@ -101,22 +84,17 @@ public class ComputerPlayer extends Player {
         betRequest.setBetAmount(options.getBetAmount());
     }
 
-    public int calculateCards(List<Card> riverCards){
+    private int calculateCards(){
         int strength = 0;
-        int riverCount = riverCards.size();
+        int riverCount = getHand().size() - 2;
         if (riverCount == 0){
-            strength = PokerHand.lookupHoleCards(getHand());
+            strength = HandStrengthCalculator.lookupHoleCards(getHand());
         } else {
-            FindBestHand findBestHand = new FindBestHand(getHand(), riverCards);
-            strength = findBestHand.getStrength();
+            HandStrengthCalculator strengthCalc = new HandStrengthCalculator(getHand());
+            strength = strengthCalc.getStrength();
         }
 
         return strength;
-    }
-
-    @Override
-    public void collectWinnings() {
-
     }
 
     @Override

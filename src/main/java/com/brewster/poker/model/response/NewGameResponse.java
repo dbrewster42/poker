@@ -7,28 +7,24 @@ import com.brewster.poker.dto.UserDto;
 import java.util.List;
 
 public class NewGameResponse {
-    private final int gameId;
+    private int gameId;
     private final List<Card> hand;
-    private final List<UserDto> users;
-    private final BetOptions betOptions;
+    private List<UserDto> users;
+    private BetOptions betOptions;
+    private int userMoney;
 
-//    public NewGameResponse(final String body, final int statusCode, final int bigBlindTurn, final List<Card> hand, final List<UserDto> users){
-//        super(body, statusCode);
-//        this.bigBlindTurn = bigBlindTurn;
-//        this.hand = hand;
-//        this.users = users;
-//    }
-    public NewGameResponse(final int gameId, final List<Card> hand, final List<UserDto> users, final BetOptions betOptions){
+    public NewGameResponse(final int gameId, final List<Card> hand, final List<UserDto> users, final BetOptions betOptions, final int userMoney){
         this.gameId = gameId;
         this.hand = hand;
         this.users = users;
         this.betOptions = betOptions;
+        this.userMoney = userMoney;
     }
-    public NewGameResponse(final int gameId, final List<Card> hand, final List<UserDto> users){
-        this.gameId = gameId;
+    public NewGameResponse(final List<Card> hand, BetOptions betOptions, int userMoney, List<UserDto> users){
         this.hand = hand;
+        this.betOptions = betOptions;
+        this.userMoney = userMoney;
         this.users = users;
-        betOptions = null;
     }
 
 //    public int getBigBlindTurn() {
@@ -50,5 +46,9 @@ public class NewGameResponse {
 
     public List<Card> getHand() {
         return hand;
+    }
+
+    public int getUserMoney() {
+        return userMoney;
     }
 }

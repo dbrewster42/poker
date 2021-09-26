@@ -4,10 +4,9 @@ import com.brewster.poker.bet.Action;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.InvalidBetException;
-import com.brewster.poker.game.Game;
-import com.brewster.poker.game.GamesContainer;
+import com.brewster.poker.service.GameService;
+import com.brewster.poker.service.GamesContainer;
 import com.brewster.poker.model.request.BetRequest;
-import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.BetResponse;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
@@ -16,11 +15,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.brewster.poker.TestDataBuilder.getBetBetRequest;
+import static com.brewster.poker.TestDataBuilder.getCheckBetRequest;
+import static com.brewster.poker.TestDataBuilder.getGameSettingsRequest;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BetControllerTest {
      private BetController betController;
-     Game game;
+     GameService game;
      int id;
 
      @BeforeEach
@@ -44,7 +46,7 @@ class BetControllerTest {
      @Test
      void getBetOptions2() {
           List<Player> playerList = game.getPlayers();
-          game.startNextRound();
+          game.deal();
           BetOptions betOptions = betController.getBetOptions(id).getBetOptions();
           assertTrue(betOptions.getPlayer() instanceof HumanPlayer);
 
@@ -87,21 +89,6 @@ class BetControllerTest {
           }
      }
 
-     private BetRequest getCheckBetRequest(int amount){
-          BetRequest betRequest = new BetRequest();
-          betRequest.setBetAmount(amount);
-          betRequest.setUsername("BREWSTER");
-          betRequest.setAction(Action.CALL.name());
-          return betRequest;
-     }
-
-     private BetRequest getBetBetRequest(){
-          BetRequest betRequest = new BetRequest();
-          betRequest.setBetAmount(20);
-          betRequest.setUsername("BREWSTER");
-          betRequest.setAction(Action.BET.name());
-          return betRequest;
-     }
 
      private UserDto getUserDto(){
           UserDto userDto = new UserDto();
@@ -118,12 +105,4 @@ class BetControllerTest {
           return userDto;
      }
 
-     private GameSettingsRequest getGameSettingsRequest(){
-          GameSettingsRequest gameSettingsRequest = new GameSettingsRequest();
-          gameSettingsRequest.setFillWithComputerPlayers(true);
-          gameSettingsRequest.setNumberOfPlayers(4);
-          gameSettingsRequest.setBigBlind(5);
-          gameSettingsRequest.setDisplayName("BREWSTER");
-          return gameSettingsRequest;
-     }
 }

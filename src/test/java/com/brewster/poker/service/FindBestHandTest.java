@@ -1,4 +1,4 @@
-package com.brewster.poker.game;
+package com.brewster.poker.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

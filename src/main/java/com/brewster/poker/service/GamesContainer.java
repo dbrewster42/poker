@@ -1,4 +1,4 @@
-package com.brewster.poker.game;
+package com.brewster.poker.service;
 
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.GameNotFoundException;
@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 
 public class GamesContainer {
     private static int gameID = 0;
-    private static List<Game> allGames = new ArrayList<>();
-    private static UserDto computer;
+    private static List<GameService> allGames = new ArrayList<>();
+//    private static UserDto computer;
 
-    public static Game findGameById(Integer id){
-        Game game = allGames.get(id);
+    public static GameService findGameById(Integer id){
+        GameService game = allGames.get(id);
         if (game.getId() == id){
             return game;
         } else {
@@ -28,30 +28,30 @@ public class GamesContainer {
         }
     }
 
-    public static List<Game> findAvailableGames(){
+    public static List<GameService> findAvailableGames(){
         return allGames.stream()
                 .filter(v -> v.getOpenSlots() > 0)
                 .collect(Collectors.toList());
     }
 
-    public static Game addPlayerToGame(UserDto user, JoinRequest joinRequest){
-        Game game = findGameById(joinRequest.getGameId());
+    public static GameService addPlayerToGame(UserDto user, JoinRequest joinRequest){
+        GameService game = findGameById(joinRequest.getGameId());
         game.addPlayerToGame(convertUserToPlayer(user, joinRequest.getDisplayName()));
         return game;
     }
 
-    public static Game createGame(UserDto userDto, GameSettingsRequest settingsRequest){
+    public static GameService createGame(UserDto userDto, GameSettingsRequest settingsRequest){
         HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
-        Game game = new Game(gameID, player, settingsRequest);
+        GameService game = GameService.createNewTexasHoldEmGame(gameID, player, settingsRequest);
         gameID++;
         allGames.add(game);
         return game;
     }
-    public static Game createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
+    public static GameService createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
 //        computer = computerUser;
         List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
         HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
-        Game game = new Game(gameID, players, settingsRequest);
+        GameService game = GameService.createNewTexasHoldEmGame(gameID, players, settingsRequest);
         gameID++;
         allGames.add(game);
         players.add(player);
@@ -79,7 +79,7 @@ public class GamesContainer {
         return gameID;
     }
 
-    public static List<Game> getAllGames() {
+    public static List<GameService> getAllGames() {
         return allGames;
     }
 }

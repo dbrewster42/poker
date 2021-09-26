@@ -20,4 +20,20 @@ public class ErrorResponse {
      public String toString(){
           return "Message: "  + errMessage + " " + errReason + " Status Code: " + status + " at " + path;
      }
+
+     public int getStatus() {
+          return status;
+     }
+
+     public String getErrReason() {
+          return errReason;
+     }
+
+     public String getErrMessage() {
+          return errMessage;
+     }
+
+     public String getPath() {
+          return path;
+     }
 }

@@ -1,4 +1,4 @@
-package com.brewster.poker.game;
+package com.brewster.poker.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

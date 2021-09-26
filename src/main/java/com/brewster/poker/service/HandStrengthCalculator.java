@@ -1,37 +1,45 @@
-package com.brewster.poker.game;
+package com.brewster.poker.service;
 
 import com.brewster.poker.card.Card;
+import com.brewster.poker.card.PokerHandLookup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class FindBestHand {
+public class HandStrengthCalculator {
     private Map<String, Integer> suitMap;
     private int chaseCards;
     private List<Card> hand;
     private int strength = 0;
 
-    public FindBestHand(List<Card> holeCards, List<Card> riverCards){
-        chaseCards = 5 - riverCards.size();
-        hand = Stream.concat(holeCards.stream(), riverCards.stream())
-                .sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
-        suitMap = getSuitCount(hand);
-        strength = findBestHand();
+    public HandStrengthCalculator(List<Card> computerHand){
+        chaseCards = 7 - computerHand.size();
+        hand = computerHand;
+//        hand = Stream.concat(holeCards.stream(), riverCards.stream())
+//                .sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
+        suitMap = getSuitCount();
+        strength = findHandStrength();
     }
 
-    public int findBestHand(){
-        int score = getHigherScore(flushCount(), straightCount());
-//                flushCount();
-//        int score2 = straightCount();
-//        if (score < score2){
-//            score = score2;
-//        }
-        return getHigherScore(score, pairCount());
+    public static int lookupHoleCards(List<Card> hand){
+        if (hand.get(0).getValue() == hand.get(1).getValue()){
+            if (hand.get(0).getValue() > 8){
+                return 7;
+            }
+            return 6;
+        }
+        if (hand.get(0).getValue() > 10 || hand.get(1).getValue() > 10){
+            return 4;
+        }
+        return 2;
+    }
 
+    public int findHandStrength(){
+        int score = getHigherScore(flushCount(), straightCount());
+        return getHigherScore(score, pairCount());
     }
 
     public int getHigherScore(int score, int score2){
@@ -41,8 +49,8 @@ public class FindBestHand {
         return score;
     }
 
-    public Map<String, Integer> getSuitCount(List<Card> hand){
-        suitMap = new HashMap<>();
+    public Map<String, Integer> getSuitCount(){
+        Map<String, Integer> suitMap = new HashMap<>();
         for (Card card : hand){
             suitMap.put(card.getSuit(), suitMap.getOrDefault(card.getSuit(), 0) + 1);
         }
@@ -133,7 +141,7 @@ public class FindBestHand {
                 for (int j = 0; j < 5; j++){
                     fiveCardValues[j] = cardValues.get(i + j);
                 }
-                if (PokerHand.isStraight(fiveCardValues)){
+                if (PokerHandLookup.isStraight(fiveCardValues)){
                     score = 10;
                 }
             }
