@@ -3,6 +3,7 @@ package com.brewster.poker.controller;
 import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.UserRequest;
+import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.service.GameService;
 import com.brewster.poker.service.GamesContainer;
 import com.brewster.poker.model.request.GameSettingsRequest;
@@ -74,7 +75,7 @@ public class GameController {
     }
 
     @GetMapping("{id}")
-    public List<Card> deal(@PathVariable int id) {
+    public GameResponse deal(@PathVariable int id) {
         game = GamesContainer.findGameById(id);
         LOGGER.info("dealing card");
 

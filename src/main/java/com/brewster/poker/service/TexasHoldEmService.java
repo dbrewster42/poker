@@ -11,6 +11,7 @@ import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.EndRoundResponse;
+import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
@@ -126,14 +127,13 @@ public class TexasHoldEmService implements GameService {
           return betManager.getBetOptions();
      }
 
-     public List<Card> deal(){
+     public GameResponse deal(){
           if (isBet){
                LOGGER.info("Cannot deal cards until betting has finished");
-               return riverCards;
+               return new GameResponse(riverCards);
           }
           if (isDealDone){
-               LOGGER.info("cards have all already been dealt");
-               return riverCards;
+               return new GameResponse(calculateWinningHand());
           }
           betManager.deal();
           isBet = true;
@@ -141,7 +141,7 @@ public class TexasHoldEmService implements GameService {
           if (riverCards.isEmpty()){
                count = 3;
           }
-          return dealRiverCardNTimes(count);
+          return new GameResponse(dealRiverCardNTimes(count));
      }
 
      private void cardsDebug(){
