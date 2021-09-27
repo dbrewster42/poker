@@ -1,23 +1,31 @@
 package com.brewster.poker.model.request;
 
 public class PlayerRequest {
-     private String name;
+     private String email;
+     private String displayName;
      private int money;
+     private char[] password;
 
-     public PlayerRequest(String name, int money) {
-          this.name = name;
+     public PlayerRequest(String email, String displayName, int money) {
+          this.email = email;
+          this.displayName = displayName;
           this.money = money;
      }
 
-     public PlayerRequest() {
+     public String getEmail() {
+          return email;
      }
 
-     public String getName() {
-          return name;
+     public void setEmail(String email) {
+          this.email = email;
      }
 
-     public void setName(String name) {
-          this.name = name;
+     public String getDisplayName() {
+          return displayName;
+     }
+
+     public void setDisplayName(String displayName) {
+          this.displayName = displayName;
      }
 
      public int getMoney() {
@@ -26,5 +34,18 @@ public class PlayerRequest {
 
      public void setMoney(int money) {
           this.money = money;
+     }
+
+     public char[] getPassword() {
+          return password;
+     }
+
+     public void setPassword(char[] password) {
+          this.password = password;
+     }
+
+     @Override
+     public String toString() {
+          return "PlayerRequest{" + "email='" + email + '\'' + ", displayName='" + displayName + '\'' + ", money=" + money + '}';
      }
 }

@@ -1,26 +1,26 @@
 package com.brewster.poker.model.response;
 
-import com.brewster.poker.dto.PlayerDto;
+import com.brewster.poker.player.Player;
 
 import java.util.List;
 
 public class EndRoundResponse {
      private String message;
      private int pot;
-     private PlayerDto winner;
-     private PlayerDto secondWinner;
-     private List<PlayerDto> activePlayers;
+     private Player winner;
+     private Player secondWinner;
+     private List<Player> activePlayers;
 
-     public EndRoundResponse(int pot, PlayerDto winner, List<PlayerDto> activePlayers) {
-          this.message = winner.getDisplayName() + " has won " + pot + "$ with a " + winner.getPokerHandName();
+     public EndRoundResponse(int pot, Player winner, List<Player> activePlayers) {
+          this.message = winner.getDisplayName() + " has won " + pot + "$ with a " + winner.getPokerHand().getHandName();
           this.pot = pot;
           this.winner = winner;
           this.activePlayers = activePlayers;
      }
 
-     public EndRoundResponse(int pot, PlayerDto winner, PlayerDto secondWinner, List<PlayerDto> activePlayers) {
+     public EndRoundResponse(int pot, Player winner, Player secondWinner, List<Player> activePlayers) {
           this.message = winner.getDisplayName() + " and " + secondWinner.getDisplayName() +
-                  " have tied and will split the pot of " + pot + "$ with their poker hand of a " + winner.getPokerHandName();
+                  " have tied and will split the pot of " + pot + "$ with their poker hand of a " + winner.getPokerHand().getHandName();
           this.pot = pot;
           this.winner = winner;
           this.secondWinner = secondWinner;
@@ -37,15 +37,15 @@ public class EndRoundResponse {
           return pot;
      }
 
-     public PlayerDto getWinner() {
+     public Player getWinner() {
           return winner;
      }
 
-     public PlayerDto getSecondWinner() {
+     public Player getSecondWinner() {
           return secondWinner;
      }
 
-     public List<PlayerDto> getActivePlayers() {
+     public List<Player> getActivePlayers() {
           return activePlayers;
      }
 }

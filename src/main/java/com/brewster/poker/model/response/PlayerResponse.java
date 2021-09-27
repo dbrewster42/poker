@@ -3,23 +3,23 @@ package com.brewster.poker.model.response;
 import com.brewster.poker.player.Player;
 
 public class PlayerResponse {
-     private String name;
+     private String displayName;
      private int money;
 
      public PlayerResponse(){}
 
      public PlayerResponse(Player player){
-          this.name = player.getDisplayName();
+          this.displayName = player.getDisplayName();
           this.money = player.getMoney();
      }
 
 
-     public String getName() {
-          return name;
+     public String getDisplayName() {
+          return displayName;
      }
 
-     public void setName(String name) {
-          this.name = name;
+     public void setDisplayName(String displayName) {
+          this.displayName = displayName;
      }
 
      public int getMoney() {

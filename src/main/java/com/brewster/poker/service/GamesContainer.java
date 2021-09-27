@@ -34,11 +34,11 @@ public class GamesContainer {
                 .collect(Collectors.toList());
     }
 
-    public static GameService2 addPlayerToGame(UserDto user, JoinRequest joinRequest){
-        GameService2 game = findGameById(joinRequest.getGameId());
-        game.addPlayerToGame(convertUserToPlayer(user, joinRequest.getDisplayName()));
-        return game;
-    }
+//    public static GameService2 addPlayerToGame(UserDto user, JoinRequest joinRequest){
+//        GameService2 game = findGameById(joinRequest.getGameId());
+//        game.addPlayerToGame(convertUserToPlayer(user, joinRequest.getDisplayName()));
+//        return game;
+//    }
 
     public static GameService2 createGame(UserDto userDto, GameSettingsRequest settingsRequest){
         HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());

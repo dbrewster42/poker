@@ -5,24 +5,24 @@ import org.springframework.data.annotation.Id;
 
 public class PlayerEntity {
      @Id
-     private String id;
-     private String username;
+     private String email;
+     private String displayName;
      private Integer money;
 
-     public String getId() {
-          return id;
+     public String getEmail() {
+          return email;
      }
 
-     public void setId(String id) {
-          this.id = id;
+     public void setEmail(String email) {
+          this.email = email;
      }
 
-     public String getUsername() {
-          return username;
+     public String getDisplayName() {
+          return displayName;
      }
 
-     public void setUsername(String username) {
-          this.username = username;
+     public void setDisplayName(String displayName) {
+          this.displayName = displayName;
      }
 
      public Integer getMoney() {

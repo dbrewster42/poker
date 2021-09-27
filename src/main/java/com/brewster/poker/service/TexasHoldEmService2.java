@@ -7,13 +7,11 @@ import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.card.PokerHandLookup;
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.dto.UserDto;
-import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.EndRoundResponse;
 import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.player.ComputerPlayer;
-import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +33,7 @@ public class TexasHoldEmService2 implements GameService2 {
      private int desiredNumberOfPlayers;
      private int openSlots;
 
-     TexasHoldEmService2(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
+     TexasHoldEmService2(int id, Player player, GameSettingsRequest settingsRequest){
           this.id = id;
           this.players = new ArrayList<>();
           players.add(player);
@@ -52,7 +50,7 @@ public class TexasHoldEmService2 implements GameService2 {
           //todo if (request.isCustomRules()){ doSomething() };
      }
 
-     public static GameService2 createNewGame(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
+     public static GameService2 createNewGame(int id, Player player, GameSettingsRequest settingsRequest){
           return new TexasHoldEmService2(id, player, settingsRequest);
      }
 
@@ -72,7 +70,7 @@ public class TexasHoldEmService2 implements GameService2 {
      public EndRoundResponse calculateWinningHand(){
           if (isDealDone && !isBet){
                List<Player> activePlayers = betManager.getActiveBetters();
-               List<PlayerDto> playerDtos = new ArrayList<>();
+//               List<PlayerDto> playerDtos = new ArrayList<>();
                int winningStrength = 0;
                Player winner = null;
                for (Player player : activePlayers){
@@ -81,8 +79,8 @@ public class TexasHoldEmService2 implements GameService2 {
                     LOGGER.info("{} has a {}", player.getDisplayName(), pokerHand.getHandName());
 //                    playerDtos.add(new PlayerDto(player.getDisplayName(), pokerHand.getHandName(), player.getHand(), player.getMoney()));
                     player.setPokerHand(pokerHand);
-//                    BeanUtils.copyProperties(player, new PlayerDto());
-                    playerDtos.add(new PlayerDto(player));
+////                    BeanUtils.copyProperties(player, new PlayerDto());
+//                    playerDtos.add(new PlayerDto(player));
                     int score = pokerHand.getScore();
                     if (winningStrength < score){
                          winningStrength = score;
@@ -96,23 +94,23 @@ public class TexasHoldEmService2 implements GameService2 {
                               winner = winners.get(0);
                          } else {
                               //TODO need to check other hands before going to this method
-                              return getTieRoundResponse(winners, playerDtos);
+                              return getTieRoundResponse(winners, activePlayers);
                          }
                     }
                }
                winner.collectWinnings(betManager.getPot());
-               PlayerDto playerDto = new PlayerDto(winner.getDisplayName(), winner.getPokerHand().getHandName());
-               return new EndRoundResponse(betManager.getPot(), playerDto, playerDtos);
+//               PlayerDto playerDto = new PlayerDto(winner.getDisplayName(), winner.getPokerHand().getHandName());
+               return new EndRoundResponse(betManager.getPot(), winner, activePlayers);
           }
           LOGGER.info("{} - {}", isDealDone, isBet);
           throw new IllegalArgumentException("Game is still on-going");
      }
 
-     public EndRoundResponse getTieRoundResponse(List<Player> winners, List<PlayerDto> playerDtos){
-          PlayerDto winnerA = new PlayerDto(winners.get(0).getDisplayName(), winners.get(0).getPokerHand().getHandName());
-          PlayerDto winnerZ = new PlayerDto(winners.get(1).getDisplayName(), winners.get(1).getPokerHand().getHandName());
+     public EndRoundResponse getTieRoundResponse(List<Player> winners, List<Player> playerDtos){
+//          PlayerDto winnerA = new PlayerDto(winners.get(0).getDisplayName(), winners.get(0).getPokerHand().getHandName());
+//          PlayerDto winnerZ = new PlayerDto(winners.get(1).getDisplayName(), winners.get(1).getPokerHand().getHandName());
           //TODO 3 way tie?
-          return new EndRoundResponse(betManager.getPot(), winnerA, winnerZ, playerDtos);
+          return new EndRoundResponse(betManager.getPot(), winners.get(0), winners.get(1), playerDtos);
      }
 
      public BetOptions startNewDeal(){
@@ -181,7 +179,7 @@ public class TexasHoldEmService2 implements GameService2 {
           }
      }
 
-     public void addPlayerToGame(HumanPlayer player){
+     public void addPlayerToGame(Player player){
           if (desiredNumberOfPlayers == players.size()){
                Player playerToRemove = null;
                for (Player eachPlayer : players){
@@ -203,13 +201,13 @@ public class TexasHoldEmService2 implements GameService2 {
           players.add(player);
      }
 
-     public NewGameResponse getNewGameResponse(UserDto userDto){
-          LOGGER.info(userDto.toString());
-          List<Card> playerCards = userDto.getPlayer().getHand();
-          BetOptions options = betManager.manageComputerBets();
-          LOGGER.info(options.toString(), playerCards);
-          return new NewGameResponse(id, playerCards, getUsers(userDto), options, userDto.getMoney());
-     }
+//     public NewGameResponse getNewGameResponse(UserDto userDto){
+//          LOGGER.info(userDto.toString());
+//          List<Card> playerCards = userDto.getPlayer().getHand();
+//          BetOptions options = betManager.manageComputerBets();
+//          LOGGER.info(options.toString(), playerCards);
+//          return new NewGameResponse(id, playerCards, getUsers(userDto), options, userDto.getMoney());
+//     }
 
 //     public NewGameResponse getRestartGameResponse(UserDto userDto){
 //          List<Card> playerCards = userDto.getPlayer().getHand();
@@ -218,24 +216,24 @@ public class TexasHoldEmService2 implements GameService2 {
 //          return new NewGameResponse(playerCards, options, userDto.getMoney(), getUsers(userDto));
 //     }
 
-     private List<UserDto> getUsers(UserDto userDto){
-          List<UserDto> users = new ArrayList<>();
-          for (Player player : players){
-               if (!player.getUser().equals(userDto)) {
-                    users.add(player.getUser());
-                    player.getUser().setDisplayName(player.getDisplayName());
-               }
-          }
-          return users;
-     }
-     public UserDto getUser(String name){
-          cardsDebug();
-          Player thisPlayer = players.stream()
-                  .filter(v -> v.getDisplayName().equals(name))
-                  .findAny()
-                  .orElseThrow(()-> new UserNotFoundException());
-          return thisPlayer.getUser();
-     }
+//     private List<UserDto> getUsers(UserDto userDto){
+//          List<UserDto> users = new ArrayList<>();
+//          for (Player player : players){
+//               if (!player.getUser().equals(userDto)) {
+//                    users.add(player.getUser());
+//                    player.getUser().setDisplayName(player.getDisplayName());
+//               }
+//          }
+//          return users;
+//     }
+//     public UserDto getUser(String name){
+//          cardsDebug();
+//          Player thisPlayer = players.stream()
+//                  .filter(v -> v.getDisplayName().equals(name))
+//                  .findAny()
+//                  .orElseThrow(()-> new UserNotFoundException());
+//          return thisPlayer.getUser();
+//     }
 
 
      public int getId() {

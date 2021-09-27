@@ -6,30 +6,26 @@ import com.brewster.poker.dto.UserDto;
 import java.util.List;
 
 public class GameResponse {
-//    private List<UserDto> users;
     private List<Card> riverCards;
-    private int bigBlindTurn;
-    private int betTurn;
+    private boolean isGameOver;
+//    private int bigBlindTurn;
+//    private int betTurn;
 
-    public GameResponse(List<UserDto> users, int bigBlindTurn, int betTurn) {
-        this.bigBlindTurn = bigBlindTurn;
-        this.betTurn = betTurn;
-    }
+//    public GameResponse(List<UserDto> users, int bigBlindTurn, int betTurn) {
+//        this.bigBlindTurn = bigBlindTurn;
+//        this.betTurn = betTurn;
+//    }
 
     public GameResponse(List<Card> riverCards){
         this.riverCards = riverCards;
+        isGameOver = false;
     }
 
     public List<Card> getRiverCards() {
         return riverCards;
     }
 
-    public int getBigBlindTurn() {
-        return bigBlindTurn;
+    public boolean isGameOver() {
+        return isGameOver;
     }
-
-    public int getBetTurn() {
-        return betTurn;
-    }
-
 }

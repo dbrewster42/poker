@@ -20,7 +20,12 @@ betting should start with bigBlind and then auto bet on first turn
 
 ## player vs user
 condense?
+update player with each hand + money lost/won for each round
+change player to GamePlayer? or move logic from player to PService?
 
 ### money
 A. add, subtract, and return money!!!
 B. should I display other's money?
+
+### packaging 
+service - game - player 

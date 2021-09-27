@@ -1,8 +1,6 @@
 package com.brewster.poker.player;
 
 import com.brewster.poker.card.Card;
-import com.brewster.poker.dto.UserDto;
-import com.brewster.poker.service.GameService2;
 import com.brewster.poker.card.PokerHand;
 
 import java.util.ArrayList;
@@ -10,10 +8,9 @@ import java.util.List;
 
 public abstract class Player {
     private List<Card> hand;
+    private String email;
     private String displayName;
-    private GameService2 game;
     private int money;
-    private UserDto user;
     private PokerHand pokerHand;
     private int currentBetAmount = 0;
 
@@ -24,12 +21,12 @@ public abstract class Player {
         this.displayName = displayName;
         hand = new ArrayList<>();
     }
-    public Player(String displayName, UserDto userDto){
-        this.displayName = displayName;
-        this.user = userDto;
-        this.money = userDto.getMoney();
-        hand = new ArrayList<>();
-    }
+//    public Player(String displayName, UserDto userDto){
+//        this.displayName = displayName;
+//        this.user = userDto;
+//        this.money = userDto.getMoney();
+//        hand = new ArrayList<>();
+//    }
 
     public abstract void joinGame();
     public abstract void leaveGame();
@@ -71,12 +68,12 @@ public abstract class Player {
         this.displayName = displayName;
     }
 
-    public GameService2 getGame() {
-        return game;
+    public String getEmail() {
+        return email;
     }
 
-    public void setGame(GameService2 game) {
-        this.game = game;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getMoney() {
@@ -85,14 +82,6 @@ public abstract class Player {
 
     public void setMoney(int money) {
         this.money = money;
-    }
-
-    public UserDto getUser() {
-        return user;
-    }
-
-    public void setUser(UserDto user) {
-        this.user = user;
     }
 
     public PokerHand getPokerHand() {

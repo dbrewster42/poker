@@ -16,12 +16,12 @@ public interface GameService2 {
     List<Card> deal();
     BetOptions getBetOptions();
     EndRoundResponse calculateWinningHand();
-    NewGameResponse getNewGameResponse(UserDto userDto);
+//    NewGameResponse getNewGameResponse(UserDto userDto);
 
-    void addPlayerToGame(HumanPlayer player);
+//    void addPlayerToGame(HumanPlayer player);
     void setGameOver();
 
-    UserDto getUser(String name);
+//    UserDto getUser(String name);
     BetService getBetManager();
     int getId();
     void setIsBet(boolean bet);

@@ -5,7 +5,6 @@ import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.PlayerResponse;
 import com.brewster.poker.player.HumanPlayer;
-import com.brewster.poker.player.Player;
 import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,7 +19,7 @@ public class GameEntity {
      @Id
      private long id;
 
-     private List<Player> players;
+     private List<com.brewster.poker.player.Player> players;
      private List<Card> cards;
      private List<Card> riverCards;
      private boolean isBet;
@@ -29,7 +28,7 @@ public class GameEntity {
      private int bigBlind;
      private int turnNumber;
      private int turnsLeftInRound;
-     private List<Player> activeBetters;
+     private List<com.brewster.poker.player.Player> activeBetters;
      private int pot = 0;
      private int betAmount;
      private int bigBlindTurn = -1;
@@ -45,7 +44,7 @@ public class GameEntity {
 
      public GameEntity(PlayerDto playerDto, GameSettingsRequest settingsRequest){
           this.players = new ArrayList<>();
-          Player player = new HumanPlayer(playerDto.getDisplayName());
+          com.brewster.poker.player.Player player = new HumanPlayer(playerDto.getDisplayName());
           players.add(player);
           this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
           openSlots = desiredNumberOfPlayers - 1;
@@ -69,15 +68,15 @@ public class GameEntity {
                   .collect(Collectors.toList());
      }
 
-     public List<Player> getPlayers() {
+     public List<com.brewster.poker.player.Player> getPlayers() {
           return players;
      }
 
-     public void setPlayers(List<Player> players) {
+     public void setPlayers(List<com.brewster.poker.player.Player> players) {
           this.players = players;
      }
 
-     public void addPlayers(List<Player> players){
+     public void addPlayers(List<com.brewster.poker.player.Player> players){
           this.players.addAll(players);
      }
 
@@ -137,11 +136,11 @@ public class GameEntity {
           this.turnsLeftInRound = turnsLeftInRound;
      }
 
-     public List<Player> getActiveBetters() {
+     public List<com.brewster.poker.player.Player> getActiveBetters() {
           return activeBetters;
      }
 
-     public void setActiveBetters(List<Player> activeBetters) {
+     public void setActiveBetters(List<com.brewster.poker.player.Player> activeBetters) {
           this.activeBetters = activeBetters;
      }
 
