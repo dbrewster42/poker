@@ -3,6 +3,7 @@ package com.brewster.poker.controller;
 import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.model.GameEntity;
+import com.brewster.poker.model.PlayerEntity;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.model.response.EndRoundResponse;
@@ -42,7 +43,7 @@ public class GameController {
      @PostMapping
      public NewGameResponse createGame(@RequestBody GameSettingsRequest request) {
           LOGGER.info(request.toString());
-          PlayerDto playerDto = playerService.findPlayer(request.getUsername());
+          PlayerEntity playerDto = playerService.findPlayer(request.getUsername());
 
           GameEntity game = new GameEntity(playerDto, request);
           if (request.isFillWithComputerPlayers()){

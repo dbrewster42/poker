@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-public interface PlayerRepository extends MongoRepository<PlayerEntity, Long> {
+public interface PlayerRepository extends MongoRepository<PlayerEntity, String> {
      Optional<PlayerEntity> findByUsername(String name);
+
 }

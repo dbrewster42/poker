@@ -1,6 +1,6 @@
 package com.brewster.poker.controller;
 
-import com.brewster.poker.dto.PlayerDto;
+import com.brewster.poker.model.PlayerEntity;
 import com.brewster.poker.service.PlayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,18 +20,18 @@ public class PlayerController {
      }
 
      @PostMapping("register")
-     public PlayerDto register(@RequestBody PlayerDto request) {
+     public PlayerEntity register(@RequestBody PlayerEntity request) {
           LOGGER.info(request.toString());
 
-          PlayerDto savedDto = playerService.createPlayer(request);
+          PlayerEntity savedDto = playerService.createPlayer(request);
           LOGGER.info(savedDto.toString());
 
           return savedDto;
      }
 
      @PostMapping("login")
-     public PlayerDto login(@RequestBody PlayerDto request) {
-          return playerService.findPlayer(request.getUsername());
+     public PlayerEntity login(@RequestBody PlayerEntity request) {
+          return playerService.findPlayer(request.getEmail());
      }
 
 //     @PutMapping("buyin")

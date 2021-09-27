@@ -5,6 +5,7 @@ import com.brewster.poker.controller.GameController;
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.exception.GameNotFoundException;
 import com.brewster.poker.model.GameEntity;
+import com.brewster.poker.model.PlayerEntity;
 import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.Player;
@@ -28,17 +29,17 @@ public class GameService {
 
 
      public void generateNComputerPlayers(GameEntity gameEntity, int n){
-          List<com.brewster.poker.player.Player> players = new ArrayList<>();
+          List<Player> players = new ArrayList<>();
           Random random = new Random();
           for (int i = 0; i < n; i++) {
                String displayName = "HAL" + random.nextInt(500);
-               com.brewster.poker.player.Player player = new ComputerPlayer(displayName);
+               Player player = new ComputerPlayer(displayName);
                players.add(player);
           }
           gameEntity.addPlayers(players);
      }
 
-     public NewGameResponse getNewGameResponse(GameEntity gameEntity, PlayerDto playerDto){
+     public NewGameResponse getNewGameResponse(GameEntity gameEntity, PlayerEntity playerDto){
           LOGGER.info(gameEntity.toString());
           List<Card> playerCards = playerDto.getCards();
 //          BetOptions options = betManager.manageComputerBets();

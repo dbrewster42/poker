@@ -1,6 +1,6 @@
 package com.brewster.poker.service;
 
-import com.brewster.poker.dto.PlayerDto;
+import com.brewster.poker.model.PlayerEntity;
 import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.model.PlayerEntity;
 import com.brewster.poker.repository.PlayerRepository;
@@ -23,30 +23,25 @@ public class PlayerService {
           this.utils = utils;
      }
 
-     public PlayerDto createPlayer(PlayerDto dto){
+     public PlayerEntity createPlayer(PlayerEntity dto){
           LOGGER.info(dto.toString());
           if (!utils.isEmailValid(dto)){
                throw new IllegalArgumentException("Email is invalid");
           }
 
-          PlayerEntity newPlayer = new PlayerEntity();
-          BeanUtils.copyProperties(dto, newPlayer);
-
-          PlayerEntity savedPlayer = playerRepository.save(newPlayer);
+          PlayerEntity savedPlayer = playerRepository.save(dto);
           Optional.ofNullable(savedPlayer).orElseThrow(() -> new RuntimeException("user not saved correctly"));
           LOGGER.info(savedPlayer.toString());
 
-          PlayerDto returnValue = new PlayerDto();
-          BeanUtils.copyProperties(savedPlayer, returnValue);
 
-          return returnValue;
+          return savedPlayer;
      }
 
-     public PlayerDto findPlayer(String username){
-          PlayerEntity playerEntity = Optional.ofNullable(playerRepository.findByUsername(username)).get()
+     public PlayerEntity findPlayer(String username){
+          PlayerEntity playerEntity = Optional.ofNullable(playerRepository.findById(username)).get()
                   .orElseThrow(() -> new UserNotFoundException());
 
-          PlayerDto returnValue = new PlayerDto();
+          PlayerEntity returnValue = new PlayerEntity();
           BeanUtils.copyProperties(playerEntity, returnValue);
 
           return returnValue;

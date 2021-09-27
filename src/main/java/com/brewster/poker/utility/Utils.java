@@ -1,6 +1,6 @@
 package com.brewster.poker.utility;
 
-import com.brewster.poker.dto.PlayerDto;
+import com.brewster.poker.model.PlayerEntity;
 import org.springframework.context.annotation.Configuration;
 
 import java.security.SecureRandom;
@@ -24,7 +24,7 @@ public class Utils {
           }
           return returnValue.toString();
      }
-     public boolean isEmailValid(PlayerDto playerDto){
+     public boolean isEmailValid(PlayerEntity playerDto){
           String email = playerDto.getEmail();
           Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
           return matcher.find();
