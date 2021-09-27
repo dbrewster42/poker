@@ -1,7 +1,6 @@
 package com.brewster.poker.controller;
 
 import com.brewster.poker.card.Card;
-import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.model.PlayerEntity;
 import com.brewster.poker.model.request.GameSettingsRequest;
@@ -78,7 +77,7 @@ public class GameController {
           GameEntity game = gameService.findGame(id);
           LOGGER.info("dealing card");
 
-          return gameService.deal();
+          return new GameResponse(gameService.deal(game));
      }
 
 //     @GetMapping("{id}")
@@ -90,20 +89,20 @@ public class GameController {
 //          return ga.deal();
 //     }
 
-     @GetMapping("{id}/winner")
-     public EndRoundResponse calculateWinner(@PathVariable int id) {
-          game = GamesContainer.findGameById(id);
-          return game.calculateWinningHand();
-     }
+//     @GetMapping("{id}/winner")
+//     public EndRoundResponse calculateWinner(@PathVariable int id) {
+//          game = GamesContainer.findGameById(id);
+//          return game.calculateWinningHand();
+//     }
 
-     @GetMapping("join")
-     public List<GameService> findGame() {
-          return GamesContainer.findAvailableGames();
-     }
+//     @GetMapping("join")
+//     public List<GameService> findGame() {
+//          return GamesContainer.findAvailableGames();
+//     }
 
-     @PostMapping("join")
-     public void joinGame(@RequestBody JoinRequest request) {
-          userDto = userService.findUser(request.getUsername());
-          GameService game = GamesContainer.addPlayerToGame(userDto, request);
-     }
+//     @PostMapping("join")
+//     public void joinGame(@RequestBody JoinRequest request) {
+//          userDto = userService.findUser(request.getUsername());
+//          GameService game = GamesContainer.addPlayerToGame(userDto, request);
+//     }
 }

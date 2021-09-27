@@ -1,5 +1,6 @@
 package com.brewster.poker.model;
 
+import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.card.Card;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.PlayerResponse;
@@ -18,12 +19,12 @@ import java.util.stream.Collectors;
 public class GameEntity {
      @Id
      private long id;
-
      private List<Player> players;
      private List<Card> cards;
      private List<Card> riverCards;
      private boolean isBet;
      private boolean isDealDone;
+     private BetManagerEntity betManagerEntity;
 
      private int bigBlind;
      private int turnNumber;
@@ -48,10 +49,9 @@ public class GameEntity {
           players.add(player);
           this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
           openSlots = desiredNumberOfPlayers - 1;
-          this.bigBlind = settingsRequest.getBigBlind();
-          this.maxBet = Optional.ofNullable(settingsRequest.getMaxBet()).map(v -> v == 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
-          bets = new ArrayList<>();
+          this.betManagerEntity = new BetManagerEntity(settingsRequest);
      }
+
 
      public long getId() {
           return id;
@@ -59,13 +59,6 @@ public class GameEntity {
 
      public void setId(long id) {
           this.id = id;
-     }
-
-     public List<PlayerResponse> getOtherPlayersResponse(PlayerEntity playerDto) {
-          return players.stream()
-                  .filter(v -> !v.getDisplayName().equals(playerDto.getDisplayName()))
-                  .map(v -> new PlayerResponse(v))
-                  .collect(Collectors.toList());
      }
 
      public List<Player> getPlayers() {

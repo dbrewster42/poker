@@ -9,6 +9,7 @@ import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.InvalidBetException;
 import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.model.BetEntity;
+import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
@@ -135,6 +136,15 @@ public class BetService {
     }
 
     protected BetOptions startNewDeal(){
+        pot = 0;
+        bigBlindTurn++;
+        activeBetters = game.getPlayers();
+        setAllRoundInformation();
+        LOGGER.info("starting new deal with " + turnsLeftInRound + " turns");
+        return getBetOptions();
+    }
+
+    protected BetOptions startNewDeal(GameEntity gameEntity){
         pot = 0;
         bigBlindTurn++;
         activeBetters = game.getPlayers();
