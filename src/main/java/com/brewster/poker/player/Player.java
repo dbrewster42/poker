@@ -12,8 +12,8 @@ public abstract class Player {
     private List<Card> hand;
     private List<Card> holeCards; //TODO
     private String displayName;
-    private GameService game;
     private int money;
+    private GameService game;
     private UserDto user;
     private PokerHand pokerHand;
     private int currentBetAmount = 0;

@@ -31,12 +31,4 @@ public interface GameService {
     boolean isDealDone();
     List<Player> getPlayers();
     int getOpenSlots();
-
-    static GameService createNewTexasHoldEmGame(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
-        return new TexasHoldEmService(id, player, settingsRequest);
-    }
-
-    static GameService createNewTexasHoldEmGame(int id, List<Player> players, GameSettingsRequest settingsRequest){
-        return new TexasHoldEmService(id, players, settingsRequest);
-    }
 }

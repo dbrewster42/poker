@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 public class GamesContainer {
     private static int gameID = 0;
     private static List<GameService> allGames = new ArrayList<>();
-//    private static UserDto computer;
 
     public static GameService findGameById(Integer id){
         GameService game = allGames.get(id);
@@ -42,16 +41,15 @@ public class GamesContainer {
 
     public static GameService createGame(UserDto userDto, GameSettingsRequest settingsRequest){
         HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
-        GameService game = GameService.createNewTexasHoldEmGame(gameID, player, settingsRequest);
+        GameService game = new TexasHoldEmService(gameID, player, settingsRequest);
         gameID++;
         allGames.add(game);
         return game;
     }
     public static GameService createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
-//        computer = computerUser;
         List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
         HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
-        GameService game = GameService.createNewTexasHoldEmGame(gameID, players, settingsRequest);
+        GameService game = new TexasHoldEmService(gameID, players, settingsRequest);
         gameID++;
         allGames.add(game);
         players.add(player);
