@@ -71,8 +71,6 @@ public class TexasHoldEmService implements GameService {
      }
 
      public EndRoundResponse calculateWinningHand(){
-          LOGGER.info(players.size() + " ------------- ******************** _______________ ************");
-
           if (isDealDone && !isBet){
                List<Player> activePlayers = betManager.getActiveBetters();
                List<Player> winners = new ArrayList<>();
@@ -145,7 +143,6 @@ public class TexasHoldEmService implements GameService {
      }
 
      public GameResponse deal(){
-          LOGGER.info(players.size() + " ------------- ******************** _______________ ************");
           if (isBet){
                LOGGER.info("Cannot deal cards until betting has finished");
                return new GameResponse(riverCards);
@@ -208,7 +205,6 @@ public class TexasHoldEmService implements GameService {
 
      private List<UserDto> getUsers(UserDto userDto){
           List<UserDto> users = new ArrayList<>();
-          LOGGER.info(players.size() + " ------------- ******************** _______________ ************");
           for (Player player : players){
                if (!player.getUser().equals(userDto)) {
                     users.add(player.getUser());
@@ -218,7 +214,6 @@ public class TexasHoldEmService implements GameService {
           return users;
      }
      public UserDto getUser(String name){
-          cardsDebug();
           Player thisPlayer = players.stream()
                   .filter(v -> v.getDisplayName().equals(name))
                   .findAny()

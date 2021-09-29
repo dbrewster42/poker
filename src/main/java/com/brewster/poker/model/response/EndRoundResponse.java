@@ -1,7 +1,6 @@
 package com.brewster.poker.model.response;
 
 import com.brewster.poker.dto.PlayerDto;
-import com.brewster.poker.player.Player;
 
 import java.util.List;
 
@@ -29,7 +28,8 @@ public class EndRoundResponse {
      }
 
      public EndRoundResponse(String message, List<PlayerDto> activePlayers) {
-
+          this.message = message;
+          this.activePlayers = activePlayers;
      }
 
      public EndRoundResponse() {}

@@ -57,6 +57,7 @@ public class BetService {
         this.maxBet = Optional.ofNullable(request.getMaxBet()).map(v -> v == 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
         betFactory = new BetFactoryImplementation();
         betMessages = new ArrayList<>();
+        activeBetters = new ArrayList<>();
     }
 
     public List<BetEntity> getUserBets(String username){
@@ -139,7 +140,7 @@ public class BetService {
     protected BetOptions startNewDeal(){
         pot = 0;
         bigBlindTurn++;
-        activeBetters = game.getPlayers();
+        activeBetters.addAll(game.getPlayers());
         setAllRoundInformation();
         LOGGER.info("starting new deal with " + turnsLeftInRound + " turns");
         return getBetOptions();
