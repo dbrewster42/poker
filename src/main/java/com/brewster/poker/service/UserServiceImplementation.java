@@ -1,12 +1,14 @@
 package com.brewster.poker.service;
 
 import com.brewster.poker.exception.UserNotFoundException;
+import com.brewster.poker.player.Player;
 import com.brewster.poker.repository.UserRepository;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,4 +55,9 @@ public class UserServiceImplementation implements UserService {
 
         return returnValue;
     }
+
+    public void updateUsersMoney(List<Player> players){
+        players.stream().map(v -> new User(v.getUser())).forEach(v -> userRepository.save(v));
+    }
+
 }

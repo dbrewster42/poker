@@ -5,21 +5,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Objects;
 
 public class Card {
-    final private String suit;
+    private final String suit;
+    private final String name;
+    private final String image;
     @JsonIgnore
-    final private int value;
-    final private String name;
-    final private String image;
+    private final int value;
 
     public Card(String suit, int value, String name, String imagePreFix) {
         this.suit = suit;
         this.value = value;
         this.name = name;
         this.image = imagePreFix + ".png";
-    }
-
-    public void show(){
-        System.out.println("The " + name + " of " + suit);
     }
 
     public String getSuit() {
@@ -50,5 +46,10 @@ public class Card {
     @Override
     public int hashCode() {
         return Objects.hash(suit, value);
+    }
+
+    @Override
+    public String toString() {
+        return name + " of " + suit;
     }
 }

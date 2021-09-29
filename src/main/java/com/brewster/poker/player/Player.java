@@ -34,16 +34,18 @@ public abstract class Player {
 
     public void collectWinnings(int pot){
         this.money += pot;
+        this.user.setMoney(this.money);
+    }
+
+    public void betMoney(int moneyBet){
+        this.money = this.money - moneyBet;
+        this.currentBetAmount += moneyBet;
+        this.user.setMoney(this.money);
     }
 
     public void dealCard(Card card){ this.hand.add(card); }
 
     public void setHoleCards(){}
-
-    public void betMoney(int moneyBet){
-        this.money = this.money - moneyBet;
-        this.currentBetAmount += moneyBet;
-    }
 
     public int getCurrentBetAmount() {
         return currentBetAmount;

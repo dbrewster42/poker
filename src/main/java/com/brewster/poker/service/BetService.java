@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//@Service
 public class BetService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BetService.class);
     private int id;
@@ -42,7 +41,6 @@ public class BetService {
     private static final Action[] CALL_ACTIONS = { Action.CALL, Action.RAISE, Action.FOLD };
     private int pot = 0;
     private int betAmount;
-    private BetOptions betOptions;
     private final BetFactory betFactory;
     private List<String> betMessages;
     private int bigBlindTurn = -1;
@@ -62,7 +60,7 @@ public class BetService {
 
     public List<BetEntity> getUserBets(String username){
         Player player = game.getPlayers().stream().filter(v -> v.getDisplayName().equals(username)).findAny()
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
 
         UserDto userDto = player.getUser();
         User user = new User();
@@ -73,19 +71,18 @@ public class BetService {
 
     public void placeBet(BetRequest betRequest){
         Player player = currentBetter;
-        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
+//        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
         String validationStatement = validateBet(betRequest, player);
         if (validationStatement.isEmpty()) {
             Bet bet = betFactory.createBet(player, betRequest, this);
             String message = bet.process();
-            LOGGER.info("Bet has been processed - " + message);
+            LOGGER.info("Bet has been processed - {}", message);
 
             betMessages.add(message);
-//                betsMade.add(new BetDto(bet, returnStatement));
+//          betsMade.add(new BetDto(bet, returnStatement));
             adjustTurn();
-            return;
         } else {
-            LOGGER.info("Bet Invalid - " + validationStatement);
+            LOGGER.info("Bet Invalid - {}", validationStatement);
             throw new InvalidBetException(validationStatement);
         }
     }
@@ -160,11 +157,10 @@ public class BetService {
     }
 
     public BetOptions getBetOptions(){
-        LOGGER.info("betManager.getBetOptions " + currentBetter.getDisplayName() + " turnsLeft = " + turnsLeftInRound + " turnNumber = " + turnNumber);
+        LOGGER.info("betManager.getBetOptions {}, turnsLeft = {}, turnNumber = {}", currentBetter.getDisplayName(), turnsLeftInRound, turnNumber);
         if (turnsLeftInRound > 0){
             Action[] actionOptions = getPossibleBetActions(betAmount);
-            betOptions = new BetOptions(currentBetter, actionOptions, betAmount, pot);
-            return betOptions;
+            return new BetOptions(currentBetter, actionOptions, betAmount, pot);
         } else {
             LOGGER.info("end of betting round");
             game.setIsBet(false);

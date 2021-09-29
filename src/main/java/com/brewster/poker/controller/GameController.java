@@ -1,16 +1,13 @@
 package com.brewster.poker.controller;
 
-import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
-import com.brewster.poker.model.request.UserRequest;
-import com.brewster.poker.model.response.GameResponse;
-import com.brewster.poker.service.GameService;
-import com.brewster.poker.service.GamesContainer;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.request.JoinRequest;
-import com.brewster.poker.model.response.EndRoundResponse;
+import com.brewster.poker.model.request.UserRequest;
+import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.model.response.NewGameResponse;
-import com.brewster.poker.player.Player;
+import com.brewster.poker.service.GameService;
+import com.brewster.poker.service.GamesContainer;
 import com.brewster.poker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +47,6 @@ public class GameController {
             //TODO wait for players to join
         }
         game.startNewDeal();
-        debug();
 
         return game.getNewGameResponse(userDto);
     }
@@ -65,27 +61,12 @@ public class GameController {
         return game.getNewGameResponse(userDto);
     }
 
-
-    private void debug(){
-        for (Player each : game.getPlayers()){
-            LOGGER.info(each.getDisplayName());
-            each.getHand().forEach(Card::show);
-        }
-        LOGGER.info("");
-    }
-
     @GetMapping("{id}")
     public GameResponse deal(@PathVariable int id) {
         game = GamesContainer.findGameById(id);
         LOGGER.info("dealing card");
 
         return game.deal();
-    }
-
-    @GetMapping("{id}/winner")
-    public EndRoundResponse calculateWinner(@PathVariable int id) {
-        game = GamesContainer.findGameById(id);
-        return game.calculateWinningHand();
     }
 
     @GetMapping("join")
