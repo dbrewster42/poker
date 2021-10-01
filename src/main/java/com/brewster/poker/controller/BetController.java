@@ -26,13 +26,18 @@ import java.util.List;
 @RequestMapping("game")
 public class BetController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BetController.class);
-    private GameService game;
-    private BetService betManager;
+//    private GameService game;
+//    private BetService betManager;
+    private GamesContainer gamesContainer;
+
+    public BetController(GamesContainer gamesContainer){
+        this.gamesContainer = gamesContainer;
+    }
 
     @GetMapping("{id}/bet")
     public BetResponse getBetOptions(@PathVariable int id){
         LOGGER.info("Controller : getting betOptions");
-        game = GamesContainer.findGameById(id);
+        GameService game = gamesContainer.findGameById(id);
 
         BetOptions options = game.getBetManager().manageComputerBets();
         return new BetResponse(options, game.getBetManager().getBetMessages());
@@ -40,18 +45,13 @@ public class BetController {
 
     @PostMapping("{id}/bet")
     public BetResponse bet(@PathVariable int id, @RequestBody BetRequest request){
-        LOGGER.info("Controller: Placing bet - " + request.toString());
-        game = GamesContainer.findGameById(id);
-        betManager = game.getBetManager();
+        LOGGER.info("Controller: Placing bet - {}", request.toString());
+        GameService game = gamesContainer.findGameById(id);
+        BetService betManager = game.getBetManager();
 
         betManager.placeBet(request);
         LOGGER.info("Controller: Bet has been placed");
         return new BetResponse(game.isBet(), betManager.getBetMessages(), betManager.getCurrentBettersMoney(), game.isDealDone());
-    }
-
-    @GetMapping("getUserBets")
-    public List<BetEntity> getUserBets(@RequestBody UserRequest request){
-        return betManager.getUserBets(request.getUsername());
     }
 
 }

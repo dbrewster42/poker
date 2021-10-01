@@ -58,17 +58,6 @@ public class BetService {
         activeBetters = new ArrayList<>();
     }
 
-    public List<BetEntity> getUserBets(String username){
-        Player player = game.getPlayers().stream().filter(v -> v.getDisplayName().equals(username)).findAny()
-                .orElseThrow(UserNotFoundException::new);
-
-        UserDto userDto = player.getUser();
-        User user = new User();
-        BeanUtils.copyProperties(userDto, user);
-
-        return betRepository.findAllByUser(user);
-    }
-
     public void placeBet(BetRequest betRequest){
         Player player = currentBetter;
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());

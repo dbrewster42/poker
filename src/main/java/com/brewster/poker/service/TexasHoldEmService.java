@@ -18,16 +18,10 @@ import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.WebApplicationContext;
-
 import java.util.ArrayList;
 import java.util.List;
 
-//@Service
-//@Scope(WebApplicationContext.SCOPE_REQUEST)
+
 public class TexasHoldEmService implements GameService {
      private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEmService.class);
      private int id;
@@ -86,7 +80,7 @@ public class TexasHoldEmService implements GameService {
                          winningStrength = score;
                          winner = player;
                     } else if (winningStrength == score){
-                         //TODO
+                         //TODO tiebreaker
                          LOGGER.info("THERE IS A TIE {}", pokerHand.getHandName());
                          if (winners.size() < 2){
                               winners = PokerHandLookup.getTieBreaker(winner, player);
@@ -114,7 +108,8 @@ public class TexasHoldEmService implements GameService {
           StringBuilder stringBuilder = new StringBuilder();
           winners.forEach(v -> stringBuilder.append(v.getDisplayName() + " and "));
           stringBuilder.delete(stringBuilder.length() - 5, stringBuilder.length());
-          stringBuilder.append(" have tied and will split the pot of " + betManager.getPot() + "$ with their poker hand of a " + winners.get(0).getPokerHand().getHandName());
+          stringBuilder.append(" have tied and will split the pot of " + betManager.getPot()
+                  + "$ with their poker hand of a " + winners.get(0).getPokerHand().getHandName());
 
           return new EndRoundResponse(stringBuilder.toString(), playerDtos);
      }
@@ -174,6 +169,7 @@ public class TexasHoldEmService implements GameService {
           isBet = true;
           return riverCards;
      }
+
      private List<Card> getNewStandardDeck(){
           return DeckBuilder.aDeck().withStandardDeck().build().getCards();
      }
@@ -205,6 +201,7 @@ public class TexasHoldEmService implements GameService {
           }
           return users;
      }
+
      public UserDto getUser(String name){
           Player thisPlayer = players.stream()
                   .filter(v -> v.getDisplayName().equals(name))
@@ -220,8 +217,6 @@ public class TexasHoldEmService implements GameService {
                     if (eachPlayer.getClass() == ComputerPlayer.class){
                          playerToRemove = eachPlayer;
                          break;
-//                         eachPlayer = player;
-//                         //does this replace the computer player with a human player?
                     }
                }
                if (playerToRemove != null){
@@ -231,16 +226,10 @@ public class TexasHoldEmService implements GameService {
           players.add(player);
           openSlots--;
      }
+
      public void addPlayerToGame(ComputerPlayer player){
           players.add(player);
      }
-
-//     public NewGameResponse getRestartGameResponse(UserDto userDto){
-//          List<Card> playerCards = userDto.getPlayer().getHand();
-//          BetOptions options = betManager.manageComputerBets();
-//
-//          return new NewGameResponse(playerCards, options, userDto.getMoney(), getUsers(userDto));
-//     }
 
      public int getId() {
           return id;

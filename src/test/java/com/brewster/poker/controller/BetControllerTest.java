@@ -19,16 +19,19 @@ import static com.brewster.poker.TestDataBuilder.getBetBetRequest;
 import static com.brewster.poker.TestDataBuilder.getCheckBetRequest;
 import static com.brewster.poker.TestDataBuilder.getGameSettingsRequest;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class BetControllerTest {
      private BetController betController;
+     private GamesContainer gamesContainer;
      GameService game;
      int id;
 
      @BeforeEach
      void setUp() {
-          betController = new BetController();
-          game = GamesContainer.createGame(getUserDto(), getGameSettingsRequest(), getComputerUser());
+          gamesContainer = mock(GamesContainer.class);
+          betController = new BetController(gamesContainer);
+          game = gamesContainer.createGame(getUserDto(), getGameSettingsRequest(), getComputerUser());
           id = game.getId();
           game.startNewDeal();
      }

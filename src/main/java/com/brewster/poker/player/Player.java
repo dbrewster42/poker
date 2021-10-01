@@ -10,7 +10,6 @@ import java.util.List;
 
 public abstract class Player {
     private List<Card> hand;
-    private List<Card> holeCards; //TODO
     private String displayName;
     private int money;
     private GameService game;

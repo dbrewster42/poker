@@ -30,9 +30,11 @@ public class GameController {
     private final UserService userService;
     private UserDto userDto;
     private UserDto computerUser;
+    private GamesContainer gamesContainer;
 
-    public GameController(UserService userService) {
+    public GameController(UserService userService, GamesContainer gamesContainer) {
         this.userService = userService;
+        this.gamesContainer = gamesContainer;
     }
 
     @PostMapping
@@ -41,9 +43,9 @@ public class GameController {
         userDto = userService.findUser(request.getUsername());
         if (request.isFillWithComputerPlayers()){
             computerUser = userService.findUser("HAL");
-            game = GamesContainer.createGame(userDto, request, computerUser);
+            game = gamesContainer.createGame(userDto, request, computerUser);
         } else {
-            game = GamesContainer.createGame(userDto, request);
+            game = gamesContainer.createGame(userDto, request);
             //TODO wait for players to join
         }
         game.startNewDeal();
@@ -54,7 +56,7 @@ public class GameController {
     @PostMapping("{id}/restart")
     public NewGameResponse getNewRound(@PathVariable int id, @RequestBody UserRequest request){
         LOGGER.info(request.getUsername(), id);
-        game = GamesContainer.findGameById(id);
+        game = gamesContainer.findGameById(id);
         game.startNewDeal();
         userDto = game.getUser(request.getUsername());
         LOGGER.info(userDto.toString());
@@ -63,7 +65,7 @@ public class GameController {
 
     @GetMapping("{id}")
     public GameResponse deal(@PathVariable int id) {
-        game = GamesContainer.findGameById(id);
+        game = gamesContainer.findGameById(id);
         LOGGER.info("dealing card");
 
         return game.deal();
@@ -71,13 +73,13 @@ public class GameController {
 
     @GetMapping("join")
     public List<GameService> findGame() {
-        return GamesContainer.findAvailableGames();
+        return gamesContainer.findAvailableGames();
     }
 
     @PostMapping("join")
     public void joinGame(@RequestBody JoinRequest request) {
         userDto = userService.findUser(request.getUsername());
-        GameService game = GamesContainer.addPlayerToGame(userDto, request);
+        GameService game = gamesContainer.addPlayerToGame(userDto, request);
     }
 
 }
