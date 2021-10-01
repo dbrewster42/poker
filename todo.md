@@ -13,15 +13,10 @@ for each different hand?
 Would it be better if the score included the high card?
 Add another pojo to wrap PokerHand and hold Cards
 
-## clean up
-change all println to log
-add custom exceptions
 
 ## bugs
 raise needs to be clearer in the front end
 betting should start with bigBlind and then auto bet on first turn
 
-## player vs user
-condense?
 
 ## should I display other's money?

@@ -19,10 +19,15 @@ import com.brewster.poker.player.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
+//@Service
+//@Scope(WebApplicationContext.SCOPE_REQUEST)
 public class TexasHoldEmService implements GameService {
      private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEmService.class);
      private int id;
@@ -34,24 +39,25 @@ public class TexasHoldEmService implements GameService {
      private BetService betManager;
      private boolean isBet;
      private boolean isDealDone;
-     @Autowired
      private UserService userService;
 
-     TexasHoldEmService(int id, HumanPlayer player, GameSettingsRequest settingsRequest){
+     TexasHoldEmService(int id, HumanPlayer player, GameSettingsRequest settingsRequest, UserService userService){
           this.id = id;
           this.players = new ArrayList<>();
           players.add(player);
           betManager = new BetService(this, settingsRequest);
           this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
           openSlots = desiredNumberOfPlayers - 1;
+          this.userService = userService;
      }
-     TexasHoldEmService(int id, List<Player> players, GameSettingsRequest settingsRequest){
+     TexasHoldEmService(int id, List<Player> players, GameSettingsRequest settingsRequest, UserService userService){
           this.id = id;
           this.players = players;
           betManager = new BetService(this, settingsRequest);
           this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
           openSlots = desiredNumberOfPlayers - 1;
           //todo if (request.isCustomRules()){ doSomething() };
+          this.userService = userService;
      }
 
      public void placeBet(BetRequest betRequest){
@@ -131,6 +137,7 @@ public class TexasHoldEmService implements GameService {
           }
           if (isDealDone){
                EndRoundResponse endRoundResponse = calculateWinningHand();
+               LOGGER.info("End of round {} {}", userService, players);
                userService.updateUsersMoney(players);
                betManager.setPot(0);
                return new GameResponse(endRoundResponse);

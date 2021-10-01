@@ -7,15 +7,23 @@ import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+@Service
 public class GamesContainer {
     private static int gameID = 0;
     private static List<GameService> allGames = new ArrayList<>();
+    private static UserService userService;
+
+
+    public GamesContainer(UserService userService) {
+        this.userService = userService;
+    }
 
     public static GameService findGameById(Integer id){
         GameService game = allGames.get(id);
@@ -41,7 +49,7 @@ public class GamesContainer {
 
     public static GameService createGame(UserDto userDto, GameSettingsRequest settingsRequest){
         HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
-        GameService game = new TexasHoldEmService(gameID, player, settingsRequest);
+        GameService game = new TexasHoldEmService(gameID, player, settingsRequest, userService);
         gameID++;
         allGames.add(game);
         return game;
@@ -49,7 +57,7 @@ public class GamesContainer {
     public static GameService createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
         List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
         HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
-        GameService game = new TexasHoldEmService(gameID, players, settingsRequest);
+        GameService game = new TexasHoldEmService(gameID, players, settingsRequest, userService);
         gameID++;
         allGames.add(game);
         players.add(player);

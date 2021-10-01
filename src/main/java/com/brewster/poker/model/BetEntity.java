@@ -11,9 +11,11 @@ public class BetEntity {
      @Id
      @GeneratedValue(strategy = GenerationType.AUTO)
      private long id;
-     private int betAmount;
      @ManyToOne
      private User user;
+//     @ManyToOne
+//     private PokerGame pokerGame;
+     private int betAmount;
      private String betMessage;
 
      public BetEntity(int betAmount, User user, String betMessage) {

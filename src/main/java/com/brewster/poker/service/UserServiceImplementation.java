@@ -1,6 +1,7 @@
 package com.brewster.poker.service;
 
 import com.brewster.poker.exception.UserNotFoundException;
+import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.repository.UserRepository;
 import com.brewster.poker.dto.UserDto;
@@ -57,7 +58,9 @@ public class UserServiceImplementation implements UserService {
     }
 
     public void updateUsersMoney(List<Player> players){
-        players.stream().map(v -> new User(v.getUser())).forEach(v -> userRepository.save(v));
+        players.stream().filter(v -> v instanceof HumanPlayer)
+                .map(v -> new User(v.getUser()))
+                .forEach(v -> userRepository.save(v));
     }
 
 }
