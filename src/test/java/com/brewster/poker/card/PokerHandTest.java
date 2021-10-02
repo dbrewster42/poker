@@ -1,6 +1,7 @@
 package com.brewster.poker.card;
 
 import com.brewster.poker.CardHandBuilder;
+import com.brewster.poker.TestDataBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -28,6 +29,11 @@ class PokerHandTest {
     int[] fullHouse = new int[]{4, 4, 11, 11, 11};
     int[] fourKind = new int[]{4, 11, 11, 11, 11};
     int[] straight = new int[]{4, 5, 6, 7, 8};
+
+    @Test
+    void tieBreaker(){
+        assertEquals(2, PokerHandLookup.getTieBreaker(TestDataBuilder.getPlayer(), TestDataBuilder.getPlayer()).size());
+    }
 
 
     @Test
