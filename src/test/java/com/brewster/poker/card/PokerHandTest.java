@@ -30,11 +30,6 @@ class PokerHandTest {
     int[] fourKind = new int[]{4, 11, 11, 11, 11};
     int[] straight = new int[]{4, 5, 6, 7, 8};
 
-    @Test
-    void tieBreaker(){
-        assertEquals(2, PokerHandLookup.getTieBreaker(TestDataBuilder.getPlayer(), TestDataBuilder.getPlayer()).size());
-    }
-
 
     @Test
     void lookupHandWithHighCard() {

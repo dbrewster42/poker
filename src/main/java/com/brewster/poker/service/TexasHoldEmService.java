@@ -5,6 +5,7 @@ import com.brewster.poker.card.DeckBuilder;
 import com.brewster.poker.card.PokerHandEnum;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.card.PokerHandLookup;
+import com.brewster.poker.card.PokerHandTieBreaker;
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.UserNotFoundException;
@@ -82,10 +83,11 @@ public class TexasHoldEmService implements GameService {
                     } else if (winningStrength == score){
                          //TODO tiebreaker
                          LOGGER.info("THERE IS A TIE {}", pokerHand.getHandName());
+                         PokerHandTieBreaker tieBreaker = new PokerHandTieBreaker(winner, player);
                          if (winners.size() < 2){
-                              winners = PokerHandLookup.getTieBreaker(winner, player);
+                              winners = tieBreaker.getTieBreaker();
                          } else {
-                              if (PokerHandLookup.getTieBreaker(winner, player).size() > 1){
+                              if (tieBreaker.getTieBreaker().size() > 1){
                                    winners.add(player);
                               }
                          }
