@@ -1,11 +1,7 @@
-A. add, subtract, and return money!!!
-
 
 4. after bets complete, it auto-deals the next card. either the controller method needs to account for this
 or it should require a manual call.
 6. add blinds
-7. add a space between rounds in betMessages -- 
-8. add logic for two winners in case of multi-tie
 
 ## Break Ties
 is there a way to break the tie no matter which or do I have to calculate
