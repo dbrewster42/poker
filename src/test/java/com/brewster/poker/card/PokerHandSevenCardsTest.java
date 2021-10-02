@@ -9,55 +9,55 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PokerHandSevenCardsTest {
      List<Card> fourOfAKind = CardHandBuilder.buildFourOfKindWithSevenCards();
-//     List<Card> highCardCards = CardHandBuilder.buildHighCard();
-     List<Card> straightCards = CardHandBuilder.buildStraightWithSevenCards();
      List<Card> pairCards = CardHandBuilder.buildPairWithSeven();
      List<Card> twoPairCards = CardHandBuilder.buildTwoPairWithSevenCards();
      List<Card> threeOfAKind = CardHandBuilder.buildThreeOfAKindWithSeven();
      List<Card> flush = CardHandBuilder.buildFlushWithSeven();
      List<Card> straightFlush = CardHandBuilder.buildStraightFlushWithSeven();
      List<Card> fullHouseCards = CardHandBuilder.buildFullHouseWithSeven();
+     List<Card> straightCards = CardHandBuilder.buildStraightWithSevenCards();
+     List<Card> highCardCards = CardHandBuilder.buildHighCard();
 
-//     @Test
-//     void lookupHandWithHighCard() {
-//          assertEquals(PokerHand.HIGH_CARD, PokerHand.lookupHand(highCardCards));
-//     }
+     @Test
+     void lookupHandWithHighCard() {
+          assertEquals(PokerHandEnum.HIGH_CARD, PokerHandLookup.lookupHand(highCardCards));
+     }
      @Test
      void lookupHandWithPair() {
-          assertEquals(PokerHand.PAIR, PokerHand.lookupHand(pairCards));
+          assertEquals(PokerHandEnum.PAIR, PokerHandEnum.lookupHand(pairCards));
      }
      @Test
      void lookupHandWithTwoPair() {
-          assertEquals(PokerHand.TWO_PAIR, PokerHand.lookupHand(twoPairCards));
+          assertEquals(PokerHandEnum.TWO_PAIR, PokerHandEnum.lookupHand(twoPairCards));
      }
      @Test
      void lookupHandWithThreeKind() {
-          assertEquals(PokerHand.THREE_KIND, PokerHand.lookupHand(threeOfAKind));
+          assertEquals(PokerHandEnum.THREE_KIND, PokerHandEnum.lookupHand(threeOfAKind));
      }
      @Test
      void lookupHandWithStraight() {
-          assertEquals(PokerHand.STRAIGHT, PokerHand.lookupHand(straightCards));
+          assertEquals(PokerHandEnum.STRAIGHT, PokerHandEnum.lookupHand(straightCards));
      }
      @Test
      void lookupHandWithStraight2() {
           List<Card> straightCards2 = CardHandBuilder.buildStraightWithSevenCards2();
 
-          assertEquals(PokerHand.STRAIGHT, PokerHand.lookupHand(straightCards2));
+          assertEquals(PokerHandEnum.STRAIGHT, PokerHandEnum.lookupHand(straightCards2));
      }
      @Test
      void lookupHandWithFlush() {
-          assertEquals(PokerHand.FLUSH, PokerHand.lookupHand(flush));
+          assertEquals(PokerHandEnum.FLUSH, PokerHandEnum.lookupHand(flush));
      }
      @Test
      void lookupHandWithFullHouse() {
-          assertEquals(PokerHand.FULL_HOUSE, PokerHand.lookupHand(fullHouseCards));
+          assertEquals(PokerHandEnum.FULL_HOUSE, PokerHandEnum.lookupHand(fullHouseCards));
      }
      @Test
      void lookupHandWithFourKind() {
-          assertEquals(PokerHand.FOUR_KIND, PokerHand.lookupHand(fourOfAKind));
+          assertEquals(PokerHandEnum.FOUR_KIND, PokerHandEnum.lookupHand(fourOfAKind));
      }
      @Test
      void lookupHandWithStraightFlush() {
-          assertEquals(PokerHand.STRAIGHT_FLUSH, PokerHand.lookupHand(straightFlush));
+          assertEquals(PokerHandEnum.STRAIGHT_FLUSH, PokerHandEnum.lookupHand(straightFlush));
      }
 }

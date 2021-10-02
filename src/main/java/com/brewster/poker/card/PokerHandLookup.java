@@ -7,20 +7,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.brewster.poker.card.PokerHand.FLUSH;
-import static com.brewster.poker.card.PokerHand.FOUR_KIND;
-import static com.brewster.poker.card.PokerHand.FULL_HOUSE;
-import static com.brewster.poker.card.PokerHand.HIGH_CARD;
-import static com.brewster.poker.card.PokerHand.PAIR;
-import static com.brewster.poker.card.PokerHand.STRAIGHT;
-import static com.brewster.poker.card.PokerHand.STRAIGHT_FLUSH;
-import static com.brewster.poker.card.PokerHand.THREE_KIND;
-import static com.brewster.poker.card.PokerHand.TWO_PAIR;
+import static com.brewster.poker.card.PokerHandEnum.FLUSH;
+import static com.brewster.poker.card.PokerHandEnum.FOUR_KIND;
+import static com.brewster.poker.card.PokerHandEnum.FULL_HOUSE;
+import static com.brewster.poker.card.PokerHandEnum.HIGH_CARD;
+import static com.brewster.poker.card.PokerHandEnum.PAIR;
+import static com.brewster.poker.card.PokerHandEnum.STRAIGHT;
+import static com.brewster.poker.card.PokerHandEnum.STRAIGHT_FLUSH;
+import static com.brewster.poker.card.PokerHandEnum.THREE_KIND;
+import static com.brewster.poker.card.PokerHandEnum.TWO_PAIR;
 
 public class PokerHandLookup {
-     public static PokerHand lookupHand(List<Card> hand){
+     public static List<Player> getTieBreaker(Player first, Player second){
+          PokerHandEnum pokerHand = first.getPokerHand();
+          List<Card> firstHand = first.getCards().stream().sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
+          List<Card> secondHand = second.getCards().stream().sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
+
+          firstHand = getFiveBestCards(firstHand, pokerHand);
+          //TODO do I have to do each separately?
+          //          if (pokerHand == TWO_PAIR || pokerHand == FULL_HOUSE)
+          return List.of(first, second);
+     }
+
+     private static List<Card> getFiveBestCards(List<Card> cards, PokerHandEnum pokerHand){
+          return cards;
+     }
+
+     public static PokerHandEnum lookupHand(List<Card> hand){
           int[] cardValues = hand.stream().mapToInt(Card::getValue).sorted().toArray();
-          PokerHand pokerHand = returnPairCombos(cardValues);
+          PokerHandEnum pokerHand = returnPairCombos(cardValues);
 
           int isFlush = isStraightFlush(hand);
           if (isFlush == 2){
@@ -34,29 +49,14 @@ public class PokerHandLookup {
           return pokerHand;
      }
 
-     public static List<Player> getTieBreaker(Player first, Player second){
-          PokerHand pokerHand = first.getPokerHand();
-          List<Card> firstHand = first.getHand().stream().sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
-          List<Card> secondHand = second.getHand().stream().sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
-
-          firstHand = getFiveBestCards(firstHand, pokerHand);
-          //TODO do I have to do each separately?
-          return List.of(first, second);
-     }
-
-     private static List<Card> getFiveBestCards(List<Card> cards, PokerHand pokerHand){
-          //TODO
-          return cards;
-     }
-
-     private static PokerHand getBestHand(PokerHand first, PokerHand second){
+     private static PokerHandEnum getBestHand(PokerHandEnum first, PokerHandEnum second){
           if (first.getScore() < second.getScore()){
                first = second;
           }
           return first;
      }
 
-     protected static PokerHand returnPairCombos(int[] sortedCardValues){
+     protected static PokerHandEnum returnPairCombos(int[] sortedCardValues){
           Map<Integer, Integer> cardCount = new HashMap<>();
           for (int cardValue : sortedCardValues){
                cardCount.put(cardValue, cardCount.getOrDefault(cardValue, 0) + 1);
@@ -75,7 +75,7 @@ public class PokerHandLookup {
                }
           }
 
-          PokerHand returnValue = PAIR;
+          PokerHandEnum returnValue = PAIR;
           if (firstPairCount > 2 || secondPairCount > 2){
                if (firstPairCount > 3 || secondPairCount > 3){
                     returnValue = FOUR_KIND;
@@ -129,6 +129,13 @@ public class PokerHandLookup {
                     return true;
                }
                start++;
+          }
+          if (sortedCardValues[sortedCardValues.length - 1] == 14){
+               for (int i = sortedCardValues.length - 1; i > 0; i--){
+                    sortedCardValues[i] = sortedCardValues[i - 1];
+               }
+               sortedCardValues[0] = 1;
+               return isStraight(sortedCardValues);
           }
           return false;
      }

@@ -86,11 +86,11 @@ public class ComputerPlayer extends Player {
 
     private int calculateCards(){
         int strength = 0;
-        int riverCount = getHand().size() - 2;
+        int riverCount = getCards().size() - 2;
         if (riverCount == 0){
-            strength = HandStrengthCalculator.lookupHoleCards(getHand());
+            strength = HandStrengthCalculator.lookupHoleCards(getCards());
         } else {
-            HandStrengthCalculator strengthCalc = new HandStrengthCalculator(getHand());
+            HandStrengthCalculator strengthCalc = new HandStrengthCalculator(getCards());
             strength = strengthCalc.getStrength();
         }
 

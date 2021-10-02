@@ -1,78 +1,42 @@
 package com.brewster.poker.card;
 
-import java.util.List;
+public class PokerHand {
+     private PokerHandEnum pokerHandEnum;
+     private Card primaryHighCard;
+     private Card secondaryHighCard;
 
+//     public int tempValue;
+//     public int highPairCard;
+//     public int highOtherCard;
 
-public enum PokerHand {
+     public PokerHand(PokerHandEnum pokerHandEnum, Card primaryHighCard, Card secondaryHighCard) {
+          this.pokerHandEnum = pokerHandEnum;
+          this.primaryHighCard = primaryHighCard;
+          this.secondaryHighCard = secondaryHighCard;
+     }
+     public PokerHand(){}
 
-    ROYAL_FLUSH(12, "Royal Flush"),
-    FIVE_KIND(11, "Five of a Kind"),
-    STRAIGHT_FLUSH(10, "Straight Flush"),
-    FOUR_KIND(9, "Four of a Kind"),
-    FULL_HOUSE(8, "Full House"),
-    FLUSH(7, "Flush"),
-    STRAIGHT(6, "Straight"),
-    THREE_KIND(5, "Three of a Kind"),
-    TWO_PAIR(4, "Two Pairs"),
-    PAIR(3, "Pair"),
-    HIGH_CARD(2, "High Card");
+     public PokerHandEnum getPokerHandEnum() {
+          return pokerHandEnum;
+     }
 
-    private final int score;
-    private final String handName;
+     public void setPokerHandEnum(PokerHandEnum pokerHandEnum) {
+          this.pokerHandEnum = pokerHandEnum;
+     }
 
-    PokerHand(int score, String handName){
-        this.score = score;
-        this.handName = handName;
-    }
+     public Card getPrimaryHighCard() {
+          return primaryHighCard;
+     }
 
-    public static PokerHand lookupHand(List<Card> hand){
-        return PokerHandLookup.lookupHand(hand);
-    }
-    public int getScore() {
-        return score;
-    }
-    public String getHandName() {
-        return handName;
-    }
+     public void setPrimaryHighCard(Card primaryHighCard) {
+          this.primaryHighCard = primaryHighCard;
+     }
+
+     public Card getSecondaryHighCard() {
+          return secondaryHighCard;
+     }
+
+     public void setSecondaryHighCard(Card secondaryHighCard) {
+          this.secondaryHighCard = secondaryHighCard;
+     }
 }
-
-//    public static boolean isStraight(int[] sortedCardValues){
-//        int start = sortedCardValues[0];
-//        if (start == 2 && sortedCardValues[4] == 14){
-//            for (int i = 4; i > 0; i--){
-//                sortedCardValues[i] = sortedCardValues[i - 1];
-//            }
-//            sortedCardValues[0] = 1;
-//            start = 1;
-//        }
-//        for (int i : sortedCardValues){
-//            if (start != i){
-//                return false;
-//            }
-//            start++;
-//        }
-//        return true;
-//    }
-//    public static boolean isFlush(List<Card> hand){
-//        for (String suit : DeckBuilder.getSUITS()){
-//            int count = 0;
-//            for (Card card : hand){
-//                if (card.getSuit().equals(suit)){
-//                    count++;
-//                }
-//            }
-//            if (count == 5){
-//                highCardValue = hand.stream().mapToInt(v -> v.getValue()).max().orElse(0);
-//                return true;
-//            }
-//        }
-//        return false;
-////        String suit = hand.get(0).getSuit();
-////        for (Card card : hand){
-////            if (!card.getSuit().equals(suit)){
-////                return false;
-////            }
-////        }
-////        return true;
-//    }
-

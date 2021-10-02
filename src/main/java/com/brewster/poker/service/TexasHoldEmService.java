@@ -2,7 +2,7 @@ package com.brewster.poker.service;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.card.DeckBuilder;
-import com.brewster.poker.card.PokerHand;
+import com.brewster.poker.card.PokerHandEnum;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.card.PokerHandLookup;
 import com.brewster.poker.dto.PlayerDto;
@@ -71,7 +71,7 @@ public class TexasHoldEmService implements GameService {
                int winningStrength = 0;
                Player winner = null;
                for (Player player : activePlayers){
-                    PokerHand pokerHand = PokerHand.lookupHand(player.getHand());
+                    PokerHandEnum pokerHand = PokerHandEnum.lookupHand(player.getCards());
                     LOGGER.info("{} has a {}", player.getDisplayName(), pokerHand.getHandName());
                     player.setPokerHand(pokerHand);
                     playerDtos.add(new PlayerDto(player));
@@ -149,7 +149,7 @@ public class TexasHoldEmService implements GameService {
      private void cardsDebug(){
           for (Player each : players){
                LOGGER.info(each.getDisplayName());
-               each.getHand().forEach(v -> LOGGER.info(v.toString()));
+               each.getCards().forEach(v -> LOGGER.info(v.toString()));
           }
           LOGGER.info("/n");
      }
@@ -185,7 +185,7 @@ public class TexasHoldEmService implements GameService {
 
      public NewGameResponse getNewGameResponse(UserDto userDto){
           LOGGER.info(userDto.toString());
-          List<Card> playerCards = userDto.getPlayer().getHand();
+          List<Card> playerCards = userDto.getPlayer().getCards();
           BetOptions options = betManager.manageComputerBets();
           LOGGER.info(options.toString(), playerCards);
           return new NewGameResponse(id, playerCards, getUsers(userDto), options, userDto.getMoney());

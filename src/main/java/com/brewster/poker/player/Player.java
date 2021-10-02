@@ -3,29 +3,29 @@ package com.brewster.poker.player;
 import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.service.GameService;
-import com.brewster.poker.card.PokerHand;
+import com.brewster.poker.card.PokerHandEnum;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Player {
-    private List<Card> hand;
+    private List<Card> cards;
     private String displayName;
     private int money;
     private GameService game;
     private UserDto user;
-    private PokerHand pokerHand;
+    private PokerHandEnum pokerHand;
     private int currentBetAmount = 0;
 
     public Player(String displayName){
         this.displayName = displayName;
-        hand = new ArrayList<>();
+        cards = new ArrayList<>();
     }
     public Player(String displayName, UserDto userDto){
         this.displayName = displayName;
         this.user = userDto;
         this.money = userDto.getMoney();
-        hand = new ArrayList<>();
+        cards = new ArrayList<>();
     }
 
     public abstract void joinGame();
@@ -42,9 +42,15 @@ public abstract class Player {
         this.user.setMoney(this.money);
     }
 
-    public void dealCard(Card card){ this.hand.add(card); }
+    public void dealCard(Card card){ this.cards.add(card); }
 
-    public void setHoleCards(){}
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
 
     public int getCurrentBetAmount() {
         return currentBetAmount;
@@ -52,14 +58,6 @@ public abstract class Player {
 
     public void resetCurrentBetAmount() {
         this.currentBetAmount = 0;
-    }
-
-    public List<Card> getHand() {
-        return hand;
-    }
-
-    public void setHand(List<Card> hand) {
-        this.hand = hand;
     }
 
     public String getDisplayName() {
@@ -94,11 +92,11 @@ public abstract class Player {
         this.user = user;
     }
 
-    public PokerHand getPokerHand() {
+    public PokerHandEnum getPokerHand() {
         return pokerHand;
     }
 
-    public void setPokerHand(PokerHand pokerHand) {
+    public void setPokerHand(PokerHandEnum pokerHand) {
         this.pokerHand = pokerHand;
     }
 }

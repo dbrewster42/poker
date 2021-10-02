@@ -16,6 +16,9 @@ public class CardHandBuilder {
     public static int[] buildLowAceStraightValues(){
         return new int[]{2, 3, 4, 5, 14};
     }
+    public static int[] buildLowAceStraightWithSevenCards(){
+        return new int[]{2, 3, 4, 5, 9, 12, 14};
+    }
     public static int[] buildAlmostStraightValues(){
         return new int[]{2, 3, 4, 13, 14};
     }

@@ -42,7 +42,7 @@ public class UserServiceImplementation implements UserService {
         oldUser.setMoney(updatedMoney);
         Optional.ofNullable(oldUser).filter(v -> v.getMoney() == updatedMoney)
                 .orElseThrow(() -> new RuntimeException("user's money was not saved correctly"));
-        
+
         User updatedUser = userRepository.save(oldUser);
 
         UserDto returnValue = new UserDto();
