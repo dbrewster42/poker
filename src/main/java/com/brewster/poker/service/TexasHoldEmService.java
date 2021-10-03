@@ -83,11 +83,11 @@ public class TexasHoldEmService implements GameService {
                     } else if (winningStrength == score){
                          //TODO tiebreaker
                          LOGGER.info("THERE IS A TIE {}", pokerHand.getHandName());
-                         PokerHandTieBreaker tieBreaker = new PokerHandTieBreaker(winner, player);
+//                         PokerHandTieBreaker tieBreaker = new PokerHandTieBreaker(winner, player);
                          if (winners.size() < 2){
-                              winners = tieBreaker.getTieBreaker();
+                              winners = PokerHandTieBreaker.getTieBreaker(winner, player);
                          } else {
-                              if (tieBreaker.getTieBreaker().size() > 1){
+                              if (PokerHandTieBreaker.getTieBreaker(winner, player).size() > 1){
                                    winners.add(player);
                               }
                          }

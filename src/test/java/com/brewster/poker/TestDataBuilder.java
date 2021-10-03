@@ -40,4 +40,9 @@ public class TestDataBuilder {
           player.setCards(CardHandBuilder.buildPair());
           return player;
      }
+     public static Player getTwoPairPlayer(){
+          Player player = getPlayer();
+          player.setCards(CardHandBuilder.buildTwoPairWithSevenCards());
+          return player;
+     }
 }

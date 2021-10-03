@@ -105,6 +105,14 @@ public class CardHandBuilder {
         hand.add(cards.get(1));
         return hand;
     }
+    public static List<Card> buildWorsePair(){
+        List<Card> hand = new ArrayList<>();
+        for (int i = 10; i < 44; i+=11){
+            hand.add(cards.get(i));
+        }
+        hand.add(cards.get(11));
+        return hand;
+    }
     public static List<Card> buildPairWithSeven(){
         List<Card> hand = buildPair();
         hand.add(cards.get(39));

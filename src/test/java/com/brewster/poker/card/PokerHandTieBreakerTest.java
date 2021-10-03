@@ -1,26 +1,39 @@
 package com.brewster.poker.card;
 
+import com.brewster.poker.CardHandBuilder;
 import com.brewster.poker.TestDataBuilder;
-import org.junit.jupiter.api.BeforeEach;
+import com.brewster.poker.player.Player;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PokerHandTieBreakerTest {
-     private PokerHandTieBreaker sut;
-
-//     @BeforeEach
-//     void setUp() {
-//          sut = new PokerHandTieBreaker(TestDataBuilder.getPlayer(), TestDataBuilder.getPlayer());
-//     }
+     private Player player = TestDataBuilder.getPlayer();
 
      @Test
      void tieBreaker(){
-          sut = new PokerHandTieBreaker(TestDataBuilder.getPlayer(), TestDataBuilder.getPlayer());
-          assertEquals(2, sut.getTieBreaker().size());
+          assertEquals(2, PokerHandTieBreaker.getTieBreaker(player, TestDataBuilder.getPlayer()).size());
      }
 
      @Test
      void getTieBreaker() {
+          Player loser = TestDataBuilder.getPlayer();
+          loser.setCards(CardHandBuilder.buildWorsePair());
+          List<Player> playerList = PokerHandTieBreaker.getTieBreaker(player, loser);
+          assertEquals(player, playerList.get(0));
+     }
+
+     @Test
+     void getTwoPairTieBreaker() {
+          Player player = TestDataBuilder.getTwoPairPlayer();
+          Player loser = TestDataBuilder.getTwoPairPlayer();
+
+     }
+     @Test
+     void getTwoPairTieBreaker2() {
+
      }
 }
