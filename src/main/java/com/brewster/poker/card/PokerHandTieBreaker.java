@@ -16,20 +16,11 @@ import static com.brewster.poker.card.PokerHandEnum.THREE_KIND;
 import static com.brewster.poker.card.PokerHandEnum.TWO_PAIR;
 
 public class PokerHandTieBreaker {
-//     private Player firstPlayer;
-//     private Player secondPlayer;
      private static PokerHandEnum pokerHand;
 
-//     public PokerHandTieBreaker(Player first, Player second){
-//          this.firstPlayer = first;
-//          this.secondPlayer = second;
-//          pokerHand = first.getPokerHand();
-//
-//     }
-     public static List<Player> getTieBreaker(Player first, Player second){
-          Player firstPlayer = first;
-          Player secondPlayer = second;
-          pokerHand = first.getPokerHand();
+
+     public static List<Player> getTieBreaker(Player firstPlayer, Player secondPlayer){
+          pokerHand = firstPlayer.getPokerHand();
           //sorted descending
           List<Card> firstHand = firstPlayer.getCards().stream().sorted((a, b) -> b.getValue() - a.getValue()).collect(Collectors.toList());
           List<Card> secondHand = secondPlayer.getCards().stream().sorted((a, b) -> b.getValue() - a.getValue()).collect(Collectors.toList());

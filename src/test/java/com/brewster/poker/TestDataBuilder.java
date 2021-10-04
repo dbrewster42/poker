@@ -1,6 +1,7 @@
 package com.brewster.poker;
 
 import com.brewster.poker.bet.Action;
+import com.brewster.poker.card.PokerHandEnum;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
@@ -38,11 +39,13 @@ public class TestDataBuilder {
           userDto.setMoney(100);
           Player player = new HumanPlayer("John", userDto);
           player.setCards(CardHandBuilder.buildPair());
+          player.setPokerHand(PokerHandEnum.PAIR);
           return player;
      }
      public static Player getTwoPairPlayer(){
           Player player = getPlayer();
           player.setCards(CardHandBuilder.buildTwoPairWithSevenCards());
+          player.setPokerHand(PokerHandEnum.TWO_PAIR);
           return player;
      }
 }

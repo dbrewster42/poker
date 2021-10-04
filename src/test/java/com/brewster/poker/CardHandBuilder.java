@@ -105,6 +105,7 @@ public class CardHandBuilder {
         hand.add(cards.get(1));
         return hand;
     }
+
     public static List<Card> buildWorsePair(){
         List<Card> hand = new ArrayList<>();
         for (int i = 10; i < 44; i+=11){
@@ -117,6 +118,12 @@ public class CardHandBuilder {
         List<Card> hand = buildPair();
         hand.add(cards.get(39));
         hand.add(cards.get(44));
+        return hand;
+    }
+    public static List<Card> buildPairWithBetterHighCardWithSeven(){
+        List<Card> hand = buildPair();
+        hand.add(cards.get(39));
+        hand.add(cards.get(50));
         return hand;
     }
     public static List<Card> buildStraight(){
@@ -172,6 +179,20 @@ public class CardHandBuilder {
         hand.add(cards.get(24));
         hand.add(cards.get(34));
 
+        return hand;
+    }
+    public static List<Card> buildLowerHighTwoPairWithSevenCards(){
+        List<Card> hand = buildTwoPairWithSevenCards();
+        hand.remove(0);
+        hand.remove(1);
+        hand.add(cards.get(50));
+        hand.add(cards.get(51));
+        return hand;
+    }
+    public static List<Card> buildHigherLowTwoPairWithSevenCards(){
+        List<Card> hand = buildTwoPairWithSevenCards();
+        hand.remove(2);
+        hand.add(cards.get(25));
         return hand;
     }
 }
