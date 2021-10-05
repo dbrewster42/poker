@@ -1,6 +1,7 @@
 package com.brewster.poker.card;
 
 import com.brewster.poker.CardHandBuilder;
+import com.brewster.poker.TestDataBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PokerHandTest {
     int[] lowAceStraight = CardHandBuilder.buildLowAceStraightValues();
+    int[] sevenCardLowAceStraight = CardHandBuilder.buildLowAceStraightWithSevenCards();
     int[] highAceStraight = CardHandBuilder.buildHighAceStraightValues();
     int[] almostStraight = CardHandBuilder.buildAlmostStraightValues();
     static List<Card> flush = CardHandBuilder.buildFlush();
@@ -31,39 +33,39 @@ class PokerHandTest {
 
     @Test
     void lookupHandWithHighCard() {
-        assertEquals(PokerHand.HIGH_CARD, PokerHand.lookupHand(highCardCards));
+        assertEquals(PokerHandEnum.HIGH_CARD, PokerHandEnum.lookupHand(highCardCards));
     }
     @Test
     void lookupHandWithPair() {
-        assertEquals(PokerHand.PAIR, PokerHand.lookupHand(pairCards));
+        assertEquals(PokerHandEnum.PAIR, PokerHandEnum.lookupHand(pairCards));
     }
     @Test
     void lookupHandWithTwoPair() {
-        assertEquals(PokerHand.TWO_PAIR, PokerHand.lookupHand(twoPairCards));
+        assertEquals(PokerHandEnum.TWO_PAIR, PokerHandEnum.lookupHand(twoPairCards));
     }
     @Test
     void lookupHandWithThreeKind() {
-        assertEquals(PokerHand.THREE_KIND, PokerHand.lookupHand(threeOfAKind));
+        assertEquals(PokerHandEnum.THREE_KIND, PokerHandEnum.lookupHand(threeOfAKind));
     }
     @Test
     void lookupHandWithStraight() {
-        assertEquals(PokerHand.STRAIGHT, PokerHand.lookupHand(straightCards));
+        assertEquals(PokerHandEnum.STRAIGHT, PokerHandEnum.lookupHand(straightCards));
     }
     @Test
     void lookupHandWithFlush() {
-        assertEquals(PokerHand.FLUSH, PokerHand.lookupHand(flush));
+        assertEquals(PokerHandEnum.FLUSH, PokerHandEnum.lookupHand(flush));
     }
     @Test
     void lookupHandWithFullHouse() {
-        assertEquals(PokerHand.FULL_HOUSE, PokerHand.lookupHand(fullHouseCards));
+        assertEquals(PokerHandEnum.FULL_HOUSE, PokerHandEnum.lookupHand(fullHouseCards));
     }
     @Test
     void lookupHandWithFourKind() {
-        assertEquals(PokerHand.FOUR_KIND, PokerHand.lookupHand(fourOfAKind));
+        assertEquals(PokerHandEnum.FOUR_KIND, PokerHandEnum.lookupHand(fourOfAKind));
     }
     @Test
     void lookupHandWithStraightFlush() {
-        assertEquals(PokerHand.STRAIGHT_FLUSH, PokerHand.lookupHand(straightFlush));
+        assertEquals(PokerHandEnum.STRAIGHT_FLUSH, PokerHandEnum.lookupHand(straightFlush));
     }
 
     @Test
@@ -74,11 +76,14 @@ class PokerHandTest {
     void isStraightFalse() {
         assertFalse(PokerHandLookup.isStraight(twoPair));
     }
-    //FIXME need to account for low ace
-//    @Test
-//    void isStraightWithLowAce() {
-//        assertEquals(true, PokerHand.isStraight(lowAceStraight));
-//    }
+    @Test
+    void isStraightWithLowAce() {
+        assertEquals(true, PokerHandLookup.isStraight(lowAceStraight));
+    }
+    @Test
+    void isStraightWithLowAce2() {
+        assertEquals(true, PokerHandLookup.isStraight(sevenCardLowAceStraight));
+    }
     @Test
     void isStraightWithHighAce() {
         assertEquals(true, PokerHandLookup.isStraight(highAceStraight));
@@ -99,27 +104,27 @@ class PokerHandTest {
 
     @Test
     void returnPairCombosWithHighCard() {
-        assertEquals(PokerHand.HIGH_CARD, PokerHandLookup.returnPairCombos(highCard));
+        assertEquals(PokerHandEnum.HIGH_CARD, PokerHandLookup.returnPairCombos(highCard));
     }
     @Test
     void returnPairCombosWithPair() {
-        assertEquals(PokerHand.PAIR, PokerHandLookup.returnPairCombos(onePair));
+        assertEquals(PokerHandEnum.PAIR, PokerHandLookup.returnPairCombos(onePair));
     }
     @Test
     void returnPairCombosWithTwoPair() {
-        assertEquals(PokerHand.TWO_PAIR, PokerHandLookup.returnPairCombos(twoPair));
+        assertEquals(PokerHandEnum.TWO_PAIR, PokerHandLookup.returnPairCombos(twoPair));
     }
     @Test
     void returnPairCombosWithThreeOfKind() {
-        assertEquals(PokerHand.THREE_KIND, PokerHandLookup.returnPairCombos(threeKind));
+        assertEquals(PokerHandEnum.THREE_KIND, PokerHandLookup.returnPairCombos(threeKind));
     }
     @Test
     void returnPairCombosWithFullHouse() {
-        assertEquals(PokerHand.FULL_HOUSE, PokerHandLookup.returnPairCombos(fullHouse));
+        assertEquals(PokerHandEnum.FULL_HOUSE, PokerHandLookup.returnPairCombos(fullHouse));
     }
     @Test
     void returnPairCombosWithFourKind() {
-        assertEquals(PokerHand.FOUR_KIND, PokerHandLookup.returnPairCombos(fourKind));
+        assertEquals(PokerHandEnum.FOUR_KIND, PokerHandLookup.returnPairCombos(fourKind));
     }
 
     @Test

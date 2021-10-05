@@ -1,5 +1,6 @@
 package com.brewster.poker.model;
 
+import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.UserRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
@@ -22,6 +23,10 @@ public class User {
     public User(UserRequest request){
         username = request.getUsername();
         money = request.getMoney();
+    }
+    public User(UserDto dto){
+        username = dto.getUsername();
+        money = dto.getMoney();
     }
     public User(){ }
 

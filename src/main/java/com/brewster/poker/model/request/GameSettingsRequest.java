@@ -4,10 +4,11 @@ public class GameSettingsRequest {
     private String username;
     private String displayName;
     private boolean customRules;
-    private Integer numberOfPlayers;
-    private Integer bigBlind;
-    private Integer maxBet;
+    private int numberOfPlayers;
+    private int bigBlind;
+    private int maxBet;
     private boolean fillWithComputerPlayers;
+    private int buyIn;
 
     public String getUsername() {
         return username;
@@ -25,19 +26,19 @@ public class GameSettingsRequest {
         this.displayName = displayName;
     }
 
-    public Integer getNumberOfPlayers() {
+    public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
-    public void setNumberOfPlayers(Integer numberOfPlayers) {
+    public void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public Integer getBigBlind() {
+    public int getBigBlind() {
         return bigBlind;
     }
 
-    public void setBigBlind(Integer bigBlind) {
+    public void setBigBlind(int bigBlind) {
         this.bigBlind = bigBlind;
     }
 
@@ -49,11 +50,11 @@ public class GameSettingsRequest {
         this.customRules = customRules;
     }
 
-    public Integer getMaxBet() {
+    public int getMaxBet() {
         return maxBet;
     }
 
-    public void setMaxBet(Integer maxBet) {
+    public void setMaxBet(int maxBet) {
         this.maxBet = maxBet;
     }
 
@@ -63,6 +64,14 @@ public class GameSettingsRequest {
 
     public void setFillWithComputerPlayers(boolean fillWithComputerPlayers) {
         this.fillWithComputerPlayers = fillWithComputerPlayers;
+    }
+
+    public int getBuyIn() {
+        return buyIn;
+    }
+
+    public void setBuyIn(int buyIn) {
+        this.buyIn = buyIn;
     }
 
     @Override

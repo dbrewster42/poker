@@ -23,7 +23,7 @@ public class PlayerDto {
      }
      public PlayerDto(Player player) {
           this.displayName = player.getDisplayName();
-          this.cards = player.getHand();
+          this.cards = player.getCards();
           this.money = player.getMoney();
           this.pokerHandName = player.getPokerHand().getHandName();
      }

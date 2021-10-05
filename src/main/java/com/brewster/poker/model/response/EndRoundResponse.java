@@ -27,6 +27,11 @@ public class EndRoundResponse {
           this.activePlayers = activePlayers;
      }
 
+     public EndRoundResponse(String message, List<PlayerDto> activePlayers) {
+          this.message = message;
+          this.activePlayers = activePlayers;
+     }
+
      public EndRoundResponse() {}
 
      public String getMessage() {
