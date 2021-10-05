@@ -1,8 +1,5 @@
 package com.brewster.poker.card;
 
-import com.brewster.poker.player.Player;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +50,6 @@ public class PokerHandLookup {
           int firstPairCount;
           int secondPairCount = 1;
           if (counts.isEmpty()){
-//            highCardValue = sortedCardValues[sortedCardValues.length - 1];
                return HIGH_CARD;
           } else {
                firstPairCount = counts.get(0);

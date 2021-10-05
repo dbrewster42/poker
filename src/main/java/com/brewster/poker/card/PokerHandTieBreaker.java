@@ -1,6 +1,9 @@
 package com.brewster.poker.card;
 
 import com.brewster.poker.player.Player;
+import com.brewster.poker.service.TexasHoldEmService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,7 @@ import static com.brewster.poker.card.PokerHandEnum.THREE_KIND;
 import static com.brewster.poker.card.PokerHandEnum.TWO_PAIR;
 
 public class PokerHandTieBreaker {
+     private static final Logger LOGGER = LoggerFactory.getLogger(PokerHandTieBreaker.class);
      private static PokerHandEnum pokerHand;
 
 
@@ -25,8 +29,8 @@ public class PokerHandTieBreaker {
           List<Card> firstHand = firstPlayer.getCards().stream().sorted((a, b) -> b.getValue() - a.getValue()).collect(Collectors.toList());
           List<Card> secondHand = secondPlayer.getCards().stream().sorted((a, b) -> b.getValue() - a.getValue()).collect(Collectors.toList());
 
-          int[] firstCards = getPrimaryHighCard(firstHand);
-          int[] secondCards = getPrimaryHighCard(secondHand);
+          int[] firstCards = getHighCards(firstHand);
+          int[] secondCards = getHighCards(secondHand);
 
           List<Player> winners = new ArrayList<>();
           for (int i = 0; i < firstCards.length; i++){
@@ -52,7 +56,7 @@ public class PokerHandTieBreaker {
           return winners;
      }
 
-     private static int[] getPrimaryHighCard(List<Card> cards){
+     private static int[] getHighCards(List<Card> cards){
 //          List<Integer> highCards = new ArrayList<>();
           int[] highCards = new int[2];
           int highCard = 1;
@@ -60,13 +64,17 @@ public class PokerHandTieBreaker {
           if (pokerHand == PAIR || pokerHand == THREE_KIND || pokerHand == FOUR_KIND){
                highCard = getPairHighCard(cards, true);
                secondCard = getHighCard(cards, highCard);
+          } else if (){
+               //TODO full house trips should win. should have a count param instead of boolean
           } else if (pokerHand == TWO_PAIR || pokerHand == FULL_HOUSE){
                highCard = getPairHighCard(cards, true);
                secondCard = getPairHighCard(cards, false);
           } else if (pokerHand == FLUSH){
-               //TODO
+               cards = getFlushCards(cards);
+               highCard = cards.get(0).getValue();
+               secondCard = cards.get(1).getValue();
           } else if (pokerHand == STRAIGHT){
-               //TODO
+               highCard = getStraightHighCard(cards);
           }else if (pokerHand == HIGH_CARD){
                highCard = getHighCard(cards, 1);
                secondCard = getHighCard(cards, highCard);
@@ -103,16 +111,42 @@ public class PokerHandTieBreaker {
           return 0;
      }
 
-     private List<Card> getFiveBestCards(List<Card> cards, PokerHandEnum pokerHand){
-          int highCard;
-          if (pokerHand == PAIR){
-               for (int i = 0; i < cards.size() - 1; i++){
-                    if (cards.get(i).getValue() == cards.get(i + 1).getValue()){
-                         highCard = cards.get(i).getValue();
+     private static List<Card> getFlushCards(List<Card> cards){
+          for (String suit : DeckBuilder.getSUITS()) {
+               int count = 0;
+               for (Card card : cards) {
+                    if (card.getSuit().equals(suit)) {
+                         count++;
                     }
                }
+               if (count >= 5) {
+                    return cards.stream().filter(v -> v.getSuit().equals(suit)).collect(Collectors.toList());
+               }
           }
-          return cards;
+          cards.forEach(v -> LOGGER.info(v.toString()));
+          throw new RuntimeException("Cards are labeled a flush but couldn't find 5 cards of the same suit");
      }
 
+     private static int getStraightHighCard(List<Card> cards){
+          int[] cardValues = cards.stream().mapToInt(Card::getValue).sorted().toArray();
+          int start = -1;
+          int count = 1;
+          int highCard = 0;
+          for (int i : cardValues){
+               if (start == i){
+                    count++;
+               } else {
+                    if (start - 1 == i){
+                         continue;
+                    }
+                    count = 1;
+                    start = i;
+               }
+               if (count >= 4){
+                    highCard = i;
+               }
+               start++;
+          }
+          return highCard;
+     }
 }
