@@ -1,7 +1,6 @@
 package com.brewster.poker.card;
 
 import com.brewster.poker.player.Player;
-import com.brewster.poker.service.TexasHoldEmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,35 +46,30 @@ public class PokerHandTieBreaker {
                winners.add(firstPlayer);
                winners.add(secondPlayer);
           }
-//          if (firstHighCard >= secondHighCard){
-//               winners.add(firstPlayer);
-//          }
-//          if (secondHighCard >= firstHighCard){
-//               winners.add(secondPlayer);
-//          }
+
           return winners;
      }
 
      private static int[] getHighCards(List<Card> cards){
 //          List<Integer> highCards = new ArrayList<>();
           int[] highCards = new int[2];
-          int highCard = 1;
-          int secondCard = 1;
-          if (pokerHand == PAIR || pokerHand == THREE_KIND || pokerHand == FOUR_KIND){
+          int highCard = 0;
+          int secondCard = 0;
+          if (pokerHand == PAIR || pokerHand == THREE_KIND){
                highCard = getPairHighCard(cards, true);
                secondCard = getHighCard(cards, highCard);
-          } else if (){
-               //TODO full house trips should win. should have a count param instead of boolean
-          } else if (pokerHand == TWO_PAIR || pokerHand == FULL_HOUSE){
+          } else if (pokerHand == TWO_PAIR){
                highCard = getPairHighCard(cards, true);
                secondCard = getPairHighCard(cards, false);
+          } else if (pokerHand == FULL_HOUSE || pokerHand == FOUR_KIND){
+               highCard = getTripsHighCard(cards);
           } else if (pokerHand == FLUSH){
                cards = getFlushCards(cards);
                highCard = cards.get(0).getValue();
                secondCard = cards.get(1).getValue();
           } else if (pokerHand == STRAIGHT){
                highCard = getStraightHighCard(cards);
-          }else if (pokerHand == HIGH_CARD){
+          } else if (pokerHand == HIGH_CARD){
                highCard = getHighCard(cards, 1);
                secondCard = getHighCard(cards, highCard);
           }
@@ -123,7 +117,6 @@ public class PokerHandTieBreaker {
                     return cards.stream().filter(v -> v.getSuit().equals(suit)).collect(Collectors.toList());
                }
           }
-          cards.forEach(v -> LOGGER.info(v.toString()));
           throw new RuntimeException("Cards are labeled a flush but couldn't find 5 cards of the same suit");
      }
 
@@ -148,5 +141,23 @@ public class PokerHandTieBreaker {
                start++;
           }
           return highCard;
+     }
+     private static int getTripsHighCard(List<Card> cards){
+          int highCard = 0;
+
+          for (int i = 0; i < cards.size() - 1; i++){
+               if (cards.get(i).getValue() == cards.get(i + 1).getValue() && cards.get(i).getValue() == cards.get(i + 2).getValue()){
+                    highCard = cards.get(i).getValue();
+                    break;
+               }
+          }
+          if (highCard == 0){
+               throw new RuntimeException("error calculating trips high card");
+          }
+          return highCard;
+     }
+
+     private static void debug(List<Card> cards){
+          cards.forEach(v -> LOGGER.info(v.toString()));
      }
 }
