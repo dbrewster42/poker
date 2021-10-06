@@ -58,7 +58,7 @@ public class BetService {
 //        activeBetters = new ArrayList<>();
     }
 
-    public void placeBet(BetRequest betRequest){
+    public int placeBet(BetRequest betRequest){
         Player player = currentBetter;
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
         String validationStatement = validateBet(betRequest, player);
@@ -68,8 +68,10 @@ public class BetService {
             LOGGER.info("Bet has been processed - {}", message);
 
             betMessages.add(message);
+            int userMoney = currentBetter.getMoney();
 //          betsMade.add(new BetDto(bet, returnStatement));
             adjustTurn();
+            return userMoney;
         } else {
             LOGGER.info("Bet Invalid - {}", validationStatement);
             throw new InvalidBetException(validationStatement);
@@ -187,11 +189,6 @@ public class BetService {
         activeBetters.remove(player);
         turnNumber--;
         updateActivePlayersSize();
-    }
-
-    public int getCurrentBettersMoney(){
-        LOGGER.info("{} has {}$", currentBetter.getDisplayName(), currentBetter.getMoney());
-        return currentBetter.getMoney();
     }
 
     public Player adjustCurrentPlayer(int turn){
