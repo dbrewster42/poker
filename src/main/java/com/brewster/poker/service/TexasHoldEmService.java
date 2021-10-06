@@ -29,7 +29,7 @@ public class TexasHoldEmService implements GameService {
      private List<Player> players;
      private int openSlots;
      private List<Card> cards;
-     private List<Card> riverCards = new ArrayList<>();
+     private List<Card> riverCards;
      private int desiredNumberOfPlayers;
      private BetService betManager;
      private boolean isBet;
@@ -118,8 +118,10 @@ public class TexasHoldEmService implements GameService {
 
      public BetOptions startNewDeal(){
           cards = getNewStandardDeck();
+          riverCards = new ArrayList<>();
           dealPlayerCards();
           isBet = true;
+          isDealDone = false;
           return betManager.startNewDeal();
      }
 
@@ -177,6 +179,7 @@ public class TexasHoldEmService implements GameService {
      }
 
      private void dealPlayerCards(){
+          players.forEach(Player::resetCards);
           for (int i = 0; i < 2; i++){
                for (Player player : players){
                     player.dealCard(cards.get(0));

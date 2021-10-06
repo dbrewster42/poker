@@ -55,7 +55,7 @@ public class GameController {
 
     @PostMapping("{id}/restart")
     public NewGameResponse getNewRound(@PathVariable int id, @RequestBody UserRequest request){
-        LOGGER.info(request.getUsername(), id);
+        LOGGER.info("{} has requested a new game for {}", request.getUsername(), id);
         game = gamesContainer.findGameById(id);
         game.startNewDeal();
         userDto = game.getUser(request.getUsername());

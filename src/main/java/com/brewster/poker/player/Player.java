@@ -19,13 +19,13 @@ public abstract class Player {
 
     public Player(String displayName){
         this.displayName = displayName;
-        cards = new ArrayList<>();
+//        cards = new ArrayList<>();
     }
     public Player(String displayName, UserDto userDto){
         this.displayName = displayName;
         this.user = userDto;
         this.money = userDto.getMoney();
-        cards = new ArrayList<>();
+//        cards = new ArrayList<>();
     }
 
     public abstract void joinGame();
@@ -50,6 +50,10 @@ public abstract class Player {
 
     public void setCards(List<Card> cards) {
         this.cards = cards;
+    }
+
+    public void resetCards() {
+        this.cards = new ArrayList<>();
     }
 
     public int getCurrentBetAmount() {

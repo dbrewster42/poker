@@ -54,8 +54,8 @@ public class BetService {
         this.bigBlind = request.getBigBlind();
         this.maxBet = Optional.ofNullable(request.getMaxBet()).map(v -> v == 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
         betFactory = new BetFactoryImplementation();
-        betMessages = new ArrayList<>();
-        activeBetters = new ArrayList<>();
+//        betMessages = new ArrayList<>();
+//        activeBetters = new ArrayList<>();
     }
 
     public void placeBet(BetRequest betRequest){
@@ -126,7 +126,9 @@ public class BetService {
     protected BetOptions startNewDeal(){
         pot = 0;
         bigBlindTurn++;
+        activeBetters = new ArrayList<>();
         activeBetters.addAll(game.getPlayers());
+        betMessages = new ArrayList<>();
         setAllRoundInformation();
         LOGGER.info("starting new deal with " + turnsLeftInRound + " turns");
         return getBetOptions();
@@ -135,12 +137,12 @@ public class BetService {
     private void setAllRoundInformation(){
         betAmount = 0;
         turnNumber = bigBlindTurn;
+        activePlayersSize = activeBetters.size();
         if (turnNumber == activePlayersSize){
             LOGGER.info("not enough players left");
             turnNumber = 0;
         }
         currentBetter = activeBetters.get(turnNumber);
-        activePlayersSize = activeBetters.size();
         turnsLeftInRound = activePlayersSize;
         activeBetters.forEach(Player::resetCurrentBetAmount);
     }
