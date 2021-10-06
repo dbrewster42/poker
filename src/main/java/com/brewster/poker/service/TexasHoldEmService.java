@@ -84,13 +84,18 @@ public class TexasHoldEmService implements GameService {
                     } else if (winningStrength == score){
                          //TODO tiebreaker
                          LOGGER.info("THERE IS A TIE {}", pokerHand.getHandName());
+                         LOGGER.info("previous winners - {}", winners.size());
                          if (winners.size() < 2){
                               winners = PokerHandTieBreaker.getTieBreaker(winner, player);
+                              if (winners.size() == 1){
+                                   winner = winners.get(0);
+                              }
                          } else {
                               if (PokerHandTieBreaker.getTieBreaker(winner, player).size() > 1){
                                    winners.add(player);
                               }
                          }
+                         winners.forEach(v -> LOGGER.info(v.getDisplayName() + " ***** !"));
                     }
                }
                if (winners.size() > 1){

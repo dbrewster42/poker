@@ -139,11 +139,11 @@ public class BetService {
     private void setAllRoundInformation(){
         betAmount = 0;
         turnNumber = bigBlindTurn;
-        activePlayersSize = activeBetters.size();
         if (turnNumber == activePlayersSize){
             LOGGER.info("not enough players left");
             turnNumber = 0;
         }
+        activePlayersSize = activeBetters.size(); //todo here or before turn number? if before, should it be >=?
         currentBetter = activeBetters.get(turnNumber);
         turnsLeftInRound = activePlayersSize;
         activeBetters.forEach(Player::resetCurrentBetAmount);

@@ -3,6 +3,7 @@
 or it should require a manual call.
 6. add blinds
 7. at least one bug with tiebreaker
+8. more improvements to computer betting
 
 
 ## bugs

@@ -43,7 +43,7 @@ public class PokerHandTieBreaker {
                }
                if (firstCards[i] < secondCards[i]){
                     winners.add(secondPlayer);
-                    LOGGER.info("{} wins! His {} beats the {}", secondPlayer.getDisplayName(), firstCards[i], secondCards[i]);
+                    LOGGER.info("{} wins! His {} beats the {}", secondPlayer.getDisplayName(), secondCards[i], firstCards[i]);
                     break;
                }
           }
