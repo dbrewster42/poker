@@ -50,7 +50,7 @@ public class BetController {
         BetService betManager = game.getBetManager();
 
         betManager.placeBet(request);
-        LOGGER.info("Controller: Bet has been placed");
+        LOGGER.info("Controller: Bet has been placed - {}", betManager.getCurrentBettersMoney());
         return new BetResponse(game.isBet(), betManager.getBetMessages(), betManager.getCurrentBettersMoney(), game.isDealDone());
     }
 

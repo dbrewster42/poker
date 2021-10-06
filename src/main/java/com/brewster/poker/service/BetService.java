@@ -190,6 +190,7 @@ public class BetService {
     }
 
     public int getCurrentBettersMoney(){
+        LOGGER.info("{} has {}$", currentBetter.getDisplayName(), currentBetter.getMoney());
         return currentBetter.getMoney();
     }
 

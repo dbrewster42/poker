@@ -4,7 +4,6 @@ import com.brewster.poker.card.Card;
 import com.brewster.poker.card.DeckBuilder;
 import com.brewster.poker.card.PokerHandEnum;
 import com.brewster.poker.bet.BetOptions;
-import com.brewster.poker.card.PokerHandLookup;
 import com.brewster.poker.card.PokerHandTieBreaker;
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.dto.UserDto;
@@ -77,13 +76,14 @@ public class TexasHoldEmService implements GameService {
                     player.setPokerHand(pokerHand);
                     playerDtos.add(new PlayerDto(player));
                     int score = pokerHand.getScore();
-                    if (winningStrength < score){
+                    LOGGER.info("previous winning strength = {} and newcomer's score = {}", winningStrength, score);
+                    if (score > winningStrength){
                          winningStrength = score;
                          winner = player;
+                         winners = List.of(winner);
                     } else if (winningStrength == score){
                          //TODO tiebreaker
                          LOGGER.info("THERE IS A TIE {}", pokerHand.getHandName());
-//                         PokerHandTieBreaker tieBreaker = new PokerHandTieBreaker(winner, player);
                          if (winners.size() < 2){
                               winners = PokerHandTieBreaker.getTieBreaker(winner, player);
                          } else {

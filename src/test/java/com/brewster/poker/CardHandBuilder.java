@@ -184,7 +184,7 @@ public class CardHandBuilder {
     public static List<Card> buildLowerHighTwoPairWithSevenCards(){
         List<Card> hand = buildTwoPairWithSevenCards();
         hand.remove(0);
-        hand.remove(1);
+        hand.remove(0);
         hand.add(cards.get(50));
         hand.add(cards.get(51));
         return hand;

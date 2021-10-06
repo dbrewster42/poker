@@ -8,6 +8,7 @@ or it should require a manual call.
 ## bugs
 raise needs to be clearer in the front end
 betting should start with bigBlind and then auto bet on first turn
+user money inconsistent 
 
 
 ## should I display other's money?

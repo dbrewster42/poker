@@ -14,6 +14,7 @@ import static com.brewster.poker.card.PokerHandEnum.FULL_HOUSE;
 import static com.brewster.poker.card.PokerHandEnum.HIGH_CARD;
 import static com.brewster.poker.card.PokerHandEnum.PAIR;
 import static com.brewster.poker.card.PokerHandEnum.STRAIGHT;
+import static com.brewster.poker.card.PokerHandEnum.STRAIGHT_FLUSH;
 import static com.brewster.poker.card.PokerHandEnum.THREE_KIND;
 import static com.brewster.poker.card.PokerHandEnum.TWO_PAIR;
 
@@ -37,12 +38,12 @@ public class PokerHandTieBreaker {
           for (int i = 0; i < firstCards.length; i++){
                if (firstCards[i] > secondCards[i]){
                     winners.add(firstPlayer);
-                    LOGGER.info("{} wins!", firstPlayer.getDisplayName());
+                    LOGGER.info("{} wins! His {} beats the {}", firstPlayer.getDisplayName(), firstCards[i], secondCards[i]);
                     break;
                }
                if (firstCards[i] < secondCards[i]){
                     winners.add(secondPlayer);
-                    LOGGER.info("{} wins!", secondPlayer.getDisplayName());
+                    LOGGER.info("{} wins! His {} beats the {}", secondPlayer.getDisplayName(), firstCards[i], secondCards[i]);
                     break;
                }
           }
@@ -55,7 +56,6 @@ public class PokerHandTieBreaker {
      }
 
      private static int[] getHighCards(List<Card> cards){
-//          List<Integer> highCards = new ArrayList<>();
           int[] highCards = new int[3];
           int highCard = 0;
           int secondCard = 0;
@@ -76,6 +76,9 @@ public class PokerHandTieBreaker {
                secondCard = cards.get(1).getValue();
                thirdCard = cards.get(2).getValue();
           } else if (pokerHand == STRAIGHT){
+               highCard = getStraightHighCard(cards);
+          } else if (pokerHand == STRAIGHT_FLUSH){
+               cards = getFlushCards(cards);
                highCard = getStraightHighCard(cards);
           } else if (pokerHand == HIGH_CARD){
                highCard = getHighCard(cards, 1);
