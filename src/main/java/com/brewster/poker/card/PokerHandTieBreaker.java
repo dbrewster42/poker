@@ -60,10 +60,11 @@ public class PokerHandTieBreaker {
           int highCard = 0;
           int secondCard = 0;
           int thirdCard = 0;
+          int fourthCard = 0;
           if (pokerHand == PAIR){
                highCard = getPairHighCard(cards, true);
                secondCard = getHighCard(cards, highCard);
-               thirdCard = getThirdHighCard(cards, highCard, secondCard);
+               thirdCard = getThirdHighCard(cards, highCard, secondCard);//TODO convert params to list
           } else if (pokerHand == TWO_PAIR){
                highCard = getPairHighCard(cards, true);
                secondCard = getPairHighCard(cards, false);

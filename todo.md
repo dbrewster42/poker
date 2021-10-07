@@ -3,13 +3,13 @@
 or it should require a manual call.
 6. add blinds
 7. at least one bug with tiebreaker
-8. more improvements to computer betting
+8. more improvements to computer betting. particularly in regards to discounting river cards
 
 
 ## bugs
 raise needs to be clearer in the front end
 betting should start with bigBlind and then auto bet on first turn
-user money inconsistent 
+computer names in front end
 
 
 ## should I display other's money?

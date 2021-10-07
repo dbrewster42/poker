@@ -50,11 +50,11 @@ public class BetService {
     }
 
     public int placeBet(BetRequest betRequest){
-        Player player = currentBetter;
+//        Player player = currentBetter;
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
-        String validationStatement = validateBet(betRequest, player);
+        String validationStatement = validateBet(betRequest, currentBetter);
         if (validationStatement.isEmpty()) {
-            Bet bet = betFactory.createBet(player, betRequest, this);
+            Bet bet = betFactory.createBet(currentBetter, betRequest, this);
             String message = bet.process();
             LOGGER.info("Bet has been processed - {}", message);
 
@@ -116,14 +116,23 @@ public class BetService {
         LOGGER.info("starting new round with " + currentBetter.getDisplayName());
     }
 
+    private void initBigBlind(){
+        currentBetter.betMoney(bigBlind);
+        betAmount = bigBlind;
+//        setPot(bigBlind);
+        betMessages.add(currentBetter.getDisplayName() + " posts the $" + bigBlind + "  blind");
+        adjustTurn();
+    }
+
     protected BetOptions startNewDeal(){
-        pot = 0;
+        pot = bigBlind;
         bigBlindTurn++;
         activeBetters = new ArrayList<>();
         activeBetters.addAll(game.getPlayers());
         betMessages = new ArrayList<>();
         setAllRoundInformation();
         LOGGER.info("starting new deal with " + turnsLeftInRound + " turns");
+        initBigBlind();
         return getBetOptions();
     }
 
@@ -204,6 +213,10 @@ public class BetService {
 
     public int getBetAmount() {
         return betAmount;
+    }
+
+    public void addBetMessage(String betMessage) {
+        betMessages.add(betMessage);
     }
 
     public List<String> getBetMessages() {

@@ -134,6 +134,7 @@ public class TexasHoldEmService implements GameService {
                EndRoundResponse endRoundResponse = calculateWinningHand();
                userService.updateUsersMoney(players);
                betManager.setPot(0);
+               betManager.addBetMessage(endRoundResponse.getMessage());
                return new GameResponse(endRoundResponse);
           }
           betManager.deal();
