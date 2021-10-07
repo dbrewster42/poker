@@ -5,21 +5,14 @@ import com.brewster.poker.bet.Bet;
 import com.brewster.poker.bet.BetFactory;
 import com.brewster.poker.bet.BetFactoryImplementation;
 import com.brewster.poker.bet.BetOptions;
-import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.InvalidBetException;
-import com.brewster.poker.exception.UserNotFoundException;
-import com.brewster.poker.model.BetEntity;
-import com.brewster.poker.model.User;
+import com.brewster.poker.model.request.BetRequest;
+import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
-import com.brewster.poker.model.request.BetRequest;
-import com.brewster.poker.model.request.GameSettingsRequest;
-import com.brewster.poker.repository.BetRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +20,7 @@ import java.util.Optional;
 
 public class BetService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BetService.class);
-    private int id;
+    private final int id;
     private final GameService game;
     private int activePlayersSize;
     private int bigBlind;
@@ -44,8 +37,6 @@ public class BetService {
     private final BetFactory betFactory;
     private List<String> betMessages;
     private int bigBlindTurn = -1;
-    @Autowired
-    BetRepository betRepository;
 
     public BetService(GameService game, GameSettingsRequest request) {
         this.id = game.getId();
@@ -139,14 +130,14 @@ public class BetService {
     private void setAllRoundInformation(){
         betAmount = 0;
         turnNumber = bigBlindTurn;
-        if (turnNumber == activePlayersSize){
+        activePlayersSize = activeBetters.size();
+        if (turnNumber >= activePlayersSize){
             LOGGER.info("not enough players left");
             turnNumber = 0;
         }
-        activePlayersSize = activeBetters.size(); //todo here or before turn number? if before, should it be >=?
         currentBetter = activeBetters.get(turnNumber);
-        turnsLeftInRound = activePlayersSize;
         activeBetters.forEach(Player::resetCurrentBetAmount);
+        turnsLeftInRound = activePlayersSize;
     }
 
     public BetOptions getBetOptions(){
@@ -164,13 +155,13 @@ public class BetService {
     }
 
     public BetOptions manageComputerBets(){
-        BetOptions options = game.getBetOptions();
+        BetOptions options = getBetOptions();
         LOGGER.info("betManager options = " + options.toString());
         while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer) {
             ComputerPlayer computerPlayer = (ComputerPlayer) options.getPlayer();
             LOGGER.info("displayName = " + computerPlayer.getDisplayName());
             computerPlayer.placeBet(options, this);
-            options = game.getBetOptions();
+            options = getBetOptions();
         }
         LOGGER.info("returning betOptions = " + options.toString());
 

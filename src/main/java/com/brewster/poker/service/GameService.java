@@ -12,7 +12,6 @@ import java.util.List;
 public interface GameService {
     BetOptions startNewDeal();
     GameResponse deal();
-    BetOptions getBetOptions();
     NewGameResponse getNewGameResponse(UserDto userDto);
 
     void addPlayerToGame(HumanPlayer player);

@@ -8,7 +8,6 @@ import com.brewster.poker.card.PokerHandTieBreaker;
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.UserNotFoundException;
-import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.EndRoundResponse;
 import com.brewster.poker.model.response.GameResponse;
@@ -24,7 +23,7 @@ import java.util.List;
 
 public class TexasHoldEmService implements GameService {
      private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEmService.class);
-     private int id;
+     private final int id;
      private List<Player> players;
      private int openSlots;
      private List<Card> cards;
@@ -52,10 +51,6 @@ public class TexasHoldEmService implements GameService {
           openSlots = desiredNumberOfPlayers - 1;
           //todo if (request.isCustomRules()){ doSomething() };
           this.userService = userService;
-     }
-
-     public void placeBet(BetRequest betRequest){
-          betManager.placeBet(betRequest);
      }
 
      public void setGameOver(){
@@ -130,10 +125,6 @@ public class TexasHoldEmService implements GameService {
           return betManager.startNewDeal();
      }
 
-     public BetOptions getBetOptions(){
-          return betManager.getBetOptions();
-     }
-
      public GameResponse deal(){
           if (isBet){
                LOGGER.info("Cannot deal cards until betting has finished");
@@ -141,7 +132,6 @@ public class TexasHoldEmService implements GameService {
           }
           if (isDealDone){
                EndRoundResponse endRoundResponse = calculateWinningHand();
-               LOGGER.info("End of round {} {}", userService, players);
                userService.updateUsersMoney(players);
                betManager.setPot(0);
                return new GameResponse(endRoundResponse);
