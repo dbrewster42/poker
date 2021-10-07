@@ -9,6 +9,7 @@ public class GameSettingsRequest {
     private int maxBet;
     private boolean fillWithComputerPlayers;
     private int buyIn;
+    private boolean useAnte;
 
     public String getUsername() {
         return username;
