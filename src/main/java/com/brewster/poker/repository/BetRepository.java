@@ -7,7 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface BetRepository extends CrudRepository<BetEntity, Long> {
-     List<BetEntity> findAllByUser(User user);
-}
+//@Repository
+//public interface BetRepository extends CrudRepository<BetEntity, Long> {
+//     List<BetEntity> findAllByUser(User user);
+//}
+//import java.util.List;
+//
+//public interface BetRepository extends MongoRepository<GameEntity, Long> {
+//     List<BetEntity> findAllByPlayerEntity(PlayerEntity user);
+//}
