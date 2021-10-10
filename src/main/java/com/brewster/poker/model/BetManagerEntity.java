@@ -1,6 +1,6 @@
 package com.brewster.poker.model;
 
-import com.brewster.poker.bet.BetFactoryImplementation;
+import com.brewster.poker.bet.Bet;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.player.Player;
 
@@ -16,7 +16,7 @@ public class BetManagerEntity {
      private int pot = 0;
      private int betAmount;
      private int bigBlindTurn = -1;
-     private List<BetEntity> bets;
+     private List<Bet> bets;
      private Integer maxBet;
 
 
@@ -81,11 +81,11 @@ public class BetManagerEntity {
           this.bigBlindTurn = bigBlindTurn;
      }
 
-     public List<BetEntity> getBets() {
+     public List<Bet> getBets() {
           return bets;
      }
 
-     public void setBets(List<BetEntity> bets) {
+     public void setBets(List<Bet> bets) {
           this.bets = bets;
      }
 

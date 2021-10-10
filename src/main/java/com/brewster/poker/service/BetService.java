@@ -27,25 +27,30 @@ public class BetService {
     private static final Action[] CALL_ACTIONS = { Action.CALL, Action.RAISE, Action.FOLD };
     private final GameService gameService;
     private final BetFactory betFactory;
+    //TODO
+//    private Player currentBetter;
+//    private BetManagerEntity betManager;
 
     public BetService(GameService gameService, BetFactory betFactory){
         this.gameService = gameService;
         this.betFactory = betFactory;
     }
 
-    public int placeBet(BetRequest betRequest){
+    public int placeBet(BetManagerEntity betManager, BetRequest betRequest){
 //        Player player = currentBetter;
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
+        Player currentBetter = betManager.getActiveBetters().get(betManager.getTurnNumber());
         String validationStatement = validateBet(betRequest, currentBetter);
         if (validationStatement.isEmpty()) {
             Bet bet = betFactory.createBet(currentBetter, betRequest, this);
             String message = bet.process();
             LOGGER.info("Bet has been processed - {}", message);
 
-            betMessages.add(message);
+            bet.setMessage(message);
+            betManager.getBets().add(bet);
             int userMoney = currentBetter.getMoney();
 //          betsMade.add(new BetDto(bet, returnStatement));
-            adjustTurn();
+            adjustTurn(betManager);
             return userMoney;
         } else {
             LOGGER.info("Bet Invalid - {}", validationStatement);
@@ -72,8 +77,8 @@ public class BetService {
         return validatorError;
     }
 
-
-    private void adjustTurn(){
+//TODO move to BetManagerEntity
+    private void adjustTurn(BetManagerEntity betManager){
         LOGGER.info("Adjusting turn - " + turnsLeftInRound);
         turnsLeftInRound--;
         adjustTurnNumber();
@@ -134,7 +139,7 @@ public class BetService {
     }
 
     public BetOptions getBetOptions(){
-        LOGGER.info("betManager.getBetOptions {}, turnsLeft = {}, turnNumber = {}", currentBetter.getDisplayName(), turnsLeftInRound, turnNumber);
+//        LOGGER.info("betManager.getBetOptions {}, turnsLeft = {}, turnNumber = {}", currentBetter.getDisplayName(), turnsLeftInRound, turnNumber);
         if (turnsLeftInRound > 0){
             Action[] actionOptions = getPossibleBetActions(betAmount);
             return new BetOptions(currentBetter, actionOptions, betAmount, pot);
@@ -149,7 +154,7 @@ public class BetService {
 
     public BetOptions manageComputerBets(){
         BetOptions options = getBetOptions();
-        LOGGER.info("betManager options = " + options.toString());
+        LOGGER.info("betService options = " + options.toString());
         while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer) {
             ComputerPlayer computerPlayer = (ComputerPlayer) options.getPlayer();
             LOGGER.info("displayName = " + computerPlayer.getDisplayName());

@@ -2,15 +2,17 @@ package com.brewster.poker.bet;
 
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
-import com.brewster.poker.service.BetService;
+import com.brewster.poker.model.BetManagerEntity;
 
 public abstract class Bet {
     protected int betAmount = 0;
     protected final Player player;
-    protected final BetService betManager;
     protected final Action chosenAction;
+    //TODO add message
+    protected final BetManagerEntity betManager;
+    protected String message;
 
-    public Bet(Player player, BetRequest betRequest, BetService betManager){
+    public Bet(Player player, BetRequest betRequest, BetManagerEntity betManager){
         this.player = player;
         this.chosenAction = Action.valueOf(betRequest.getAction());
         this.betManager = betManager;
@@ -30,7 +32,15 @@ public abstract class Bet {
         return chosenAction;
     }
 
-    public BetService getBetManager() {
+    public BetManagerEntity getBetManager() {
         return betManager;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
