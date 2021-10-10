@@ -6,6 +6,7 @@ import com.brewster.poker.bet.BetFactory;
 import com.brewster.poker.bet.BetFactoryImplementation;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.exception.InvalidBetException;
+import com.brewster.poker.model.BetManagerEntity;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.player.ComputerPlayer;
@@ -13,40 +14,23 @@ import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class BetService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BetService.class);
-    private final long id;
-    private final GameService game;
-    private int activePlayersSize;
-    private int bigBlind;
-    private int smallBlind;
-    private int turnNumber;
-    private int turnsLeftInRound;
-    private List<Player> activeBetters;
-    private Player currentBetter;
-    private final Integer maxBet;
     private static final Action[] CHECK_ACTIONS = { Action.CHECK, Action.BET, Action.FOLD };
     private static final Action[] CALL_ACTIONS = { Action.CALL, Action.RAISE, Action.FOLD };
-    private int pot = 0;
-    private int betAmount;
+    private final GameService gameService;
     private final BetFactory betFactory;
-    private List<String> betMessages;
-    private int bigBlindTurn = -1;
 
-    public BetService(GameService game, GameSettingsRequest request) {
-        this.id = game.getId();
-        this.game = game;
-//        this.bigBlind = Optional.ofNullable(request.getBigBlind()).orElse(500);
-        this.bigBlind = request.getBigBlind();
-        this.maxBet = Optional.ofNullable(request.getMaxBet()).map(v -> v == 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
-        betFactory = new BetFactoryImplementation();
-//        betMessages = new ArrayList<>();
-//        activeBetters = new ArrayList<>();
+    public BetService(GameService gameService, BetFactory betFactory){
+        this.gameService = gameService;
+        this.betFactory = betFactory;
     }
 
     public int placeBet(BetRequest betRequest){
@@ -76,9 +60,9 @@ public class BetService {
         }
 
         int newBetAmount = betRequest.getBetAmount();
-        if (newBetAmount > maxBet){
-            validatorError += "This game has a maximum bet of " + maxBet + ". ";
-        }
+//        if (newBetAmount > maxBet){
+//            validatorError += "This game has a maximum bet of " + maxBet + ". ";
+//        }
 
         if (player.getClass() == HumanPlayer.class ){
             if (newBetAmount > player.getMoney()){
@@ -185,61 +169,20 @@ public class BetService {
         }
     }
 
-    public void processFold(Player player){
-        activeBetters.remove(player);
-        turnNumber--;
-        updateActivePlayersSize();
+    public void processFold(BetManagerEntity betManager, Player player){
+        betManager.getActiveBetters().remove(player);
+        betManager.setTurnNumber(betManager.getTurnNumber() - 1);
+//        updateActivePlayersSize();
     }
 
-    public Player adjustCurrentPlayer(int turn){
-        return activeBetters.get(turn);
-    }
 
-    public long getId() {
-        return id;
-    }
 
-    public GameService getGame() {
-        return game;
-    }
+//    public void updateActivePlayersSize(){
+//        this.activePlayersSize = activeBetters.size();
+//        if (activePlayersSize == 1){
+//            game.setGameOver();
+//        }
+//    }
 
-    public int getBigBlind() {
-        return bigBlind;
-    }
-
-    public int getPot() {
-        return pot;
-    }
-
-    public int getBetAmount() {
-        return betAmount;
-    }
-
-    public void addBetMessage(String betMessage) {
-        betMessages.add(betMessage);
-    }
-
-    public List<String> getBetMessages() {
-        return betMessages;
-    }
-
-    public List<Player> getActiveBetters() {
-        return activeBetters;
-    }
-
-    public void updateActivePlayersSize(){
-        this.activePlayersSize = activeBetters.size();
-        if (activePlayersSize == 1){
-            game.setGameOver();
-        }
-    }
-
-    public void setPot(int pot) {
-        this.pot = pot;
-    }
-
-    public void setBetAmount(int betAmount) {
-        this.betAmount = betAmount;
-    }
 
 }

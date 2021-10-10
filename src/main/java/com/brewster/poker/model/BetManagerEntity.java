@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public class BetManagerEntity {
      private int bigBlind;
+     private int smallBlind;
      private int turnNumber;
      private int turnsLeftInRound;
      private List<Player> activeBetters;
