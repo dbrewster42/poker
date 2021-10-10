@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class BetService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BetService.class);
-    private final int id;
+    private final long id;
     private final GameService game;
     private int activePlayersSize;
     private int bigBlind;
@@ -195,7 +195,7 @@ public class BetService {
         return activeBetters.get(turn);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

@@ -1,11 +1,9 @@
 package com.brewster.poker.controller;
 
-import com.brewster.poker.model.BetEntity;
-import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.service.BetService;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.service.GameService;
-import com.brewster.poker.service.GamesContainer;
+import com.brewster.poker.service.OldGamesContainer;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.response.BetResponse;
 
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("game")
@@ -28,14 +24,14 @@ public class BetController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BetController.class);
 //    private GameService game;
 //    private BetService betManager;
-    private GamesContainer gamesContainer;
+    private OldGamesContainer gamesContainer;
 
-    public BetController(GamesContainer gamesContainer){
+    public BetController(OldGamesContainer gamesContainer){
         this.gamesContainer = gamesContainer;
     }
 
     @GetMapping("{id}/bet")
-    public BetResponse getBetOptions(@PathVariable int id){
+    public BetResponse getBetOptions(@PathVariable long id){
         LOGGER.info("Controller : getting betOptions");
         GameService game = gamesContainer.findGameById(id);
 
@@ -44,7 +40,7 @@ public class BetController {
     }
 
     @PostMapping("{id}/bet")
-    public BetResponse bet(@PathVariable int id, @RequestBody BetRequest request){
+    public BetResponse bet(@PathVariable long id, @RequestBody BetRequest request){
         LOGGER.info("Controller: Placing bet - {}", request.toString());
         GameService game = gamesContainer.findGameById(id);
         BetService betManager = game.getBetManager();

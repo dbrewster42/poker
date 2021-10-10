@@ -4,8 +4,9 @@ import com.brewster.poker.bet.Action;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.InvalidBetException;
+import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.service.GameService;
-import com.brewster.poker.service.GamesContainer;
+import com.brewster.poker.service.OldGamesContainer;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.response.BetResponse;
 import com.brewster.poker.player.HumanPlayer;
@@ -23,17 +24,20 @@ import static org.mockito.Mockito.mock;
 
 class BetControllerTest {
      private BetController betController;
-     private GamesContainer gamesContainer;
-     GameService game;
-     int id;
+     private OldGamesContainer gamesContainer;
+     private GameService gameService;
+
+     GameEntity game;
+     long id;
 
      @BeforeEach
      void setUp() {
-          gamesContainer = mock(GamesContainer.class);
+          gamesContainer = mock(OldGamesContainer.class);
+          gameService = mock(GameService.class);
           betController = new BetController(gamesContainer);
-          game = gamesContainer.createGame(getUserDto(), getGameSettingsRequest(), getComputerUser());
+          game = gameService.createGame(getUserDto(), getGameSettingsRequest(), getComputerUser());
           id = game.getId();
-          game.startNewDeal();
+          gameService.startNewDeal(game, new UserDto()); //TODO get tests working after refactor
      }
 
      @Test
@@ -49,7 +53,7 @@ class BetControllerTest {
      @Test
      void getBetOptions2() {
           List<Player> playerList = game.getPlayers();
-          game.deal();
+          gameService.deal(game);
           BetOptions betOptions = betController.getBetOptions(id).getBetOptions();
           assertTrue(betOptions.getPlayer() instanceof HumanPlayer);
 
