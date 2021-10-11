@@ -1,15 +1,12 @@
 package com.brewster.poker.service;
 
+import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.UserNotFoundException;
-import com.brewster.poker.model.BetEntity;
+import com.brewster.poker.model.User;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
-import com.brewster.poker.repository.BetRepository;
 import com.brewster.poker.repository.UserRepository;
-import com.brewster.poker.dto.UserDto;
-import com.brewster.poker.model.User;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +15,8 @@ import java.util.Optional;
 @Service
 public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
-    @Autowired
-    private BetRepository betRepository;
+//    @Autowired
+//    private BetRepository betRepository;
 
     public UserServiceImplementation(UserRepository userRepository){
         this.userRepository = userRepository;
@@ -70,12 +67,12 @@ public class UserServiceImplementation implements UserService {
                 .forEach(userRepository::save);
     }
 
-
-    public List<BetEntity> getUserBets(String username){
-        User user = userRepository.findByUsername(username);
-
-        return Optional.ofNullable(user).map(betRepository::findAllByUser)
-                .orElseThrow(UserNotFoundException::new);
-    }
+//
+//    public List<BetEntity> getUserBets(String username){
+//        User user = userRepository.findByUsername(username);
+//
+//        return Optional.ofNullable(user).map(betRepository::findAllByUser)
+//                .orElseThrow(UserNotFoundException::new);
+//    }
 
 }

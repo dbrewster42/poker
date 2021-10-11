@@ -29,7 +29,7 @@ public class BetManagerEntity {
           this.maxBet = Optional.ofNullable(settingsRequest.getMaxBet()).map(v -> v == 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
      }
 
-     public BetOptions resetBetInfo(List<Player> players){
+     public void resetBetInfo(List<Player> players){
           pot = bigBlind;
           bigBlindTurn++;
           activeBetters = new ArrayList<>();
@@ -152,6 +152,22 @@ public class BetManagerEntity {
 
      public void setBigBlindTurn(int bigBlindTurn) {
           this.bigBlindTurn = bigBlindTurn;
+     }
+
+     public int getSmallBlind() {
+          return smallBlind;
+     }
+
+     public void setSmallBlind(int smallBlind) {
+          this.smallBlind = smallBlind;
+     }
+
+     public List<String> getBetMessages() {
+          return betMessages;
+     }
+
+     public void setBetMessages(List<String> betMessages) {
+          this.betMessages = betMessages;
      }
 
      public List<Bet> getBets() {

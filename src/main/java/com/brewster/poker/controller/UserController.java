@@ -1,18 +1,14 @@
 package com.brewster.poker.controller;
 
 import com.brewster.poker.dto.UserDto;
-import com.brewster.poker.model.BetEntity;
 import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -44,8 +40,8 @@ public class UserController {
         return userService.addMoneyToUser(dto);
     }
 
-    @GetMapping("getUserBets")
-    public List<BetEntity> getUserBets(@RequestBody UserRequest request){
-        return userService.getUserBets(request.getUsername());
-    }
+//    @GetMapping("getUserBets")
+//    public List<BetEntity> getUserBets(@RequestBody UserRequest request){
+//        return userService.getUserBets(request.getUsername());
+//    }
 }

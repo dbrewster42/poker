@@ -1,7 +1,7 @@
 package com.brewster.poker.player;
 
 import com.brewster.poker.bet.Action;
-import com.brewster.poker.service.BetService;
+import com.brewster.poker.model.BetManagerEntity;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.service.HandStrengthCalculator;
@@ -17,7 +17,7 @@ public class ComputerPlayer extends Player {
         setMoney(1000);
     }
 
-    public void placeBet(BetOptions options, BetService betManager) {
+    public BetRequest placeBet(BetOptions options, BetManagerEntity betManager) {
         int strength = calculateCards();
         System.out.println("strength of cards = " + strength);
 
@@ -30,7 +30,8 @@ public class ComputerPlayer extends Player {
         }
         betRequest.setUsername(options.getName());
 
-        betManager.placeBet(betRequest);
+        return betRequest;
+//        betManager.placeBet(betRequest);
     }
 
     private BetRequest createCheckActionsBet(int strength, int bigBlind){

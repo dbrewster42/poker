@@ -1,6 +1,5 @@
 package com.brewster.poker.repository;
 
-import com.brewster.poker.model.BetEntity;
 import com.brewster.poker.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

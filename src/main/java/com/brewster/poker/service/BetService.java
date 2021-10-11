@@ -123,7 +123,8 @@ public class BetService {
         while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer) {
             ComputerPlayer computerPlayer = (ComputerPlayer) options.getPlayer();
             LOGGER.info("displayName = " + computerPlayer.getDisplayName());
-            computerPlayer.placeBet(options, this);
+            BetRequest betRequest = computerPlayer.placeBet(options, gameEntity.getBetManagerEntity());
+            placeBet(gameEntity.getBetManagerEntity(), betRequest);
             options = getBetOptions(gameEntity);
         }
         LOGGER.info("returning betOptions = " + options.toString());

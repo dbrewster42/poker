@@ -2,19 +2,17 @@ package com.brewster.poker.model;
 
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.UserRequest;
+import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
-import javax.persistence.*;
 import java.util.Date;
 
-@Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    @Column(nullable = false, unique = true)
+    private long id;
+//    @Column(nullable = false, unique = true)
     private String username;
     private Integer money;
-    @Column(updatable = false)
+//    @Column(updatable = false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createdAt;
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -30,11 +28,11 @@ public class User {
     }
     public User(){ }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 

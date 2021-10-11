@@ -1,5 +1,6 @@
 package com.brewster.poker.controller;
 
+import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.service.BetService;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.service.GameService;
@@ -22,32 +23,53 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("game")
 public class BetController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BetController.class);
+    private final BetService betService;
+    private final GameService gameService;
 //    private GameService game;
 //    private BetService betManager;
-    private OldGamesContainer gamesContainer;
+//    private OldGamesContainer gamesContainer;
 
-    public BetController(OldGamesContainer gamesContainer){
-        this.gamesContainer = gamesContainer;
+//    public BetController(OldGamesContainer gamesContainer){
+//        this.gamesContainer = gamesContainer;
+//    }
+    public BetController(BetService betService, GameService gameService){
+        this.betService = betService;
+        this.gameService = gameService;
     }
+
 
     @GetMapping("{id}/bet")
     public BetResponse getBetOptions(@PathVariable long id){
         LOGGER.info("Controller : getting betOptions");
-        GameService game = gamesContainer.findGameById(id);
+        GameEntity game = gameService.findGame(id);
+        BetOptions options = betService.manageComputerBets(game);
 
-        BetOptions options = game.getBetManager().manageComputerBets();
-        return new BetResponse(options, game.getBetManager().getBetMessages());
+        return new BetResponse(options, game.getBetManagerEntity().getBetMessages());
     }
+    //        GameService game = gamesContainer.findGameById(id);
+
+//        BetOptions options = game.getBetManager().manageComputerBets();
+//        return new BetResponse(options, game.getBetManager().getBetMessages());
 
     @PostMapping("{id}/bet")
     public BetResponse bet(@PathVariable long id, @RequestBody BetRequest request){
         LOGGER.info("Controller: Placing bet - {}", request.toString());
-        GameService game = gamesContainer.findGameById(id);
-        BetService betManager = game.getBetManager();
+        GameEntity game = gameService.findGame(id);
 
-        int userMoney = betManager.placeBet(request);
+        int userMoney = betService.placeBet(game.getBetManagerEntity(), request);
         LOGGER.info("Controller: Bet has been placed - {}$ left", userMoney);
-        return new BetResponse(game.isBet(), betManager.getBetMessages(), userMoney, game.isDealDone());
+        return new BetResponse(game.isBet(), game.getBetManagerEntity().getBetMessages(), userMoney, game.isDealDone());
     }
+
+//    @PostMapping("{id}/bet")
+//    public BetResponse bet(@PathVariable long id, @RequestBody BetRequest request){
+//        LOGGER.info("Controller: Placing bet - {}", request.toString());
+//        GameService game = gamesContainer.findGameById(id);
+//        BetService betManager = game.getBetManager();
+//
+//        int userMoney = betManager.placeBet(request);
+//        LOGGER.info("Controller: Bet has been placed - {}$ left", userMoney);
+//        return new BetResponse(game.isBet(), betManager.getBetMessages(), userMoney, game.isDealDone());
+//    }
 
 }
