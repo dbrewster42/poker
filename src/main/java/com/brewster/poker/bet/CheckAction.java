@@ -7,8 +7,8 @@ import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.service.BetService;
 
 public class CheckAction extends Bet {
-    public CheckAction(Player player, BetRequest betRequest, BetManagerEntity betManager) {
-        super(player, betRequest, betManager);
+    public CheckAction(Player player, int betAmount, BetManagerEntity betManager) {
+        super(player, betAmount, betManager);
         this.betAmount = 0;
         validate();
     }

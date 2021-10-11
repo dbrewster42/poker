@@ -13,15 +13,15 @@ public class BetFactoryImplementation implements BetFactory {
     public Bet createBet(Player player, BetRequest betRequest, BetManagerEntity betManager) {
         switch (betRequest.getAction()){
             case "BET":
-                return new BetAction(player, betRequest, betManager);
+                return new BetAction(player, betRequest.getBetAmount(), betManager);
             case "CALL":
-                return new CallAction(player, betRequest, betManager);
+                return new CallAction(player, betRequest.getBetAmount(), betManager);
             case "CHECK":
-                return new CheckAction(player, betRequest, betManager);
+                return new CheckAction(player, betRequest.getBetAmount(), betManager);
             case "FOLD":
-                return new FoldAction(player, betRequest, betManager);
+                return new FoldAction(player, betRequest.getBetAmount(), betManager);
             case "RAISE":
-                return new RaiseAction(player, betRequest, betManager);
+                return new RaiseAction(player, betRequest.getBetAmount(), betManager);
             default:
                 throw new IllegalArgumentException("That action is not valid");
         }

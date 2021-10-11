@@ -7,10 +7,9 @@ import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.service.BetService;
 
 public class RaiseAction extends Bet {
-    public RaiseAction(Player player, BetRequest betRequest, BetManagerEntity betManager) {
-        super(player, betRequest, betManager);
-//        this.betAmount = betRequest.getBetAmount();
-        this.betAmount = betRequest.getBetAmount() - player.getCurrentBetAmount();
+    public RaiseAction(Player player, int betAmount, BetManagerEntity betManager) {
+        super(player, betAmount, betManager);
+        this.betAmount = betAmount - player.getCurrentBetAmount();
         validate();
     }
 

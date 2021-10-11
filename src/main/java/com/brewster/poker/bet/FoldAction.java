@@ -6,8 +6,8 @@ import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.service.BetService;
 
 public class FoldAction extends Bet {
-    public FoldAction(Player player, BetRequest betRequest, BetManagerEntity betManager) {
-        super(player, betRequest, betManager);
+    public FoldAction(Player player, int betAmount, BetManagerEntity betManager) {
+        super(player, betAmount, betManager);
         this.betAmount = 0;
     }
 

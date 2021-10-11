@@ -7,9 +7,9 @@ import com.brewster.poker.service.BetService;
 
 public class CallAction extends Bet {
 
-    public CallAction(Player player, BetRequest betRequest, BetManagerEntity betManager) {
-        super(player, betRequest, betManager);
-        this.betAmount = betRequest.getBetAmount() - player.getCurrentBetAmount();
+    public CallAction(Player player, int betAmount, BetManagerEntity betManager) {
+        super(player, betAmount, betManager);
+        this.betAmount = betAmount - player.getCurrentBetAmount();
     }
 
 //    @Override

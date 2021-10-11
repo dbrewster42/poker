@@ -8,17 +8,17 @@ import com.brewster.poker.service.BetService;
 
 public class BetAction extends Bet {
 
-    public BetAction(Player player, BetRequest betRequest, BetManagerEntity betManager) {
-        super(player, betRequest, betManager);
-        this.betAmount = betRequest.getBetAmount();
+    public BetAction(Player player, int betAmount, BetManagerEntity betManager) {
+        super(player, betAmount, betManager);
+//        this.betAmount = betRequest.getBetAmount();
         validate();
     }
 
-    public BetAction(Player player, int betAmount, BetManagerEntity betManager) {
-        this.player = player;
-        this.betAmount = betAmount;
-        validate();
-    }
+//    public BetAction(Player player, int betAmount, BetManagerEntity betManager) {
+//        this.player = player;
+//        this.betAmount = betAmount;
+//        validate();
+//    }
 
     private void validate() {
         if (betAmount < betManager.getBigBlind()){

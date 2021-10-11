@@ -96,7 +96,7 @@ public class TexasHoldEmService implements GameService {
           gameEntity.setIsBet(true);
           gameEntity.setIsDealDone(false);
 
-          betService.startNewDeal();
+          betService.startNewDeal(gameEntity);
           return getNewGameResponse(gameEntity, userDto);
      }
 
@@ -114,7 +114,7 @@ public class TexasHoldEmService implements GameService {
 //               gameEntity.getBetManagerEntity().addBetMessage(endRoundResponse.getMessage());
                return new GameResponse(endRoundResponse);
           }
-          betService.deal();
+          betService.deal(gameEntity);
           int count = 1;
           if (gameEntity.getRiverCards().isEmpty()){
                count = 3;
@@ -211,7 +211,7 @@ public class TexasHoldEmService implements GameService {
      public NewGameResponse getNewGameResponse(GameEntity gameEntity, UserDto userDto){
           LOGGER.info(userDto.toString());
           List<Card> playerCards = userDto.getPlayer().getCards();
-          BetOptions options = betService.manageComputerBets();
+          BetOptions options = betService.manageComputerBets(gameEntity);
           LOGGER.info(options.toString(), playerCards);
           return new NewGameResponse(gameEntity.getId(), playerCards, getUsers(gameEntity, userDto), options, userDto.getMoney());
      }

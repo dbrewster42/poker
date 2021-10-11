@@ -92,6 +92,12 @@ public class BetService {
         return getBetOptions(gameEntity);
     }
 
+    public void deal(GameEntity gameEntity){
+        gameEntity.getBetManagerEntity().deal();
+//        betMessages.add(" --- *** --- *** --- ");
+
+    }
+
 
 
 

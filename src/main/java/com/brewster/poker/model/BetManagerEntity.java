@@ -49,12 +49,14 @@ public class BetManagerEntity {
 
 
      private void initBigBlind(){
-          Player currentBetter = activeBetters.get(turnNumber);
-          currentBetter.betMoney(bigBlind);
-          betAmount = bigBlind;
+//          Player currentBetter = activeBetters.get(turnNumber);
+//          currentBetter.betMoney(bigBlind);
+//          betAmount = bigBlind;
 //        setPot(bigBlind);
-          betMessages.add(currentBetter.getDisplayName() + " posts the $" + bigBlind + "  blind");
-          Bet blind = new BetAction(currentBetter, new )
+//          betMessages.add(currentBetter.getDisplayName() + " posts the $" + bigBlind + "  blind");
+          Bet blind = new BetAction(activeBetters.get(turnNumber), bigBlind, this);
+          betMessages.add(blind.process());
+          bets.add(blind);
           adjustTurn();
      }
 
