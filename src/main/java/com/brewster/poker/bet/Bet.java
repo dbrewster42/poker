@@ -15,6 +15,7 @@ public abstract class Bet {
     public Bet(Player player, BetRequest betRequest, BetManagerEntity betManager){
         this.player = player;
         this.chosenAction = Action.valueOf(betRequest.getAction());
+        this.betAmount = betRequest.getBetAmount();
         this.betManager = betManager;
     }
 

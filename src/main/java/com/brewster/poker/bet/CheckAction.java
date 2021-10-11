@@ -1,12 +1,13 @@
 package com.brewster.poker.bet;
 
 import com.brewster.poker.exception.InvalidBetException;
+import com.brewster.poker.model.BetManagerEntity;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.service.BetService;
 
 public class CheckAction extends Bet {
-    public CheckAction(Player player, BetRequest betRequest, BetService betManager) {
+    public CheckAction(Player player, BetRequest betRequest, BetManagerEntity betManager) {
         super(player, betRequest, betManager);
         this.betAmount = 0;
         validate();

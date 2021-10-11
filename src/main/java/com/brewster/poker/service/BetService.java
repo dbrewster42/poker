@@ -7,6 +7,7 @@ import com.brewster.poker.bet.BetFactoryImplementation;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.exception.InvalidBetException;
 import com.brewster.poker.model.BetManagerEntity;
+import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.player.ComputerPlayer;
@@ -42,16 +43,20 @@ public class BetService {
         Player currentBetter = betManager.getActiveBetters().get(betManager.getTurnNumber());
         String validationStatement = validateBet(betRequest, currentBetter);
         if (validationStatement.isEmpty()) {
-            Bet bet = betFactory.createBet(currentBetter, betRequest, this);
+            Bet bet = betFactory.createBet(currentBetter, betRequest, betManager);
             String message = bet.process();
             LOGGER.info("Bet has been processed - {}", message);
 
             bet.setMessage(message);
             betManager.getBets().add(bet);
-            int userMoney = currentBetter.getMoney();
-//          betsMade.add(new BetDto(bet, returnStatement));
-            adjustTurn(betManager);
-            return userMoney;
+
+            betManager.adjustTurn();
+
+            return currentBetter.getMoney();
+//            int userMoney = currentBetter.getMoney();
+////          betsMade.add(new BetDto(bet, returnStatement));
+//            adjustTurn();
+//            return userMoney;
         } else {
             LOGGER.info("Bet Invalid - {}", validationStatement);
             throw new InvalidBetException(validationStatement);
@@ -65,7 +70,7 @@ public class BetService {
         }
 
         int newBetAmount = betRequest.getBetAmount();
-//        if (newBetAmount > maxBet){
+//todo        if (newBetAmount > maxBet){
 //            validatorError += "This game has a maximum bet of " + maxBet + ". ";
 //        }
 
@@ -78,88 +83,42 @@ public class BetService {
     }
 
 //TODO move to BetManagerEntity
-    private void adjustTurn(BetManagerEntity betManager){
-        LOGGER.info("Adjusting turn - " + turnsLeftInRound);
-        turnsLeftInRound--;
-        adjustTurnNumber();
-        currentBetter = activeBetters.get(turnNumber);
-        if (turnsLeftInRound == 0){
-            game.setIsBet(false);
-            LOGGER.info("Round over");
-        }
-    }
-    private void adjustTurnNumber(){
-        turnNumber++;
-        if (turnNumber == activePlayersSize){
-            turnNumber = 0;
-        }
+
+
+
+
+    public BetOptions startNewDeal(GameEntity gameEntity){
+        gameEntity.getBetManagerEntity().resetBetInfo(gameEntity.getPlayers());
+        return getBetOptions(gameEntity);
     }
 
-    public void resetTurnsLeft(){
-        turnsLeftInRound = activePlayersSize;
-    }
 
-    protected void deal(){
-        betMessages.add(" --- *** --- *** --- ");
-        setAllRoundInformation();
-        LOGGER.info("starting new round with " + currentBetter.getDisplayName());
-    }
 
-    private void initBigBlind(){
-        currentBetter.betMoney(bigBlind);
-        betAmount = bigBlind;
-//        setPot(bigBlind);
-        betMessages.add(currentBetter.getDisplayName() + " posts the $" + bigBlind + "  blind");
-        adjustTurn();
-    }
 
-    protected BetOptions startNewDeal(){
-        pot = bigBlind;
-        bigBlindTurn++;
-        activeBetters = new ArrayList<>();
-        activeBetters.addAll(game.getPlayers());
-        betMessages = new ArrayList<>();
-        setAllRoundInformation();
-        LOGGER.info("starting new deal with " + turnsLeftInRound + " turns");
-        initBigBlind();
-        return getBetOptions();
-    }
-
-    private void setAllRoundInformation(){
-        betAmount = 0;
-        turnNumber = bigBlindTurn;
-        activePlayersSize = activeBetters.size();
-        if (turnNumber >= activePlayersSize){
-            LOGGER.info("not enough players left");
-            turnNumber = 0;
-        }
-        currentBetter = activeBetters.get(turnNumber);
-        activeBetters.forEach(Player::resetCurrentBetAmount);
-        turnsLeftInRound = activePlayersSize;
-    }
-
-    public BetOptions getBetOptions(){
+    public BetOptions getBetOptions(GameEntity gameEntity){
 //        LOGGER.info("betManager.getBetOptions {}, turnsLeft = {}, turnNumber = {}", currentBetter.getDisplayName(), turnsLeftInRound, turnNumber);
-        if (turnsLeftInRound > 0){
+        BetManagerEntity betManager = gameEntity.getBetManagerEntity();
+        if (betManager.getTurnsLeftInRound() > 0){
+            int betAmount = betManager.getBetAmount();
             Action[] actionOptions = getPossibleBetActions(betAmount);
-            return new BetOptions(currentBetter, actionOptions, betAmount, pot);
+            return new BetOptions(betManager.getActiveBetters().get(betManager.getTurnNumber()), actionOptions, betAmount, betManager.getPot());
         } else {
             LOGGER.info("end of betting round");
-            game.setIsBet(false);
+            gameEntity.setIsBet(false);
             //FIXME should we auto call or not? if yes, need logic in game controller for Deal
 //            game.startNextRound();
             return new BetOptions();
         }
     }
 
-    public BetOptions manageComputerBets(){
-        BetOptions options = getBetOptions();
+    public BetOptions manageComputerBets(GameEntity gameEntity){
+        BetOptions options = getBetOptions(gameEntity);
         LOGGER.info("betService options = " + options.toString());
         while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer) {
             ComputerPlayer computerPlayer = (ComputerPlayer) options.getPlayer();
             LOGGER.info("displayName = " + computerPlayer.getDisplayName());
             computerPlayer.placeBet(options, this);
-            options = getBetOptions();
+            options = getBetOptions(gameEntity);
         }
         LOGGER.info("returning betOptions = " + options.toString());
 
@@ -174,11 +133,11 @@ public class BetService {
         }
     }
 
-    public void processFold(BetManagerEntity betManager, Player player){
-        betManager.getActiveBetters().remove(player);
-        betManager.setTurnNumber(betManager.getTurnNumber() - 1);
-//        updateActivePlayersSize();
-    }
+//    public void processFold(BetManagerEntity betManager, Player player){
+//        betManager.getActiveBetters().remove(player);
+//        betManager.setTurnNumber(betManager.getTurnNumber() - 1);
+////        updateActivePlayersSize();
+//    }
 
 
 
