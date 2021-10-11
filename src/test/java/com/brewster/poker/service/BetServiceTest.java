@@ -15,7 +15,7 @@ class BetServiceTest {
      @BeforeEach
      void setUp() {
           game = mock(GameService.class);
-          sut = new BetService(game, getGameSettingsRequest());
+//          sut = new BetService(game, getGameSettingsRequest());
      }
 
 //     @Test

@@ -1,6 +1,7 @@
 package com.brewster.poker;
 
 import com.brewster.poker.bet.Action;
+import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.card.PokerHandEnum;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.BetRequest;
@@ -9,6 +10,11 @@ import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 
 public class TestDataBuilder {
+
+//     public static BetOptions getBetOptions() {
+//          BetOptions betOptions = new BetOptions();
+//     }
+
      public static GameSettingsRequest getGameSettingsRequest(){
           GameSettingsRequest gameSettingsRequest = new GameSettingsRequest();
           gameSettingsRequest.setFillWithComputerPlayers(true);

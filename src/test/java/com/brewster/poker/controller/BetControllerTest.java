@@ -5,43 +5,59 @@ import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.InvalidBetException;
 import com.brewster.poker.model.GameEntity;
+import com.brewster.poker.repository.GameRepository;
 import com.brewster.poker.service.BetService;
 import com.brewster.poker.service.GameService;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.response.BetResponse;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
+import com.brewster.poker.service.TexasHoldEmService;
+import com.brewster.poker.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.brewster.poker.TestDataBuilder.getBetBetRequest;
 import static com.brewster.poker.TestDataBuilder.getCheckBetRequest;
 import static com.brewster.poker.TestDataBuilder.getGameSettingsRequest;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class BetControllerTest {
      private BetController betController;
      private GameService gameService;
      private BetService betService;
+     private GameRepository gameRepository;
+     private UserService userService;
 
      GameEntity game;
      long id;
 
      @BeforeEach
      void setUp() {
-          gameService = mock(GameService.class);
+          gameRepository = mock(GameRepository.class);
+          userService = mock(UserService.class);
           betService = mock(BetService.class);
+          gameService = new TexasHoldEmService(gameRepository, betService, userService);
           betController = new BetController(betService, gameService);
-          game = gameService.createGame(getUserDto(), getGameSettingsRequest(), getComputerUser());
+
+          UserDto userDto = getUserDto();
+          game = gameService.createGame(userDto, getGameSettingsRequest(), getComputerUser());
           id = game.getId();
-          gameService.startNewDeal(game, new UserDto()); //TODO get tests working after refactor
+
+          when(betService.manageComputerBets(any())).thenReturn(new BetOptions());
+          when(gameRepository.findById(any())).thenReturn(Optional.of(game));
+          gameService.startNewDeal(game, userDto); //TODO Get tests working
      }
 
      @Test
      void getBetOptions() {
+          System.out.println("id - " + id);
           BetOptions betOptions = betController.getBetOptions(id).getBetOptions();
           assertTrue(betOptions.getPlayer() instanceof HumanPlayer);
 //          if (betOptions.isBetActive()){

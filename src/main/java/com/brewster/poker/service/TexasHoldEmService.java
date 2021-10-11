@@ -36,18 +36,20 @@ public class TexasHoldEmService implements GameService {
      private final BetService betService;
      private final UserService userService;
      private Random random = new Random();
+     private static long gameId = 0;
 
      public TexasHoldEmService(GameRepository gameRepository, BetService betService, UserService userService){
           this.gameRepository = gameRepository;
           this.betService = betService;
           this.userService = userService;
+          gameId = gameRepository.count();
      }
 
 
      public GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
           List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
           HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
-          GameEntity game = new GameEntity(players, settingsRequest);
+          GameEntity game = new GameEntity(gameId++, players, settingsRequest);
           players.add(player);
           return game;
      }
@@ -68,15 +70,21 @@ public class TexasHoldEmService implements GameService {
           return player;
      }
      public GameEntity findGame(long id){
-          Optional<GameEntity> gameEntity = Optional.ofNullable(gameRepository.findById(id))
-                  .orElseThrow(() -> new GameNotFoundException()) ;
-//                  .orElseThrow(() -> new GameNotFoundException("game not found with id " + id)) ;
+//          GameEntity gameEntity = gameRepository.findById(id);
+          Optional<GameEntity> gameEntity = gameRepository.findById(id);
+          if (!gameEntity.isPresent()){
+               throw new GameNotFoundException();
+          }
+//          Optional.ofNullable(gameEntity.get())
+//                  .orElseThrow(() -> new GameNotFoundException()) ;
+////                  .orElseThrow(() -> new GameNotFoundException("game not found with id " + id)) ;
 
           return gameEntity.get();
      }
      private List<Card> getNewStandardDeck(){
           return DeckBuilder.aDeck().withStandardDeck().build().getCards();
      }
+
      private void dealPlayerCards(List<Player> players, List<Card> cards){
           players.forEach(Player::resetCards);
           for (int i = 0; i < 2; i++){
