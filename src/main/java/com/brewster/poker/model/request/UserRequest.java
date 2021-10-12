@@ -1,15 +1,15 @@
 package com.brewster.poker.model.request;
 
 public class UserRequest {
-    private String username;
+    private String email;
     private int money;
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getMoney() {
@@ -18,5 +18,10 @@ public class UserRequest {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    @Override
+    public String toString() {
+        return "UserRequest{" + "username='" + email + '\'' + ", money=" + money + '}';
     }
 }

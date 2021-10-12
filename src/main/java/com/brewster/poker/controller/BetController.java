@@ -56,7 +56,7 @@ public class BetController {
         LOGGER.info("Controller: Placing bet - {}", request.toString());
         GameEntity game = gameService.findGame(id);
 
-        int userMoney = betService.placeBet(game.getBetManagerEntity(), request);
+        int userMoney = betService.placeBet(game, request);
         LOGGER.info("Controller: Bet has been placed - {}$ left", userMoney);
         return new BetResponse(game.isBet(), game.getBetManagerEntity().getBetMessages(), userMoney, game.isDealDone());
     }

@@ -3,45 +3,46 @@ package com.brewster.poker.model;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.request.UserRequest;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 public class User {
     @Id
-    private long id;
-//    @Column(nullable = false, unique = true)
-    private String username;
+    @Indexed(unique = true)
+    private String id;
+    @Indexed(unique = true)
+    private String email;
     private Integer money;
-//    @Column(updatable = false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createdAt;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
 
     public User(UserRequest request){
-        username = request.getUsername();
+        email = request.getEmail();
         money = request.getMoney();
     }
     public User(UserDto dto){
-        username = dto.getUsername();
+        email = dto.getEmail();
         money = dto.getMoney();
     }
     public User(){ }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getMoney() {
@@ -66,5 +67,10 @@ public class User {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", username='" + email + '\'' + ", money=" + money + '}';
     }
 }

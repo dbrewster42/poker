@@ -3,13 +3,11 @@ package com.brewster.poker.service;
 import com.brewster.poker.bet.Action;
 import com.brewster.poker.bet.Bet;
 import com.brewster.poker.bet.BetFactory;
-import com.brewster.poker.bet.BetFactoryImplementation;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.exception.InvalidBetException;
 import com.brewster.poker.model.BetManagerEntity;
 import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.model.request.BetRequest;
-import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
@@ -17,27 +15,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 @Service
 public class BetService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BetService.class);
     private static final Action[] CHECK_ACTIONS = { Action.CHECK, Action.BET, Action.FOLD };
     private static final Action[] CALL_ACTIONS = { Action.CALL, Action.RAISE, Action.FOLD };
-    private final GameService gameService;
     private final BetFactory betFactory;
     //TODO
 //    private Player currentBetter;
 //    private BetManagerEntity betManager;
 
-    public BetService(GameService gameService, BetFactory betFactory){
-        this.gameService = gameService;
+    public BetService(BetFactory betFactory){
         this.betFactory = betFactory;
     }
 
-    public int placeBet(BetManagerEntity betManager, BetRequest betRequest){
+    public int placeBet(GameEntity game, BetRequest betRequest){
+        BetManagerEntity betManager = game.getBetManagerEntity();
 //        Player player = currentBetter;
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
         Player currentBetter = betManager.getActiveBetters().get(betManager.getTurnNumber());
@@ -50,7 +43,9 @@ public class BetService {
             bet.setMessage(message);
             betManager.getBets().add(bet);
 
-            betManager.adjustTurn();
+            if (betManager.adjustTurn() == 0){
+                game.setIsBet(false);
+            }
 
             return currentBetter.getMoney();
 //            int userMoney = currentBetter.getMoney();
@@ -85,8 +80,6 @@ public class BetService {
 //TODO move to BetManagerEntity
 
 
-
-
     public BetOptions startNewDeal(GameEntity gameEntity){
         gameEntity.getBetManagerEntity().resetBetInfo(gameEntity.getPlayers());
         return getBetOptions(gameEntity);
@@ -97,8 +90,6 @@ public class BetService {
 //        betMessages.add(" --- *** --- *** --- ");
 
     }
-
-
 
 
     public BetOptions getBetOptions(GameEntity gameEntity){
@@ -124,7 +115,7 @@ public class BetService {
             ComputerPlayer computerPlayer = (ComputerPlayer) options.getPlayer();
             LOGGER.info("displayName = " + computerPlayer.getDisplayName());
             BetRequest betRequest = computerPlayer.placeBet(options, gameEntity.getBetManagerEntity());
-            placeBet(gameEntity.getBetManagerEntity(), betRequest);
+            placeBet(gameEntity, betRequest);
             options = getBetOptions(gameEntity);
         }
         LOGGER.info("returning betOptions = " + options.toString());

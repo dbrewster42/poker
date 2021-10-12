@@ -16,6 +16,5 @@ public class BlindAction extends Bet {
           betManager.setPot(betManager.getPot() + betAmount);
 //          betManager.resetTurnsLeft();
           return player.getDisplayName() + " posts the $" + betAmount + " blind";
-//          return player.getDisplayName() + " has made a bet of " + betAmount + ". The total pot is now at " + betManager.getPot();
      }
 }

@@ -8,7 +8,6 @@ import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.service.GameService;
-import com.brewster.poker.service.OldGamesContainer;
 import com.brewster.poker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +30,10 @@ public class GameController {
     private final UserService userService;
     private UserDto userDto;
     private UserDto computerUser;
-    private OldGamesContainer gamesContainer;
 
-    public GameController(GameService gameService, UserService userService, OldGamesContainer gamesContainer) {
+    public GameController(GameService gameService, UserService userService) {
         this.gameService = gameService;
         this.userService = userService;
-        this.gamesContainer = gamesContainer;
     }
 
     @PostMapping
@@ -57,10 +54,10 @@ public class GameController {
 
     @PostMapping("{id}/restart")
     public NewGameResponse getNewRound(@PathVariable long id, @RequestBody UserRequest request){
-        LOGGER.info("{} has requested a new game for {}", request.getUsername(), id);
+        LOGGER.info("{} has requested a new game for {}", request.getEmail(), id);
 //        gameService = gamesContainer.findGameById(id);
         GameEntity gameEntity = gameService.findGame(id);
-        userDto = gameService.getThisUser(gameEntity, request.getUsername());
+        userDto = gameService.getThisUser(gameEntity, request.getEmail());
 
         return gameService.startNewDeal(gameEntity, userDto);
 //        userDto = gameService.getUser(request.getUsername());

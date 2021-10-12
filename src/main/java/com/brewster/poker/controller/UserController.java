@@ -21,6 +21,7 @@ public class UserController {
 
     @PostMapping("register")
     public UserDto register(@RequestBody UserRequest request) {
+        System.out.println(request);
         UserDto dto = new UserDto();
         BeanUtils.copyProperties(request, dto);
 
@@ -29,8 +30,12 @@ public class UserController {
 
     @PostMapping("login")
     public UserDto login(@RequestBody UserRequest request) {
-        return userService.findUser(request.getUsername());
+        System.out.println(request);
+
+        return userService.findUser(request.getEmail());
     }
+
+
 
     @PutMapping("buyin")
     public UserDto addMoney(@RequestBody UserRequest request){

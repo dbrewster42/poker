@@ -4,29 +4,29 @@ import com.brewster.poker.player.Player;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDto {
-    private String username;
+    private String email;
     private String displayName;
     private Integer money;
     @JsonIgnore
-    private Integer id;
+    private String id;
     @JsonIgnore
     private Player player;
 
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getMoney() {
@@ -57,7 +57,7 @@ public class UserDto {
     public String toString() {
         return "{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", username='" + email + '\'' +
                 ", money=" + money +
                 '}';
     }

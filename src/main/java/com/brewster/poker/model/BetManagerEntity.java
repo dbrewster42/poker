@@ -1,8 +1,7 @@
 package com.brewster.poker.model;
 
 import com.brewster.poker.bet.Bet;
-import com.brewster.poker.bet.BetAction;
-import com.brewster.poker.bet.BetOptions;
+import com.brewster.poker.bet.BlindAction;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.player.Player;
 
@@ -54,10 +53,10 @@ public class BetManagerEntity {
 //          betAmount = bigBlind;
 //        setPot(bigBlind);
 //          betMessages.add(currentBetter.getDisplayName() + " posts the $" + bigBlind + "  blind");
-          Bet blind = new BetAction(activeBetters.get(turnNumber), bigBlind, this);
+          Bet blind = new BlindAction(activeBetters.get(turnNumber), bigBlind, this);
           betMessages.add(blind.process());
           bets.add(blind);
-          adjustTurn();
+//          adjustTurn();
      }
 
      public void setAllRoundInformation(){
@@ -72,9 +71,10 @@ public class BetManagerEntity {
           turnsLeftInRound = activeBetters.size();
      }
 
-     public void adjustTurn(){
+     public int adjustTurn(){
           turnsLeftInRound--;
           adjustTurnNumber();
+          return turnsLeftInRound;
 //          currentBetter = activeBetters.get(turnNumber);
 //          if (turnsLeftInRound == 0){
 //               game.setIsBet(false);

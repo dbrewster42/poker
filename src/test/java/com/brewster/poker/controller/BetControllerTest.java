@@ -115,16 +115,16 @@ class BetControllerTest {
 
      private UserDto getUserDto(){
           UserDto userDto = new UserDto();
-          userDto.setUsername("HUMAN");
+          userDto.setEmail("HUMAN");
           userDto.setMoney(1000);
-          userDto.setId(1);
+          userDto.setId("1");
           return userDto;
      }
 
      private UserDto getComputerUser(){
           UserDto userDto = new UserDto();
           userDto.setMoney(10000);
-          userDto.setUsername("HAL");
+          userDto.setEmail("HAL");
           return userDto;
      }
 

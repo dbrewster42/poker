@@ -6,6 +6,7 @@ import com.brewster.poker.model.User;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.repository.UserRepository;
+import com.brewster.poker.utility.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +16,18 @@ import java.util.Optional;
 @Service
 public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
+    private final Utils utils;
 //    @Autowired
 //    private BetRepository betRepository;
 
-    public UserServiceImplementation(UserRepository userRepository){
+    public UserServiceImplementation(UserRepository userRepository, Utils utils){
         this.userRepository = userRepository;
+        this.utils = utils;
     }
 
     public UserDto findUser(String username){
-        User user = Optional.ofNullable(userRepository.findByUsername(username))
+        debug();
+        User user = Optional.ofNullable(userRepository.findByEmail(username))
                 .orElseThrow(UserNotFoundException::new);
 
         UserDto returnValue = new UserDto();
@@ -33,7 +37,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     public UserDto addMoneyToUser(UserDto dto){
-        User oldUser =  Optional.ofNullable(userRepository.findByUsername(dto.getUsername()))
+        User oldUser =  Optional.ofNullable(userRepository.findByEmail(dto.getEmail()))
                 .orElseThrow(UserNotFoundException::new);
         int updatedMoney = oldUser.getMoney() + dto.getMoney();
         oldUser.setMoney(updatedMoney);
@@ -48,10 +52,18 @@ public class UserServiceImplementation implements UserService {
     }
 
     public UserDto createUser(UserDto dto){
+        debug();
+        System.out.println(dto.getEmail() + " - " + dto.getMoney());
+
         User newUser = new User();
         BeanUtils.copyProperties(dto, newUser);
+        if (!utils.isEmailValid(newUser)){
+            throw new IllegalArgumentException("invalid email");
+        }
+        newUser.setId(utils.generateRandomString(12));
 
         User savedUser = userRepository.save(newUser);
+        System.out.println(savedUser.toString());
         Optional.ofNullable(savedUser).orElseThrow(() -> new RuntimeException("user not saved correctly"));
 
         UserDto returnValue = new UserDto();
@@ -60,10 +72,16 @@ public class UserServiceImplementation implements UserService {
         return returnValue;
     }
 
+    private void debug(){
+        for (User each : userRepository.findAll()){
+            System.out.println(each.toString());
+        }
+    }
+
     public void updateUsersMoney(List<Player> players){
         players.stream().filter(v -> v instanceof HumanPlayer)
 //                .map(v -> new User(v.getUser()))
-                .map(v -> userRepository.findByUsername(v.getUser().getUsername()))
+                .map(v -> userRepository.findByEmail(v.getUser().getEmail()))
                 .forEach(userRepository::save);
     }
 

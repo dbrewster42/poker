@@ -3,8 +3,7 @@ package com.brewster.poker.bet;
 import com.brewster.poker.exception.InvalidBetException;
 import com.brewster.poker.model.BetManagerEntity;
 import com.brewster.poker.player.Player;
-import com.brewster.poker.model.request.BetRequest;
-import com.brewster.poker.service.BetService;
+
 
 public class RaiseAction extends Bet {
     public RaiseAction(Player player, int betAmount, BetManagerEntity betManager) {

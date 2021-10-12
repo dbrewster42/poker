@@ -12,6 +12,7 @@ public abstract class Bet {
     protected final BetManagerEntity betManager;
     protected String message;
 
+    //todo bring back action as string?
     public Bet(Player player, int betAmount, BetManagerEntity betManager){
         this.player = player;
 //        this.chosenAction = Action.valueOf(betRequest.getAction());
