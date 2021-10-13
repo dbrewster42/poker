@@ -2,6 +2,7 @@ package com.brewster.poker.dto;
 
 import com.brewster.poker.player.Player;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.Transient;
 
 public class UserDto {
     private String email;
@@ -10,6 +11,7 @@ public class UserDto {
     @JsonIgnore
     private String id;
     @JsonIgnore
+    @Transient
     private Player player;
 
 

@@ -12,12 +12,15 @@ public class ComputerPlayer extends Player {
     private static int bank = 10000;
 
     public ComputerPlayer(String displayName, UserDto userDto) {
-        super(displayName);
-        setUser(userDto);
+        super(displayName, userDto);
         setMoney(1000);
     }
+    public ComputerPlayer(String displayName, String email) {
+        super(displayName, email);
+    }
 
-    public BetRequest placeBet(BetOptions options, BetManagerEntity betManager) {
+
+        public BetRequest placeBet(BetOptions options, BetManagerEntity betManager) {
         int strength = calculateCards();
         System.out.println("strength of cards = " + strength);
 

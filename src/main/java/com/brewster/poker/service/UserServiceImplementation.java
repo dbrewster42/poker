@@ -31,7 +31,7 @@ public class UserServiceImplementation implements UserService {
 
     public UserDto findUser(String username){
         LOGGER.info("finding {}", username);
-        debug();
+//        debug();
 //        User user = Optional.ofNullable(userRepository.findByEmail(username))
 //                .orElseThrow(UserNotFoundException::new);
 
@@ -67,7 +67,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     public UserDto createUser(UserDto dto){
-        debug();
+//        debug();
         System.out.println(dto.getEmail() + " - " + dto.getMoney());
 
         User newUser = new User();
@@ -87,18 +87,19 @@ public class UserServiceImplementation implements UserService {
         return returnValue;
     }
 
-    private void debug(){
-        LOGGER.info("all users -");
-        for (User each : userRepository.findAll()){
-            LOGGER.info(each.toString());
-        }
-    }
+//    private void debug(){
+//        LOGGER.info("all users -");
+//        for (User each : userRepository.findAll()){
+//            LOGGER.info(each.toString());
+//        }
+//    }
 
     public List<UserDto> findAllUsers(){
         return new ArrayList<>();
     }
 
     public void updateUsersMoney(List<Player> players){
+        //TODO not updating money
         players.stream().filter(v -> v instanceof HumanPlayer)
 //                .map(v -> new User(v.getUser()))
                 .map(v -> findUserByEmail(v.getUser().getEmail()))

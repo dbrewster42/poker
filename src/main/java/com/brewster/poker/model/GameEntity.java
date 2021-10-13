@@ -5,6 +5,7 @@ import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.player.Player;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 
-
+//@Document(collection = "Games")
 public class GameEntity {
      @Id
      @Indexed(unique = true)
@@ -38,6 +39,12 @@ public class GameEntity {
 //          openSlots = desiredNumberOfPlayers - 1;
 //          this.betManagerEntity = new BetManagerEntity(settingsRequest);
 //     }
+     public GameEntity(long id, GameSettingsRequest settingsRequest){
+          this.id = id;
+          this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
+          openSlots = desiredNumberOfPlayers - 1;
+          this.betManagerEntity = new BetManagerEntity(settingsRequest);
+     }
      public GameEntity(long id, List<Player> players, GameSettingsRequest settingsRequest){
           this.id = id;
           this.players = players;

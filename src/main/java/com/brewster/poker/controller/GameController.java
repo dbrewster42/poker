@@ -47,6 +47,7 @@ public class GameController {
 //            //TODO wait for players to join
 //        }
         GameEntity gameEntity = gameService.createGame(userDto, request, userService.findUser("HAL"));
+        LOGGER.info("saved game {}", gameEntity);
         return gameService.startNewDeal(gameEntity, userDto);
 
 //        return gameService.getNewGameResponse(userDto);

@@ -80,10 +80,10 @@ public class BetService {
         return validatorError;
     }
 
-
+    //todo change to void?
     public BetOptions startNewDeal(GameEntity gameEntity){
         gameEntity.getBetManagerEntity().resetBetInfo(gameEntity.getPlayers());
-        LOGGER.info("BetService stuff {}", gameEntity.getBetManagerEntity());
+//        LOGGER.info("BetService stuff {}", gameEntity.getBetManagerEntity());
         return getBetOptions(gameEntity);
     }
 

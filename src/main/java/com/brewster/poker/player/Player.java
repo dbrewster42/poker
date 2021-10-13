@@ -1,10 +1,8 @@
 package com.brewster.poker.player;
 
 import com.brewster.poker.card.Card;
-import com.brewster.poker.dto.UserDto;
-import com.brewster.poker.service.GameService;
 import com.brewster.poker.card.PokerHandEnum;
-import org.springframework.data.annotation.Transient;
+import com.brewster.poker.dto.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +11,15 @@ public abstract class Player {
     private List<Card> cards;
     private String displayName;
     private int money;
-    @Transient
-    private GameService game;
+    private String email;
     private UserDto user;
     private PokerHandEnum pokerHand;
     private int currentBetAmount = 0;
 
-    public Player(String displayName){
+    public Player(String displayName, String email){
         this.displayName = displayName;
-    }
+        this.email = email;
+    } //TODO do we need user?
     public Player(String displayName, UserDto userDto){
         this.displayName = displayName;
         this.user = userDto;
@@ -33,13 +31,13 @@ public abstract class Player {
 
     public void collectWinnings(int pot){
         this.money += pot;
-        this.user.setMoney(this.money);
+//        this.user.setMoney(this.money);
     }
 
     public void betMoney(int moneyBet){
         this.money = this.money - moneyBet;
         this.currentBetAmount += moneyBet;
-        this.user.setMoney(this.money);
+//        this.user.setMoney(this.money);
     }
 
     public void dealCard(Card card){ this.cards.add(card); }
@@ -72,14 +70,6 @@ public abstract class Player {
         this.displayName = displayName;
     }
 
-    public GameService getGame() {
-        return game;
-    }
-
-    public void setGame(GameService game) {
-        this.game = game;
-    }
-
     public int getMoney() {
         return money;
     }
@@ -90,10 +80,6 @@ public abstract class Player {
 
     public UserDto getUser() {
         return user;
-    }
-
-    public void setUser(UserDto user) {
-        this.user = user;
     }
 
     public PokerHandEnum getPokerHand() {

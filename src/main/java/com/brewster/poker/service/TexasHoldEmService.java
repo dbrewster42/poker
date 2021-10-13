@@ -36,38 +36,45 @@ public class TexasHoldEmService implements GameService {
      private final BetService betService;
      private final UserService userService;
      private Random random = new Random();
-     private static long gameId = 0;
+     private static long gameId = 1;
 
      public TexasHoldEmService(GameRepository gameRepository, BetService betService, UserService userService){
           this.gameRepository = gameRepository;
           this.betService = betService;
           this.userService = userService;
-          gameId = gameRepository.count();
+          gameId = gameRepository.count() + 1;
      }
 
 
      public GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
-          LOGGER.info("creating game");
+          GameEntity game1 = new GameEntity(gameId++, settingsRequest);
+          LOGGER.info("creating game {}", game1);
+          gameRepository.save(game1);
+          LOGGER.info("SUCCESS --------------------");
+
           List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
           HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
-          LOGGER.info("creating game");
-          GameEntity game = new GameEntity(gameId++, players, settingsRequest);
           players.add(player);
-          return game;
+          GameEntity game = new GameEntity(gameId++, players, settingsRequest);
+          LOGGER.info("creating game {}", game);
+
+//          GameEntity game = new GameEntity(gameId++, players, settingsRequest);
+//          return game;
+          return gameRepository.save(game);
      }
 
      public List<Player> generateNComputerPlayers(int n, UserDto computer){
           List<Player> players = new ArrayList<>();
           for (int i = 0; i < n; i++) {
                String displayName = "HAL" + random.nextInt(500);
-               Player player = new ComputerPlayer(displayName, computer);
+               Player player = new ComputerPlayer(displayName, computer.getEmail());
                players.add(player);
           }
           return players;
      }
 
      private HumanPlayer convertUserToPlayer(UserDto userDto, String displayName){
-          HumanPlayer player = new HumanPlayer(displayName, userDto);
+          HumanPlayer player = new HumanPlayer(displayName, userDto.getEmail());
           userDto.setPlayer(player);
           return player;
      }
@@ -98,19 +105,14 @@ public class TexasHoldEmService implements GameService {
      }
 
      public NewGameResponse startNewDeal(GameEntity gameEntity, UserDto userDto){
-//          GameEntity gameEntity = findGame(id);
           LOGGER.info("starting new deal with {}", userDto);
           List<Card> cards = getNewStandardDeck();
 
           dealPlayerCards(gameEntity.getPlayers(), cards);
           gameEntity.applyNewDeal(cards);
-          LOGGER.info("hustling {}", gameEntity);
-//          gameEntity.setRiverCards(new ArrayList<>());
-//          gameEntity.setCards(cards);
-//          gameEntity.setIsBet(true);
-//          gameEntity.setIsDealDone(false);
-
           betService.startNewDeal(gameEntity);
+
+          LOGGER.info("hustling {}", gameEntity);
           GameEntity savedGame = gameRepository.save(gameEntity);
 
           return getNewGameResponse(savedGame, userDto);
