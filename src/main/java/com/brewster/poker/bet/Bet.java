@@ -3,20 +3,26 @@ package com.brewster.poker.bet;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.BetManagerEntity;
+import org.springframework.data.annotation.Transient;
 
 public abstract class Bet {
     protected int betAmount = 0;
     protected final Player player;
-//    protected final Action chosenAction;
-    //TODO add message
+    protected final String chosenAction;
+    @Transient
     protected final BetManagerEntity betManager;
     protected String message;
 
-    //todo bring back action as string?
-    public Bet(Player player, int betAmount, BetManagerEntity betManager){
+    public Bet(Player player, BetRequest betRequest, BetManagerEntity betManager){
         this.player = player;
-//        this.chosenAction = Action.valueOf(betRequest.getAction());
-//        this.betAmount = betRequest.getBetAmount();
+        this.chosenAction = betRequest.getAction();
+        this.betAmount = betRequest.getBetAmount();
+        this.betManager = betManager;
+    }
+
+    public Bet(Player player, int betAmount, String chosenAction, BetManagerEntity betManager){
+        this.player = player;
+        this.chosenAction = chosenAction;
         this.betAmount = betAmount;
         this.betManager = betManager;
     }
@@ -31,9 +37,9 @@ public abstract class Bet {
         return betAmount;
     }
 
-//    public Action getChosenAction() {
-//        return chosenAction;
-//    }
+    public String getChosenAction() {
+        return chosenAction;
+    }
 
     public BetManagerEntity getBetManager() {
         return betManager;

@@ -3,12 +3,11 @@ package com.brewster.poker.bet;
 import com.brewster.poker.model.BetManagerEntity;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.model.request.BetRequest;
-import com.brewster.poker.service.BetService;
 
 public class CallAction extends Bet {
 
-    public CallAction(Player player, int betAmount, BetManagerEntity betManager) {
-        super(player, betAmount, betManager);
+    public CallAction(Player player, BetRequest betRequest, BetManagerEntity betManager) {
+        super(player, betRequest, betManager);
         this.betAmount = betAmount - player.getCurrentBetAmount();
     }
 

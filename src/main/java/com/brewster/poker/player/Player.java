@@ -4,6 +4,7 @@ import com.brewster.poker.card.Card;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.service.GameService;
 import com.brewster.poker.card.PokerHandEnum;
+import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ public abstract class Player {
     private List<Card> cards;
     private String displayName;
     private int money;
+    @Transient
     private GameService game;
     private UserDto user;
     private PokerHandEnum pokerHand;
@@ -19,13 +21,11 @@ public abstract class Player {
 
     public Player(String displayName){
         this.displayName = displayName;
-//        cards = new ArrayList<>();
     }
     public Player(String displayName, UserDto userDto){
         this.displayName = displayName;
         this.user = userDto;
         this.money = userDto.getMoney();
-//        cards = new ArrayList<>();
     }
 
     public abstract void joinGame();

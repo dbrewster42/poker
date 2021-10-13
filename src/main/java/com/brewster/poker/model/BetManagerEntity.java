@@ -55,7 +55,7 @@ public class BetManagerEntity {
 //          betAmount = bigBlind;
 //        setPot(bigBlind);
 //          betMessages.add(currentBetter.getDisplayName() + " posts the $" + bigBlind + "  blind");
-          Bet blind = new BlindAction(activeBetters.get(turnNumber), bigBlind, this);
+          Bet blind = new BlindAction(activeBetters.get(turnNumber), bigBlind, "BLIND", this);
           betMessages.add(blind.process());
           bets.add(blind);
 //          adjustTurn();
@@ -191,4 +191,8 @@ public class BetManagerEntity {
           this.maxBet = maxBet;
      }
 
+     @Override
+     public String toString() {
+          return "BetManagerEntity{" + "bigBlind=" + bigBlind + ", smallBlind=" + smallBlind + ", turnNumber=" + turnNumber + ", turnsLeftInRound=" + turnsLeftInRound + ", activeBetters=" + activeBetters + ", pot=" + pot + ", betAmount=" + betAmount + ", bigBlindTurn=" + bigBlindTurn + ", bets=" + bets + ", betMessages=" + betMessages + ", maxBet=" + maxBet + '}';
+     }
 }
