@@ -83,6 +83,7 @@ public class BetService {
 
     public BetOptions startNewDeal(GameEntity gameEntity){
         gameEntity.getBetManagerEntity().resetBetInfo(gameEntity.getPlayers());
+        LOGGER.info("BetService stuff {}", gameEntity);
         return getBetOptions(gameEntity);
     }
 

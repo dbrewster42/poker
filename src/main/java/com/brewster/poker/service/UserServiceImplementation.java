@@ -7,6 +7,8 @@ import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.repository.UserRepository;
 import com.brewster.poker.utility.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImplementation implements UserService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImplementation.class);
     private final UserRepository userRepository;
     private final Utils utils;
 //    @Autowired
@@ -27,19 +30,30 @@ public class UserServiceImplementation implements UserService {
     }
 
     public UserDto findUser(String username){
+        LOGGER.info("finding {}", username);
         debug();
-        User user = Optional.ofNullable(userRepository.findByEmail(username))
-                .orElseThrow(UserNotFoundException::new);
+//        User user = Optional.ofNullable(userRepository.findByEmail(username))
+//                .orElseThrow(UserNotFoundException::new);
 
+        User user = findUserByEmail(username);
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(user, returnValue);
 
         return returnValue;
     }
 
+    public User findUserByEmail(String username){
+        Optional<User> optionalUser = userRepository.findByEmail(username);
+        if (optionalUser.isEmpty()){
+            throw new UserNotFoundException();
+        }
+        return optionalUser.get();
+    }
+
     public UserDto addMoneyToUser(UserDto dto){
-        User oldUser =  Optional.ofNullable(userRepository.findByEmail(dto.getEmail()))
-                .orElseThrow(UserNotFoundException::new);
+        User oldUser = findUserByEmail(dto.getEmail());
+//                Optional.ofNullable(userRepository.findByEmail(dto.getEmail()))
+//                .orElseThrow(UserNotFoundException::new);
         int updatedMoney = oldUser.getMoney() + dto.getMoney();
         oldUser.setMoney(updatedMoney);
         Optional.ofNullable(oldUser).filter(v -> v.getMoney() == updatedMoney)
@@ -74,8 +88,9 @@ public class UserServiceImplementation implements UserService {
     }
 
     private void debug(){
+        LOGGER.info("all users -");
         for (User each : userRepository.findAll()){
-            System.out.println(each.toString());
+            LOGGER.info(each.toString());
         }
     }
 
@@ -86,7 +101,7 @@ public class UserServiceImplementation implements UserService {
     public void updateUsersMoney(List<Player> players){
         players.stream().filter(v -> v instanceof HumanPlayer)
 //                .map(v -> new User(v.getUser()))
-                .map(v -> userRepository.findByEmail(v.getUser().getEmail()))
+                .map(v -> findUserByEmail(v.getUser().getEmail()))
                 .forEach(userRepository::save);
     }
 

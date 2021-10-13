@@ -4,6 +4,7 @@ import com.brewster.poker.card.Card;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.player.Player;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class GameEntity {
      @Id
+     @Indexed(unique = true)
      private long id;
      private List<Player> players;
      private List<Card> cards;
@@ -47,6 +49,13 @@ public class GameEntity {
      public void setGameOver(){
           isDealDone = true;
           isBet = false;
+     }
+
+     public void applyNewDeal(List<Card> cards){
+          riverCards = new ArrayList<>();
+          this.cards = cards;
+          isBet = true;
+          isDealDone = false;
      }
 
      public List<String> getBetMessages(){
@@ -143,5 +152,10 @@ public class GameEntity {
 
      public void setUpdatedAt(Date updatedAt) {
           this.updatedAt = updatedAt;
+     }
+
+     @Override
+     public String toString() {
+          return "GameEntity{" + "id=" + id + ", players=" + players + ", cards=" + cards + ", riverCards=" + riverCards + ", isBet=" + isBet + ", isDealDone=" + isDealDone + ", betManagerEntity=" + betManagerEntity + ", desiredNumberOfPlayers=" + desiredNumberOfPlayers + '}';
      }
 }

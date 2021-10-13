@@ -12,6 +12,8 @@ public class UserRequest {
         this.email = email;
     }
 
+    public void setUsername(String email){ this.email = email; }
+
     public int getMoney() {
         return money;
     }

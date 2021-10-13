@@ -47,8 +47,10 @@ public class TexasHoldEmService implements GameService {
 
 
      public GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
+          LOGGER.info("creating game");
           List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
           HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
+          LOGGER.info("creating game");
           GameEntity game = new GameEntity(gameId++, players, settingsRequest);
           players.add(player);
           return game;
@@ -97,17 +99,21 @@ public class TexasHoldEmService implements GameService {
 
      public NewGameResponse startNewDeal(GameEntity gameEntity, UserDto userDto){
 //          GameEntity gameEntity = findGame(id);
+          LOGGER.info("starting new deal with {}", userDto);
           List<Card> cards = getNewStandardDeck();
-          gameEntity.setRiverCards(new ArrayList<>());
+
           dealPlayerCards(gameEntity.getPlayers(), cards);
-          gameEntity.setCards(cards);
-          gameEntity.setIsBet(true);
-          gameEntity.setIsDealDone(false);
+          gameEntity.applyNewDeal(cards);
+          LOGGER.info("hustling {}", gameEntity);
+//          gameEntity.setRiverCards(new ArrayList<>());
+//          gameEntity.setCards(cards);
+//          gameEntity.setIsBet(true);
+//          gameEntity.setIsDealDone(false);
 
           betService.startNewDeal(gameEntity);
-          gameRepository.save(gameEntity);
+          GameEntity savedGame = gameRepository.save(gameEntity);
 
-          return getNewGameResponse(gameEntity, userDto);
+          return getNewGameResponse(savedGame, userDto);
      }
 
      public GameResponse deal(GameEntity gameEntity){
