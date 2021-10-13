@@ -49,6 +49,10 @@ public class GameEntity {
           isBet = false;
      }
 
+     public List<String> getBetMessages(){
+          return betManagerEntity.getBetMessages();
+     }
+
      public BetManagerEntity getBetManagerEntity() {
           return betManagerEntity;
      }

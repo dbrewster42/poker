@@ -121,7 +121,6 @@ public class BetService {
         }
         LOGGER.info("returning betOptions = " + options.toString());
 
-
         return options;
     }
 

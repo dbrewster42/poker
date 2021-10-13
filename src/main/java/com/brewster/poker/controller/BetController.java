@@ -4,7 +4,6 @@ import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.service.BetService;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.service.GameService;
-import com.brewster.poker.service.OldGamesContainer;
 import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.response.BetResponse;
 
@@ -43,8 +42,9 @@ public class BetController {
         LOGGER.info("Controller : getting betOptions");
         GameEntity game = gameService.findGame(id);
         BetOptions options = betService.manageComputerBets(game);
+        gameService.saveGame(game);
 
-        return new BetResponse(options, game.getBetManagerEntity().getBetMessages());
+        return new BetResponse(options, game.getBetMessages());
     }
     //        GameService game = gamesContainer.findGameById(id);
 
@@ -57,8 +57,10 @@ public class BetController {
         GameEntity game = gameService.findGame(id);
 
         int userMoney = betService.placeBet(game, request);
+        gameService.saveGame(game);
+
         LOGGER.info("Controller: Bet has been placed - {}$ left", userMoney);
-        return new BetResponse(game.isBet(), game.getBetManagerEntity().getBetMessages(), userMoney, game.isDealDone());
+        return new BetResponse(game.isBet(), game.getBetMessages(), userMoney, game.isDealDone());
     }
 
 //    @PostMapping("{id}/bet")
