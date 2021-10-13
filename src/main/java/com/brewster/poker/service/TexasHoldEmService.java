@@ -70,14 +70,10 @@ public class TexasHoldEmService implements GameService {
           return player;
      }
      public GameEntity findGame(long id){
-//          GameEntity gameEntity = gameRepository.findById(id);
           Optional<GameEntity> gameEntity = gameRepository.findById(id);
           if (!gameEntity.isPresent()){
                throw new GameNotFoundException();
           }
-//          Optional.ofNullable(gameEntity.get())
-//                  .orElseThrow(() -> new GameNotFoundException()) ;
-////                  .orElseThrow(() -> new GameNotFoundException("game not found with id " + id)) ;
 
           return gameEntity.get();
      }
@@ -95,6 +91,10 @@ public class TexasHoldEmService implements GameService {
           }
      }
 
+     public void saveGame(GameEntity gameEntity){
+          gameRepository.save(gameEntity);
+     }
+
      public NewGameResponse startNewDeal(GameEntity gameEntity, UserDto userDto){
 //          GameEntity gameEntity = findGame(id);
           List<Card> cards = getNewStandardDeck();
@@ -105,6 +105,8 @@ public class TexasHoldEmService implements GameService {
           gameEntity.setIsDealDone(false);
 
           betService.startNewDeal(gameEntity);
+          gameRepository.save(gameEntity);
+
           return getNewGameResponse(gameEntity, userDto);
      }
 
@@ -119,6 +121,7 @@ public class TexasHoldEmService implements GameService {
                EndRoundResponse endRoundResponse = calculateWinningHand(gameEntity);
                userService.updateUsersMoney(gameEntity.getPlayers());
                gameEntity.getBetManagerEntity().setPot(0);
+               gameRepository.save(gameEntity);
 //               gameEntity.getBetManagerEntity().addBetMessage(endRoundResponse.getMessage());
                return new GameResponse(endRoundResponse);
           }
@@ -209,11 +212,6 @@ public class TexasHoldEmService implements GameService {
                   + "$ with their poker hand of a " + winners.get(0).getPokerHand().getHandName());
 
           return new EndRoundResponse(stringBuilder.toString(), playerDtos);
-     }
-
-     public void setGameOver(GameEntity gameEntity){
-          gameEntity.setIsDealDone(true);
-          gameEntity.setIsBet(false);
      }
 
      public NewGameResponse getNewGameResponse(GameEntity gameEntity, UserDto userDto){

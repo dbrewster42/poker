@@ -10,5 +10,6 @@ public interface UserService {
     UserDto addMoneyToUser(UserDto dto);
     UserDto createUser(UserDto dto);
     void updateUsersMoney(List<Player> players);
+    List<UserDto> findAllUsers();
 //    List<BetEntity> getUserBets(String username);
 }

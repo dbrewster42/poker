@@ -26,6 +26,8 @@ public class BetManagerEntity {
      public BetManagerEntity(GameSettingsRequest settingsRequest) {
           this.bigBlind = settingsRequest.getBigBlind();
           this.maxBet = Optional.ofNullable(settingsRequest.getMaxBet()).map(v -> v == 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
+          bets = new ArrayList<>();
+          betMessages = new ArrayList<>();
      }
 
      public void resetBetInfo(List<Player> players){
@@ -94,6 +96,9 @@ public class BetManagerEntity {
 
      public void processFold(Player player){
          activeBetters.remove(player);
+//         if (activeBetters.size() < 2){
+//
+//         }
          turnNumber--;
      }
 

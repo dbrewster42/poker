@@ -15,14 +15,7 @@ public interface GameService {
     NewGameResponse getNewGameResponse(GameEntity gameEntity, UserDto userDto);
 
     void addPlayerToGame(GameEntity gameEntity, HumanPlayer player);
-    void setGameOver(GameEntity gameEntity);
     UserDto getThisUser(GameEntity gameEntity, String name);
+    void saveGame(GameEntity gameEntity);
 
-//    BetService getBetManager();
-//    int getId();
-//    void setIsBet(boolean bet);
-//    boolean isBet();
-//    boolean isDealDone();
-//    List<Player> getPlayers();
-//    int getOpenSlots();
 }

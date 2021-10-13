@@ -34,16 +34,19 @@ public class BetService {
 //        Player player = currentBetter;
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
         Player currentBetter = betManager.getActiveBetters().get(betManager.getTurnNumber());
-        String validationStatement = validateBet(betRequest, currentBetter);
+        String validationStatement = validateBet(betRequest, currentBetter, betManager.getMaxBet());
         if (validationStatement.isEmpty()) {
             Bet bet = betFactory.createBet(currentBetter, betRequest, betManager);
             String message = bet.process();
             LOGGER.info("Bet has been processed - {}", message);
 
             bet.setMessage(message);
-            betManager.getBets().add(bet);
+            betManager.getBets().add(bet);//TODO better division between bets and bet messages
+            betManager.getBetMessages().add(message);
 
-            if (betManager.adjustTurn() == 0){
+            if (betManager.getActiveBetters().size() < 2){
+                game.setGameOver();
+            } else if (betManager.adjustTurn() == 0){
                 game.setIsBet(false);
             }
 
@@ -58,16 +61,16 @@ public class BetService {
         }
     }
 
-    private String validateBet(BetRequest betRequest, Player player){
+    private String validateBet(BetRequest betRequest, Player player, int maxBet){
         String validatorError = "";
         if (!betRequest.getUsername().equals(player.getDisplayName())){
             validatorError += "Critical error. The user who placed the bet was not the expected user. ";
         }
 
         int newBetAmount = betRequest.getBetAmount();
-//todo        if (newBetAmount > maxBet){
-//            validatorError += "This game has a maximum bet of " + maxBet + ". ";
-//        }
+        if (newBetAmount > maxBet){
+            validatorError += "This game has a maximum bet of " + maxBet + ". ";
+        }
 
         if (player.getClass() == HumanPlayer.class ){
             if (newBetAmount > player.getMoney()){
@@ -76,8 +79,6 @@ public class BetService {
         }
         return validatorError;
     }
-
-//TODO move to BetManagerEntity
 
 
     public BetOptions startNewDeal(GameEntity gameEntity){
@@ -119,6 +120,7 @@ public class BetService {
             options = getBetOptions(gameEntity);
         }
         LOGGER.info("returning betOptions = " + options.toString());
+
 
         return options;
     }

@@ -44,6 +44,11 @@ public class GameEntity {
           this.betManagerEntity = new BetManagerEntity(settingsRequest);
      }
 
+     public void setGameOver(){
+          isDealDone = true;
+          isBet = false;
+     }
+
      public BetManagerEntity getBetManagerEntity() {
           return betManagerEntity;
      }

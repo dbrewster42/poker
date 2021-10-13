@@ -10,6 +10,7 @@ import com.brewster.poker.utility.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,6 +77,10 @@ public class UserServiceImplementation implements UserService {
         for (User each : userRepository.findAll()){
             System.out.println(each.toString());
         }
+    }
+
+    public List<UserDto> findAllUsers(){
+        return new ArrayList<>();
     }
 
     public void updateUsersMoney(List<Player> players){

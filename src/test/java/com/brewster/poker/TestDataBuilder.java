@@ -1,6 +1,8 @@
 package com.brewster.poker;
 
 import com.brewster.poker.bet.Action;
+import com.brewster.poker.bet.Bet;
+import com.brewster.poker.bet.BetAction;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.card.PokerHandEnum;
 import com.brewster.poker.dto.UserDto;
@@ -10,11 +12,17 @@ import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 
 public class TestDataBuilder {
+     public static final Action[] CHECK_ACTIONS = { Action.CHECK, Action.BET, Action.FOLD };
+     public static final Action[] CALL_ACTIONS = { Action.CALL, Action.RAISE, Action.FOLD };
 
-//     public static BetOptions getBetOptions() {
-//          BetOptions betOptions = new BetOptions();
+     public static BetOptions getBetOptions() {
+          return new BetOptions(getPlayer(), CALL_ACTIONS, 10, 10);
+     }
+//
+//     public static Bet getBet() {
+//          return new BetAction(getPlayer(), n);
 //     }
-
+//
      public static GameSettingsRequest getGameSettingsRequest(){
           GameSettingsRequest gameSettingsRequest = new GameSettingsRequest();
           gameSettingsRequest.setFillWithComputerPlayers(true);
