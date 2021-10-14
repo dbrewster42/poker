@@ -5,9 +5,10 @@ import com.brewster.poker.player.Player;
 
 public class BlindAction extends Bet {
 
-     public BlindAction(Player player, int betAmount, String action, BetManagerEntity betManager) {
-          super(player, betAmount, action, betManager);
+     public BlindAction(Player player, int betAmount, String chosenAction, BetManagerEntity betManager) {
+          super(player, betAmount, chosenAction, betManager);
      }
+     public BlindAction(){}
 
      @Override
      public String process() {

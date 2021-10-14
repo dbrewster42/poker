@@ -7,21 +7,21 @@ import com.brewster.poker.dto.UserDto;
 import java.util.List;
 
 public class NewGameResponse {
-    private long id;
+    private long gameId;
     private final List<Card> hand;
     private List<UserDto> users;
     private BetOptions betOptions;
     private int userMoney;
 
     public NewGameResponse(final long id, final List<Card> hand, final List<UserDto> users, final BetOptions betOptions, final int userMoney){
-        this.id = id;
+        this.gameId = id;
         this.hand = hand;
         this.users = users;
         this.betOptions = betOptions;
         this.userMoney = userMoney;
     }
     public NewGameResponse(final int gameId, final List<Card> hand, final List<UserDto> users, final BetOptions betOptions, final int userMoney){
-        this.id = gameId;
+        this.gameId = gameId;
         this.hand = hand;
         this.users = users;
         this.betOptions = betOptions;
@@ -39,8 +39,8 @@ public class NewGameResponse {
 //    }
 
 
-    public long getId() {
-        return id;
+    public long getGameId() {
+        return gameId;
     }
 
     public List<UserDto> getUsers() {

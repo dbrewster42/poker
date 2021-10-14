@@ -39,12 +39,13 @@ public class GameEntity {
 //          openSlots = desiredNumberOfPlayers - 1;
 //          this.betManagerEntity = new BetManagerEntity(settingsRequest);
 //     }
-     public GameEntity(long id, GameSettingsRequest settingsRequest){
-          this.id = id;
-          this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
-          openSlots = desiredNumberOfPlayers - 1;
-          this.betManagerEntity = new BetManagerEntity(settingsRequest);
-     }
+//     public GameEntity(long id, GameSettingsRequest settingsRequest){
+//          this.id = id;
+//          this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
+//          openSlots = desiredNumberOfPlayers - 1;
+//          this.betManagerEntity = new BetManagerEntity(settingsRequest);
+//     }
+     public GameEntity(){}
      public GameEntity(long id, List<Player> players, GameSettingsRequest settingsRequest){
           this.id = id;
           this.players = players;

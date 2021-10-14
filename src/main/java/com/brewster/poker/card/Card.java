@@ -1,6 +1,7 @@
 package com.brewster.poker.card;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.Objects;
 
@@ -16,6 +17,14 @@ public class Card {
         this.value = value;
         this.name = name;
         this.image = imagePreFix + ".png";
+    }
+
+    @PersistenceConstructor
+    public Card(String suit, String name, int value, String image) {
+        this.suit = suit;
+        this.value = value;
+        this.name = name;
+        this.image = image;
     }
 
     public String getSuit() {

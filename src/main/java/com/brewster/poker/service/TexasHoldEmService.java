@@ -47,16 +47,16 @@ public class TexasHoldEmService implements GameService {
 
 
      public GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
-          GameEntity game1 = new GameEntity(gameId++, settingsRequest);
-          LOGGER.info("creating game {}", game1);
-          gameRepository.save(game1);
-          LOGGER.info("SUCCESS --------------------");
+//          GameEntity game1 = new GameEntity(gameId++, settingsRequest);
+//          LOGGER.info("creating game {}", game1);
+//          gameRepository.save(game1);
+//          LOGGER.info("SUCCESS --------------------");
 
           List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
           HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
           players.add(player);
           GameEntity game = new GameEntity(gameId++, players, settingsRequest);
-          LOGGER.info("creating game {}", game);
+//          LOGGER.info("creating game {}", game);
 
 //          GameEntity game = new GameEntity(gameId++, players, settingsRequest);
 //          return game;
@@ -112,7 +112,7 @@ public class TexasHoldEmService implements GameService {
           gameEntity.applyNewDeal(cards);
           betService.startNewDeal(gameEntity);
 
-          LOGGER.info("hustling {}", gameEntity);
+//          LOGGER.info("hustling {}", gameEntity);
           GameEntity savedGame = gameRepository.save(gameEntity);
 
           return getNewGameResponse(savedGame, userDto);
@@ -226,7 +226,7 @@ public class TexasHoldEmService implements GameService {
 //          LOGGER.info(userDto.toString());
 //          List<Card> playerCards = userDto.getPlayer().getCards();
           Player thisPlayer = getThisPlayer(gameEntity, userDto.getEmail());
-          List<Card> playerCards =thisPlayer.getCards();
+          List<Card> playerCards = thisPlayer.getCards();
           BetOptions options = betService.manageComputerBets(gameEntity);
           LOGGER.info(options.toString(), playerCards);
           return new NewGameResponse(gameEntity.getId(), playerCards, getUsers(gameEntity, userDto), options, userDto.getMoney());

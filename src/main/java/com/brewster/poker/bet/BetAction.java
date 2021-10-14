@@ -13,6 +13,7 @@ public class BetAction extends Bet {
 //        this.betAmount = betRequest.getBetAmount();
         validate();
     }
+    public BetAction(){}
 
 //    public BetAction(Player player, int betAmount, BetManagerEntity betManager) {
 //        this.player = player;

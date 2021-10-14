@@ -12,6 +12,7 @@ public class ComputerPlayer extends Player {
 
     public ComputerPlayer(String displayName, String email) {
         super(displayName, email);
+        setMoney(1000);
     }
 
 

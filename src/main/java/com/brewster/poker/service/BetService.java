@@ -35,6 +35,7 @@ public class BetService {
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
         Player currentBetter = betManager.getActiveBetters().get(betManager.getTurnNumber());
         String validationStatement = validateBet(betRequest, currentBetter, betManager.getMaxBet());
+        LOGGER.info("placing bet {}", betRequest);
         if (validationStatement.isEmpty()) {
             Bet bet = betFactory.createBet(currentBetter, betRequest, betManager);
             String message = bet.process();
@@ -115,8 +116,8 @@ public class BetService {
         LOGGER.info("betService options = " + options.toString());
         while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer) {
             ComputerPlayer computerPlayer = (ComputerPlayer) options.getPlayer();
-            LOGGER.info("displayName = " + computerPlayer.getDisplayName());
             BetRequest betRequest = computerPlayer.placeBet(options, gameEntity.getBetManagerEntity());
+            LOGGER.info("computer is making a bet - {}", betRequest.toString());
             placeBet(gameEntity, betRequest);
             options = getBetOptions(gameEntity);
         }

@@ -30,6 +30,24 @@ public class BetManagerEntity {
           betMessages = new ArrayList<>();
      }
 
+//     public BetManagerEntity(int bigBlind, int smallBlind, int turnNumber, int turnsLeftInRound,
+//                             List<Player> activeBetters, int pot, int betAmount, int bigBlindTurn, List<Bet> bets,
+//                             List<String> betMessages, Integer maxBet) {
+//          this.bigBlind = bigBlind;
+//          this.smallBlind = smallBlind;
+//          this.turnNumber = turnNumber;
+//          this.turnsLeftInRound = turnsLeftInRound;
+//          this.activeBetters = activeBetters;
+//          this.pot = pot;
+//          this.betAmount = betAmount;
+//          this.bigBlindTurn = bigBlindTurn;
+//          this.bets = bets;
+//          this.betMessages = betMessages;
+//          this.maxBet = maxBet;
+//     }
+
+     public BetManagerEntity(){}
+
      public void resetBetInfo(List<Player> players){
           pot = bigBlind;
           bigBlindTurn++;
@@ -58,7 +76,7 @@ public class BetManagerEntity {
           Bet blind = new BlindAction(activeBetters.get(turnNumber), bigBlind, "BLIND", this);
           betMessages.add(blind.process());
           bets.add(blind);
-//          adjustTurn();
+          adjustTurn();
      }
 
      public void setAllRoundInformation(){
