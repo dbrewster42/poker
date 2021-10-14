@@ -15,10 +15,6 @@ public class ComputerPlayer extends Player {
         super(displayName, userDto);
         setMoney(1000);
     }
-    public ComputerPlayer(String displayName, String email) {
-        super(displayName, email);
-    }
-
 
         public BetRequest placeBet(BetOptions options, BetManagerEntity betManager) {
         int strength = calculateCards();

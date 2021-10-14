@@ -9,11 +9,6 @@ public class HumanPlayer extends Player {
         super(displayName, user);
     }
 
-    public HumanPlayer(String displayName, String email) {
-        super(displayName, email);
-    }
-
-
     @Override
     public void joinGame() {
 

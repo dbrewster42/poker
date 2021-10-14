@@ -67,14 +67,14 @@ public class TexasHoldEmService implements GameService {
           List<Player> players = new ArrayList<>();
           for (int i = 0; i < n; i++) {
                String displayName = "HAL" + random.nextInt(500);
-               Player player = new ComputerPlayer(displayName, computer.getEmail());
+               Player player = new ComputerPlayer(displayName, computer);
                players.add(player);
           }
           return players;
      }
 
      private HumanPlayer convertUserToPlayer(UserDto userDto, String displayName){
-          HumanPlayer player = new HumanPlayer(displayName, userDto.getEmail());
+          HumanPlayer player = new HumanPlayer(displayName, userDto);
           userDto.setPlayer(player);
           return player;
      }
@@ -223,8 +223,10 @@ public class TexasHoldEmService implements GameService {
      }
 
      public NewGameResponse getNewGameResponse(GameEntity gameEntity, UserDto userDto){
-          LOGGER.info(userDto.toString());
-          List<Card> playerCards = userDto.getPlayer().getCards();
+//          LOGGER.info(userDto.toString());
+//          List<Card> playerCards = userDto.getPlayer().getCards();
+          Player thisPlayer = getThisPlayer(gameEntity, userDto.getEmail());
+          List<Card> playerCards =thisPlayer.getCards();
           BetOptions options = betService.manageComputerBets(gameEntity);
           LOGGER.info(options.toString(), playerCards);
           return new NewGameResponse(gameEntity.getId(), playerCards, getUsers(gameEntity, userDto), options, userDto.getMoney());
@@ -247,6 +249,13 @@ public class TexasHoldEmService implements GameService {
                   .findAny()
                   .orElseThrow(()-> new UserNotFoundException());
           return thisPlayer.getUser();
+     }
+
+     private Player getThisPlayer(GameEntity gameEntity, String email){
+          return gameEntity.getPlayers().stream()
+                  .filter(v -> v.getUser().getEmail().equals(email))
+                  .findAny()
+                  .orElseThrow(() -> new UserNotFoundException());
      }
 
      public void addPlayerToGame(GameEntity gameEntity, HumanPlayer player){

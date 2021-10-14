@@ -11,15 +11,10 @@ public abstract class Player {
     private List<Card> cards;
     private String displayName;
     private int money;
-    private String email;
     private UserDto user;
     private PokerHandEnum pokerHand;
     private int currentBetAmount = 0;
 
-    public Player(String displayName, String email){
-        this.displayName = displayName;
-        this.email = email;
-    } //TODO do we need user?
     public Player(String displayName, UserDto userDto){
         this.displayName = displayName;
         this.user = userDto;

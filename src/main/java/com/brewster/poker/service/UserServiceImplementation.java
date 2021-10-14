@@ -100,10 +100,10 @@ public class UserServiceImplementation implements UserService {
 
     public void updateUsersMoney(List<Player> players){
         //TODO not updating money
-        players.stream().filter(v -> v instanceof HumanPlayer)
-//                .map(v -> new User(v.getUser()))
-                .map(v -> findUserByEmail(v.getUser().getEmail()))
-                .forEach(userRepository::save);
+//        players.stream().filter(v -> v instanceof HumanPlayer)
+////                .map(v -> new User(v.getUser()))
+//                .map(v -> findUserByEmail(v.getUser().getEmail()))
+//                .forEach(userRepository::save);
     }
 
 //
