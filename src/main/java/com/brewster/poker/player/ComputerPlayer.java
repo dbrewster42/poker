@@ -1,6 +1,7 @@
 package com.brewster.poker.player;
 
 import com.brewster.poker.bet.Action;
+import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.BetManagerEntity;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.service.HandStrengthCalculator;
@@ -10,11 +11,13 @@ import com.brewster.poker.model.request.BetRequest;
 public class ComputerPlayer extends Player {
     private static int bank = 10000;
 
-    public ComputerPlayer(String displayName, String email) {
-        super(displayName, email);
+    public ComputerPlayer(String displayName, UserDto userDto) {
+        super(displayName, userDto);
         setMoney(1000);
     }
-
+    public ComputerPlayer(String displayName, String email, int money){
+        super(displayName, email, money);
+    }
 
     public BetRequest placeBet(BetOptions options, BetManagerEntity betManager) {
         int strength = calculateCards();

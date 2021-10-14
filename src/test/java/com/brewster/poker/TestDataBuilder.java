@@ -51,7 +51,8 @@ public class TestDataBuilder {
      public static Player getPlayer(){
           UserDto userDto = new UserDto();
           userDto.setMoney(100);
-          Player player = new HumanPlayer("John", "jj@gmail.com");
+          userDto.setEmail("jj@gmail.com");
+          Player player = new HumanPlayer("John", userDto);
           player.setCards(CardHandBuilder.buildPair());
           player.setPokerHand(PokerHandEnum.PAIR);
           return player;

@@ -59,14 +59,14 @@ public class TexasHoldEmService implements GameService {
           List<Player> players = new ArrayList<>();
           for (int i = 0; i < n; i++) {
                String displayName = "HAL" + random.nextInt(500);
-               Player player = new ComputerPlayer(displayName, computer.getEmail());
+               Player player = new ComputerPlayer(displayName, computer);
                players.add(player);
           }
           return players;
      }
 
      private HumanPlayer convertUserToPlayer(UserDto userDto, String displayName){
-          HumanPlayer player = new HumanPlayer(displayName, userDto.getEmail());
+          HumanPlayer player = new HumanPlayer(displayName, userDto);
 //          userDto.setPlayer(player);
           return player;
      }
