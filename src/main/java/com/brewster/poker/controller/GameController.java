@@ -1,6 +1,8 @@
 package com.brewster.poker.controller;
 
 import com.brewster.poker.dto.UserDto;
+import com.brewster.poker.exception.GameNotFoundException;
+import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.request.JoinRequest;
@@ -56,19 +58,16 @@ public class GameController {
     @PostMapping("{id}/restart")
     public NewGameResponse getNewRound(@PathVariable long id, @RequestBody UserRequest request){
         LOGGER.info("{} has requested a new game for {}", request.getEmail(), id);
-//        gameService = gamesContainer.findGameById(id);
         GameEntity gameEntity = gameService.findGame(id);
         userDto = gameService.getThisUser(gameEntity, request.getEmail());
 
         return gameService.startNewDeal(gameEntity, userDto);
 //        userDto = gameService.getUser(request.getUsername());
-//        LOGGER.info(userDto.toString());
 //        return gameService.getNewGameResponse(userDto);
     }
 
     @GetMapping("{id}")
     public GameResponse deal(@PathVariable long id) {
-//        gameService = gamesContainer.findGameById(id);
         LOGGER.info("dealing card");
         GameEntity gameEntity = gameService.findGame(id);
 
@@ -85,7 +84,15 @@ public class GameController {
     public void joinGame(@RequestBody JoinRequest request) {
         userDto = userService.findUser(request.getUsername());
 //        gameService.addPlayerToGame();
-//        GameService game = gamesContainer.addPlayerToGame(userDto, request);
     }
 
+    @GetMapping("exception")
+    public void throwException(){
+        throw new GameNotFoundException();
+    }
+
+    @GetMapping("exception2")
+    public void throwException2(){
+        throw new UserNotFoundException();
+    }
 }

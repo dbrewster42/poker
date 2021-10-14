@@ -81,10 +81,10 @@ public class BetService {
     }
 
     //todo change to void?
-    public BetOptions startNewDeal(GameEntity gameEntity){
+    public void startNewDeal(GameEntity gameEntity){
         gameEntity.getBetManagerEntity().resetBetInfo(gameEntity.getPlayers());
 //        LOGGER.info("BetService stuff {}", gameEntity.getBetManagerEntity());
-        return getBetOptions(gameEntity);
+//        return getBetOptions(gameEntity);
     }
 
     public void deal(GameEntity gameEntity){

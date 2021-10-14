@@ -31,12 +31,12 @@ import java.util.Random;
 public class TexasHoldEmService implements GameService {
      private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEmService.class);
      private final GameRepository gameRepository;
-     private Player thisPlayer;
-     private GameEntity thisGame;
      private final BetService betService;
      private final UserService userService;
      private Random random = new Random();
-     private static long gameId = 1;
+     private static long gameId;
+     private Player thisPlayer;
+     private GameEntity thisGame;
 
      public TexasHoldEmService(GameRepository gameRepository, BetService betService, UserService userService){
           this.gameRepository = gameRepository;
@@ -235,7 +235,7 @@ public class TexasHoldEmService implements GameService {
      private List<UserDto> getUsers(GameEntity gameEntity, UserDto userDto){
           List<UserDto> users = new ArrayList<>();
           for (Player player : gameEntity.getPlayers()){
-               if (player.getEmail().equals(userDto.getEmail())){
+               if (!player.getEmail().equals(userDto.getEmail())){
                     users.add(new UserDto(player));
                }
 //               if (!player.getUser().equals(userDto)) {
@@ -246,9 +246,9 @@ public class TexasHoldEmService implements GameService {
           return users;
      }
 
-     public UserDto getThisUser(GameEntity gameEntity, String name){
+     public UserDto getThisUser(GameEntity gameEntity, String email){
           Player thisPlayer = gameEntity.getPlayers().stream()
-                  .filter(v -> v.getDisplayName().equals(name))
+                  .filter(v -> v.getEmail().equals(email))
                   .findAny()
                   .orElseThrow(()-> new UserNotFoundException());
           return new UserDto(thisPlayer);
