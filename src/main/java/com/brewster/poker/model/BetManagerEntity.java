@@ -77,6 +77,7 @@ public class BetManagerEntity {
           betMessages.add(blind.process());
           bets.add(blind);
           adjustTurn();
+//          turnsLeftInRound++;
      }
 
      public void setAllRoundInformation(){

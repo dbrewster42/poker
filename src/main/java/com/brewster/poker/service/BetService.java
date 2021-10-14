@@ -29,11 +29,16 @@ public class BetService {
         this.betFactory = betFactory;
     }
 
+    private void playerDebug(GameEntity game){
+        game.getPlayers().stream().forEach(v -> LOGGER.info(v.getDisplayName()));
+    }
+
     public int placeBet(GameEntity game, BetRequest betRequest){
         BetManagerEntity betManager = game.getBetManagerEntity();
 //        Player player = currentBetter;
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
         Player currentBetter = betManager.getActiveBetters().get(betManager.getTurnNumber());
+        playerDebug(game);
         LOGGER.info("{} is the current better on current turn {}", currentBetter, betManager.getTurnNumber());
         String validationStatement = validateBet(betRequest, currentBetter, betManager.getMaxBet());
         LOGGER.info("placing bet {}", betRequest);
@@ -65,20 +70,23 @@ public class BetService {
 
     private String validateBet(BetRequest betRequest, Player player, int maxBet){
         String validatorError = "";
-        if (!betRequest.getUsername().equals(player.getEmail())){
-            LOGGER.info("BetRequest user {} does not match expected user {}", betRequest.getUsername(), player.getEmail());
-            validatorError += "Critical error. The user who placed the bet was not the expected user. ";
-        }
 
         int newBetAmount = betRequest.getBetAmount();
-        if (newBetAmount > maxBet){
-            validatorError += "This game has a maximum bet of " + maxBet + ". ";
-        }
-
         if (player.getClass() == HumanPlayer.class ){
             if (newBetAmount > player.getMoney()){
                 validatorError += "You do not have that much money to bet. Until you reload money, your maximum bet is " + player.getMoney() + ". ";
             }
+            if (!betRequest.getUsername().equals(player.getEmail())){
+                LOGGER.info("BetRequest user {} does not match expected user {}", betRequest.getUsername(), player.getEmail());
+                validatorError += "Critical error. The user who placed the bet was not the expected user. ";
+            }
+        } else if (!betRequest.getUsername().equals(player.getDisplayName())){
+            LOGGER.info("BetRequest user {} does not match expected user {}", betRequest.getUsername(), player.getDisplayName());
+            validatorError += "Critical error. The computer user who placed the bet was not the expected user. ";
+        }
+
+        if (newBetAmount > maxBet){
+            validatorError += "This game has a maximum bet of " + maxBet + ". ";
         }
         return validatorError;
     }

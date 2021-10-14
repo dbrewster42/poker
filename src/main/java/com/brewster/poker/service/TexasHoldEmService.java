@@ -47,19 +47,11 @@ public class TexasHoldEmService implements GameService {
 
 
      public GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
-//          GameEntity game1 = new GameEntity(gameId++, settingsRequest);
-//          LOGGER.info("creating game {}", game1);
-//          gameRepository.save(game1);
-//          LOGGER.info("SUCCESS --------------------");
-
           List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
           HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
           players.add(player);
-          GameEntity game = new GameEntity(gameId++, players, settingsRequest);
-//          LOGGER.info("creating game {}", game);
 
-//          GameEntity game = new GameEntity(gameId++, players, settingsRequest);
-//          return game;
+          GameEntity game = new GameEntity(gameId++, players, settingsRequest);
           return gameRepository.save(game);
      }
 
@@ -113,9 +105,9 @@ public class TexasHoldEmService implements GameService {
           betService.startNewDeal(gameEntity);
 
 //          LOGGER.info("hustling {}", gameEntity);
-          GameEntity savedGame = gameRepository.save(gameEntity);
+//          GameEntity savedGame = gameRepository.save(gameEntity);
 
-          return getNewGameResponse(savedGame, userDto);
+          return getNewGameResponse(gameEntity, userDto);
      }
 
      public GameResponse deal(GameEntity gameEntity){
@@ -229,6 +221,7 @@ public class TexasHoldEmService implements GameService {
           List<Card> playerCards = thisPlayer.getCards();
           BetOptions options = betService.manageComputerBets(gameEntity);
           LOGGER.info(options.toString(), playerCards);
+          gameRepository.save(gameEntity);
           return new NewGameResponse(gameEntity.getId(), playerCards, getUsers(gameEntity, userDto), options, userDto.getMoney());
      }
 
