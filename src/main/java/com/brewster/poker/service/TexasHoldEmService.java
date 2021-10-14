@@ -135,7 +135,7 @@ public class TexasHoldEmService implements GameService {
 
           return new GameResponse(gameEntity.getRiverCards());
      }
-
+     //TODO refactor count and save riverCards
      private List<Card> dealRiverCardNTimes(int count, GameEntity gameEntity){
           LOGGER.info("dealing {} cards", count);
           List<Card> cards = gameEntity.getCards();

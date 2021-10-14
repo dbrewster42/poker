@@ -8,9 +8,7 @@ public class HumanPlayer extends Player {
     public HumanPlayer(String displayName, UserDto userDto) {
         super(displayName, userDto);
     }
-    public HumanPlayer(String displayName, String email, int money){
-        super(displayName, email, money);
-    }
+    public HumanPlayer(){}
 
 
     @Override

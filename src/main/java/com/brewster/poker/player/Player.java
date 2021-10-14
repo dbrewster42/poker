@@ -3,6 +3,7 @@ package com.brewster.poker.player;
 import com.brewster.poker.card.Card;
 import com.brewster.poker.card.PokerHandEnum;
 import com.brewster.poker.dto.UserDto;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,7 @@ public abstract class Player {
         this.email = userDto.getEmail();
         this.money = userDto.getMoney();
     }
-    public Player(String displayName, String email, int money){
-        this.displayName = displayName;
-        this.email = email;
-        this.money = money;
-    }
+    public Player(){}
 
     public abstract void joinGame();
     public abstract void leaveGame();
