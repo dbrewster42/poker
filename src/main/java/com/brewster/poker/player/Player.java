@@ -83,4 +83,10 @@ public abstract class Player {
     public void setPokerHand(PokerHandEnum pokerHand) {
         this.pokerHand = pokerHand;
     }
+
+    @Override
+    public String toString() {
+        return "Player{ displayName='" + displayName + '\''+
+              ", email='" + email + '\'' + '}';
+    }
 }

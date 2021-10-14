@@ -34,6 +34,7 @@ public class BetService {
 //        Player player = currentBetter;
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
         Player currentBetter = betManager.getActiveBetters().get(betManager.getTurnNumber());
+        LOGGER.info("{} is the current better on current turn {}", currentBetter, betManager.getTurnNumber());
         String validationStatement = validateBet(betRequest, currentBetter, betManager.getMaxBet());
         LOGGER.info("placing bet {}", betRequest);
         if (validationStatement.isEmpty()) {
@@ -64,7 +65,8 @@ public class BetService {
 
     private String validateBet(BetRequest betRequest, Player player, int maxBet){
         String validatorError = "";
-        if (!betRequest.getUsername().equals(player.getDisplayName())){
+        if (!betRequest.getUsername().equals(player.getEmail())){
+            LOGGER.info("BetRequest user {} does not match expected user {}", betRequest.getUsername(), player.getEmail());
             validatorError += "Critical error. The user who placed the bet was not the expected user. ";
         }
 

@@ -9,6 +9,7 @@ public class FoldAction extends Bet {
         super(player, betRequest, betManager);
         this.betAmount = 0;
     }
+    public FoldAction(){}
 
     @Override
     public String process() {

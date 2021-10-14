@@ -11,6 +11,7 @@ public class CheckAction extends Bet {
         this.betAmount = 0;
         validate();
     }
+    public CheckAction(){}
 
     private void validate() {
         if (betManager.getBetAmount() != 0){

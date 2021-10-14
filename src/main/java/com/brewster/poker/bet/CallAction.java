@@ -10,6 +10,7 @@ public class CallAction extends Bet {
         super(player, betRequest, betManager);
         this.betAmount = betAmount - player.getCurrentBetAmount();
     }
+    public CallAction(){}
 
 //    @Override
 //    public String validate() {

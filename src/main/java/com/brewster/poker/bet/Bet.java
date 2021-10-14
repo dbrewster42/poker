@@ -7,10 +7,10 @@ import org.springframework.data.annotation.Transient;
 
 public abstract class Bet {
     protected int betAmount = 0;
-    protected final Player player;
-    protected final String chosenAction;
+    protected Player player;
+    protected String chosenAction;
     @Transient
-    protected final BetManagerEntity betManager;
+    protected BetManagerEntity betManager;
     protected String message;
 
     public Bet(Player player, BetRequest betRequest, BetManagerEntity betManager){
@@ -19,6 +19,7 @@ public abstract class Bet {
         this.betAmount = betRequest.getBetAmount();
         this.betManager = betManager;
     }
+    public Bet(){}
 
     public Bet(Player player, int betAmount, String chosenAction, BetManagerEntity betManager){
         this.player = player;
@@ -51,5 +52,21 @@ public abstract class Bet {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public void setBetAmount(int betAmount) {
+        this.betAmount = betAmount;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setChosenAction(String chosenAction) {
+        this.chosenAction = chosenAction;
+    }
+
+    public void setBetManager(BetManagerEntity betManager) {
+        this.betManager = betManager;
     }
 }

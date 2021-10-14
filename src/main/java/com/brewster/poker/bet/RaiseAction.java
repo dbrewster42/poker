@@ -7,17 +7,17 @@ import com.brewster.poker.player.Player;
 
 
 public class RaiseAction extends Bet {
-//    private int
     public RaiseAction(Player player, BetRequest betRequest, BetManagerEntity betManager) {
         super(player, betRequest, betManager);
-        System.out.println(betAmount + " ------------------- current = " + player.getCurrentBetAmount());
+//        System.out.println(betAmount + " ------------------- current = " + player.getCurrentBetAmount());
         this.betAmount = betAmount - player.getCurrentBetAmount();
         validate();
     }
+    public RaiseAction(){}
 
     private void validate() {
         if (betAmount < betManager.getBigBlind()){
-            System.out.println(betAmount + " -------------- " + betManager.getBigBlind());
+//            System.out.println(betAmount + " -------------- " + betManager.getBigBlind());
             throw new InvalidBetException("The minimum bet is " + betManager.getBigBlind() + ". You may not bet less than the blind");
         }
         if (betAmount <= betManager.getBetAmount()){
