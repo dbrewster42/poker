@@ -67,15 +67,15 @@ public class TexasHoldEmService implements GameService {
           List<Player> players = new ArrayList<>();
           for (int i = 0; i < n; i++) {
                String displayName = "HAL" + random.nextInt(500);
-               Player player = new ComputerPlayer(displayName, computer);
+               Player player = new ComputerPlayer(displayName, computer.getEmail());
                players.add(player);
           }
           return players;
      }
 
      private HumanPlayer convertUserToPlayer(UserDto userDto, String displayName){
-          HumanPlayer player = new HumanPlayer(displayName, userDto);
-          userDto.setPlayer(player);
+          HumanPlayer player = new HumanPlayer(displayName, userDto.getEmail());
+//          userDto.setPlayer(player);
           return player;
      }
      public GameEntity findGame(long id){
@@ -235,10 +235,13 @@ public class TexasHoldEmService implements GameService {
      private List<UserDto> getUsers(GameEntity gameEntity, UserDto userDto){
           List<UserDto> users = new ArrayList<>();
           for (Player player : gameEntity.getPlayers()){
-               if (!player.getUser().equals(userDto)) {
-                    users.add(player.getUser());
-                    player.getUser().setDisplayName(player.getDisplayName());
+               if (player.getEmail().equals(userDto.getEmail())){
+                    users.add(new UserDto(player));
                }
+//               if (!player.getUser().equals(userDto)) {
+//                    users.add(player.getUser());
+//                    player.getUser().setDisplayName(player.getDisplayName());
+//               }
           }
           return users;
      }
@@ -248,12 +251,13 @@ public class TexasHoldEmService implements GameService {
                   .filter(v -> v.getDisplayName().equals(name))
                   .findAny()
                   .orElseThrow(()-> new UserNotFoundException());
-          return thisPlayer.getUser();
+          return new UserDto(thisPlayer);
+//          return thisPlayer.getUser();
      }
 
      private Player getThisPlayer(GameEntity gameEntity, String email){
           return gameEntity.getPlayers().stream()
-                  .filter(v -> v.getUser().getEmail().equals(email))
+                  .filter(v -> v.getEmail().equals(email))
                   .findAny()
                   .orElseThrow(() -> new UserNotFoundException());
      }

@@ -2,7 +2,6 @@ package com.brewster.poker.player;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.card.PokerHandEnum;
-import com.brewster.poker.dto.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +10,13 @@ public abstract class Player {
     private List<Card> cards;
     private String displayName;
     private int money;
-    private UserDto user;
     private PokerHandEnum pokerHand;
     private int currentBetAmount = 0;
+    private String email;
 
-    public Player(String displayName, UserDto userDto){
+    public Player(String displayName, String email){
         this.displayName = displayName;
-        this.user = userDto;
-        this.money = userDto.getMoney();
+        this.email = email;
     }
 
     public abstract void joinGame();
@@ -73,8 +71,8 @@ public abstract class Player {
         this.money = money;
     }
 
-    public UserDto getUser() {
-        return user;
+    public String getEmail() {
+        return email;
     }
 
     public PokerHandEnum getPokerHand() {

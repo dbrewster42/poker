@@ -14,6 +14,14 @@ public class UserDto {
     @Transient
     private Player player;
 
+    public UserDto(Player player) {
+        this.email = player.getEmail();
+        this.displayName = player.getDisplayName();
+        this.money = player.getMoney();
+        this.player = player;
+    }
+    public UserDto() {}
+
 
     public String getId() {
         return id;
