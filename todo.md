@@ -8,6 +8,9 @@ or it should require a manual call.
 
 
 ## bugs
+rivercards null at end and player cards not updated
+update and save user money
+
 raise needs to be clearer in the front end
 betting should start with bigBlind and then auto bet on first turn
 computer names in front end

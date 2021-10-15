@@ -39,7 +39,6 @@ public class BetManagerEntity {
           activeBetters.addAll(players);
           betMessages = new ArrayList<>();
           setAllRoundInformation();
-//          LOGGER.info("starting new deal with " + turnsLeftInRound + " turns");
           initBigBlind();
 //          return getBetOptions();
      }

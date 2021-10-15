@@ -111,6 +111,7 @@ public class TexasHoldEmService implements GameService {
      }
 
      public GameResponse deal(GameEntity gameEntity){
+          LOGGER.info("DAS BOOT {}", gameEntity);
           if (gameEntity.isBet()){
                LOGGER.info("Cannot deal cards until betting has finished");
                return new GameResponse(gameEntity.getRiverCards());
@@ -126,20 +127,21 @@ public class TexasHoldEmService implements GameService {
                return new GameResponse(endRoundResponse);
           }
           betService.deal(gameEntity);
-          int count = 1;
-          if (gameEntity.getRiverCards().isEmpty()){
-               count = 3;
-          }
-          dealRiverCardNTimes(count, gameEntity);
+
+          List<Card> riverCards = dealRiverCardNTimes(gameEntity);
           gameRepository.save(gameEntity);
 
-          return new GameResponse(gameEntity.getRiverCards());
+          return new GameResponse(riverCards);
      }
-     //TODO refactor count and save riverCards
-     private List<Card> dealRiverCardNTimes(int count, GameEntity gameEntity){
+
+     private List<Card> dealRiverCardNTimes(GameEntity gameEntity){
+          int count = 1;
+          List<Card> riverCards = gameEntity.getRiverCards();
+          if (riverCards.isEmpty()){
+               count = 3;
+          }
           LOGGER.info("dealing {} cards", count);
           List<Card> cards = gameEntity.getCards();
-          List<Card> riverCards = gameEntity.getRiverCards();
           List<Player> players = gameEntity.getPlayers();
           cards.remove(0);
           for (int i = 0; i < count; i++){
@@ -188,7 +190,7 @@ public class TexasHoldEmService implements GameService {
                                    winners.add(player);
                               }
                          }
-                         winners.forEach(v -> LOGGER.info(v.getDisplayName() + " ***** !"));
+                         winners.forEach(v -> LOGGER.info(" winner{} ***** !", v.getDisplayName()));
                     }
                }
                if (winners.size() > 1){

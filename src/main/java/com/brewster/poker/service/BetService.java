@@ -35,6 +35,7 @@ public class BetService {
 
     public int placeBet(GameEntity game, BetRequest betRequest){
         BetManagerEntity betManager = game.getBetManagerEntity();
+        LOGGER.info("Bet Manager = {}", betManager);
 //        Player player = currentBetter;
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
         Player currentBetter = betManager.getActiveBetters().get(betManager.getTurnNumber());
@@ -91,7 +92,6 @@ public class BetService {
         return validatorError;
     }
 
-    //todo change to void?
     public void startNewDeal(GameEntity gameEntity){
         gameEntity.getBetManagerEntity().resetBetInfo(gameEntity.getPlayers());
 //        LOGGER.info("BetService stuff {}", gameEntity.getBetManagerEntity());
