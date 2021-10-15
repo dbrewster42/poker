@@ -99,7 +99,13 @@ public class UserServiceImplementation implements UserService {
     }
 
     public void updateUsersMoney(List<Player> players){
-        //TODO not updating money
+        for (Player player : players){
+            if (player instanceof  HumanPlayer){
+                User user = findUserByEmail(player.getEmail());
+                user.setMoney(player.getMoney());
+                userRepository.save(user);
+            }
+        }
 //        players.stream().filter(v -> v instanceof HumanPlayer)
 ////                .map(v -> new User(v.getUser()))
 //                .map(v -> findUserByEmail(v.getUser().getEmail()))

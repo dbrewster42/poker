@@ -35,11 +35,11 @@ public class BetService {
 
     public int placeBet(GameEntity game, BetRequest betRequest){
         BetManagerEntity betManager = game.getBetManagerEntity();
-        LOGGER.info("Bet Manager = {}", betManager);
+//        LOGGER.info("Bet Manager = {}", betManager);
 //        Player player = currentBetter;
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
         Player currentBetter = betManager.getActiveBetters().get(betManager.getTurnNumber());
-        playerDebug(game);
+//        playerDebug(game);
         LOGGER.info("{} is the current better on current turn {}", currentBetter, betManager.getTurnNumber());
         String validationStatement = validateBet(betRequest, currentBetter, betManager.getMaxBet());
         LOGGER.info("placing bet {}", betRequest);
@@ -123,7 +123,7 @@ public class BetService {
 
     public BetOptions manageComputerBets(GameEntity gameEntity){
         BetOptions options = getBetOptions(gameEntity);
-        LOGGER.info("betService options = " + options.toString());
+//        LOGGER.info("betService options = " + options.toString());
         while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer) {
             ComputerPlayer computerPlayer = (ComputerPlayer) options.getPlayer();
             BetRequest betRequest = computerPlayer.placeBet(options, gameEntity.getBetManagerEntity());

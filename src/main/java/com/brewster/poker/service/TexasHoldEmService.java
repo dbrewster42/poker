@@ -109,9 +109,15 @@ public class TexasHoldEmService implements GameService {
 
           return getNewGameResponse(gameEntity, userDto);
      }
+     private void debug(GameEntity gameEntity){
+          gameEntity.getRiverCards().forEach(v -> LOGGER.info(v.toString()));
+          LOGGER.info("/n");
+          gameEntity.getPlayers().stream().map(v -> v.getCards()).forEach(v -> LOGGER.info(v.toString()));
+     }
 
      public GameResponse deal(GameEntity gameEntity){
-          LOGGER.info("DAS BOOT {}", gameEntity);
+//          LOGGER.info("DAS BOOT {}", gameEntity);
+//          debug(gameEntity);
           if (gameEntity.isBet()){
                LOGGER.info("Cannot deal cards until betting has finished");
                return new GameResponse(gameEntity.getRiverCards());
@@ -157,15 +163,28 @@ public class TexasHoldEmService implements GameService {
           return riverCards;
      }
 
+     private void debug2(Player player){
+          LOGGER.info(player.getDisplayName());
+          player.getCards().forEach(v -> LOGGER.info(v.toString()));
+     }
+     private void debug3(List<Player> players){
+          for (Player player : players) {
+               LOGGER.info(player.getDisplayName());
+               player.getCards().forEach(v -> LOGGER.info(v.toString()));
+          }
+     }
+
      private EndRoundResponse calculateWinningHand(GameEntity gameEntity){
           if (gameEntity.isDealDone() && !gameEntity.isBet()){
                List<Player> activePlayers = gameEntity.getBetManagerEntity().getActiveBetters();
+               debug3(gameEntity.getPlayers());
                List<Player> winners = new ArrayList<>();
                List<PlayerDto> playerDtos = new ArrayList<>();
                int winningStrength = 0;
                int pot = gameEntity.getBetManagerEntity().getPot();
                Player winner = null;
                for (Player player : activePlayers){
+                    debug2(player);
                     PokerHandEnum pokerHand = PokerHandEnum.lookupHand(player.getCards());
                     LOGGER.info("{} has a {}", player.getDisplayName(), pokerHand.getHandName());
                     player.setPokerHand(pokerHand);
@@ -190,7 +209,7 @@ public class TexasHoldEmService implements GameService {
                                    winners.add(player);
                               }
                          }
-                         winners.forEach(v -> LOGGER.info(" winner{} ***** !", v.getDisplayName()));
+                         winners.forEach(v -> LOGGER.info("winner {} ***** !", v.getDisplayName()));
                     }
                }
                if (winners.size() > 1){
