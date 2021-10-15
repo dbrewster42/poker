@@ -4,6 +4,7 @@ import com.brewster.poker.bet.Action;
 import com.brewster.poker.bet.Bet;
 import com.brewster.poker.bet.BetFactory;
 import com.brewster.poker.bet.BetOptions;
+import com.brewster.poker.bet.FoldAction;
 import com.brewster.poker.exception.InvalidBetException;
 import com.brewster.poker.model.BetManagerEntity;
 import com.brewster.poker.model.GameEntity;
@@ -45,6 +46,9 @@ public class BetService {
         LOGGER.info("placing bet {}", betRequest);
         if (validationStatement.isEmpty()) {
             Bet bet = betFactory.createBet(currentBetter, betRequest, betManager);
+            if (bet instanceof FoldAction){
+                game.processFold(currentBetter);
+            }
             String message = bet.process();
             LOGGER.info("Bet has been processed - {}", message);
 
@@ -94,12 +98,14 @@ public class BetService {
 
     public void startNewDeal(GameEntity gameEntity){
         gameEntity.getBetManagerEntity().resetBetInfo(gameEntity.getPlayers());
+        gameEntity.getPlayers().forEach(Player::resetCurrentBetAmount);
 //        LOGGER.info("BetService stuff {}", gameEntity.getBetManagerEntity());
 //        return getBetOptions(gameEntity);
     }
 
     public void deal(GameEntity gameEntity){
         gameEntity.getBetManagerEntity().deal();
+        gameEntity.getPlayers().forEach(Player::resetCurrentBetAmount);
 //        betMessages.add(" --- *** --- *** --- ");
 
     }

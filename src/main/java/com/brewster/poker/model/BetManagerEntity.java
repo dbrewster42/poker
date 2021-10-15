@@ -14,13 +14,14 @@ public class BetManagerEntity {
      private int smallBlind;
      private int turnNumber;
      private int turnsLeftInRound;
-     private List<Player> activeBetters;
      private int pot = 0;
      private int betAmount;
      private int bigBlindTurn = -1;
      private List<Bet> bets;
      private List<String> betMessages;
-     private Integer maxBet;
+     private int maxBet;
+     private int activePlayersSize;
+//     private List<Player> activeBetters;
 
 
      public BetManagerEntity(GameSettingsRequest settingsRequest) {
@@ -35,11 +36,13 @@ public class BetManagerEntity {
      public void resetBetInfo(List<Player> players){
           pot = bigBlind;
           bigBlindTurn++;
-          activeBetters = new ArrayList<>();
-          activeBetters.addAll(players);
+          activePlayersSize = players.size();
+//          activeBetters = players;
+//          activeBetters = new ArrayList<>();
+//          activeBetters.addAll(players);
           betMessages = new ArrayList<>();
           setAllRoundInformation();
-          initBigBlind();
+          initBigBlind(players);
 //          return getBetOptions();
      }
 
@@ -50,13 +53,13 @@ public class BetManagerEntity {
      }
 
 
-     private void initBigBlind(){
+     private void initBigBlind(List<Player> players){
 //          Player currentBetter = activeBetters.get(turnNumber);
 //          currentBetter.betMoney(bigBlind);
 //          betAmount = bigBlind;
 //        setPot(bigBlind);
 //          betMessages.add(currentBetter.getDisplayName() + " posts the $" + bigBlind + "  blind");
-          Bet blind = new BlindAction(activeBetters.get(turnNumber), bigBlind, "BLIND", this);
+          Bet blind = new BlindAction(players.get(turnNumber), bigBlind, "BLIND", this);
           betMessages.add(blind.process());
           bets.add(blind);
           adjustTurn();
@@ -66,13 +69,13 @@ public class BetManagerEntity {
      public void setAllRoundInformation(){
           betAmount = 0;
           turnNumber = bigBlindTurn;
-//          activePlayersSize = activeBetters.size();
-          if (turnNumber >= activeBetters.size()){
+//          activePlayersSize = activePlayersSize;
+          if (turnNumber >= activePlayersSize){
                turnNumber = 0;
           }
 //          currentBetter = activeBetters.get(turnNumber);
-          activeBetters.forEach(Player::resetCurrentBetAmount);
-          turnsLeftInRound = activeBetters.size();
+//          activeBetters.forEach(Player::resetCurrentBetAmount);
+          turnsLeftInRound = activePlayersSize;
      }
 
      public int adjustTurn(){
@@ -87,18 +90,18 @@ public class BetManagerEntity {
      }
      private void adjustTurnNumber(){
           turnNumber++;
-          if (turnNumber == activeBetters.size()){
+          if (turnNumber == activePlayersSize){
                turnNumber = 0;
           }
      }
 
      public void resetTurnsLeft(){
-          turnsLeftInRound = activeBetters.size();
+          turnsLeftInRound = activePlayersSize;
      }
 
      public void processFold(Player player){
-         activeBetters.remove(player);
-//         if (activeBetters.size() < 2){
+//         activeBetters.remove(player);
+//         if (activePlayersSize < 2){
 //
 //         }
          turnNumber--;
@@ -127,14 +130,6 @@ public class BetManagerEntity {
 
      public void setTurnsLeftInRound(int turnsLeftInRound) {
           this.turnsLeftInRound = turnsLeftInRound;
-     }
-
-     public List<Player> getActiveBetters() {
-          return activeBetters;
-     }
-
-     public void setActiveBetters(List<Player> activeBetters) {
-          this.activeBetters = activeBetters;
      }
 
      public int getPot() {
@@ -195,6 +190,6 @@ public class BetManagerEntity {
 
      @Override
      public String toString() {
-          return "BetManagerEntity{" + "bigBlind=" + bigBlind + ", smallBlind=" + smallBlind + ", turnNumber=" + turnNumber + ", turnsLeftInRound=" + turnsLeftInRound + ", activeBetters=" + activeBetters + ", pot=" + pot + ", betAmount=" + betAmount + ", bigBlindTurn=" + bigBlindTurn + ", bets=" + bets + ", betMessages=" + betMessages + ", maxBet=" + maxBet + '}';
+          return "BetManagerEntity{" + "bigBlind=" + bigBlind + ", smallBlind=" + smallBlind + ", turnNumber=" + turnNumber + ", turnsLeftInRound=" + turnsLeftInRound + ", pot=" + pot + ", betAmount=" + betAmount + ", bigBlindTurn=" + bigBlindTurn + ", bets=" + bets + ", betMessages=" + betMessages + ", maxBet=" + maxBet + '}';
      }
 }

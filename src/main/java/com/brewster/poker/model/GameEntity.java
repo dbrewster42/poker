@@ -19,6 +19,7 @@ public class GameEntity {
      @Indexed(unique = true)
      private long id;
      private List<Player> players;
+     private List<Player> inactivePlayers;
      private List<Card> cards;
      private List<Card> riverCards;
      private boolean isBet;
@@ -64,6 +65,15 @@ public class GameEntity {
           this.cards = cards;
           isBet = true;
           isDealDone = false;
+          players.addAll(inactivePlayers);
+          inactivePlayers = new ArrayList<>();
+//          activeBetters = new ArrayList<>();
+//          activeBetters.addAll(players);
+     }
+
+     public void processFold(Player player) {
+          players.remove(player);
+          inactivePlayers.add(player);
      }
 
      public List<String> getBetMessages(){
