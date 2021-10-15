@@ -176,7 +176,7 @@ public class TexasHoldEmService implements GameService {
 
      private EndRoundResponse calculateWinningHand(GameEntity gameEntity){
           if (gameEntity.isDealDone() && !gameEntity.isBet()){
-               List<Player> activePlayers = gameEntity.getBetManagerEntity().getActiveBetters();
+               List<Player> activePlayers = gameEntity.getPlayers();
                debug3(gameEntity.getPlayers());
                List<Player> winners = new ArrayList<>();
                List<PlayerDto> playerDtos = new ArrayList<>();

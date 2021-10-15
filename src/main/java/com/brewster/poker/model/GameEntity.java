@@ -74,6 +74,7 @@ public class GameEntity {
      public void processFold(Player player) {
           players.remove(player);
           inactivePlayers.add(player);
+          betManagerEntity.setActivePlayersSize(players.size());
      }
 
      public List<String> getBetMessages(){

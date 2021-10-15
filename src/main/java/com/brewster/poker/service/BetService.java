@@ -39,7 +39,7 @@ public class BetService {
 //        LOGGER.info("Bet Manager = {}", betManager);
 //        Player player = currentBetter;
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
-        Player currentBetter = betManager.getActiveBetters().get(betManager.getTurnNumber());
+        Player currentBetter = game.getPlayers().get(betManager.getTurnNumber());
 //        playerDebug(game);
         LOGGER.info("{} is the current better on current turn {}", currentBetter, betManager.getTurnNumber());
         String validationStatement = validateBet(betRequest, currentBetter, betManager.getMaxBet());
@@ -56,7 +56,7 @@ public class BetService {
             betManager.getBets().add(bet);//TODO better division between bets and bet messages
             betManager.getBetMessages().add(message);
 
-            if (betManager.getActiveBetters().size() < 2){
+            if (betManager.getActivePlayersSize() < 2){
                 game.setGameOver();
             } else if (betManager.adjustTurn() == 0){
                 game.setIsBet(false);
@@ -117,7 +117,7 @@ public class BetService {
         if (betManager.getTurnsLeftInRound() > 0){
             int betAmount = betManager.getBetAmount();
             Action[] actionOptions = getPossibleBetActions(betAmount);
-            return new BetOptions(betManager.getActiveBetters().get(betManager.getTurnNumber()), actionOptions, betAmount, betManager.getPot());
+            return new BetOptions(gameEntity.getPlayers().get(betManager.getTurnNumber()), actionOptions, betAmount, betManager.getPot());
         } else {
             LOGGER.info("end of betting round");
             gameEntity.setIsBet(false);

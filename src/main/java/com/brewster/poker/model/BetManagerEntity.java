@@ -180,12 +180,20 @@ public class BetManagerEntity {
           this.bets = bets;
      }
 
-     public Integer getMaxBet() {
+     public int getMaxBet() {
           return maxBet;
      }
 
-     public void setMaxBet(Integer maxBet) {
+     public void setMaxBet(int maxBet) {
           this.maxBet = maxBet;
+     }
+
+     public int getActivePlayersSize() {
+          return activePlayersSize;
+     }
+
+     public void setActivePlayersSize(int activePlayersSize) {
+          this.activePlayersSize = activePlayersSize;
      }
 
      @Override
