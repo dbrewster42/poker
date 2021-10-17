@@ -101,6 +101,7 @@ public class UserServiceImplementation implements UserService {
     public void updateUsersMoney(List<Player> players){
         for (Player player : players){
             if (player instanceof  HumanPlayer){
+                LOGGER.info("saving money of {}", player.getMoney());
                 User user = findUserByEmail(player.getEmail());
                 user.setMoney(player.getMoney());
                 userRepository.save(user);

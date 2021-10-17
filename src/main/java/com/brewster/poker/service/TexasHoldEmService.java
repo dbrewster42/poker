@@ -83,7 +83,14 @@ public class TexasHoldEmService implements GameService {
      }
 
      private void dealPlayerCards(List<Player> players, List<Card> cards){
-          players.forEach(Player::resetCards);
+          LOGGER.info("resetting cards");
+//          players.forEach(Player::resetCards);
+          players.forEach(v -> {
+               LOGGER.info("{} cards", v.getCards().size());
+               v.resetCards();
+               LOGGER.info("reset to (THIS SHOULD BE 0) {} cards", v.getCards().size());
+          });
+
           for (int i = 0; i < 2; i++){
                for (Player player : players){
                     player.dealCard(cards.get(0));
@@ -250,6 +257,7 @@ public class TexasHoldEmService implements GameService {
 //          List<Card> playerCards = userDto.getPlayer().getCards();
           Player thisPlayer = getThisPlayer(gameEntity, userDto.getEmail());
           List<Card> playerCards = thisPlayer.getCards();
+          debug2(thisPlayer);
           BetOptions options = betService.manageComputerBets(gameEntity);
           LOGGER.info(options.toString(), playerCards);
           gameRepository.save(gameEntity);
