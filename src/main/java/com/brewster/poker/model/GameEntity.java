@@ -53,6 +53,7 @@ public class GameEntity {
           this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
           openSlots = desiredNumberOfPlayers - 1;
           this.betManagerEntity = new BetManagerEntity(settingsRequest);
+          inactivePlayers = new ArrayList<>();
      }
 
      public void setGameOver(){
@@ -107,6 +108,10 @@ public class GameEntity {
 
      public void addPlayers(List<Player> players){
           this.players.addAll(players);
+     }
+
+     public List<Player> getInactivePlayers() {
+          return inactivePlayers;
      }
 
      public List<Card> getCards() {

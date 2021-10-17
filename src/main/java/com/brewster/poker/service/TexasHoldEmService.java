@@ -109,6 +109,16 @@ public class TexasHoldEmService implements GameService {
 
           return getNewGameResponse(gameEntity, userDto);
      }
+     public NewGameResponse startNewDeal(GameEntity gameEntity, String email){
+          List<Card> cards = getNewStandardDeck();
+
+          dealPlayerCards(gameEntity.getPlayers(), cards);
+          gameEntity.applyNewDeal(cards);
+          betService.startNewDeal(gameEntity);
+          UserDto userDto = getThisUser(gameEntity, email);
+
+          return getNewGameResponse(gameEntity, userDto);
+     }
      private void debug(GameEntity gameEntity){
           gameEntity.getRiverCards().forEach(v -> LOGGER.info(v.toString()));
           LOGGER.info("/n");
@@ -265,6 +275,21 @@ public class TexasHoldEmService implements GameService {
                   .filter(v -> v.getEmail().equals(email))
                   .findAny()
                   .orElseThrow(()-> new UserNotFoundException());
+//          Player thisPlayer = null;
+//          for (Player player : gameEntity.getPlayers()){
+//               if (player.getEmail().equals(email)){
+//                    thisPlayer = player;
+//                    break;
+//               }
+//          }
+//          if (Objects.isNull(thisPlayer)){
+//               for (Player player : gameEntity.getInactivePlayers()){
+//                    if (player.getEmail().equals(email)){
+//                         thisPlayer = player;
+//                         break;
+//                    }
+//               }
+//          } plus throw exception if null
           return new UserDto(thisPlayer);
 //          return thisPlayer.getUser();
      }
