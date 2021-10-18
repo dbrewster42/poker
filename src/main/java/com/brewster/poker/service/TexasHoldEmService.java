@@ -35,8 +35,8 @@ public class TexasHoldEmService implements GameService {
      private final UserService userService;
      private Random random = new Random();
      private static long gameId;
-     private Player thisPlayer;
-     private GameEntity thisGame;
+//     private Player thisPlayer;
+//     private GameEntity thisGame;
 
      public TexasHoldEmService(GameRepository gameRepository, BetService betService, UserService userService){
           this.gameRepository = gameRepository;
@@ -127,7 +127,7 @@ public class TexasHoldEmService implements GameService {
      private void debug(GameEntity gameEntity){
           gameEntity.getRiverCards().forEach(v -> LOGGER.info(v.toString()));
           LOGGER.info("/n");
-          gameEntity.getPlayers().stream().map(v -> v.getCards()).forEach(v -> LOGGER.info(v.toString()));
+          gameEntity.getPlayers().stream().map(Player::getCards).forEach(v -> LOGGER.info(v.toString()));
      }
 
      public GameResponse deal(GameEntity gameEntity){
@@ -271,7 +271,7 @@ public class TexasHoldEmService implements GameService {
           Player thisPlayer = gameEntity.getPlayers().stream()
                   .filter(v -> v.getEmail().equals(email))
                   .findAny()
-                  .orElseThrow(()-> new UserNotFoundException());
+                  .orElseThrow(UserNotFoundException::new);
 
           return new UserDto(thisPlayer);
      }
@@ -280,7 +280,7 @@ public class TexasHoldEmService implements GameService {
           return gameEntity.getPlayers().stream()
                   .filter(v -> v.getEmail().equals(email))
                   .findAny()
-                  .orElseThrow(() -> new UserNotFoundException());
+                  .orElseThrow(UserNotFoundException::new);
      }
 
      public void addPlayerToGame(GameEntity gameEntity, HumanPlayer player){

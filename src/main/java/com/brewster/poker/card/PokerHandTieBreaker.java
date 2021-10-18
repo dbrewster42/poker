@@ -1,5 +1,6 @@
 package com.brewster.poker.card;
 
+import com.brewster.poker.exception.TieBreakerException;
 import com.brewster.poker.player.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ public class PokerHandTieBreaker {
      private static final Logger LOGGER = LoggerFactory.getLogger(PokerHandTieBreaker.class);
      private static PokerHandEnum pokerHand;
 
+     private PokerHandTieBreaker(){}
 
      public static List<Player> getTieBreaker(Player firstPlayer, Player secondPlayer){
           pokerHand = firstPlayer.getPokerHand();
@@ -62,12 +64,12 @@ public class PokerHandTieBreaker {
           int thirdCard = 0;
           int fourthCard = 0;
           if (pokerHand == PAIR){
-               highCard = getPairHighCard(cards, true);
+               highCard = getPairHighCard(cards);
                secondCard = getHighCard(cards, highCard);
-               thirdCard = getThirdHighCard(cards, highCard, secondCard);//TODO convert params to list
+               thirdCard = getThirdHighCard(cards, highCard, secondCard);
           } else if (pokerHand == TWO_PAIR){
-               highCard = getPairHighCard(cards, true);
-               secondCard = getPairHighCard(cards, false); //TODO bug here for 3 pairs
+               highCard = getPairHighCard(cards);
+               secondCard = getSecondPairHighCard(cards);
                thirdCard = getThirdHighCard(cards, highCard, secondCard);
           } else if (pokerHand == FULL_HOUSE || pokerHand == FOUR_KIND || pokerHand == THREE_KIND){
                highCard = getTripsHighCard(cards);
@@ -93,20 +95,37 @@ public class PokerHandTieBreaker {
 
           return highCards;
      }
+     private static int getSecondPairHighCard(List<Card> cards){
+          int highCard = 0;
+          boolean isSecondHighest = false;
+          for (int i = 0; i < cards.size() - 1; i++){
+               if (cards.get(i).getValue() == cards.get(i + 1).getValue()){
+                    if (isSecondHighest){
+                         highCard = cards.get(i).getValue();
+                         break;
+                    } else {
+                         isSecondHighest = true;
+                    }
+               }
+          }
+          if (highCard == 0){
+               throw new TieBreakerException("error calculating second pair high card");
+          }
+          return highCard;
+     }
 
-     private static int getPairHighCard(List<Card> cards, boolean isHighCard){
+     private static int getPairHighCard(List<Card> cards){
           int highCard = 0;
 
           for (int i = 0; i < cards.size() - 1; i++){
                if (cards.get(i).getValue() == cards.get(i + 1).getValue()){
                     highCard = cards.get(i).getValue();
-                    if (isHighCard){
-                         break;
-                    }
+                    break;
+
                }
           }
           if (highCard == 0){
-               throw new RuntimeException("error calculating pair high card");
+               throw new TieBreakerException("error calculating pair high card");
           }
           return highCard;
      }
@@ -139,7 +158,7 @@ public class PokerHandTieBreaker {
                     return cards.stream().filter(v -> v.getSuit().equals(suit)).collect(Collectors.toList());
                }
           }
-          throw new RuntimeException("Cards are labeled a flush but couldn't find 5 cards of the same suit");
+          throw new TieBreakerException("Cards are labeled a flush but couldn't find 5 cards of the same suit");
      }
 
      private static int getStraightHighCard(List<Card> cards){
@@ -174,7 +193,7 @@ public class PokerHandTieBreaker {
                }
           }
           if (highCard == 0){
-               throw new RuntimeException("error calculating trips high card");
+               throw new TieBreakerException("error calculating trips high card");
           }
           return highCard;
      }
