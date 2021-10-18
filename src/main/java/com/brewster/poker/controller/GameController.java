@@ -59,11 +59,13 @@ public class GameController {
     public NewGameResponse getNewRound(@PathVariable long id, @RequestBody UserRequest request){
         LOGGER.info("{} has requested a new game for {}", request.getEmail(), id);
         GameEntity gameEntity = gameService.findGame(id);
-        userDto = gameService.getThisUser(gameEntity, request.getEmail());
-
-        return gameService.startNewDeal(gameEntity, userDto);
-//        userDto = gameService.getUser(request.getUsername());
-//        return gameService.getNewGameResponse(userDto);
+        return gameService.startNewDeal(gameEntity, request.getEmail());
+//        userDto = gameService.getThisUser(gameEntity, request.getEmail());
+//
+//        return gameService.startNewDeal(gameEntity, userDto);
+//
+////        userDto = gameService.getUser(request.getUsername());
+////        return gameService.getNewGameResponse(userDto);
     }
 
     @GetMapping("{id}")

@@ -151,13 +151,13 @@ public class TexasHoldEmService implements GameService {
           }
           betService.deal(gameEntity);
 
-          List<Card> riverCards = dealRiverCardNTimes(gameEntity);
+          List<Card> riverCards = dealRiverCards(gameEntity);
           gameRepository.save(gameEntity);
 
           return new GameResponse(riverCards);
      }
 
-     private List<Card> dealRiverCardNTimes(GameEntity gameEntity){
+     private List<Card> dealRiverCards(GameEntity gameEntity){
           int count = 1;
           List<Card> riverCards = gameEntity.getRiverCards();
           if (riverCards.isEmpty()){
@@ -174,6 +174,7 @@ public class TexasHoldEmService implements GameService {
                cards.remove(0);
           }
           if (riverCards.size() == 5){
+               gameEntity.setCards(new ArrayList<>());
                gameEntity.setIsDealDone(true);
           }
           gameEntity.setIsBet(true);

@@ -11,6 +11,8 @@ public interface GameService {
     GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser);
     GameEntity findGame(long id);
     NewGameResponse startNewDeal(GameEntity gameEntity, UserDto userDto);
+    NewGameResponse startNewDeal(GameEntity gameEntity, String email);
+
     GameResponse deal(GameEntity gameEntity);
     NewGameResponse getNewGameResponse(GameEntity gameEntity, UserDto userDto);
 
