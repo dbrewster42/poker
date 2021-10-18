@@ -81,7 +81,6 @@ public class TexasHoldEmService implements GameService {
           LOGGER.info("resetting cards");
 //          players.forEach(Player::resetCards);
           players.forEach(v -> {
-               LOGGER.info("{} cards", v.getCards().size());
                v.resetCards();
                LOGGER.info("reset to (THIS SHOULD BE 0) {} cards", v.getCards().size());
           });
@@ -92,6 +91,10 @@ public class TexasHoldEmService implements GameService {
                     cards.remove(0);
                }
           }
+          players.forEach(v -> {
+               LOGGER.info("reset to (THIS SHOULD BE 2) {} cards", v.getCards().size());
+               LOGGER.info("{} has {} and {}", v.getDisplayName(), v.getCards().get(0),  v.getCards().get(1));
+          });
      }
 
      public void saveGame(GameEntity gameEntity){
@@ -114,8 +117,8 @@ public class TexasHoldEmService implements GameService {
      public NewGameResponse startNewDeal(GameEntity gameEntity, String email){
           List<Card> cards = getNewStandardDeck();
 
-          dealPlayerCards(gameEntity.getPlayers(), cards);
           gameEntity.applyNewDeal(cards);
+          dealPlayerCards(gameEntity.getPlayers(), cards);
           betService.startNewDeal(gameEntity);
           UserDto userDto = getThisUser(gameEntity, email);
 
@@ -206,7 +209,6 @@ public class TexasHoldEmService implements GameService {
                          winner = player;
                          winners = List.of(winner);
                     } else if (winningStrength == score){
-                         //TODO tiebreaker
                          LOGGER.info("THERE IS A TIE {}", pokerHand.getHandName());
                          LOGGER.info("previous winners - {}", winners.size());
                          if (winners.size() < 2){

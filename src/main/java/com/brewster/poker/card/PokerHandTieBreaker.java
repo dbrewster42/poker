@@ -67,7 +67,7 @@ public class PokerHandTieBreaker {
                thirdCard = getThirdHighCard(cards, highCard, secondCard);//TODO convert params to list
           } else if (pokerHand == TWO_PAIR){
                highCard = getPairHighCard(cards, true);
-               secondCard = getPairHighCard(cards, false);
+               secondCard = getPairHighCard(cards, false); //TODO bug here for 3 pairs
                thirdCard = getThirdHighCard(cards, highCard, secondCard);
           } else if (pokerHand == FULL_HOUSE || pokerHand == FOUR_KIND || pokerHand == THREE_KIND){
                highCard = getTripsHighCard(cards);

@@ -10,6 +10,7 @@ or it should require a manual call.
 ## bugs
 rivercards null at end and player cards not updated
 update and save user money
+tiebreakers for 3 pairs
 
 raise needs to be clearer in the front end
 betting should start with bigBlind and then auto bet on first turn
