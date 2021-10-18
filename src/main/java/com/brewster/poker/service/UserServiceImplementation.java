@@ -15,35 +15,32 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImplementation implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImplementation.class);
     private final UserRepository userRepository;
     private final Utils utils;
-//    @Autowired
-//    private BetRepository betRepository;
+
 
     public UserServiceImplementation(UserRepository userRepository, Utils utils){
         this.userRepository = userRepository;
         this.utils = utils;
     }
 
-    public UserDto findUser(String username){
-        LOGGER.info("finding {}", username);
-//        debug();
-//        User user = Optional.ofNullable(userRepository.findByEmail(username))
-//                .orElseThrow(UserNotFoundException::new);
-
-        User user = findUserByEmail(username);
+    public UserDto findUserDtoByEmail(String email){
+        User user = findUserByEmail(email);
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(user, returnValue);
 
         return returnValue;
     }
 
-    public User findUserByEmail(String username){
-        Optional<User> optionalUser = userRepository.findByEmail(username);
+    public User findUserByEmail(String email){
+        LOGGER.info("finding {}", email);
+
+        Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isEmpty()){
             throw new UserNotFoundException();
         }
@@ -67,8 +64,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     public UserDto createUser(UserDto dto){
-//        debug();
-        System.out.println(dto.getEmail() + " - " + dto.getMoney());
+        LOGGER.info("{} - {}", dto.getEmail(), dto.getMoney());
 
         User newUser = new User();
         BeanUtils.copyProperties(dto, newUser);
@@ -78,7 +74,6 @@ public class UserServiceImplementation implements UserService {
         newUser.setId(utils.generateRandomString(12));
 
         User savedUser = userRepository.save(newUser);
-        System.out.println(savedUser.toString());
         Optional.ofNullable(savedUser).orElseThrow(() -> new RuntimeException("user not saved correctly"));
 
         UserDto returnValue = new UserDto();
@@ -87,18 +82,12 @@ public class UserServiceImplementation implements UserService {
         return returnValue;
     }
 
-//    private void debug(){
-//        LOGGER.info("all users -");
-//        for (User each : userRepository.findAll()){
-//            LOGGER.info(each.toString());
-//        }
-//    }
-
     public List<UserDto> findAllUsers(){
-        return new ArrayList<>();
+        List<User> users = userRepository.findAll();
+        return users.stream().map(v -> new UserDto(v)).collect(Collectors.toList());
     }
 
-    public void updateUsersMoney(List<Player> players){
+    public void updateAllPlayersMoney(List<Player> players){
         for (Player player : players){
             if (player instanceof  HumanPlayer){
                 LOGGER.info("saving money of {}", player.getMoney());
@@ -107,10 +96,6 @@ public class UserServiceImplementation implements UserService {
                 userRepository.save(user);
             }
         }
-//        players.stream().filter(v -> v instanceof HumanPlayer)
-////                .map(v -> new User(v.getUser()))
-//                .map(v -> findUserByEmail(v.getUser().getEmail()))
-//                .forEach(userRepository::save);
     }
 
 //

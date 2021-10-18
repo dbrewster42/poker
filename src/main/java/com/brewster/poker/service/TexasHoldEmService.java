@@ -48,8 +48,7 @@ public class TexasHoldEmService implements GameService {
 
      public GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
           List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
-          HumanPlayer player = convertUserToPlayer(userDto, settingsRequest.getDisplayName());
-          players.add(player);
+          players.add(new HumanPlayer(settingsRequest.getDisplayName(), userDto));
 
           GameEntity game = new GameEntity(gameId++, players, settingsRequest);
           return gameRepository.save(game);
@@ -65,11 +64,6 @@ public class TexasHoldEmService implements GameService {
           return players;
      }
 
-     private HumanPlayer convertUserToPlayer(UserDto userDto, String displayName){
-          HumanPlayer player = new HumanPlayer(displayName, userDto);
-//          userDto.setPlayer(player);
-          return player;
-     }
      public GameEntity findGame(long id){
           Optional<GameEntity> gameEntity = gameRepository.findById(id);
           if (!gameEntity.isPresent()){
@@ -78,6 +72,7 @@ public class TexasHoldEmService implements GameService {
 
           return gameEntity.get();
      }
+
      private List<Card> getNewStandardDeck(){
           return DeckBuilder.aDeck().withStandardDeck().build().getCards();
      }
@@ -133,17 +128,14 @@ public class TexasHoldEmService implements GameService {
      }
 
      public GameResponse deal(GameEntity gameEntity){
-//          LOGGER.info("DAS BOOT {}", gameEntity);
-//          debug(gameEntity);
           if (gameEntity.isBet()){
                LOGGER.info("Cannot deal cards until betting has finished");
                return new GameResponse(gameEntity.getRiverCards());
           }
           if (gameEntity.isDealDone()){
-               //todo calculateWinner
                LOGGER.info("cards have all already been dealt");
                EndRoundResponse endRoundResponse = calculateWinningHand(gameEntity);
-               userService.updateUsersMoney(gameEntity.getPlayers());
+               userService.updateAllPlayersMoney(gameEntity.getPlayers());
                gameEntity.getBetManagerEntity().setPot(0);
                gameRepository.save(gameEntity);
 //               gameEntity.getBetManagerEntity().addBetMessage(endRoundResponse.getMessage());
@@ -254,8 +246,6 @@ public class TexasHoldEmService implements GameService {
      }
 
      public NewGameResponse getNewGameResponse(GameEntity gameEntity, UserDto userDto){
-//          LOGGER.info(userDto.toString());
-//          List<Card> playerCards = userDto.getPlayer().getCards();
           Player thisPlayer = getThisPlayer(gameEntity, userDto.getEmail());
           List<Card> playerCards = thisPlayer.getCards();
           debug2(thisPlayer);
@@ -271,10 +261,6 @@ public class TexasHoldEmService implements GameService {
                if (!player.getEmail().equals(userDto.getEmail())){
                     users.add(new UserDto(player));
                }
-//               if (!player.getUser().equals(userDto)) {
-//                    users.add(player.getUser());
-//                    player.getUser().setDisplayName(player.getDisplayName());
-//               }
           }
           return users;
      }
@@ -284,23 +270,8 @@ public class TexasHoldEmService implements GameService {
                   .filter(v -> v.getEmail().equals(email))
                   .findAny()
                   .orElseThrow(()-> new UserNotFoundException());
-//          Player thisPlayer = null;
-//          for (Player player : gameEntity.getPlayers()){
-//               if (player.getEmail().equals(email)){
-//                    thisPlayer = player;
-//                    break;
-//               }
-//          }
-//          if (Objects.isNull(thisPlayer)){
-//               for (Player player : gameEntity.getInactivePlayers()){
-//                    if (player.getEmail().equals(email)){
-//                         thisPlayer = player;
-//                         break;
-//                    }
-//               }
-//          } plus throw exception if null
+
           return new UserDto(thisPlayer);
-//          return thisPlayer.getUser();
      }
 
      private Player getThisPlayer(GameEntity gameEntity, String email){
@@ -326,33 +297,14 @@ public class TexasHoldEmService implements GameService {
 //          players.add(player);
 //          openSlots--;
      }
-
+}
 /* I DONT THINK SO
      public NewGameResponse getNewGameResponse(GameEntity gameEntity, PlayerEntity playerEntity){
           LOGGER.info(gameEntity.toString());
           List<PlayerResponse> otherPlayers = separateCurrentPlayer(gameEntity, playerEntity);
           return new NewGameResponse(gameEntity.getId(), thisPlayer.getHand(), otherPlayers, thisPlayer.getMoney());
      }
-
-     public List<PlayerResponse> separateCurrentPlayer(GameEntity gameEntity, PlayerEntity playerEntity){
-          List<PlayerResponse> otherPlayers = new ArrayList<>();
-          for (Player player : gameEntity.getPlayers()){
-               if (player.getDisplayName().equals(playerEntity.getDisplayName())){
-                    thisPlayer = player;
-               } else {
-                    otherPlayers.add(new PlayerResponse(player));
-               }
-          }
-          return otherPlayers;
-     }
 */
-//     public List<PlayerResponse> getOtherPlayersResponse(PlayerEntity playerDto) {
-//          return players.stream()
-//                  .filter(v -> !v.getDisplayName().equals(playerDto.getDisplayName()))
-//                  .map(v -> new PlayerResponse(v))
-//                  .collect(Collectors.toList());
-//     }
 
 
 
-}

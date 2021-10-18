@@ -33,19 +33,7 @@ public class GameEntity {
      @DateTimeFormat(pattern = "yyyy-MM-dd")
      private Date updatedAt;
 
-//     public GameEntity(Player player, GameSettingsRequest settingsRequest){
-//          this.players = new ArrayList<>();
-//          players.add(player);
-//          this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
-//          openSlots = desiredNumberOfPlayers - 1;
-//          this.betManagerEntity = new BetManagerEntity(settingsRequest);
-//     }
-//     public GameEntity(long id, GameSettingsRequest settingsRequest){
-//          this.id = id;
-//          this.desiredNumberOfPlayers = settingsRequest.getNumberOfPlayers();
-//          openSlots = desiredNumberOfPlayers - 1;
-//          this.betManagerEntity = new BetManagerEntity(settingsRequest);
-//     }
+
      public GameEntity(){}
      public GameEntity(long id, List<Player> players, GameSettingsRequest settingsRequest){
           this.id = id;
@@ -68,13 +56,14 @@ public class GameEntity {
           isDealDone = false;
           players.addAll(inactivePlayers);
           inactivePlayers = new ArrayList<>();
-//          activeBetters = new ArrayList<>();
-//          activeBetters.addAll(players);
      }
 
      public void processFold(Player player) {
           players.remove(player);
           inactivePlayers.add(player);
+          if (players.size() < 2){
+               setGameOver();
+          }
           betManagerEntity.setActivePlayersSize(players.size());
      }
 

@@ -32,7 +32,7 @@ public class UserController {
     public UserDto login(@RequestBody UserRequest request) {
         System.out.println(request);
 
-        return userService.findUser(request.getEmail());
+        return userService.findUserDtoByEmail(request.getEmail());
     }
 
 

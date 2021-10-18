@@ -41,31 +41,22 @@ public class GameController {
     @PostMapping
     public NewGameResponse createGame(@RequestBody GameSettingsRequest request) {
         LOGGER.info(request.toString());
-        userDto = userService.findUser(request.getUsername());
-//        GameEntity gameEntity;
+        userDto = userService.findUserDtoByEmail(request.getUsername());
 //        if (request.isFillWithComputerPlayers()){
 //            computerUser = userService.findUser("HAL");
 //        } else {
-//            //TODO wait for players to join
 //        }
-        GameEntity gameEntity = gameService.createGame(userDto, request, userService.findUser("HAL"));
+        GameEntity gameEntity = gameService.createGame(userDto, request, userService.findUserDtoByEmail("HAL"));
         LOGGER.info("saved game {}", gameEntity);
         return gameService.startNewDeal(gameEntity, userDto);
-
-//        return gameService.getNewGameResponse(userDto);
     }
 
     @PostMapping("{id}/restart")
     public NewGameResponse getNewRound(@PathVariable long id, @RequestBody UserRequest request){
         LOGGER.info("{} has requested a new game for {}", request.getEmail(), id);
         GameEntity gameEntity = gameService.findGame(id);
+
         return gameService.startNewDeal(gameEntity, request.getEmail());
-//        userDto = gameService.getThisUser(gameEntity, request.getEmail());
-//
-//        return gameService.startNewDeal(gameEntity, userDto);
-//
-////        userDto = gameService.getUser(request.getUsername());
-////        return gameService.getNewGameResponse(userDto);
     }
 
     @GetMapping("{id}")
@@ -78,13 +69,12 @@ public class GameController {
 
     @GetMapping("join")
     public List<GameService> findGame() {
-//        return gamesContainer.findAvailableGames();
         return null;
     }
 
     @PostMapping("join")
     public void joinGame(@RequestBody JoinRequest request) {
-        userDto = userService.findUser(request.getUsername());
+        userDto = userService.findUserDtoByEmail(request.getUsername());
 //        gameService.addPlayerToGame();
     }
 

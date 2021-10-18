@@ -22,9 +22,6 @@ public class BetService {
     private static final Action[] CHECK_ACTIONS = { Action.CHECK, Action.BET, Action.FOLD };
     private static final Action[] CALL_ACTIONS = { Action.CALL, Action.RAISE, Action.FOLD };
     private final BetFactory betFactory;
-    //TODO
-//    private Player currentBetter;
-//    private BetManagerEntity betManager;
 
     public BetService(BetFactory betFactory){
         this.betFactory = betFactory;
@@ -36,8 +33,6 @@ public class BetService {
 
     public int placeBet(GameEntity game, BetRequest betRequest){
         BetManagerEntity betManager = game.getBetManagerEntity();
-//        LOGGER.info("Bet Manager = {}", betManager);
-//        Player player = currentBetter;
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
         Player currentBetter = game.getPlayers().get(betManager.getTurnNumber());
 //        playerDebug(game);
@@ -46,7 +41,7 @@ public class BetService {
         LOGGER.info("placing bet {}", betRequest);
         if (validationStatement.isEmpty()) {
             Bet bet = betFactory.createBet(currentBetter, betRequest, betManager);
-            if (bet instanceof FoldAction){
+            if (bet instanceof FoldAction){ //TODO 1
                 game.processFold(currentBetter);
             }
             String message = bet.process();
@@ -56,17 +51,12 @@ public class BetService {
             betManager.getBets().add(bet);//TODO better division between bets and bet messages
             betManager.getBetMessages().add(message);
 
-            if (betManager.getActivePlayersSize() < 2){
-                game.setGameOver();
-            } else if (betManager.adjustTurn() == 0){
+
+            if (betManager.adjustTurn() == 0){ //TODO 2
                 game.setIsBet(false);
             }
 
             return currentBetter.getMoney();
-//            int userMoney = currentBetter.getMoney();
-////          betsMade.add(new BetDto(bet, returnStatement));
-//            adjustTurn();
-//            return userMoney;
         } else {
             LOGGER.info("Bet Invalid - {}", validationStatement);
             throw new InvalidBetException(validationStatement);
@@ -99,19 +89,16 @@ public class BetService {
     public void startNewDeal(GameEntity gameEntity){
         gameEntity.getBetManagerEntity().resetBetInfo(gameEntity.getPlayers());
         gameEntity.getPlayers().forEach(Player::resetCurrentBetAmount);
-//        LOGGER.info("BetService stuff {}", gameEntity.getBetManagerEntity());
-//        return getBetOptions(gameEntity);
     }
 
     public void deal(GameEntity gameEntity){
         gameEntity.getBetManagerEntity().deal();
         gameEntity.getPlayers().forEach(Player::resetCurrentBetAmount);
 //        betMessages.add(" --- *** --- *** --- ");
-
     }
 
 
-    public BetOptions getBetOptions(GameEntity gameEntity){
+    private BetOptions getBetOptions(GameEntity gameEntity){
 //        LOGGER.info("betManager.getBetOptions {}, turnsLeft = {}, turnNumber = {}", currentBetter.getDisplayName(), turnsLeftInRound, turnNumber);
         BetManagerEntity betManager = gameEntity.getBetManagerEntity();
         if (betManager.getTurnsLeftInRound() > 0){
@@ -129,7 +116,6 @@ public class BetService {
 
     public BetOptions manageComputerBets(GameEntity gameEntity){
         BetOptions options = getBetOptions(gameEntity);
-//        LOGGER.info("betService options = " + options.toString());
         while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer) {
             ComputerPlayer computerPlayer = (ComputerPlayer) options.getPlayer();
             BetRequest betRequest = computerPlayer.placeBet(options, gameEntity.getBetManagerEntity());

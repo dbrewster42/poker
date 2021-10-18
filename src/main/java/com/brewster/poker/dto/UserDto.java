@@ -1,5 +1,6 @@
 package com.brewster.poker.dto;
 
+import com.brewster.poker.model.User;
 import com.brewster.poker.player.Player;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Transient;
@@ -22,8 +23,13 @@ public class UserDto {
     }
     public UserDto() {}
 
+    public UserDto(User user) {
+        this.email = user.getEmail();
+        this.money = user.getMoney();
+    }
 
-    public String getId() {
+
+     public String getId() {
         return id;
     }
 

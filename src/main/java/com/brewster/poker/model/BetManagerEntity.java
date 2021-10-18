@@ -21,7 +21,6 @@ public class BetManagerEntity {
      private List<String> betMessages;
      private int maxBet;
      private int activePlayersSize;
-//     private List<Player> activeBetters;
 
 
      public BetManagerEntity(GameSettingsRequest settingsRequest) {
@@ -37,13 +36,9 @@ public class BetManagerEntity {
           pot = bigBlind;
           bigBlindTurn++;
           activePlayersSize = players.size();
-//          activeBetters = players;
-//          activeBetters = new ArrayList<>();
-//          activeBetters.addAll(players);
           betMessages = new ArrayList<>();
           setAllRoundInformation();
           initBigBlind(players);
-//          return getBetOptions();
      }
 
      public void deal(){
@@ -54,27 +49,18 @@ public class BetManagerEntity {
 
 
      private void initBigBlind(List<Player> players){
-//          Player currentBetter = activeBetters.get(turnNumber);
-//          currentBetter.betMoney(bigBlind);
-//          betAmount = bigBlind;
-//        setPot(bigBlind);
-//          betMessages.add(currentBetter.getDisplayName() + " posts the $" + bigBlind + "  blind");
           Bet blind = new BlindAction(players.get(turnNumber), bigBlind, "BLIND", this);
           betMessages.add(blind.process());
           bets.add(blind);
           adjustTurn();
-//          turnsLeftInRound++;
      }
 
      public void setAllRoundInformation(){
           betAmount = 0;
           turnNumber = bigBlindTurn;
-//          activePlayersSize = activePlayersSize;
           if (turnNumber >= activePlayersSize){
                turnNumber = 0;
           }
-//          currentBetter = activeBetters.get(turnNumber);
-//          activeBetters.forEach(Player::resetCurrentBetAmount);
           turnsLeftInRound = activePlayersSize;
      }
 
