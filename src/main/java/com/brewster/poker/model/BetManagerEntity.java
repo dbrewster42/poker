@@ -60,7 +60,6 @@ public class BetManagerEntity {
           betMessages.add(blind.process());
           bets.add(new BetEntity(blind));
           adjustTurn();
-          System.out.println("current bet amount in BetManagerEntity " + player.getCurrentBetAmount());
      }
 
      public void setAllRoundInformation(){

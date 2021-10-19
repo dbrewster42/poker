@@ -17,6 +17,8 @@ import static com.brewster.poker.card.PokerHandEnum.TWO_PAIR;
 
 public class PokerHandLookup {
 
+     private PokerHandLookup(){}
+
      public static PokerHandEnum lookupHand(List<Card> hand){
           int[] cardValues = hand.stream().mapToInt(Card::getValue).sorted().toArray();
           PokerHandEnum pokerHand = returnPairCombos(cardValues);
@@ -83,7 +85,7 @@ public class PokerHandLookup {
                }
                if (count >= 5){
                     int[] cards = hand.stream().filter(v -> v.getSuit().equals(suit))
-                            .mapToInt(v -> v.getValue())
+                            .mapToInt(Card::getValue)
                             .sorted().toArray();
                     if (isStraight(cards)){
                          return 2;

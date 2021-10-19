@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeckBuilder {
-    private final static String[] SUITS = { "Clubs", "Hearts", "Spades", "Diamonds" };
-    private final static String[] NAMES = { "Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King" };
-    private final static int[] VALUES = { 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
-    private final String[] IMAGE_PREFIXES = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+    private static final String[] SUITS = { "Clubs", "Hearts", "Spades", "Diamonds" };
+    private static final String[] NAMES = { "Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King" };
+    private static final int[] VALUES = { 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+    private static final String[] IMAGE_PREFIXES = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
     private final Deck deck;
     private List<Card> cards = new ArrayList<>();
 

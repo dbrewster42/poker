@@ -38,18 +38,17 @@ public class BetService {
         LOGGER.info("placing bet {}", betRequest);
         if (validationStatement.isEmpty()) {
             Bet bet = betFactory.createBet(currentBetter, betRequest, betManager);
-            if (bet instanceof FoldAction){ //TODO 1
+            if (bet instanceof FoldAction){
                 game.processFold(currentBetter);
             }
             String message = bet.process();
             LOGGER.info("Bet has been processed - {}", message);
 
             bet.setMessage(message);
-            betManager.getBets().add(new BetEntity(bet));//TODO better division between bets and bet messages
+            betManager.getBets().add(new BetEntity(bet));
             betManager.getBetMessages().add(message);
 
-
-            if (betManager.adjustTurn() == 0){ //TODO 2
+            if (betManager.adjustTurn() == 0){
                 game.setIsBet(false);
             }
 
@@ -117,11 +116,11 @@ public class BetService {
         while (options.isBetActive() && options.getPlayer() instanceof ComputerPlayer) {
             ComputerPlayer computerPlayer = (ComputerPlayer) options.getPlayer();
             BetRequest betRequest = computerPlayer.placeBet(options, gameEntity.getBetManagerEntity());
-            LOGGER.info("computer is making a bet - {}", betRequest.toString());
+            LOGGER.info("computer is making a bet - {}", betRequest);
             placeBet(gameEntity, betRequest);
             options = getBetOptions(gameEntity);
         }
-        LOGGER.info("returning betOptions = " + options.toString());
+        LOGGER.info("returning betOptions = {}", options);
 
         return options;
     }

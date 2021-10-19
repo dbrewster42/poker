@@ -20,7 +20,7 @@ public class HandStrengthCalculator {
         hand = computerHand;
 //        hand = Stream.concat(holeCards.stream(), riverCards.stream())
 //                .sorted((a, b) -> a.getValue() - b.getValue()).collect(Collectors.toList());
-        suitMap = getSuitCount();
+        initSuitCount();
         strength = findHandStrength();
     }
 
@@ -49,12 +49,11 @@ public class HandStrengthCalculator {
         return score;
     }
 
-    public Map<String, Integer> getSuitCount(){
-        Map<String, Integer> suitMap = new HashMap<>();
+    public void initSuitCount(){
+        suitMap = new HashMap<>();
         for (Card card : hand){
             suitMap.put(card.getSuit(), suitMap.getOrDefault(card.getSuit(), 0) + 1);
         }
-        return suitMap;
     }
 
     public int pairCount(){

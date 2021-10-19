@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 
 @Configuration
 public class Utils {
-     private final Random RANDOM = new SecureRandom();
-     private final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234568790";
+     private static final Random RANDOM = new SecureRandom();
+     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234568790";
      public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
              Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
