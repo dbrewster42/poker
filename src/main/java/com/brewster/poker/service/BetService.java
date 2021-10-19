@@ -6,6 +6,7 @@ import com.brewster.poker.bet.BetFactory;
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.bet.FoldAction;
 import com.brewster.poker.exception.InvalidBetException;
+import com.brewster.poker.model.BetEntity;
 import com.brewster.poker.model.BetManagerEntity;
 import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.model.request.BetRequest;
@@ -27,9 +28,6 @@ public class BetService {
         this.betFactory = betFactory;
     }
 
-    private void playerDebug(GameEntity game){
-        game.getPlayers().stream().forEach(v -> LOGGER.info(v.getDisplayName()));
-    }
 
     public int placeBet(GameEntity game, BetRequest betRequest){
         BetManagerEntity betManager = game.getBetManagerEntity();
@@ -47,7 +45,7 @@ public class BetService {
             LOGGER.info("Bet has been processed - {}", message);
 
             bet.setMessage(message);
-            betManager.getBets().add(bet);//TODO better division between bets and bet messages
+            betManager.getBets().add(new BetEntity(bet));//TODO better division between bets and bet messages
             betManager.getBetMessages().add(message);
 
 

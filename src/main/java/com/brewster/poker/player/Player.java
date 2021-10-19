@@ -3,7 +3,6 @@ package com.brewster.poker.player;
 import com.brewster.poker.card.Card;
 import com.brewster.poker.card.PokerHandEnum;
 import com.brewster.poker.dto.UserDto;
-import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +27,12 @@ public abstract class Player {
 
     public void collectWinnings(int pot){
         this.money += pot;
-//        this.user.setMoney(this.money);
     }
 
     public void betMoney(int moneyBet){
-        System.out.println(displayName + " is betting money - " + moneyBet + " and old bet amount is " + currentBetAmount);
+//        System.out.println(displayName + " is betting money - " + moneyBet + " and old bet amount is " + currentBetAmount);
         this.money = this.money - moneyBet;
         this.currentBetAmount += moneyBet;
-//        this.user.setMoney(this.money);
     }
 
     public void dealCard(Card card){ this.cards.add(card); }
