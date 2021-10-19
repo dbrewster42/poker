@@ -30,10 +30,8 @@ public abstract class Player {
     }
 
     public void betMoney(int moneyBet){
-//        System.out.println(displayName + " is betting money - " + moneyBet + " and old bet amount is " + currentBetAmount);
         this.money = this.money - moneyBet;
         this.currentBetAmount += moneyBet;
-//        System.out.println(displayName + " is done betting money and current bet amount is " + currentBetAmount);
     }
 
     public void dealCard(Card card){ this.cards.add(card); }

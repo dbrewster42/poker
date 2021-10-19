@@ -45,20 +45,10 @@ public class BetManagerEntity {
      public void deal(){
           betMessages.add(" --- *** --- *** --- ");
           setAllRoundInformation();
-//          LOGGER.info("starting new round with " + currentBetter.getDisplayName());
      }
 
 
      private void initBlinds(List<Player> players){
-//          Bet blind = new BlindAction(players.get(turnNumber), smallBlind, "BLIND", this);
-//          betMessages.add(blind.process());
-//          bets.add(new BetEntity(blind));
-//          adjustTurn();
-//
-//          Bet blind2 = new BlindAction(players.get(turnNumber), bigBlind, "BLIND", this);
-//          betMessages.add(blind2.process());
-//          bets.add(new BetEntity(blind2));
-//          adjustTurn();
           submitBlind(players.get(turnNumber), smallBlind);
           submitBlind(players.get(turnNumber), bigBlind);
 

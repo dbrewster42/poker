@@ -99,9 +99,10 @@ public class BetService {
 //        LOGGER.info("betManager.getBetOptions {}, turnsLeft = {}, turnNumber = {}", currentBetter.getDisplayName(), turnsLeftInRound, turnNumber);
         BetManagerEntity betManager = gameEntity.getBetManagerEntity();
         if (betManager.getTurnsLeftInRound() > 0){
-            int betAmount = betManager.getBetAmount();
+            Player player = gameEntity.getPlayers().get(betManager.getTurnNumber());
+            int betAmount = betManager.getBetAmount() - player.getCurrentBetAmount();
             Action[] actionOptions = getPossibleBetActions(betAmount);
-            return new BetOptions(gameEntity.getPlayers().get(betManager.getTurnNumber()), actionOptions, betAmount, betManager.getPot());
+            return new BetOptions(player, actionOptions, betAmount, betManager.getPot());
         } else {
             LOGGER.info("end of betting round");
             gameEntity.setIsBet(false);
