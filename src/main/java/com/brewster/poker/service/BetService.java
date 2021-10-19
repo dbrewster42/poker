@@ -84,8 +84,8 @@ public class BetService {
     }
 
     public void startNewDeal(GameEntity gameEntity){
-        gameEntity.getBetManagerEntity().resetBetInfo(gameEntity.getPlayers());
         gameEntity.getPlayers().forEach(Player::resetCurrentBetAmount);
+        gameEntity.getBetManagerEntity().resetBetInfo(gameEntity.getPlayers());
     }
 
     public void deal(GameEntity gameEntity){

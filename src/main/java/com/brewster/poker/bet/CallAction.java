@@ -9,6 +9,7 @@ public class CallAction extends Bet {
     public CallAction(Player player, BetRequest betRequest, BetManagerEntity betManager) {
         super(player, betRequest, betManager);
         this.betAmount = betAmount - player.getCurrentBetAmount();
+//        System.out.println(betAmount + " <--------------------------------------> " + player.getCurrentBetAmount());
     }
     public CallAction(){}
 

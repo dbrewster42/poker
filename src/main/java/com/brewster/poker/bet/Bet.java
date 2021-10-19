@@ -23,8 +23,8 @@ public abstract class Bet {
 
     public Bet(Player player, int betAmount, String chosenAction, BetManagerEntity betManager){
         this.player = player;
-        this.chosenAction = chosenAction;
         this.betAmount = betAmount;
+        this.chosenAction = chosenAction;
         this.betManager = betManager;
     }
 

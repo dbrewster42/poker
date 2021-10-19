@@ -98,9 +98,6 @@ public class TexasHoldEmService implements GameService {
           gameEntity.applyNewDeal(cards);
           betService.startNewDeal(gameEntity);
 
-//          LOGGER.info("hustling {}", gameEntity);
-//          GameEntity savedGame = gameRepository.save(gameEntity);
-
           return getNewGameResponse(gameEntity, userDto);
      }
      public NewGameResponse startNewDeal(GameEntity gameEntity, String email){

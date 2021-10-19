@@ -26,6 +26,7 @@ public class BetManagerEntity {
 
      public BetManagerEntity(GameSettingsRequest settingsRequest) {
           this.bigBlind = settingsRequest.getBigBlind();
+          this.smallBlind = bigBlind / 2;
           this.maxBet = Optional.ofNullable(settingsRequest.getMaxBet()).map(v -> v == 0 ? Integer.MAX_VALUE : v).orElse(bigBlind * 20);
           bets = new ArrayList<>();
           betMessages = new ArrayList<>();
@@ -34,12 +35,11 @@ public class BetManagerEntity {
      public BetManagerEntity(){}
 
      public void resetBetInfo(List<Player> players){
-          pot = bigBlind;
           bigBlindTurn++;
           activePlayersSize = players.size();
           betMessages = new ArrayList<>();
           setAllRoundInformation();
-          initBigBlind(players);
+          initBlinds(players);
      }
 
      public void deal(){
@@ -49,11 +49,28 @@ public class BetManagerEntity {
      }
 
 
-     private void initBigBlind(List<Player> players){
-          Bet blind = new BlindAction(players.get(turnNumber), bigBlind, "BLIND", this);
+     private void initBlinds(List<Player> players){
+//          Bet blind = new BlindAction(players.get(turnNumber), smallBlind, "BLIND", this);
+//          betMessages.add(blind.process());
+//          bets.add(new BetEntity(blind));
+//          adjustTurn();
+//
+//          Bet blind2 = new BlindAction(players.get(turnNumber), bigBlind, "BLIND", this);
+//          betMessages.add(blind2.process());
+//          bets.add(new BetEntity(blind2));
+//          adjustTurn();
+          submitBlind(players.get(turnNumber), smallBlind);
+          submitBlind(players.get(turnNumber), bigBlind);
+
+          resetTurnsLeft();
+     }
+
+     private void submitBlind(Player player, int amount){
+          Bet blind = new BlindAction(player, amount, "BLIND", this);
           betMessages.add(blind.process());
           bets.add(new BetEntity(blind));
           adjustTurn();
+          System.out.println("current bet amount in BetManagerEntity " + player.getCurrentBetAmount());
      }
 
      public void setAllRoundInformation(){
