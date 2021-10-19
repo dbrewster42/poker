@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class BetManagerEntity {
+     private long id;
      private int bigBlind;
      private int smallBlind;
      private int turnNumber;
@@ -180,6 +181,14 @@ public class BetManagerEntity {
 
      public void setActivePlayersSize(int activePlayersSize) {
           this.activePlayersSize = activePlayersSize;
+     }
+
+     public long getId() {
+          return id;
+     }
+
+     public void setId(long id) {
+          this.id = id;
      }
 
      @Override

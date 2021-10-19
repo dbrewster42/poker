@@ -69,7 +69,6 @@ public class TexasHoldEmService implements GameService {
           if (!gameEntity.isPresent()){
                throw new GameNotFoundException();
           }
-
           return gameEntity.get();
      }
 
@@ -78,23 +77,13 @@ public class TexasHoldEmService implements GameService {
      }
 
      private void dealPlayerCards(List<Player> players, List<Card> cards){
-          LOGGER.info("resetting cards");
-//          players.forEach(Player::resetCards);
-          players.forEach(v -> {
-               v.resetCards();
-               LOGGER.info("reset to (THIS SHOULD BE 0) {} cards", v.getCards().size());
-          });
-
+          players.forEach(Player::resetCards);
           for (int i = 0; i < 2; i++){
                for (Player player : players){
                     player.dealCard(cards.get(0));
                     cards.remove(0);
                }
           }
-          players.forEach(v -> {
-               LOGGER.info("reset to (THIS SHOULD BE 2) {} cards", v.getCards().size());
-               LOGGER.info("{} has {} and {}", v.getDisplayName(), v.getCards().get(0),  v.getCards().get(1));
-          });
      }
 
      public void saveGame(GameEntity gameEntity){
@@ -176,28 +165,15 @@ public class TexasHoldEmService implements GameService {
           return riverCards;
      }
 
-     private void debug2(Player player){
-          LOGGER.info(player.getDisplayName());
-          player.getCards().forEach(v -> LOGGER.info(v.toString()));
-     }
-     private void debug3(List<Player> players){
-          for (Player player : players) {
-               LOGGER.info(player.getDisplayName());
-               player.getCards().forEach(v -> LOGGER.info(v.toString()));
-          }
-     }
-
      private EndRoundResponse calculateWinningHand(GameEntity gameEntity){
           if (gameEntity.isDealDone() && !gameEntity.isBet()){
                List<Player> activePlayers = gameEntity.getPlayers();
-               debug3(gameEntity.getPlayers());
                List<Player> winners = new ArrayList<>();
                List<PlayerDto> playerDtos = new ArrayList<>();
                int winningStrength = 0;
                int pot = gameEntity.getBetManagerEntity().getPot();
                Player winner = null;
                for (Player player : activePlayers){
-                    debug2(player);
                     PokerHandEnum pokerHand = PokerHandEnum.lookupHand(player.getCards());
                     LOGGER.info("{} has a {}", player.getDisplayName(), pokerHand.getHandName());
                     player.setPokerHand(pokerHand);
@@ -250,7 +226,6 @@ public class TexasHoldEmService implements GameService {
      public NewGameResponse getNewGameResponse(GameEntity gameEntity, UserDto userDto){
           Player thisPlayer = getThisPlayer(gameEntity, userDto.getEmail());
           List<Card> playerCards = thisPlayer.getCards();
-          debug2(thisPlayer);
           BetOptions options = betService.manageComputerBets(gameEntity);
           LOGGER.info(options.toString(), playerCards);
           gameRepository.save(gameEntity);
@@ -300,13 +275,7 @@ public class TexasHoldEmService implements GameService {
 //          openSlots--;
      }
 }
-/* I DONT THINK SO
-     public NewGameResponse getNewGameResponse(GameEntity gameEntity, PlayerEntity playerEntity){
-          LOGGER.info(gameEntity.toString());
-          List<PlayerResponse> otherPlayers = separateCurrentPlayer(gameEntity, playerEntity);
-          return new NewGameResponse(gameEntity.getId(), thisPlayer.getHand(), otherPlayers, thisPlayer.getMoney());
-     }
-*/
+
 
 
 

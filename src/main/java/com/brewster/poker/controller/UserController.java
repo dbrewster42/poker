@@ -21,7 +21,6 @@ public class UserController {
 
     @PostMapping("register")
     public UserDto register(@RequestBody UserRequest request) {
-        System.out.println(request);
         UserDto dto = new UserDto();
         BeanUtils.copyProperties(request, dto);
 
@@ -30,8 +29,6 @@ public class UserController {
 
     @PostMapping("login")
     public UserDto login(@RequestBody UserRequest request) {
-        System.out.println(request);
-
         return userService.findUserDtoByEmail(request.getEmail());
     }
 

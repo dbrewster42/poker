@@ -35,7 +35,6 @@ public class BetService {
         BetManagerEntity betManager = game.getBetManagerEntity();
 //        LOGGER.info(player.getDisplayName() + " is placing bet " + betRequest.toString());
         Player currentBetter = game.getPlayers().get(betManager.getTurnNumber());
-//        playerDebug(game);
         LOGGER.info("{} is the current better on current turn {}", currentBetter, betManager.getTurnNumber());
         String validationStatement = validateBet(betRequest, currentBetter, betManager.getMaxBet());
         LOGGER.info("placing bet {}", betRequest);
