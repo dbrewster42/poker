@@ -12,12 +12,9 @@ public interface GameService {
     GameEntity findGame(long id);
     NewGameResponse startNewDeal(GameEntity gameEntity, UserDto userDto);
     NewGameResponse startNewDeal(GameEntity gameEntity, String email);
-
     GameResponse deal(GameEntity gameEntity);
-    NewGameResponse getNewGameResponse(GameEntity gameEntity, UserDto userDto);
 
     void addPlayerToGame(GameEntity gameEntity, HumanPlayer player);
-    UserDto getThisUser(GameEntity gameEntity, String name);
     void saveGame(GameEntity gameEntity);
 
 }

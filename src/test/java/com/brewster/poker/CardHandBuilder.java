@@ -1,13 +1,14 @@
 package com.brewster.poker;
 
 import com.brewster.poker.card.Card;
-import com.brewster.poker.card.DeckBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.brewster.poker.card.DeckBuilder.aDeck;
+
 public class CardHandBuilder {
-    private static List<Card> cards = new DeckBuilder().buildStandardDeck();
+    private static List<Card> cards = aDeck().buildStandardDeck();
 
     public static int[] buildHighAceStraightValues(){
         return new int[]{10, 11, 12, 13, 14};

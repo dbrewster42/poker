@@ -33,7 +33,7 @@ public class TexasHoldEmService implements GameService {
      private final GameRepository gameRepository;
      private final BetService betService;
      private final UserService userService;
-     private Random random = new Random();
+     private static final Random random = new Random();
      private static long gameId;
 //     private Player thisPlayer;
 //     private GameEntity thisGame;
@@ -54,7 +54,7 @@ public class TexasHoldEmService implements GameService {
           return gameRepository.save(game);
      }
 
-     public List<Player> generateNComputerPlayers(int n, UserDto computer){
+     private List<Player> generateNComputerPlayers(int n, UserDto computer){
           List<Player> players = new ArrayList<>();
           for (int i = 0; i < n; i++) {
                String displayName = "HAL" + random.nextInt(500);
@@ -72,8 +72,27 @@ public class TexasHoldEmService implements GameService {
           return gameEntity.get();
      }
 
-     private List<Card> getNewStandardDeck(){
-          return DeckBuilder.aDeck().withStandardDeck().build().getCards();
+
+     public void saveGame(GameEntity gameEntity){
+          gameRepository.save(gameEntity);
+     }
+
+     public NewGameResponse startNewDeal(GameEntity gameEntity, UserDto userDto){
+          LOGGER.info("starting new deal with {}", userDto);
+
+          dealPlayerCards(gameEntity.getPlayers(), gameEntity.getCards());
+          gameEntity.applyNewDeal();
+          betService.startNewDeal(gameEntity);
+
+          return getNewGameResponse(gameEntity, userDto);
+     }
+     public NewGameResponse startNewDeal(GameEntity gameEntity, String email){
+          gameEntity.applyNewDeal();
+          dealPlayerCards(gameEntity.getPlayers(), gameEntity.getCards());
+          betService.startNewDeal(gameEntity);
+          UserDto userDto = getThisUser(gameEntity, email);
+
+          return getNewGameResponse(gameEntity, userDto);
      }
 
      private void dealPlayerCards(List<Player> players, List<Card> cards){
@@ -84,36 +103,6 @@ public class TexasHoldEmService implements GameService {
                     cards.remove(0);
                }
           }
-     }
-
-     public void saveGame(GameEntity gameEntity){
-          gameRepository.save(gameEntity);
-     }
-
-     public NewGameResponse startNewDeal(GameEntity gameEntity, UserDto userDto){
-          LOGGER.info("starting new deal with {}", userDto);
-          List<Card> cards = getNewStandardDeck();
-
-          dealPlayerCards(gameEntity.getPlayers(), cards);
-          gameEntity.applyNewDeal(cards);
-          betService.startNewDeal(gameEntity);
-
-          return getNewGameResponse(gameEntity, userDto);
-     }
-     public NewGameResponse startNewDeal(GameEntity gameEntity, String email){
-          List<Card> cards = getNewStandardDeck();
-
-          gameEntity.applyNewDeal(cards);
-          dealPlayerCards(gameEntity.getPlayers(), cards);
-          betService.startNewDeal(gameEntity);
-          UserDto userDto = getThisUser(gameEntity, email);
-
-          return getNewGameResponse(gameEntity, userDto);
-     }
-     private void debug(GameEntity gameEntity){
-          gameEntity.getRiverCards().forEach(v -> LOGGER.info(v.toString()));
-          LOGGER.info("/n");
-          gameEntity.getPlayers().stream().map(Player::getCards).forEach(v -> LOGGER.info(v.toString()));
      }
 
      public GameResponse deal(GameEntity gameEntity){
@@ -208,7 +197,7 @@ public class TexasHoldEmService implements GameService {
           throw new IllegalArgumentException("Game is still on-going");
      }
 
-     public EndRoundResponse getTieRoundResponse(List<Player> winners, List<PlayerDto> playerDtos, int pot){
+     private EndRoundResponse getTieRoundResponse(List<Player> winners, List<PlayerDto> playerDtos, int pot){
           winners.forEach(w -> w.collectWinnings(pot / winners.size()));
 
           StringBuilder stringBuilder = new StringBuilder();
@@ -220,7 +209,7 @@ public class TexasHoldEmService implements GameService {
           return new EndRoundResponse(stringBuilder.toString(), playerDtos);
      }
 
-     public NewGameResponse getNewGameResponse(GameEntity gameEntity, UserDto userDto){
+     private NewGameResponse getNewGameResponse(GameEntity gameEntity, UserDto userDto){
           Player thisPlayer = getThisPlayer(gameEntity, userDto.getEmail());
           List<Card> playerCards = thisPlayer.getCards();
           BetOptions options = betService.manageComputerBets(gameEntity);
@@ -239,7 +228,7 @@ public class TexasHoldEmService implements GameService {
           return users;
      }
 
-     public UserDto getThisUser(GameEntity gameEntity, String email){
+     private UserDto getThisUser(GameEntity gameEntity, String email){
           Player thisPlayer = gameEntity.getPlayers().stream()
                   .filter(v -> v.getEmail().equals(email))
                   .findAny()

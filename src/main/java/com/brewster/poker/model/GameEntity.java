@@ -1,6 +1,7 @@
 package com.brewster.poker.model;
 
 import com.brewster.poker.card.Card;
+import com.brewster.poker.card.DeckBuilder;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.player.Player;
 import org.springframework.data.annotation.Id;
@@ -42,6 +43,15 @@ public class GameEntity {
           openSlots = desiredNumberOfPlayers - 1;
           this.betManagerEntity = new BetManagerEntity(settingsRequest);
           inactivePlayers = new ArrayList<>();
+          this.cards = setDeck(settingsRequest.isUseWildCards());
+     }
+
+     private List<Card> setDeck(boolean useJokers){
+          if (useJokers){
+               return DeckBuilder.aDeck().withJokersDeck(2).build().getCards();
+          } else {
+               return DeckBuilder.aDeck().withStandardDeck().build().getCards();
+          }
      }
 
      public void setGameOver(){
@@ -49,9 +59,9 @@ public class GameEntity {
           isBet = false;
      }
 
-     public void applyNewDeal(List<Card> cards){
+     public void applyNewDeal(){
           riverCards = new ArrayList<>();
-          this.cards = cards;
+//          this.cards = cards;
           isBet = true;
           isDealDone = false;
           players.addAll(inactivePlayers);

@@ -3,7 +3,7 @@ package com.brewster.poker.model.request;
 public class GameSettingsRequest {
     private String username;
     private String displayName;
-    private boolean customRules;
+    private boolean useWildCards;
     private int numberOfPlayers;
     private int bigBlind;
     private int maxBet;
@@ -43,12 +43,12 @@ public class GameSettingsRequest {
         this.bigBlind = bigBlind;
     }
 
-    public boolean isCustomRules() {
-        return customRules;
+    public boolean isUseWildCards() {
+        return useWildCards;
     }
 
-    public void setCustomRules(boolean customRules) {
-        this.customRules = customRules;
+    public void setUseWildCards(boolean useWildCards) {
+        this.useWildCards = useWildCards;
     }
 
     public int getMaxBet() {
@@ -75,12 +75,20 @@ public class GameSettingsRequest {
         this.buyIn = buyIn;
     }
 
+    public boolean isUseAnte() {
+        return useAnte;
+    }
+
+    public void setUseAnte(boolean useAnte) {
+        this.useAnte = useAnte;
+    }
+
     @Override
     public String toString() {
         return "GameSettingsRequest{" +
                 "username='" + username + '\'' +
                 ", displayName='" + displayName + '\'' +
-                ", customRules=" + customRules +
+                ", wildCards=" + useWildCards +
                 ", numberOfPlayers=" + numberOfPlayers +
                 ", bigBlind=" + bigBlind +
                 ", maxBet=" + maxBet +

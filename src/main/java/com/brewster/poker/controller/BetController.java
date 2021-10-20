@@ -24,13 +24,7 @@ public class BetController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BetController.class);
     private final BetService betService;
     private final GameService gameService;
-//    private GameService game;
-//    private BetService betManager;
-//    private OldGamesContainer gamesContainer;
 
-//    public BetController(OldGamesContainer gamesContainer){
-//        this.gamesContainer = gamesContainer;
-//    }
     public BetController(BetService betService, GameService gameService){
         this.betService = betService;
         this.gameService = gameService;
@@ -46,10 +40,6 @@ public class BetController {
 
         return new BetResponse(options, game.getBetMessages());
     }
-    //        GameService game = gamesContainer.findGameById(id);
-
-//        BetOptions options = game.getBetManager().manageComputerBets();
-//        return new BetResponse(options, game.getBetManager().getBetMessages());
 
     @PostMapping("{id}/bet")
     public BetResponse bet(@PathVariable long id, @RequestBody BetRequest request){
@@ -62,16 +52,5 @@ public class BetController {
         LOGGER.info("Controller: Bet has been placed - {}$ left", userMoney);
         return new BetResponse(game.isBet(), game.getBetMessages(), userMoney, game.isDealDone());
     }
-
-//    @PostMapping("{id}/bet")
-//    public BetResponse bet(@PathVariable long id, @RequestBody BetRequest request){
-//        LOGGER.info("Controller: Placing bet - {}", request.toString());
-//        GameService game = gamesContainer.findGameById(id);
-//        BetService betManager = game.getBetManager();
-//
-//        int userMoney = betManager.placeBet(request);
-//        LOGGER.info("Controller: Bet has been placed - {}$ left", userMoney);
-//        return new BetResponse(game.isBet(), betManager.getBetMessages(), userMoney, game.isDealDone());
-//    }
 
 }

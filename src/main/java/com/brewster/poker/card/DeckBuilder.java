@@ -11,15 +11,10 @@ public class DeckBuilder {
     private final Deck deck;
     private List<Card> cards = new ArrayList<>();
 
-    public DeckBuilder(){
+    private DeckBuilder(){
         deck = new Deck();
     }
-    public DeckBuilder(int wildcards){
-        deck = new Deck();
-    }
-    public DeckBuilder(List<String> customRules){
-        deck = new Deck();
-    }
+
 
     public static DeckBuilder aDeck(){
         return new DeckBuilder();
