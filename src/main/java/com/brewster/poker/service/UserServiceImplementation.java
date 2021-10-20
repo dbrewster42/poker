@@ -20,13 +20,11 @@ import java.util.stream.Collectors;
 public class UserServiceImplementation implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImplementation.class);
     private final UserRepository userRepository;
-    private final Utils utils;
 
-
-    public UserServiceImplementation(UserRepository userRepository, Utils utils){
+    public UserServiceImplementation(UserRepository userRepository){
         this.userRepository = userRepository;
-        this.utils = utils;
     }
+
 
     public UserDto findUserDtoByEmail(String email){
         User user = findUserByEmail(email);
@@ -34,6 +32,10 @@ public class UserServiceImplementation implements UserService {
         BeanUtils.copyProperties(user, returnValue);
 
         return returnValue;
+    }
+
+    public UserDto retrieveComputerUser(){
+        return findUserDtoByEmail("HAL");
     }
 
     public User findUserByEmail(String email){
@@ -67,10 +69,10 @@ public class UserServiceImplementation implements UserService {
 
         User newUser = new User();
         BeanUtils.copyProperties(dto, newUser);
-        if (!utils.isEmailValid(newUser)){
+        if (!Utils.isEmailValid(newUser)){
             throw new IllegalArgumentException("invalid email");
         }
-        newUser.setId(utils.generateUserId(12));
+        newUser.setId(Utils.generateUserId(12));
 
         User savedUser = userRepository.save(newUser);
         Optional.ofNullable(savedUser).orElseThrow(() -> new RuntimeException("user not saved correctly"));

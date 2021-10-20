@@ -6,10 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DeckBuilderTest {
-    List<Card> standardDeck = DeckBuilder.aDeck().withStandardDeck().build().getCards();
+    List<Card> standardDeck = DeckBuilder.aDeck().build();
 
     @Test
     void withStandardDeckIsCorrectSize() {
@@ -27,7 +27,7 @@ class DeckBuilderTest {
 
     @Test
     void cardsHaveCorrectImage(){
-        List<Card> unshuffledDeck = DeckBuilder.aDeck().buildStandardDeck();
+        List<Card> unshuffledDeck = DeckBuilder.aDeck().buildWithoutShuffle();
 
         assertEquals(unshuffledDeck.get(0).getImage(), "AC.png");
         assertEquals(unshuffledDeck.get(3).getImage(), "AD.png");

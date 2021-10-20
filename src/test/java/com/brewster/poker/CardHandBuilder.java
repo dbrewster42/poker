@@ -8,7 +8,7 @@ import java.util.List;
 import static com.brewster.poker.card.DeckBuilder.aDeck;
 
 public class CardHandBuilder {
-    private static List<Card> cards = aDeck().buildStandardDeck();
+    private static List<Card> cards = aDeck().buildWithoutShuffle();
 
     public static int[] buildHighAceStraightValues(){
         return new int[]{10, 11, 12, 13, 14};

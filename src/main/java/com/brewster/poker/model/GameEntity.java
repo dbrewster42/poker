@@ -6,7 +6,6 @@ import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.player.Player;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
@@ -48,9 +47,9 @@ public class GameEntity {
 
      private List<Card> setDeck(boolean useJokers){
           if (useJokers){
-               return DeckBuilder.aDeck().withJokersDeck(2).build().getCards();
+               return DeckBuilder.aDeck().withJokers().build();
           } else {
-               return DeckBuilder.aDeck().withStandardDeck().build().getCards();
+               return DeckBuilder.aDeck().build();
           }
      }
 

@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface UserService {
     UserDto findUserDtoByEmail(String username);
+    UserDto retrieveComputerUser();
     UserDto addMoneyToUser(UserDto dto);
     UserDto createUser(UserDto dto);
     void updateAllPlayersMoney(List<Player> players);

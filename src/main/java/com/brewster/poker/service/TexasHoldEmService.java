@@ -24,6 +24,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+
 
 @Service
 public class TexasHoldEmService implements GameService {
@@ -31,24 +33,29 @@ public class TexasHoldEmService implements GameService {
      private final GameRepository gameRepository;
      private final BetService betService;
      private final UserService userService;
-     private final Utils utils;
+     private static final Random random = new Random();
      private long gameId;
 
-     public TexasHoldEmService(GameRepository gameRepository, BetService betService, UserService userService, Utils utils){
+     public TexasHoldEmService(GameRepository gameRepository, BetService betService, UserService userService){
           this.gameRepository = gameRepository;
           this.betService = betService;
           this.userService = userService;
-          gameId = gameRepository.count() + 1;
-          this.utils = utils;
      }
 
 
      public GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
-          List<Player> players = utils.generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
-          players.add(new HumanPlayer(settingsRequest.getDisplayName(), userDto));
+          gameId = gameRepository.count() + 1;
+          List<Player> players = generatePlayers(userDto, settingsRequest);
 
           GameEntity game = new GameEntity(gameId++, players, settingsRequest);
           return gameRepository.save(game);
+     }
+
+     private List<Player> generatePlayers(UserDto userDto, GameSettingsRequest settingsRequest){
+          UserDto computer = userService.retrieveComputerUser();
+          List<Player> players = Utils.generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computer);
+          players.add(new HumanPlayer(settingsRequest.getDisplayName(), userDto));
+          return players;
      }
 
      public GameEntity findGame(long id){
