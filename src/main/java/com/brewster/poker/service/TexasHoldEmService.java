@@ -178,6 +178,9 @@ public class TexasHoldEmService implements GameService {
                          } else {
                               if (PokerHandTieBreaker.getTieBreaker(winner, player).size() > 1){
                                    winners.add(player);
+                              } else {
+                                   winner = player;
+                                   winners = List.of(winner);
                               }
                          }
                          winners.forEach(v -> LOGGER.info("winner {} ***** !", v.getDisplayName()));
