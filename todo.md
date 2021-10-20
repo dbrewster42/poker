@@ -10,6 +10,7 @@ or it should require a manual call.
 ## bugs
 raise needs to be clearer in the front end
 display exception messages in front end
+can create duplicate emails
 
 
 ## should I display other's money?

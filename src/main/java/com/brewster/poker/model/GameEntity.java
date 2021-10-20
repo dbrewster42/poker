@@ -25,6 +25,7 @@ public class GameEntity {
      private boolean isBet;
      private boolean isDealDone;
      private BetManagerEntity betManagerEntity;
+     private boolean useJokers;
 
      private int desiredNumberOfPlayers;
      private int openSlots;
@@ -42,10 +43,10 @@ public class GameEntity {
           openSlots = desiredNumberOfPlayers - 1;
           this.betManagerEntity = new BetManagerEntity(settingsRequest);
           inactivePlayers = new ArrayList<>();
-          this.cards = setDeck(settingsRequest.isUseWildCards());
+          useJokers = settingsRequest.isUseWildCards();
      }
 
-     private List<Card> setDeck(boolean useJokers){
+     private List<Card> setDeck(){
           if (useJokers){
                return DeckBuilder.aDeck().withJokers().build();
           } else {
@@ -60,6 +61,7 @@ public class GameEntity {
 
      public void applyNewDeal(){
           riverCards = new ArrayList<>();
+          this.cards = setDeck();
 //          this.cards = cards;
           isBet = true;
           isDealDone = false;

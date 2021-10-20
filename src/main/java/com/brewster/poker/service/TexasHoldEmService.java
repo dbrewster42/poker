@@ -77,8 +77,8 @@ public class TexasHoldEmService implements GameService {
      public NewGameResponse startNewDeal(GameEntity gameEntity, UserDto userDto){
           LOGGER.info("starting new deal with {}", userDto);
 
-          dealPlayerCards(gameEntity.getPlayers(), gameEntity.getCards());
           gameEntity.applyNewDeal();
+          dealPlayerCards(gameEntity.getPlayers(), gameEntity.getCards());
           betService.startNewDeal(gameEntity);
 
           return getNewGameResponse(gameEntity, userDto);
