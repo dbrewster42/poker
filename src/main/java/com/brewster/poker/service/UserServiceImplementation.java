@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -71,7 +70,7 @@ public class UserServiceImplementation implements UserService {
         if (!utils.isEmailValid(newUser)){
             throw new IllegalArgumentException("invalid email");
         }
-        newUser.setId(utils.generateRandomString(12));
+        newUser.setId(utils.generateUserId(12));
 
         User savedUser = userRepository.save(newUser);
         Optional.ofNullable(savedUser).orElseThrow(() -> new RuntimeException("user not saved correctly"));

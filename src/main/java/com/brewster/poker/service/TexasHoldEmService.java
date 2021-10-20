@@ -2,7 +2,6 @@ package com.brewster.poker.service;
 
 import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.card.Card;
-import com.brewster.poker.card.DeckBuilder;
 import com.brewster.poker.card.PokerHandEnum;
 import com.brewster.poker.card.PokerHandTieBreaker;
 import com.brewster.poker.dto.PlayerDto;
@@ -14,10 +13,10 @@ import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.EndRoundResponse;
 import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.model.response.NewGameResponse;
-import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.repository.GameRepository;
+import com.brewster.poker.utility.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class TexasHoldEmService implements GameService {
@@ -33,35 +31,24 @@ public class TexasHoldEmService implements GameService {
      private final GameRepository gameRepository;
      private final BetService betService;
      private final UserService userService;
-     private static final Random random = new Random();
-     private static long gameId;
-//     private Player thisPlayer;
-//     private GameEntity thisGame;
+     private final Utils utils;
+     private long gameId;
 
-     public TexasHoldEmService(GameRepository gameRepository, BetService betService, UserService userService){
+     public TexasHoldEmService(GameRepository gameRepository, BetService betService, UserService userService, Utils utils){
           this.gameRepository = gameRepository;
           this.betService = betService;
           this.userService = userService;
           gameId = gameRepository.count() + 1;
+          this.utils = utils;
      }
 
 
      public GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
-          List<Player> players = generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
+          List<Player> players = utils.generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computerUser);
           players.add(new HumanPlayer(settingsRequest.getDisplayName(), userDto));
 
           GameEntity game = new GameEntity(gameId++, players, settingsRequest);
           return gameRepository.save(game);
-     }
-
-     private List<Player> generateNComputerPlayers(int n, UserDto computer){
-          List<Player> players = new ArrayList<>();
-          for (int i = 0; i < n; i++) {
-               String displayName = "HAL" + random.nextInt(500);
-               Player player = new ComputerPlayer(displayName, computer);
-               players.add(player);
-          }
-          return players;
      }
 
      public GameEntity findGame(long id){
