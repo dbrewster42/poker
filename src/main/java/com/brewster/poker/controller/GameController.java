@@ -42,11 +42,8 @@ public class GameController {
     public NewGameResponse createGame(@RequestBody GameSettingsRequest request) {
         LOGGER.info(request.toString());
         userDto = userService.findUserDtoByEmail(request.getUsername());
-//        if (request.isFillWithComputerPlayers()){
-//            computerUser = userService.findUser("HAL");
-//        } else {
-//        }
-        GameEntity gameEntity = gameService.createGame(userDto, request, userService.findUserDtoByEmail("HAL"));
+
+        GameEntity gameEntity = gameService.createGame(userDto, request);
         LOGGER.info("saved game {}", gameEntity);
         return gameService.startNewDeal(gameEntity, userDto);
     }

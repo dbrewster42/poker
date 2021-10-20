@@ -13,7 +13,7 @@ public class DeckBuilder {
     private List<Card> cards;
 
     private DeckBuilder(){
-        cards = buildStandardDeck();
+        buildStandardDeck();
     }
 
 
@@ -38,15 +38,14 @@ public class DeckBuilder {
     }
 
 
-    private List<Card> buildStandardDeck(){
-        List<Card> cards = new ArrayList<>();
+    private void buildStandardDeck(){
+        cards = new ArrayList<>();
         for (int i = 0; i < 13; i++){
             for (int j = 0; j < 4; j++){
                 Card card = new Card(SUITS[j], VALUES[i], NAMES[i], IMAGE_PREFIXES[i] + SUITS[j].substring(0, 1));
                 cards.add(card);
             }
         }
-        return cards;
     }
 
     public static String[] getSUITS() {

@@ -8,7 +8,7 @@ import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.player.HumanPlayer;
 
 public interface GameService {
-    GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser);
+    GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest);
     GameEntity findGame(long id);
     NewGameResponse startNewDeal(GameEntity gameEntity, UserDto userDto);
     NewGameResponse startNewDeal(GameEntity gameEntity, String email);

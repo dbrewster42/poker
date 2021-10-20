@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 
 @Service
@@ -33,7 +32,6 @@ public class TexasHoldEmService implements GameService {
      private final GameRepository gameRepository;
      private final BetService betService;
      private final UserService userService;
-     private static final Random random = new Random();
      private long gameId;
 
      public TexasHoldEmService(GameRepository gameRepository, BetService betService, UserService userService){
@@ -43,7 +41,7 @@ public class TexasHoldEmService implements GameService {
      }
 
 
-     public GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest, UserDto computerUser){
+     public GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest){
           gameId = gameRepository.count() + 1;
           List<Player> players = generatePlayers(userDto, settingsRequest);
 
@@ -52,8 +50,13 @@ public class TexasHoldEmService implements GameService {
      }
 
      private List<Player> generatePlayers(UserDto userDto, GameSettingsRequest settingsRequest){
-          UserDto computer = userService.retrieveComputerUser();
-          List<Player> players = Utils.generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computer);
+          List<Player> players;
+          if (settingsRequest.isFillWithComputerPlayers()){
+               UserDto computer = userService.retrieveComputerUser();
+               players = Utils.generateNComputerPlayers(settingsRequest.getNumberOfPlayers() - 1, computer);
+          } else {
+               players = new ArrayList<>();
+          }
           players.add(new HumanPlayer(settingsRequest.getDisplayName(), userDto));
           return players;
      }

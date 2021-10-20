@@ -49,7 +49,7 @@ class BetControllerTest {
           betController = new BetController(betService, gameService);
 
           UserDto userDto = getUserDto();
-          game = gameService.createGame(userDto, getGameSettingsRequest(), getComputerUser());
+          game = gameService.createGame(userDto, getGameSettingsRequest()); //getComputerUser()
           id = game.getId();
 
           when(betService.manageComputerBets(any())).thenReturn(TestDataBuilder.getBetOptions());
