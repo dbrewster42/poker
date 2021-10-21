@@ -4,6 +4,7 @@ import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.GameNotFoundException;
 import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.model.GameEntity;
+import com.brewster.poker.model.GameType;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.request.JoinRequest;
 import com.brewster.poker.model.request.UserRequest;
@@ -38,12 +39,19 @@ public class GameController {
         this.userService = userService;
     }
 
+    private void setService(GameEntity gameEntity){
+        if (gameEntity.getGameType() == GameType.SEVEN_CARD_STUD){
+            gameService =
+        }
+    }
+
     @PostMapping
     public NewGameResponse createGame(@RequestBody GameSettingsRequest request) {
         LOGGER.info(request.toString());
         userDto = userService.findUserDtoByEmail(request.getUsername());
 
         GameEntity gameEntity = gameService.createGame(userDto, request);
+        setService(gameEntity);
         LOGGER.info("saved game {}", gameEntity);
         return gameService.startNewDeal(gameEntity, userDto);
     }

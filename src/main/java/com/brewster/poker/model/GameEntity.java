@@ -15,6 +15,7 @@ import java.util.List;
 
 //@Document(collection = "Games")
 public class GameEntity {
+     private GameType gameType;
      @Id
      @Indexed(unique = true)
      private long id;
@@ -44,6 +45,7 @@ public class GameEntity {
           this.betManagerEntity = new BetManagerEntity(settingsRequest);
           inactivePlayers = new ArrayList<>();
           useJokers = settingsRequest.isHasJokers();
+          gameType = GameType.valueOf(settingsRequest.getGameType());
      }
 
      private List<Card> setDeck(){
@@ -75,6 +77,14 @@ public class GameEntity {
                setGameOver();
           }
           betManagerEntity.setActivePlayersSize(players.size());
+     }
+
+     public GameType getGameType() {
+          return gameType;
+     }
+
+     public void setGameType(GameType gameType) {
+          this.gameType = gameType;
      }
 
      public List<String> getBetMessages(){

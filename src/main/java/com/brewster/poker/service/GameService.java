@@ -37,8 +37,33 @@ public abstract class GameService {
         this.userService = userService;
     }
 
-    public abstract GameResponse deal(GameEntity gameEntity);
+    protected abstract GameResponse dealGameCards(GameEntity gameEntity);
     protected abstract void dealPlayerCards(List<Player> players, List<Card> cards);
+
+    public GameResponse deal(GameEntity gameEntity){
+        if (gameEntity.isBet()){
+            LOGGER.info("Cannot deal cards until betting has finished");
+            throw new IllegalArgumentException("Cannot deal cards until betting has finished");
+//            return new GameResponse(gameEntity.getRiverCards());
+        }
+        if (gameEntity.isDealDone()){
+            LOGGER.info("cards have all already been dealt");
+            EndRoundResponse endRoundResponse = calculateWinningHand(gameEntity);
+            userService.updateAllPlayersMoney(gameEntity.getPlayers());
+            gameEntity.getBetManagerEntity().setPot(0);
+            gameRepository.save(gameEntity);
+//               gameEntity.getBetManagerEntity().addBetMessage(endRoundResponse.getMessage());
+            return new GameResponse(endRoundResponse);
+        }
+        betService.deal(gameEntity);
+
+        GameResponse gameResponse = dealGameCards(gameEntity);
+//        List<Card> riverCards = dealGameCards(gameEntity);
+        gameRepository.save(gameEntity);
+
+        return gameResponse;
+//        return new GameResponse(riverCards);
+    }
 
     public GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest){
         gameId = gameRepository.count() + 1;

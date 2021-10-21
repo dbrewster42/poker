@@ -2,7 +2,6 @@ package com.brewster.poker.service;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.model.GameEntity;
-import com.brewster.poker.model.response.EndRoundResponse;
 import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.repository.GameRepository;
@@ -22,28 +21,6 @@ public class TexasHoldEmService extends GameService {
           super(gameRepository, betService, userService);
      }
 
-     @Override
-     public GameResponse deal(GameEntity gameEntity){
-          if (gameEntity.isBet()){
-               LOGGER.info("Cannot deal cards until betting has finished");
-               return new GameResponse(gameEntity.getRiverCards());
-          }
-          if (gameEntity.isDealDone()){
-               LOGGER.info("cards have all already been dealt");
-               EndRoundResponse endRoundResponse = calculateWinningHand(gameEntity);
-               userService.updateAllPlayersMoney(gameEntity.getPlayers());
-               gameEntity.getBetManagerEntity().setPot(0);
-               gameRepository.save(gameEntity);
-//               gameEntity.getBetManagerEntity().addBetMessage(endRoundResponse.getMessage());
-               return new GameResponse(endRoundResponse);
-          }
-          betService.deal(gameEntity);
-
-          List<Card> riverCards = dealRiverCards(gameEntity);
-          gameRepository.save(gameEntity);
-
-          return new GameResponse(riverCards);
-     }
 
      @Override
      public void dealPlayerCards(List<Player> players, List<Card> cards){
@@ -56,7 +33,8 @@ public class TexasHoldEmService extends GameService {
           }
      }
 
-     private List<Card> dealRiverCards(GameEntity gameEntity){
+     @Override
+     protected GameResponse dealGameCards(GameEntity gameEntity){
           int count = 1;
           List<Card> riverCards = gameEntity.getRiverCards();
           if (riverCards.isEmpty()){
@@ -77,8 +55,9 @@ public class TexasHoldEmService extends GameService {
                gameEntity.setIsDealDone(true);
           }
           gameEntity.setIsBet(true);
-//          gameEntity.setRiverCards(riverCards);
-          return riverCards;
+//          return riverCards;
+          return new GameResponse(riverCards);
+
      }
 
 }

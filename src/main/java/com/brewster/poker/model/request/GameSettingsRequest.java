@@ -10,6 +10,15 @@ public class GameSettingsRequest {
     private boolean fillWithComputerPlayers;
     private int buyIn;
     private boolean useAnte;
+    private String gameType;
+
+    public String getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(String gameType) {
+        this.gameType = gameType;
+    }
 
     public String getUsername() {
         return username;
