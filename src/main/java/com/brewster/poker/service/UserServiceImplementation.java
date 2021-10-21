@@ -54,8 +54,8 @@ public class UserServiceImplementation implements UserService {
 //                .orElseThrow(UserNotFoundException::new);
         int updatedMoney = oldUser.getMoney() + dto.getMoney();
         oldUser.setMoney(updatedMoney);
-        Optional.ofNullable(oldUser).filter(v -> v.getMoney() == updatedMoney)
-                .orElseThrow(() -> new RuntimeException("user's money was not saved correctly"));
+//        Optional.ofNullable(oldUser).filter(v -> v.getMoney() == updatedMoney)
+//                .orElseThrow(() -> new RuntimeException("user's money was not saved correctly"));
 
         User updatedUser = userRepository.save(oldUser);
 
@@ -85,7 +85,8 @@ public class UserServiceImplementation implements UserService {
 
     public List<UserDto> findAllUsers(){
         List<User> users = userRepository.findAll();
-        return users.stream().map(v -> new UserDto(v)).collect(Collectors.toList());
+//        return users.stream().map(v -> new UserDto(v)).collect(Collectors.toList());
+        return users.stream().map(UserDto::new).collect(Collectors.toList());
     }
 
     public void updateAllPlayersMoney(List<Player> players){

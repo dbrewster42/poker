@@ -43,7 +43,7 @@ public class GameEntity {
           openSlots = desiredNumberOfPlayers - 1;
           this.betManagerEntity = new BetManagerEntity(settingsRequest);
           inactivePlayers = new ArrayList<>();
-          useJokers = settingsRequest.isUseWildCards();
+          useJokers = settingsRequest.isHasJokers();
      }
 
      private List<Card> setDeck(){
@@ -62,7 +62,6 @@ public class GameEntity {
      public void applyNewDeal(){
           riverCards = new ArrayList<>();
           this.cards = setDeck();
-//          this.cards = cards;
           isBet = true;
           isDealDone = false;
           players.addAll(inactivePlayers);
