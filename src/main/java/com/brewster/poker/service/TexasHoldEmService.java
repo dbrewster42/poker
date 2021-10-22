@@ -4,7 +4,6 @@ import com.brewster.poker.card.Card;
 import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.player.Player;
-import com.brewster.poker.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -14,15 +13,10 @@ import java.util.List;
 
 
 @Service
-public class TexasHoldEmService extends GameService {
+public class TexasHoldEmService {
      private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEmService.class);
 
-     public TexasHoldEmService(GameRepository gameRepository, BetService betService, UserService userService){
-          super(gameRepository, betService, userService);
-     }
 
-
-     @Override
      public void dealPlayerCards(List<Player> players, List<Card> cards){
           players.forEach(Player::resetCards);
           for (int i = 0; i < 2; i++){
@@ -33,7 +27,6 @@ public class TexasHoldEmService extends GameService {
           }
      }
 
-     @Override
      protected GameResponse dealGameCards(GameEntity gameEntity){
           int count = 1;
           List<Card> riverCards = gameEntity.getRiverCards();
@@ -55,7 +48,6 @@ public class TexasHoldEmService extends GameService {
                gameEntity.setIsDealDone(true);
           }
           gameEntity.setIsBet(true);
-//          return riverCards;
           return new GameResponse(riverCards);
 
      }

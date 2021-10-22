@@ -27,6 +27,17 @@ public class PlayerDto {
           this.money = player.getMoney();
           this.pokerHandName = player.getPokerHand().getHandName();
      }
+     public PlayerDto(Player player, boolean isFullHand){
+          this.displayName = player.getDisplayName();
+          this.money = player.getMoney();
+          if (isFullHand){
+               this.cards = player.getCards().subList(2, 6);
+          } else {
+               this.cards = List.of(player.getCards().get(2));
+          }
+
+     }
+
 
      public String getDisplayName() {
           return displayName;

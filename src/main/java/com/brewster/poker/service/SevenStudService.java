@@ -4,7 +4,6 @@ import com.brewster.poker.card.Card;
 import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.player.Player;
-import com.brewster.poker.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,19 +11,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SevenStudService extends GameService {
+public class SevenStudService {
      private static final Logger LOGGER = LoggerFactory.getLogger(SevenStudService.class);
 
-     public SevenStudService(GameRepository gameRepository, BetService betService, UserService userService){
-          super(gameRepository, betService, userService);
-     }
 
-     @Override
      protected GameResponse dealGameCards(GameEntity gameEntity){
           return null;
      }
 
-     @Override
      protected void dealPlayerCards(List<Player> players, List<Card> cards) {
 
      }

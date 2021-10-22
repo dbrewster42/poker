@@ -9,6 +9,7 @@ import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.GameNotFoundException;
 import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.model.GameEntity;
+import com.brewster.poker.model.GameType;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.EndRoundResponse;
 import com.brewster.poker.model.response.GameResponse;
@@ -19,26 +20,45 @@ import com.brewster.poker.repository.GameRepository;
 import com.brewster.poker.utility.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class GameService {
+@Service
+public class GameService {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameService.class);
-    final GameRepository gameRepository;
-    final BetService betService;
-    final UserService userService;
+    private final GameRepository gameRepository;
+    private final BetService betService;
+    private final UserService userService;
     private long gameId;
+    private final TexasHoldEmService texasHoldEmService;
+    private final SevenStudService sevenStudService;
 
-    public GameService(GameRepository gameRepository, BetService betService, UserService userService){
+
+    public GameService(GameRepository gameRepository, BetService betService, UserService userService, TexasHoldEmService texasHoldEmService, SevenStudService sevenStudService){
         this.gameRepository = gameRepository;
         this.betService = betService;
         this.userService = userService;
+        this.texasHoldEmService = texasHoldEmService;
+        this.sevenStudService = sevenStudService;
     }
 
-    protected abstract GameResponse dealGameCards(GameEntity gameEntity);
-    protected abstract void dealPlayerCards(List<Player> players, List<Card> cards);
+    private GameResponse dealGameCards(GameEntity gameEntity){
+        if (gameEntity.getGameType().equals(GameType.TEXAS_HOLD_EM)){
+            return texasHoldEmService.dealGameCards(gameEntity);
+        } else {
+            return sevenStudService.dealGameCards(gameEntity);
+        }
+    }
+    private void dealPlayerCards(GameEntity gameEntity){
+        if (gameEntity.getGameType().equals(GameType.TEXAS_HOLD_EM)){
+            texasHoldEmService.dealPlayerCards(gameEntity.getPlayers(), gameEntity.getCards());
+        } else {
+            sevenStudService.dealPlayerCards(gameEntity.getPlayers(), gameEntity.getCards());
+        }
+    }
 
     public GameResponse deal(GameEntity gameEntity){
         if (gameEntity.isBet()){
@@ -52,17 +72,14 @@ public abstract class GameService {
             userService.updateAllPlayersMoney(gameEntity.getPlayers());
             gameEntity.getBetManagerEntity().setPot(0);
             gameRepository.save(gameEntity);
-//               gameEntity.getBetManagerEntity().addBetMessage(endRoundResponse.getMessage());
             return new GameResponse(endRoundResponse);
         }
         betService.deal(gameEntity);
 
         GameResponse gameResponse = dealGameCards(gameEntity);
-//        List<Card> riverCards = dealGameCards(gameEntity);
         gameRepository.save(gameEntity);
 
         return gameResponse;
-//        return new GameResponse(riverCards);
     }
 
     public GameEntity createGame(UserDto userDto, GameSettingsRequest settingsRequest){
@@ -102,14 +119,14 @@ public abstract class GameService {
         LOGGER.info("starting new deal with {}", userDto);
 
         gameEntity.applyNewDeal();
-        dealPlayerCards(gameEntity.getPlayers(), gameEntity.getCards());
+        dealPlayerCards(gameEntity);
         betService.startNewDeal(gameEntity);
 
         return getNewGameResponse(gameEntity, userDto);
     }
     public NewGameResponse startNewDeal(GameEntity gameEntity, String email){
         gameEntity.applyNewDeal();
-        dealPlayerCards(gameEntity.getPlayers(), gameEntity.getCards());
+        dealPlayerCards(gameEntity);
         betService.startNewDeal(gameEntity);
         UserDto userDto = getThisUser(gameEntity, email);
 
