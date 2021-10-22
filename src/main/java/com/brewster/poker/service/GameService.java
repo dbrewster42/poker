@@ -9,7 +9,6 @@ import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.GameNotFoundException;
 import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.model.GameEntity;
-import com.brewster.poker.model.GameType;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.EndRoundResponse;
 import com.brewster.poker.model.response.GameResponse;
@@ -17,6 +16,7 @@ import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.repository.GameRepository;
+import com.brewster.poker.utility.GameContext;
 import com.brewster.poker.utility.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,31 +33,21 @@ public class GameService {
     private final BetService betService;
     private final UserService userService;
     private long gameId;
-    private final TexasHoldEmService texasHoldEmService;
-    private final SevenStudService sevenStudService;
+    private final GameContext gameContext;
 
 
-    public GameService(GameRepository gameRepository, BetService betService, UserService userService, TexasHoldEmService texasHoldEmService, SevenStudService sevenStudService){
+    public GameService(GameRepository gameRepository, BetService betService, UserService userService, GameContext gameContext){
         this.gameRepository = gameRepository;
         this.betService = betService;
         this.userService = userService;
-        this.texasHoldEmService = texasHoldEmService;
-        this.sevenStudService = sevenStudService;
+        this.gameContext = gameContext;
     }
 
     private GameResponse dealGameCards(GameEntity gameEntity){
-        if (gameEntity.getGameType().equals(GameType.TEXAS_HOLD_EM)){
-            return texasHoldEmService.dealGameCards(gameEntity);
-        } else {
-            return sevenStudService.dealGameCards(gameEntity);
-        }
+        return gameContext.dealGameCards(gameEntity);
     }
     private void dealPlayerCards(GameEntity gameEntity){
-        if (gameEntity.getGameType().equals(GameType.TEXAS_HOLD_EM)){
-            texasHoldEmService.dealPlayerCards(gameEntity.getPlayers(), gameEntity.getCards());
-        } else {
-            sevenStudService.dealPlayerCards(gameEntity.getPlayers(), gameEntity.getCards());
-        }
+        gameContext.dealPlayerCards(gameEntity);
     }
 
     public GameResponse deal(GameEntity gameEntity){

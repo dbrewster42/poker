@@ -6,6 +6,7 @@ import com.brewster.poker.model.User;
 import com.brewster.poker.player.ComputerPlayer;
 import com.brewster.poker.player.Player;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Configuration
+@Component
 public class Utils {
      private static final Random RANDOM = new SecureRandom();
      private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234568790";

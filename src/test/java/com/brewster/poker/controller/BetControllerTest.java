@@ -13,9 +13,8 @@ import com.brewster.poker.model.request.BetRequest;
 import com.brewster.poker.model.response.BetResponse;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
-import com.brewster.poker.service.SevenStudService;
-import com.brewster.poker.service.TexasHoldEmService;
 import com.brewster.poker.service.UserService;
+import com.brewster.poker.utility.GameContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -37,8 +36,7 @@ class BetControllerTest {
      private BetService betService;
      private GameRepository gameRepository;
      private UserService userService;
-     private TexasHoldEmService texasHoldEmService;
-     private SevenStudService sevenStudService;
+     private GameContext gameStrategy;
 
      GameEntity game;
      long id;
@@ -48,9 +46,8 @@ class BetControllerTest {
           gameRepository = mock(GameRepository.class);
           userService = mock(UserService.class);
           betService = mock(BetService.class);
-          texasHoldEmService = mock(TexasHoldEmService.class);
-          sevenStudService = mock(SevenStudService.class);
-          gameService = new GameService(gameRepository, betService, userService, texasHoldEmService, sevenStudService);
+          gameStrategy = mock(GameContext.class);
+          gameService = new GameService(gameRepository, betService, userService, gameStrategy);
           betController = new BetController(betService, gameService);
 
           UserDto userDto = getUserDto();

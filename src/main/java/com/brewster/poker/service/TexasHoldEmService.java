@@ -27,7 +27,7 @@ public class TexasHoldEmService {
           }
      }
 
-     protected GameResponse dealGameCards(GameEntity gameEntity){
+     public GameResponse dealGameCards(GameEntity gameEntity){
           int count = 1;
           List<Card> riverCards = gameEntity.getRiverCards();
           if (riverCards.isEmpty()){

@@ -15,11 +15,11 @@ public class SevenStudService {
      private static final Logger LOGGER = LoggerFactory.getLogger(SevenStudService.class);
 
 
-     protected GameResponse dealGameCards(GameEntity gameEntity){
+     public GameResponse dealGameCards(GameEntity gameEntity){
           return null;
      }
 
-     protected void dealPlayerCards(List<Player> players, List<Card> cards) {
+     public void dealPlayerCards(List<Player> players, List<Card> cards) {
 
      }
 
