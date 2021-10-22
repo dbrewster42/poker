@@ -16,7 +16,7 @@ import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.repository.GameRepository;
-import com.brewster.poker.utility.GameContext;
+import com.brewster.poker.strategy.GameContext;
 import com.brewster.poker.utility.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -14,7 +14,7 @@ import com.brewster.poker.model.response.BetResponse;
 import com.brewster.poker.player.HumanPlayer;
 import com.brewster.poker.player.Player;
 import com.brewster.poker.service.UserService;
-import com.brewster.poker.utility.GameContext;
+import com.brewster.poker.strategy.GameContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

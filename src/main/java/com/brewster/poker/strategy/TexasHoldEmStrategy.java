@@ -1,4 +1,4 @@
-package com.brewster.poker.service;
+package com.brewster.poker.strategy;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.model.GameEntity;
@@ -13,10 +13,10 @@ import java.util.List;
 
 
 @Service
-public class TexasHoldEmService {
-     private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEmService.class);
+public class TexasHoldEmStrategy implements DealStrategy {
+     private static final Logger LOGGER = LoggerFactory.getLogger(TexasHoldEmStrategy.class);
 
-
+     @Override
      public void dealPlayerCards(List<Player> players, List<Card> cards){
           players.forEach(Player::resetCards);
           for (int i = 0; i < 2; i++){
@@ -27,6 +27,7 @@ public class TexasHoldEmService {
           }
      }
 
+     @Override
      public GameResponse dealGameCards(GameEntity gameEntity){
           int count = 1;
           List<Card> riverCards = gameEntity.getRiverCards();

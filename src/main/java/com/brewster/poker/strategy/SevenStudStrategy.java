@@ -1,4 +1,4 @@
-package com.brewster.poker.service;
+package com.brewster.poker.strategy;
 
 import com.brewster.poker.card.Card;
 import com.brewster.poker.model.GameEntity;
@@ -11,14 +11,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SevenStudService {
-     private static final Logger LOGGER = LoggerFactory.getLogger(SevenStudService.class);
+public class SevenStudStrategy implements DealStrategy {
+     private static final Logger LOGGER = LoggerFactory.getLogger(SevenStudStrategy.class);
 
-
+     @Override
      public GameResponse dealGameCards(GameEntity gameEntity){
           return null;
      }
 
+     @Override
      public void dealPlayerCards(List<Player> players, List<Card> cards) {
 
      }

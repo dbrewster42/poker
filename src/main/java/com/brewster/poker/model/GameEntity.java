@@ -86,6 +86,9 @@ public class GameEntity {
      public void setGameType(GameType gameType) {
           this.gameType = gameType;
      }
+     public void setGameType(String gameType){
+          this.gameType = GameType.valueOf(gameType);
+     }
 
      public List<String> getBetMessages(){
           return betManagerEntity.getBetMessages();
