@@ -1,6 +1,7 @@
 package com.brewster.poker.strategy;
 
 import com.brewster.poker.card.Card;
+import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.player.Player;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SevenStudStrategy implements DealStrategy {
@@ -16,12 +18,29 @@ public class SevenStudStrategy implements DealStrategy {
 
      @Override
      public GameResponse dealGameCards(GameEntity gameEntity){
-          return null;
+          List<Card> cards = gameEntity.getCards();
+          List<Player> players = gameEntity.getPlayers();
+          for (Player player : players){
+               player.dealCard(cards.get(0));
+               cards.remove(0);
+          }
+
+          boolean isFull = players.get(0).getCards().size() == 7;
+          List<PlayerDto> playerDtos = players.stream()
+                  .map(v -> new PlayerDto(v, isFull))
+                  .collect(Collectors.toList());
+          return new GameResponse(playerDtos, 2);
      }
 
      @Override
      public void dealPlayerCards(List<Player> players, List<Card> cards) {
-
+          players.forEach(Player::resetCards);
+          for (int i = 0; i < 3; i++){
+               for (Player player : players){
+                    player.dealCard(cards.get(0));
+                    cards.remove(0);
+               }
+          }
      }
 
 

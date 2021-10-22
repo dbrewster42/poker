@@ -17,10 +17,10 @@ public class GameContext {
           this.sevenStudStrategy = sevenStudStrategy;
      }
 
-     private void chooseDealStrategy(GameEntity gameEntity) {
-          if (gameEntity.getGameType().equals(GameType.TEXAS_HOLD_EM)){
+     private void chooseDealStrategy(GameType gameType) {
+          if (gameType.equals(GameType.TEXAS_HOLD_EM)){
                this.dealStrategy = texasHoldEmStrategy;
-          } else if (gameEntity.getGameType().equals(GameType.SEVEN_CARD_STUD)) {
+          } else if (gameType.equals(GameType.SEVEN_CARD_STUD)) {
                this.dealStrategy = sevenStudStrategy;
           } else {
                throw new GameNotFoundException("Invalid game type");
@@ -28,11 +28,11 @@ public class GameContext {
      }
 
      public GameResponse dealGameCards(GameEntity gameEntity){
-          chooseDealStrategy(gameEntity);
+          chooseDealStrategy(gameEntity.getGameType());
           return dealStrategy.dealGameCards(gameEntity);
      }
      public void dealPlayerCards(GameEntity gameEntity){
-          chooseDealStrategy(gameEntity);
+          chooseDealStrategy(gameEntity.getGameType());
           dealStrategy.dealPlayerCards(gameEntity.getPlayers(), gameEntity.getCards());
      }
 

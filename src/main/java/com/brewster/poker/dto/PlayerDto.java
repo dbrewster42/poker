@@ -33,7 +33,7 @@ public class PlayerDto {
           if (isFullHand){
                this.cards = player.getCards().subList(2, 6);
           } else {
-               this.cards = List.of(player.getCards().get(2));
+               this.cards = player.getCards().subList(2, player.getCards().size());;
           }
 
      }

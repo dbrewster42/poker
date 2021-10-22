@@ -4,6 +4,8 @@ import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.model.GameType;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GameTest {
@@ -22,5 +24,12 @@ public class GameTest {
           game.setGameType("SEVEN_CARD_STUD");
           assertEquals(game.getGameType(), GameType.SEVEN_CARD_STUD);
      }
+//
+//     @Test
+//     void subList(){
+//          List<String> strings = List.of("a", "b", "c");
+//          List<String> sillyStrings = strings.subList(2, 5);
+//          sillyStrings.forEach(System.out::println);
+//     }
 
 }
