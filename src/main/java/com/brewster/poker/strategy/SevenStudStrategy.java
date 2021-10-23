@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,13 @@ public class SevenStudStrategy implements DealStrategy {
           List<PlayerDto> playerDtos = players.stream()
                   .map(v -> new PlayerDto(v, isFull))
                   .collect(Collectors.toList());
+
+          if (isFull){
+               gameEntity.setCards(new ArrayList<>());
+               gameEntity.setIsDealDone(true);
+          }
+          gameEntity.setIsBet(true);
+
           return new GameResponse(playerDtos, 2);
      }
 

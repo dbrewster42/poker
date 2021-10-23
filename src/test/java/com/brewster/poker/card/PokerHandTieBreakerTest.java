@@ -15,6 +15,18 @@ class PokerHandTieBreakerTest {
      private Player player = TestDataBuilder.getPlayer();
 
      @Test
+     void canBeOver(){
+          int[] highCards = new int[3];
+          highCards[0] = 3;
+          for (int i = 0; i < highCards.length; i++) {
+               if (highCards[i] > 2) {
+                    System.out.println("bunnies");
+               } else {
+                    System.out.println(highCards[i]);
+               }
+          }
+     }
+     @Test
      void getTieBreaker(){
           assertEquals(2, PokerHandTieBreaker.getTieBreaker(player, TestDataBuilder.getPlayer()).size());
      }

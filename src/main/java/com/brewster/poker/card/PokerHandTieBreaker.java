@@ -58,7 +58,7 @@ public class PokerHandTieBreaker {
      }
 
      private static int[] getHighCards(List<Card> cards){
-          int[] highCards = new int[3];
+          int[] highCards = new int[4];
           int highCard = 0;
           int secondCard = 0;
           int thirdCard = 0;
@@ -67,17 +67,27 @@ public class PokerHandTieBreaker {
                highCard = getPairHighCard(cards);
                secondCard = getHighCard(cards, highCard);
                thirdCard = getThirdHighCard(cards, highCard, secondCard);
+               fourthCard = getFourthHighCard(cards, highCard, secondCard, thirdCard);
           } else if (pokerHand == TWO_PAIR){
                highCard = getPairHighCard(cards);
-               secondCard = getSecondPairHighCard(cards);
+               secondCard = getSecondPairHighCard(cards, highCard);
                thirdCard = getThirdHighCard(cards, highCard, secondCard);
           } else if (pokerHand == FULL_HOUSE || pokerHand == FOUR_KIND || pokerHand == THREE_KIND){
                highCard = getTripsHighCard(cards);
+               if (pokerHand == FULL_HOUSE){
+                    secondCard = getSecondPairHighCard(cards, highCard);
+               } else {
+                    secondCard = getHighCard(cards, highCard);
+                    if (pokerHand == THREE_KIND){
+                         thirdCard = getThirdHighCard(cards, highCard, secondCard);
+                    }
+               }
           } else if (pokerHand == FLUSH){
                cards = getFlushCards(cards);
                highCard = cards.get(0).getValue();
                secondCard = cards.get(1).getValue();
                thirdCard = cards.get(2).getValue();
+               fourthCard = cards.get(3).getValue();
           } else if (pokerHand == STRAIGHT){
                highCard = getStraightHighCard(cards);
           } else if (pokerHand == STRAIGHT_FLUSH){
@@ -87,24 +97,23 @@ public class PokerHandTieBreaker {
                highCard = getHighCard(cards, 1);
                secondCard = getHighCard(cards, highCard);
                thirdCard = getThirdHighCard(cards, highCard, secondCard);
+               fourthCard = getFourthHighCard(cards, highCard, secondCard, thirdCard);
           }
           LOGGER.info("{} high card, {} 2nd high card, and {} 3rd high card", highCard, secondCard, thirdCard);
           highCards[0] = highCard;
           highCards[1] = secondCard;
           highCards[2] = thirdCard;
+          highCards[3] = fourthCard;
 
           return highCards;
      }
-     private static int getSecondPairHighCard(List<Card> cards){
+     private static int getSecondPairHighCard(List<Card> cards, int previousPairCard){
           int highCard = 0;
-          boolean isSecondHighest = false;
           for (int i = 0; i < cards.size() - 1; i++){
                if (cards.get(i).getValue() == cards.get(i + 1).getValue()){
-                    if (isSecondHighest){
+                    if (cards.get(i).getValue() == previousPairCard) {
                          highCard = cards.get(i).getValue();
                          break;
-                    } else {
-                         isSecondHighest = true;
                     }
                }
           }
@@ -140,6 +149,15 @@ public class PokerHandTieBreaker {
      private static int getThirdHighCard(List<Card> cards, int previousHighCard, int secondPreviousCard){
           for (Card card : cards){
                if (card.getValue() != previousHighCard && card.getValue() != secondPreviousCard){
+                    return card.getValue();
+               }
+          }
+          return 0;
+     }
+     private static int getFourthHighCard(List<Card> cards, int one, int two, int three){
+          for (Card card : cards){
+               int value = card.getValue();
+               if (value != one && value != two && value != three){
                     return card.getValue();
                }
           }

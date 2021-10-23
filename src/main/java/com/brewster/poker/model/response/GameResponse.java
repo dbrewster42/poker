@@ -15,6 +15,10 @@ public class GameResponse {
         this.riverCards = riverCards;
         isOver = false;
     }
+//    public GameResponse(List<PlayerDto> playerDtos){
+//        this.playerDtos = playerDtos;
+//        isOver = false;
+//    }
     public GameResponse(List<PlayerDto> playerDtos, int extra){
         this.playerDtos = playerDtos;
         isOver = false;

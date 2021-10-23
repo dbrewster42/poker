@@ -102,6 +102,7 @@ public class GameSettingsRequest {
                 ", bigBlind=" + bigBlind +
                 ", maxBet=" + maxBet +
                 ", fillWithComputerPlayers=" + fillWithComputerPlayers +
+                ", gameType=" + gameType +
                 '}';
     }
 }

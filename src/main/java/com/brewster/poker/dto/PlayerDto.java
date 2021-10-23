@@ -10,6 +10,7 @@ public class PlayerDto {
      private String pokerHandName;
      private List<Card> cards;
      private int money;
+     private boolean isLastRound;
 
      public PlayerDto(String displayName, String pokerHandName) {
           this.displayName = displayName;
@@ -30,6 +31,7 @@ public class PlayerDto {
      public PlayerDto(Player player, boolean isFullHand){
           this.displayName = player.getDisplayName();
           this.money = player.getMoney();
+          this.isLastRound = isFullHand;
           if (isFullHand){
                this.cards = player.getCards().subList(2, 6);
           } else {
@@ -38,6 +40,9 @@ public class PlayerDto {
 
      }
 
+     public boolean isLastRound() {
+          return isLastRound;
+     }
 
      public String getDisplayName() {
           return displayName;
