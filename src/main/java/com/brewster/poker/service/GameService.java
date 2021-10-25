@@ -43,13 +43,6 @@ public class GameService {
         this.gameContext = gameContext;
     }
 
-    private GameResponse dealGameCards(GameEntity gameEntity){
-        return gameContext.dealGameCards(gameEntity);
-    }
-    private void dealPlayerCards(GameEntity gameEntity){
-        gameContext.dealPlayerCards(gameEntity);
-    }
-
     public GameResponse deal(GameEntity gameEntity){
         if (gameEntity.isBet()){
             LOGGER.info("Cannot deal cards until betting has finished");
@@ -66,7 +59,7 @@ public class GameService {
         }
         betService.deal(gameEntity);
 
-        GameResponse gameResponse = dealGameCards(gameEntity);
+        GameResponse gameResponse = gameContext.dealGameCards(gameEntity);
         gameRepository.save(gameEntity);
 
         return gameResponse;
@@ -109,14 +102,14 @@ public class GameService {
         LOGGER.info("starting new deal with {}", userDto);
 
         gameEntity.applyNewDeal();
-        dealPlayerCards(gameEntity);
+        gameContext.dealPlayerCards(gameEntity);
         betService.startNewDeal(gameEntity);
 
         return getNewGameResponse(gameEntity, userDto);
     }
     public NewGameResponse startNewDeal(GameEntity gameEntity, String email){
         gameEntity.applyNewDeal();
-        dealPlayerCards(gameEntity);
+        gameContext.dealPlayerCards(gameEntity);
         betService.startNewDeal(gameEntity);
         UserDto userDto = getThisUser(gameEntity, email);
 

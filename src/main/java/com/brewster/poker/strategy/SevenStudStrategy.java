@@ -27,9 +27,20 @@ public class SevenStudStrategy implements DealStrategy {
           }
 
           boolean isFull = players.get(0).getCards().size() == 7;
-          List<PlayerDto> playerDtos = players.stream()
-                  .map(v -> new PlayerDto(v, isFull))
-                  .collect(Collectors.toList());
+//          List<PlayerDto> playerDtos = players.stream()
+//                  .map(v -> new PlayerDto(v, isFull))
+//                  .collect(Collectors.toList());
+          List<PlayerDto> playerDtos = new ArrayList<>();
+
+          for (Player player : players) {
+               PlayerDto playerDto = new PlayerDto(player);
+               if (isFull){
+                    playerDto.setCards(player.getCards().subList(2, 6));
+               } else {
+                    playerDto.setCards(player.getCards().subList(2, player.getCards().size()));
+               }
+               playerDtos.add(playerDto);
+          }
 
           if (isFull){
                gameEntity.setCards(new ArrayList<>());
@@ -37,7 +48,7 @@ public class SevenStudStrategy implements DealStrategy {
           }
           gameEntity.setIsBet(true);
 
-          return new GameResponse(playerDtos, 2);
+          return new GameResponse(playerDtos, isFull);
      }
 
      @Override

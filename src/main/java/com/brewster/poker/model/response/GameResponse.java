@@ -10,23 +10,24 @@ public class GameResponse {
     private List<Card> riverCards;
     private boolean isOver;
     private EndRoundResponse endRoundResponse;
+    private boolean isLastTurn;
 
     public GameResponse(List<Card> riverCards){
         this.riverCards = riverCards;
         isOver = false;
     }
-//    public GameResponse(List<PlayerDto> playerDtos){
-//        this.playerDtos = playerDtos;
-//        isOver = false;
-//    }
-    public GameResponse(List<PlayerDto> playerDtos, int extra){
+    public GameResponse(List<PlayerDto> playerDtos, boolean isLastTurn){
         this.playerDtos = playerDtos;
+        this.isLastTurn = isLastTurn;
         isOver = false;
     }
-
     public GameResponse(EndRoundResponse endRoundResponse){
         this.endRoundResponse = endRoundResponse;
         isOver = true;
+    }
+
+    public boolean isLastTurn() {
+        return isLastTurn;
     }
 
     public List<Card> getRiverCards() {
