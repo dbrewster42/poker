@@ -5,7 +5,7 @@ import com.brewster.poker.player.Player;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Transient;
 
-public class UserDto {
+public class UserDto extends Dto {
     private String email;
     private String displayName;
     private Integer money;

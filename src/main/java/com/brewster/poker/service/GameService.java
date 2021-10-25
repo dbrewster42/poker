@@ -9,6 +9,7 @@ import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.GameNotFoundException;
 import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.model.GameEntity;
+import com.brewster.poker.model.GameType;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.EndRoundResponse;
 import com.brewster.poker.model.response.GameResponse;
@@ -184,7 +185,11 @@ public class GameService {
         BetOptions options = betService.manageComputerBets(gameEntity);
         LOGGER.info(options.toString(), playerCards);
         gameRepository.save(gameEntity);
-        return new NewGameResponse(gameEntity.getId(), playerCards, getUsers(gameEntity, userDto), options, userDto.getMoney());
+        if (gameEntity.getGameType().equals(GameType.TEXAS_HOLD_EM)){
+            return new NewGameResponse(gameEntity.getId(), playerCards, getUsers(gameEntity, userDto), options, userDto.getMoney());
+        } else { //TODO
+            return new NewGameResponse(gameEntity.getId(), playerCards, options, userDto.getMoney(), getPlayers(gameEntity, userDto));
+        }
     }
 
     private List<UserDto> getUsers(GameEntity gameEntity, UserDto userDto){
@@ -192,6 +197,16 @@ public class GameService {
         for (Player player : gameEntity.getPlayers()){
             if (!player.getEmail().equals(userDto.getEmail())){
                 users.add(new UserDto(player));
+            }
+        }
+        return users;
+    }
+
+    private List<PlayerDto> getPlayers(GameEntity gameEntity, UserDto userDto){
+        List<PlayerDto> users = new ArrayList<>();
+        for (Player player : gameEntity.getPlayers()){
+            if (!player.getEmail().equals(userDto.getEmail())){
+                users.add(new PlayerDto(player));
             }
         }
         return users;
