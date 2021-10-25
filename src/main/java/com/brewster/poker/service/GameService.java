@@ -4,6 +4,7 @@ import com.brewster.poker.bet.BetOptions;
 import com.brewster.poker.card.Card;
 import com.brewster.poker.card.PokerHandEnum;
 import com.brewster.poker.card.PokerHandTieBreaker;
+import com.brewster.poker.dto.Dto;
 import com.brewster.poker.dto.PlayerDto;
 import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.GameNotFoundException;
@@ -185,11 +186,15 @@ public class GameService {
         BetOptions options = betService.manageComputerBets(gameEntity);
         LOGGER.info(options.toString(), playerCards);
         gameRepository.save(gameEntity);
-        if (gameEntity.getGameType().equals(GameType.TEXAS_HOLD_EM)){
-            return new NewGameResponse(gameEntity.getId(), playerCards, getUsers(gameEntity, userDto), options, userDto.getMoney());
-        } else { //TODO
-            return new NewGameResponse(gameEntity.getId(), playerCards, options, userDto.getMoney(), getPlayers(gameEntity, userDto));
-        }
+
+        List<Dto> players = gameContext.getPlayers(gameEntity, userDto);
+        return new NewGameResponse(gameEntity.getId(), playerCards, players, options, userDto.getMoney());
+
+//        if (gameEntity.getGameType().equals(GameType.TEXAS_HOLD_EM)){
+//            return new NewGameResponse(gameEntity.getId(), playerCards, getUsers(gameEntity, userDto), options, userDto.getMoney());
+//        } else { //TODO
+//            return new NewGameResponse(gameEntity.getId(), playerCards, options, userDto.getMoney(), getPlayers(gameEntity, userDto));
+//        }
     }
 
     private List<UserDto> getUsers(GameEntity gameEntity, UserDto userDto){

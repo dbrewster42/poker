@@ -1,10 +1,14 @@
 package com.brewster.poker.strategy;
 
+import com.brewster.poker.dto.Dto;
+import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.GameNotFoundException;
 import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.model.GameType;
 import com.brewster.poker.model.response.GameResponse;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class GameContext {
@@ -34,6 +38,10 @@ public class GameContext {
      public void dealPlayerCards(GameEntity gameEntity){
           chooseDealStrategy(gameEntity.getGameType());
           dealStrategy.dealPlayerCards(gameEntity.getPlayers(), gameEntity.getCards());
+     }
+
+     public List<Dto> getPlayers(GameEntity gameEntity, UserDto userDto){
+          return dealStrategy.getPlayers(gameEntity, userDto);
      }
 
 }

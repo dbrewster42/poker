@@ -15,22 +15,22 @@ public class NewGameResponse {
     private BetOptions betOptions;
     private int userMoney;
     private List<Dto> users;
-    private List<PlayerDto> playerDtos;
 
-    public NewGameResponse(final long id, final List<Card> hand, final List<UserDto> users, final BetOptions betOptions, final int userMoney){
+    public NewGameResponse(final long id, final List<Card> hand, final List<Dto> users, final BetOptions betOptions, final int userMoney){
         this.gameId = id;
         this.hand = hand;
         this.betOptions = betOptions;
         this.userMoney = userMoney;
-        this.users = users.stream().map(v -> (Dto) v).collect(Collectors.toList());
+        this.users = users;
+//        this.users = users.stream().map(v -> (Dto) v).collect(Collectors.toList());
     }
-    public NewGameResponse(final long id, final List<Card> hand, final BetOptions betOptions, final int userMoney, final List<PlayerDto> users){
-        this.gameId = id;
-        this.hand = hand;
-        this.betOptions = betOptions;
-        this.userMoney = userMoney;
-        this.users = users.stream().map(v -> (Dto) v).collect(Collectors.toList());
-    }
+//    public NewGameResponse(final long id, final List<Card> hand, final BetOptions betOptions, final int userMoney, final List<PlayerDto> users){
+//        this.gameId = id;
+//        this.hand = hand;
+//        this.betOptions = betOptions;
+//        this.userMoney = userMoney;
+//        this.users = users.stream().map(v -> (Dto) v).collect(Collectors.toList());
+//    }
 
 
     public long getGameId() {

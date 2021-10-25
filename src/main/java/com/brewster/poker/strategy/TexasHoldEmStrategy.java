@@ -1,6 +1,8 @@
 package com.brewster.poker.strategy;
 
 import com.brewster.poker.card.Card;
+import com.brewster.poker.dto.Dto;
+import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.player.Player;
@@ -51,6 +53,18 @@ public class TexasHoldEmStrategy implements DealStrategy {
           gameEntity.setIsBet(true);
           return new GameResponse(riverCards);
 
+     }
+
+
+     @Override
+     public List<Dto> getPlayers(GameEntity gameEntity, UserDto userDto) {
+          List<Dto> users = new ArrayList<>();
+          for (Player player : gameEntity.getPlayers()){
+               if (!player.getEmail().equals(userDto.getEmail())){
+                    users.add(new UserDto(player));
+               }
+          }
+          return users;
      }
 
 }
