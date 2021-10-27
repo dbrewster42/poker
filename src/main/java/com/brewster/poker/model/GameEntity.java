@@ -5,6 +5,7 @@ import com.brewster.poker.card.DeckBuilder;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.player.Player;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -27,6 +28,7 @@ public class GameEntity {
      private boolean isDealDone;
      private BetManagerEntity betManagerEntity;
      private boolean useJokers;
+     private boolean isActive;
 
      private int desiredNumberOfPlayers;
      private int openSlots;
@@ -34,6 +36,9 @@ public class GameEntity {
      private Date createdAt;
      @DateTimeFormat(pattern = "yyyy-MM-dd")
      private Date updatedAt;
+
+     @Transient
+     private String tempEmail;
 
 
      public GameEntity(){}
@@ -46,6 +51,7 @@ public class GameEntity {
           inactivePlayers = new ArrayList<>();
           useJokers = settingsRequest.isHasJokers();
           gameType = GameType.valueOf(settingsRequest.getGameType());
+          isActive = true;
      }
 
      private List<Card> setDeck(){
@@ -188,6 +194,22 @@ public class GameEntity {
 
      public void setUpdatedAt(Date updatedAt) {
           this.updatedAt = updatedAt;
+     }
+
+     public String getTempEmail() {
+          return tempEmail;
+     }
+
+     public void setTempEmail(String tempEmail) {
+          this.tempEmail = tempEmail;
+     }
+
+     public boolean isActive() {
+          return isActive;
+     }
+
+     public void setActive(boolean active) {
+          isActive = active;
      }
 
      @Override

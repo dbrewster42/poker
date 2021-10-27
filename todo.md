@@ -8,9 +8,10 @@ or it should require a manual call.
 
 
 ## bugs
+need to include player identifier in deal call for non-river games
+
 raise needs to be clearer in the front end
-display exception messages in front end
-can create duplicate emails
+//can create duplicate emails
 winner calculation off when it beats a tie (fixed?)
 
 

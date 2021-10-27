@@ -10,7 +10,6 @@ import com.brewster.poker.dto.UserDto;
 import com.brewster.poker.exception.GameNotFoundException;
 import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.model.GameEntity;
-import com.brewster.poker.model.GameType;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.response.EndRoundResponse;
 import com.brewster.poker.model.response.GameResponse;

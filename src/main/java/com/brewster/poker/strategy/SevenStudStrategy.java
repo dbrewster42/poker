@@ -28,9 +28,16 @@ public class SevenStudStrategy implements DealStrategy {
           }
 
           boolean isFull = players.get(0).getCards().size() == 7;
+
+          String email = gameEntity.getTempEmail();
           List<PlayerDto> playerDtos = new ArrayList<>();
+          List<Card> myCards = null;
 
           for (Player player : players) {
+               if (player.getEmail().equals(email)){
+                    myCards = player.getCards();
+                    continue;
+               }
                PlayerDto playerDto = new PlayerDto(player);
                if (isFull){
                     playerDto.setCards(player.getCards().subList(2, 6));
@@ -39,7 +46,6 @@ public class SevenStudStrategy implements DealStrategy {
                }
                playerDtos.add(playerDto);
           }
-          playerDtos.remove(playerDtos.size()-1); //TODO need to improve
 
           if (isFull){
                gameEntity.setCards(new ArrayList<>());
@@ -47,7 +53,7 @@ public class SevenStudStrategy implements DealStrategy {
           }
           gameEntity.setIsBet(true);
 
-          return new GameResponse(playerDtos, isFull);
+          return new GameResponse(playerDtos, myCards, isFull);
      }
 
      @Override

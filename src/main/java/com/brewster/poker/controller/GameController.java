@@ -49,18 +49,19 @@ public class GameController {
     }
 
     @PostMapping("{id}/restart")
-    public NewGameResponse getNewRound(@PathVariable long id, @RequestBody UserRequest request){
-        LOGGER.info("{} has requested a new game for {}", request.getEmail(), id);
+    public NewGameResponse getNewRound(@PathVariable long id, @RequestBody String email){
+        LOGGER.info("{} has requested a new game for {}", email, id);
         GameEntity gameEntity = gameService.findGame(id);
 
-        return gameService.startNewDeal(gameEntity, request.getEmail());
+        return gameService.startNewDeal(gameEntity, email);
     }
 
     @GetMapping("{id}")
-    public GameResponse deal(@PathVariable long id) {
+    public GameResponse deal(@PathVariable long id, @RequestBody String email) {
         //TODO add identifier for player
         LOGGER.info("dealing card");
         GameEntity gameEntity = gameService.findGame(id);
+        gameEntity.setTempEmail(email);
 
         return gameService.deal(gameEntity);
     }

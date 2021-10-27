@@ -111,7 +111,7 @@ public class PokerHandTieBreaker {
           int highCard = 0;
           for (int i = 0; i < cards.size() - 1; i++){
                if (cards.get(i).getValue() == cards.get(i + 1).getValue()){
-                    if (cards.get(i).getValue() == previousPairCard) {
+                    if (cards.get(i).getValue() != previousPairCard) {
                          highCard = cards.get(i).getValue();
                          break;
                     }

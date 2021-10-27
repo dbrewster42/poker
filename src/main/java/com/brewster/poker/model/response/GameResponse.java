@@ -7,17 +7,18 @@ import java.util.List;
 
 public class GameResponse {
     private List<PlayerDto> playerDtos;
-    private List<Card> riverCards;
+    private List<Card> cards;
     private boolean isOver;
     private EndRoundResponse endRoundResponse;
     private boolean isLastTurn;
 
-    public GameResponse(List<Card> riverCards){
-        this.riverCards = riverCards;
+    public GameResponse(List<Card> cards){
+        this.cards = cards;
         isOver = false;
     }
-    public GameResponse(List<PlayerDto> playerDtos, boolean isLastTurn){
+    public GameResponse(List<PlayerDto> playerDtos, List<Card> cards, boolean isLastTurn){
         this.playerDtos = playerDtos;
+        this.cards = cards;
         this.isLastTurn = isLastTurn;
         isOver = false;
     }
@@ -30,8 +31,8 @@ public class GameResponse {
         return isLastTurn;
     }
 
-    public List<Card> getRiverCards() {
-        return riverCards;
+    public List<Card> getCards() {
+        return cards;
     }
 
     public List<PlayerDto> getPlayerDtos() {
