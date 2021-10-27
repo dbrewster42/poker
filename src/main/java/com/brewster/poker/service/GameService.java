@@ -197,26 +197,6 @@ public class GameService {
 //        }
     }
 
-    private List<UserDto> getUsers(GameEntity gameEntity, UserDto userDto){
-        List<UserDto> users = new ArrayList<>();
-        for (Player player : gameEntity.getPlayers()){
-            if (!player.getEmail().equals(userDto.getEmail())){
-                users.add(new UserDto(player));
-            }
-        }
-        return users;
-    }
-
-    private List<PlayerDto> getPlayers(GameEntity gameEntity, UserDto userDto){
-        List<PlayerDto> users = new ArrayList<>();
-        for (Player player : gameEntity.getPlayers()){
-            if (!player.getEmail().equals(userDto.getEmail())){
-                users.add(new PlayerDto(player));
-            }
-        }
-        return users;
-    }
-
     private UserDto getThisUser(GameEntity gameEntity, String email){
         Player thisPlayer = gameEntity.getPlayers().stream()
                 .filter(v -> v.getEmail().equals(email))

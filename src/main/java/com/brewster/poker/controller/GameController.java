@@ -58,6 +58,7 @@ public class GameController {
 
     @GetMapping("{id}")
     public GameResponse deal(@PathVariable long id) {
+        //TODO add identifier for player
         LOGGER.info("dealing card");
         GameEntity gameEntity = gameService.findGame(id);
 
