@@ -94,22 +94,29 @@ public class GameService {
         return gameEntity.get();
     }
 
-
     public void saveGame(GameEntity gameEntity){
         gameRepository.save(gameEntity);
+    }
+
+    private void collectAnte(GameEntity gameEntity){
+        gameEntity.getBetManagerEntity().collectAnte(gameEntity.getPlayers(), gameEntity.getAnte());
     }
 
     public NewGameResponse startNewDeal(GameEntity gameEntity, UserDto userDto){
         LOGGER.info("starting new deal with {}", userDto);
 
-        gameEntity.applyNewDeal();
+       if (gameEntity.applyNewDeal()){
+           collectAnte(gameEntity);
+       }
         gameContext.dealPlayerCards(gameEntity);
         betService.startNewDeal(gameEntity);
 
         return getNewGameResponse(gameEntity, userDto);
     }
     public NewGameResponse startNewDeal(GameEntity gameEntity, String email){
-        gameEntity.applyNewDeal();
+        if (gameEntity.applyNewDeal()){
+            collectAnte(gameEntity);
+        }
         gameContext.dealPlayerCards(gameEntity);
         betService.startNewDeal(gameEntity);
         UserDto userDto = getThisUser(gameEntity, email);

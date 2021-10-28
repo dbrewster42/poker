@@ -30,6 +30,10 @@ public class GameEntity {
      private boolean useJokers;
      private boolean isActive;
 
+     private int buyIn;
+     private int ante;
+     private int maxBet;
+
      private int desiredNumberOfPlayers;
      private int openSlots;
      @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -52,6 +56,8 @@ public class GameEntity {
           useJokers = settingsRequest.isHasJokers();
           gameType = GameType.valueOf(settingsRequest.getGameType());
           isActive = true;
+          ante = settingsRequest.getAnte();
+          buyIn = settingsRequest.getBuyIn();
      }
 
      private List<Card> setDeck(){
@@ -67,13 +73,14 @@ public class GameEntity {
           isBet = false;
      }
 
-     public void applyNewDeal(){
+     public boolean applyNewDeal(){
           riverCards = new ArrayList<>();
           this.cards = setDeck();
           isBet = true;
           isDealDone = false;
           players.addAll(inactivePlayers);
           inactivePlayers = new ArrayList<>();
+          return ante > 0;
      }
 
      public void processFold(Player player) {
@@ -210,6 +217,22 @@ public class GameEntity {
 
      public void setActive(boolean active) {
           isActive = active;
+     }
+
+     public int getBuyIn() {
+          return buyIn;
+     }
+
+     public void setBuyIn(int buyIn) {
+          this.buyIn = buyIn;
+     }
+
+     public int getAnte() {
+          return ante;
+     }
+
+     public void setAnte(int ante) {
+          this.ante = ante;
      }
 
      @Override

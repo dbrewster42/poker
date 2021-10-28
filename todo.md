@@ -1,4 +1,4 @@
-
+1. move displayName to user instead of game settings
 4. after bets complete, it auto-deals the next card. either the controller method needs to account for this
 or it should require a manual call.
 6. add jpg showing big blind (front end)

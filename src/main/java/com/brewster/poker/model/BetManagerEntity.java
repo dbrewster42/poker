@@ -62,6 +62,10 @@ public class BetManagerEntity {
           adjustTurn();
      }
 
+     public void collectAnte(List<Player> players, int amount){
+          players.forEach(v -> submitBlind(v, amount));
+     }
+
      public void setAllRoundInformation(){
           betAmount = 0;
           turnNumber = bigBlindTurn;

@@ -6,7 +6,6 @@ import com.brewster.poker.exception.UserNotFoundException;
 import com.brewster.poker.model.GameEntity;
 import com.brewster.poker.model.request.GameSettingsRequest;
 import com.brewster.poker.model.request.JoinRequest;
-import com.brewster.poker.model.request.UserRequest;
 import com.brewster.poker.model.response.GameResponse;
 import com.brewster.poker.model.response.NewGameResponse;
 import com.brewster.poker.service.GameService;
@@ -56,7 +55,7 @@ public class GameController {
         return gameService.startNewDeal(gameEntity, email);
     }
 
-    @GetMapping("{id}")
+    @PostMapping("{id}")
     public GameResponse deal(@PathVariable long id, @RequestBody String email) {
         //TODO add identifier for player
         LOGGER.info("dealing card");

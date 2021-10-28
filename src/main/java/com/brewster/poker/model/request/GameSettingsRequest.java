@@ -9,7 +9,7 @@ public class GameSettingsRequest {
     private int maxBet;
     private boolean fillWithComputerPlayers;
     private int buyIn;
-    private boolean useAnte;
+    private int ante;
     private String gameType;
 
     public String getGameType() {
@@ -84,12 +84,12 @@ public class GameSettingsRequest {
         this.buyIn = buyIn;
     }
 
-    public boolean isUseAnte() {
-        return useAnte;
+    public int getAnte() {
+        return ante;
     }
 
-    public void setUseAnte(boolean useAnte) {
-        this.useAnte = useAnte;
+    public void setAnte(int ante) {
+        this.ante = ante;
     }
 
     @Override
